@@ -7,7 +7,7 @@
     <form method="POST" action="{{url('encashment')}}">
     {!! csrf_field() !!}
         <div class="form form-group">
-              <label for="payee">Payee</label><input type="text" name="payee" id="payee" class="form-control">
+            <label for="payee">Payee</label><input onkeypress="nosubmit(event,'bank')" type="text" name="payee" id="payee" class="form-control">
         </div>    
         <div class="form-group">
             <input type ="radio" name="whattype" value="China Bank" checked="checked"> China Bank (On us)
@@ -31,14 +31,14 @@
               <label for="payee">Check No</label><input type="text" name="check_number" id="check_number" class="form-control">
           </div>
            <div class="form form-group">
-              <label for="payee">Amount</label><input type="text" name="amount" id="amount" class="form-control">
+              <label for="payee">Amount</label><input type="text" name="amount" id="amount" onkeypress = "validate(event)" class="form-control">
            </div>  
         </form> 
        </div>     
 </div>    
 
 
-
+<script src="{{url('/js/nephilajs/cashier.js')}}"></script>   
 
 @stop
 
