@@ -62,14 +62,17 @@
                                  @if(Auth::guest())
                                  @else
                                     @if(Auth::user()->accesslevel == env('USER_CASHIER') || Auth::user()->accesslevel == env('USER_CASHIER_HEAD'))
+                                        <li><a href="{{url('/')}}">Home</a>
+                                        </li>    
                                         <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Reports
                                         <span class="caret"></span></a>
                                
                                         <ul class="dropdown-menu" role="menu">
-                                        <li><a href=""><i class="fa fa-btn fa-sign-out"></i>Student Information</a></li>
+                                       
                                         <li><a href="{{url('collectionreport')}}"><i class="fa fa-btn fa-sign-out"></i>Colection Report</a></li>
-                                        <li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Check Details</a></li>
+                                        <li><a href="{{url('collectionreport')}}"><i class="fa fa-btn fa-sign-out"></i>Encashment Report</a></li>
+                                        <li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Check/Cash </a></li>
                                         
                                         </ul>
                                         </li>
@@ -87,6 +90,7 @@
                                         </ul>
                                             </li>
                                         @endif
+                                        <li><a href="{{url('encashment')}}">Encashment</a></li>
                                     @endif
                                  @endif
                                  

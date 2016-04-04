@@ -3,12 +3,12 @@
 @section("content")
   <div class="container_fluid">  
       <div class="col-md-12">
-        <div class="col-md-6">
+             
+          <div class="col-md-6" >
             <div class="form-group">
                 <a href="{{url('/')}}" class="btn btn-primary">Back</a>
                 <a href="{{url('/cashier', $student->idno)}}" class="btn btn-primary">Refresh</a>
                 <a href="{{url('/otherpayment',$student->idno)}}" class="btn btn-primary"> Other Payment</a>
-                 <a href="{{url('/encashment',$student->idno)}}" class="btn btn-primary"> Encashment</a>
                  <a href="{{url('/previous',$student->idno)}}" class="btn btn-primary"> Previous Accounts</a>
                 <div class="pull-right">
                 <label for="receiotno">Receipt No</label>

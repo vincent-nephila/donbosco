@@ -575,4 +575,8 @@ function otherpayment($idno){
         
         return redirect(url('cashier',$idno));
     }
+    
+    function encashment(){
+        return view('cashier.encashment');
+    }
     }
