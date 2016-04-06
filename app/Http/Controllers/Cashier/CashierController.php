@@ -576,7 +576,32 @@ function otherpayment($idno){
         return redirect(url('cashier',$idno));
     }
     
+    function postencashment(Request $request){
+        $refno = $this->getRefno();
+        $encashment = new \App\Encashment;
+        $encashment->transactiondate= Carbon::now();
+        $encashment->refno = $refno;
+        $encashment->payee = $request->payee;
+        $encashment->whattype = $request->whattype;
+        //$encashment->depositto = $request->depositto;
+        $encashment->withdrawfrom =$request->withdrawfrom;
+        $encashment->bank_branch=$request->bank_branch;
+        $encashment->check_number=$request->check_number;
+        $encashment->amount=$request->amount;
+        $encashment->postedby = \Auth::user()->idno;
+        $encashment->save();
+        
+        $resetor = \App\User::where('idno', \Auth::user()->idno)->first();
+        $resetor->reference_number = $resetor->reference_number + 1;
+        $resetor->save();
+        
+        
+        return $encashment;//view('cashier.viewencashment',compact('encashment'));
+        
+    }
+    
     function encashment(){
+        
         return view('cashier.encashment');
     }
     }

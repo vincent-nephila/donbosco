@@ -53,6 +53,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('cancell/{refno}/{idno}','Cashier\CashierController@cancell');
     Route::get('restore/{refno}/{idno}','Cashier\CashierController@restore');
     Route::get('encashment','Cashier\CashierController@encashment');
+    Route::post('encashment','Cashier\CashierController@postencashment');
     //printingmodule
     Route::get('printregistration/{idno}','Registrar\AssessmentController@printregistration');
     Route::get('/printreceipt/{refno}/{idno}','Cashier\CashierController@printreceipt');
