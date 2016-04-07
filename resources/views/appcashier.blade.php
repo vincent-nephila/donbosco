@@ -72,7 +72,7 @@
                                        
                                         <li><a href="{{url('collectionreport')}}"><i class="fa fa-btn fa-sign-out"></i>Colection Report</a></li>
                                         <li><a href="{{url('encashmentreport')}}"><i class="fa fa-btn fa-sign-out"></i>Encashment Report</a></li>
-                                        <li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Check/Cash </a></li>
+                                        <li><a href="{{url('actualcashcheck')}}"><i class="fa fa-btn fa-sign-out"></i>Actual Check/Cash </a></li>
                                         
                                         </ul>
                                         </li>

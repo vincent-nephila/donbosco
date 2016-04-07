@@ -38,6 +38,7 @@
            
             <tr><td colspan="2">Bank : {{$debit_cash->bank_branch}}</td></tr>
             <tr><td colspan="2">Check No : {{$debit_cash->check_number}}</td></tr>
+            <tr><td colspan="2">Check Amount : {{$debit_cash->checkamount}}</td></tr>
            
             <tr><td colspan="2"><hr /></td></tr>
             <tr><td colspan="2"><span style="font-size: 18pt;font-weight: bold; color: red">NO. {{$tdate->receiptno}}</span></td></tr>
@@ -49,7 +50,7 @@
              <a href="{{url('/printreceipt',array($tdate->refno,$student->idno))}}" class="btn btn-primary">Print Receipt</a>
              @if($tdate->transactiondate == date('Y-m-d') && Auth::user()->idno == $posted->idno)
                 @if($tdate->isreverse == '0')
-                <a href="{{url('/cancell',array($tdate->refno,$student->idno))}}" class="btn btn-danger pull-right" onclick="return confirm('Are you sure?')">Cancell</a>
+                <a href="{{url('/cancell',array($tdate->refno,$student->idno))}}" class="btn btn-danger pull-right" onclick="return confirm('Are you sure?')">Cancel</a>
                 @else
                 <a href="{{url('/restore',array($tdate->refno,$student->idno))}}" class="btn btn-danger pull-right" onclick="return confirm('Are you sure?')">Restore</a>
                 @endif

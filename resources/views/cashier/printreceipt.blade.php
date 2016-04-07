@@ -10,7 +10,11 @@ body { margin: 0px; }
            <table width="311" cellpadding = "0" cellspacing = "0" border = "0">
            <tr><td colspan="2" height="90"  valign="top"></td></tr>
            <tr><td><div style="margin-left: 130px">{{$student->lastname}}, {{$student->firstname}} {{$student->extensionname}} {{$student->midddlename}}</div></td><td height="20" valign="top"></td></tr>
+           @if(isset($status->level))
            <tr><td><div style="margin-left: 100px">{{$status->level}} {{$status->strand}} {{$status->section}}</div></td><td>{{$tdate->transactiondate}}</td></tr>
+           @else
+           <tr><td><div style="margin-left: 100px"></div></td><td>{{$tdate->transactiondate}}</td></tr>
+           @endif
            <tr><td colspan="2" height="28"></td></tr>
             
            <tr><td colspan="2" height="215"  valign="top" style="padding-left:20px">
@@ -37,7 +41,7 @@ body { margin: 0px; }
            <table width = "100%" border="0"> 
            
             <tr><td colspan="2"><span style="margin-left: 70px">{{$debit_cash->bank_branch}}</span></td></tr>
-            <tr><td><span style="margin-left: 80px">{{$debit_cash->check_number}}</span></td><td align="right">{{$posted->firstname}} {{$posted->lastname}}</td></tr>
+            <tr><td><span style="margin-left: 80px">{{$debit_cash->check_number}} - {{$debit_cash->checkamount}}</span></td><td align="right">{{$posted->firstname}} {{$posted->lastname}}</td></tr>
             
            
               

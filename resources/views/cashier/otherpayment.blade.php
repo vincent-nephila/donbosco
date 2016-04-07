@@ -206,6 +206,18 @@
             <div class="col-md-6" style="text-align: right">
                 <b>{{number_format($advance,2)}}</b>
             </div>    
+        </div>
+        <div class="btn btn-primary form form-control">Other Payment</div>
+        <div class="form-group">
+            
+            <table class="table table-responsive"><tr><td>Particular</td><td style="text-align: right">Amount</td></tr>
+            @if(count($paymentothers)> 0)
+              
+            @foreach($paymentothers as $paymentother)
+            <tr><td>{{$paymentother->receipt_details}}</td><td style="text-align: right">{{$paymentother->amount}}</td></tr>  
+            @endforeach        
+            @endif
+            </table>
         </div>    
     </div>    
  </div> 

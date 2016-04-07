@@ -28,6 +28,7 @@ return array(
     'CreateCtrLevelsTable' => $baseDir . '/database/migrations/2016_02_04_143250_create_ctr_levels_table.php',
     'CreateCtrOtherPaymentsTable' => $baseDir . '/database/migrations/2016_03_23_154622_create_ctr_other_payments_table.php',
     'CreateCtrPaymentSchedulesTable' => $baseDir . '/database/migrations/2016_02_10_045425_create_ctr_payment_schedules_table.php',
+    'CreateCtrRefSchoolyearsTable' => $baseDir . '/database/migrations/2016_04_07_083300_create_ctr_ref_schoolyears_table.php',
     'CreateCtrSchoolYearsTable' => $baseDir . '/database/migrations/2016_01_28_054608_create_ctr_school_years_table.php',
     'CreateCtrSubjectsTable' => $baseDir . '/database/migrations/2016_03_02_022408_create_ctr_subjects_table.php',
     'CreateCtrTracksTable' => $baseDir . '/database/migrations/2016_02_04_155746_create_ctr_tracks_table.php',

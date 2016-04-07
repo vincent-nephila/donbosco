@@ -140,6 +140,7 @@ class CashierController extends Controller
             $orno = $this->getOR();
             $refno = $this->getRefno();
             $discount = 0;
+          
             
             if($request->totaldue > 0 ){
             $totaldue = $request->totaldue;       
@@ -149,7 +150,7 @@ class CashierController extends Controller
                     foreach($accounts as $account){
                     $discount = $discount + $account->plandiscount + $account->otherdiscount;
                     $balance = $account->amount - $account->payment - $account->plandiscount - $account->otherdiscount - $account->debitmemo;
-                        
+                       
                         if($balance < $totaldue){
                             $updatepay = \App\Ledger::where('id',$account->id)->first();
                             $updatepay->payment = $updatepay->payment + $balance;
@@ -417,8 +418,8 @@ function otherpayment($idno){
         }
     }
     $accounttypes = DB::Select("select distinct accounttype from ctr_other_payments");
-    
-    return view('cashier.otherpayment',compact('student','status','accounttypes','advance'));
+    $paymentothers = DB::Select("select sum(amount) as amount, receipt_details from credits where idno ='" . $idno . "' and (categoryswitch = '7' OR categoryswitch = '9') group by receipt_details");
+    return view('cashier.otherpayment',compact('student','status','accounttypes','advance','paymentothers'));
 }
 
     function othercollection(Request $request){
@@ -615,6 +616,39 @@ function otherpayment($idno){
         $matchfields=['postedby'=>\Auth::user()->idno, 'transactiondate' => date('Y-m-d')];
         $encashmentreports = \App\Encashment::where($matchfields)->get();
         return view('cashier.viewencashmentreport',compact('encashmentreports'));
+    }
+    
+    function reverseencashment($refno){
+        $encashment = \App\Encashment::where('refno',$refno)->first();
+        if($encashment->isreverse == '0'){
+            $encashment->isreverse = '1';
+        } else {
+            $encashment->isreverse = '0';
+        }
+        $encashment->save();
+        return redirect(url('encashmentreport'));
+    }
+    
+    function previous($idno){
+        $student = \App\User::where('idno',$idno)->first();
+        $schoolyears = DB::Select("select distinct schoolyear from ledgers where idno = '$idno'");
+        return view('cashier.previous',compact('student','schoolyears'));
+    }
+    function actualcashcheck(){
+        $chinabank = DB::Select("select sum('amount') as amount, sum('checkamount') as checkamount "
+                . " from dedits where postedby = '".\Auth::user()->idno . "' and "
+                . " transactiondate = '" . date('Y-m-d'). "' and paymenttype = '1' and "
+                . "depositto = 'China Bank' and isreverse = '0'");
+        $bpi1 = DB::Select("select sum('amount') as amount, sum('checkamount') as checkamount "
+                . " from dedits where postedby = '".\Auth::user()->idno . "' and "
+                . " transactiondate = '" . date('Y-m-d'). "' and paymenttype = '1' and "
+                . "depositto = 'BPI 1' and isreverse = '0'");
+        $bpi2 = DB::Select("select sum('amount') as amount, sum('checkamount') as checkamount "
+                . " from dedits where postedby = '".\Auth::user()->idno . "' and "
+                . " transactiondate = '" . date('Y-m-d'). "' and paymenttype = '1' and "
+                . "depositto = 'BPI 2' and isreverse = '0'");
+    return $chinabank;
+        
     }
     
     }

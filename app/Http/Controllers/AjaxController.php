@@ -284,5 +284,79 @@ class AjaxController extends Controller
                 }
             
             }
+            
+            function getprevious($idno, $schoolyear){
+                if(Request::ajax()){
+             
+                $ledgers = DB::Select("select sum(amount) as amount, sum(plandiscount) as plandiscount,  sum(otherdiscount) as otherdiscount, "
+                        . "sum(debitmemo) as debitmemo, sum(payment) as payment, receipt_details from ledgers  where schoolyear = '".$schoolyear."' and "
+                        . "idno = '".$idno."' group by receipt_details"); 
+                //$matchfields=['idno'=>$idno, 'schoolyear'=>$schoolyear, 'paymenttype'=>'1'];
+                //$debits = DB::Select("select dedits.*  from dedits, credits where dedits.refno = credits.refno and "
+                //        . " credits.schoolyear = '". $schoolyear ."' and dedits.paymenttype = '1'");
+               
+                
+                $data="";
+                $data = $data . "<h5>Account Details</h5>";
+                $data = $data . "<table class=\"table table-striped\">";
+                $data = $data . "<tr><td>Description</td><td align=\"right\">Amount</td><td align=\"right\">Discount</td><td align=\"right\">DM</td><td align=\"right\">Payment</td><td align=\"right\">Balance</td></tr>";
+                $totalamount = 0;
+                $totaldiscount = 0;
+                $totaldebitmemo = 0;
+                $totalpayment = 0;
+                
+                if(count($ledgers) > 0){
+                foreach($ledgers as $ledger){
+              
+                $totalamount = $totalamount + $ledger->amount;
+                $totaldiscount = $totaldiscount + $ledger->plandiscount + $ledger->otherdiscount;
+                $totaldebitmemo = $totaldebitmemo + $ledger->debitmemo;
+                $totalpayment = $totalpayment + $ledger->payment;
+               
+                 $data = $data . "<tr><td>". $ledger->receipt_details ."</td><td align=\"right\">". number_format($ledger->amount,2). "</td><td align=\"right\">". number_format($ledger->plandiscount+$ledger->otherdiscount,2)."</td>";
+                 $data = $data .  "<td align=\"right\">".number_format($ledger->debitmemo,2)."</td><td align=\"right\" style=\"color:red\">".number_format($ledger->payment,2)."</td>";
+                 $data = $data . "<td align=\"right\">" .number_format($ledger->amount-$ledger->debitmemo-$ledger->plandiscount-$ledger->otherdiscount-$ledger->payment,2). "</td></tr>";
+                }}
+                 $data = $data . "<tr><td>Total</td><td align=\"right\">". number_format($totalamount,2)."</td>";
+                 $data = $data . "<td align=\"right\">".number_format($totaldiscount,2)."</td>"; 
+                 $data = $data . "<td align=\"right\">".number_format($totaldebitmemo,2)."</td>";
+                 $data = $data . "<td align=\"right\" style=\"color:red\">".number_format($totalpayment,2)."</td>";
+                 $data = $data . "<td align=\"right\"><strong>". number_format($totalamount-$totaldiscount-$totaldebitmemo-$totalpayment,2)."</strong></td></tr>";
+                 $data = $data . "</table>";
+                 
+                 $data = $data . "<h5>Payment History<h5>"; 
+                 $data = $data . "<table class=\"table table-striped\"><tr><td>Date</td><td>Ref Number</td><td>OR Number</td><td align=\"right\">Amount</td><td>Payment Type</td><td>Details</td><td>Status</td></tr>";
+               
+                 $credits = DB::Select("select distinct refno from credits where idno = '". $idno."' and schoolyear = '". $schoolyear ."'");
+                    foreach($credits as $credit){
+                         $debits = DB::Select("select * from dedits where refno = '" . $credit->refno ."'");   
+                            if(count($debits)>0){
+                            foreach($debits as $debit){
+                                $data = $data . "<tr><td>" . $debit->transactiondate ."</td><td>" . $debit->refno ."</td><td>" . $debit->receiptno . "</td><td align=\"right\">".number_format($debit->amount + $debit->checkamount,2)."</td><td>";
+                                     if($debit->paymenttype=='1'){
+                                        $data = $data . "Cash/Check";
+                                    }
+                                    elseif($debit->paymenttype=='3'){
+                                        $data = $data ."DEBIT MEMO";
+                                    }
+                                    $data = $data . "</td><td><a href='".url('/viewreceipt',array($debit->refno,$idno))."'>View</a></td>";
+                                    $data = $data ."<td>";
+                                    if($debit->isreverse=="0"){
+                                    $data = $data . "Ok";
+                                    }else{
+                                    $data = $data . "Cancelled";
+                                    }  
+                                    $data = $data . "</td>";
+                  
+                                    $data = $data ."</tr>";
+                            } }}
+                                        $data = $data ."</table>";
+                         
+                         
+                         
+                         
+                 return $data;
+                }
+            }
     
 }
