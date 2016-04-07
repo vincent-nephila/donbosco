@@ -635,19 +635,26 @@ function otherpayment($idno){
         return view('cashier.previous',compact('student','schoolyears'));
     }
     function actualcashcheck(){
-        $chinabank = DB::Select("select sum('amount') as amount, sum('checkamount') as checkamount "
+        
+        $chinabank = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
                 . " from dedits where postedby = '".\Auth::user()->idno . "' and "
                 . " transactiondate = '" . date('Y-m-d'). "' and paymenttype = '1' and "
-                . "depositto = 'China Bank' and isreverse = '0'");
-        $bpi1 = DB::Select("select sum('amount') as amount, sum('checkamount') as checkamount "
+                . " depositto = 'China Bank' and isreverse = '0'");
+        
+        
+        
+        $bpi1 = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
                 . " from dedits where postedby = '".\Auth::user()->idno . "' and "
                 . " transactiondate = '" . date('Y-m-d'). "' and paymenttype = '1' and "
-                . "depositto = 'BPI 1' and isreverse = '0'");
-        $bpi2 = DB::Select("select sum('amount') as amount, sum('checkamount') as checkamount "
+                . " depositto = 'BPI 1' and isreverse = '0'");
+        $bpi2 = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
                 . " from dedits where postedby = '".\Auth::user()->idno . "' and "
                 . " transactiondate = '" . date('Y-m-d'). "' and paymenttype = '1' and "
-                . "depositto = 'BPI 2' and isreverse = '0'");
-    return $chinabank;
+                . " depositto = 'BPI 2' and isreverse = '0'");
+        $encashments = DB::Select("select sum(amount) as amount, withdrawfrom from encashments where postedby = '" . \Auth::user()->idno. "' "
+                . " and transactiondate = '". date('Y-m-d')."' and isreverse = '0' group by withdrawfrom");
+        
+        return view('cashier.actualcashcheck',compact('chinabank','bpi1','bpi2','chinabank1','encashments'));
         
     }
     
