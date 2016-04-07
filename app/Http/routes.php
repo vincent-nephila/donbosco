@@ -54,6 +54,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('restore/{refno}/{idno}','Cashier\CashierController@restore');
     Route::get('encashment','Cashier\CashierController@encashment');
     Route::post('encashment','Cashier\CashierController@postencashment');
+    Route::get('encashmentreport','Cashier\CashierController@encashmentreport');
+    Route::get('viewencashmentdetail/{refno}', 'Cashier\CashierController@viewencashmentdetail');
+    
     //printingmodule
     Route::get('printregistration/{idno}','Registrar\AssessmentController@printregistration');
     Route::get('/printreceipt/{refno}/{idno}','Cashier\CashierController@printreceipt');

@@ -595,13 +595,26 @@ function otherpayment($idno){
         $resetor->reference_number = $resetor->reference_number + 1;
         $resetor->save();
         
+        return redirect(url('viewencashmentdetail',$encashment->refno));
         
-        return $encashment;//view('cashier.viewencashment',compact('encashment'));
+        //return view('cashier.viewencashment',compact('encashment'));
         
+    }
+    
+    function viewencashmentdetail($refno){
+        $encashment = \App\Encashment::where('refno',$refno)->first();
+        return view('cashier.viewencashment',compact('encashment'));
     }
     
     function encashment(){
         
         return view('cashier.encashment');
     }
+    
+    function encashmentreport(){
+        $matchfields=['postedby'=>\Auth::user()->idno, 'transactiondate' => date('Y-m-d')];
+        $encashmentreports = \App\Encashment::where($matchfields)->get();
+        return view('cashier.viewencashmentreport',compact('encashmentreports'));
+    }
+    
     }
