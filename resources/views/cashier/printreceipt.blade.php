@@ -1,4 +1,5 @@
 
+</head>
 <style>
 @page { margin: 0px; }
 body { margin: 0px; }
@@ -8,8 +9,8 @@ body { margin: 0px; }
        
        
            <table width="311" cellpadding = "0" cellspacing = "0" border = "0">
-           <tr><td colspan="2" height="90"  valign="top"></td></tr>
-           <tr><td><div style="margin-left: 130px">{{$student->lastname}}, {{$student->firstname}} {{$student->extensionname}} {{$student->midddlename}}</div></td><td height="20" valign="top"></td></tr>
+           <tr><td colspan="2" height="85"  valign="top"></td></tr>
+           <tr><td><div style="margin-left: 110px">{{$student->idno}} - {{$student->lastname}}, {{$student->firstname}} {{$student->extensionname}} {{$student->midddlename}}</div></td><td height="20" valign="top"></td></tr>
            @if(isset($status->level))
            <tr><td><div style="margin-left: 100px">{{$status->level}} {{$status->strand}} {{$status->section}}</div></td><td>{{$tdate->transactiondate}}</td></tr>
            @else
@@ -36,8 +37,13 @@ body { margin: 0px; }
            
            </table>
                </td></tr>
+           @if(isset($status->status))
+                @if($status->status=='2')
+                <tr><td colspan="2" style="padding-left:20px">Status : Enrolled</td></tr>
+                @endif
+                @endif
                        </table>
-
+                 
            <table width = "100%" border="0"> 
            
             <tr><td colspan="2"><span style="margin-left: 70px">{{$debit_cash->bank_branch}}</span></td></tr>

@@ -61,6 +61,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/printreceipt/{refno}/{idno}','Cashier\CashierController@printreceipt');
     Route::get('previous/{idno}','Cashier\CashierController@previous');
     Route::get('actualcashcheck','Cashier\CashierController@actualcashcheck');
+    Route::get('printencashment/{idno}','Cashier\CashierController@printencashment');
    
 });
 

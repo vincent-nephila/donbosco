@@ -112,7 +112,12 @@
     
         <div class="col-md-3">
             
-               <h5>Schedule of payment</h5>
+               <h5>Schedule of payment 
+               @if(isset($status->plan))
+               <strong>({{$status->plan}})</strong>
+               @endif
+               </h5>
+               
              <table class="table table-striped"><tr><td>Due Date</td><td align="right">Amount</td></tr>
                  <?php $totaldue = 0;?>
                  @if(count($dues) > 0)

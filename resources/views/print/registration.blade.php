@@ -9,7 +9,7 @@
         <style>
     .body table, th  , .body td{
     border: 1px solid black;
-    font-size: 9pt;
+    font-size: 12pt;
 }
 
 td{
@@ -27,16 +27,19 @@ th {
 }
 
 .notice{
-    font-size: 8pt;
+    font-size: 10pt;
     padding:5px;
     border: 1px solid #000;
     text-indent: 10px;
     margin-top: 5px;
 }
-
+.footer{
+  padding-top:10px;
+    
+}
 .heading{
     padding-top: 10px;
-    font-size: 10pt;
+    font-size: 12pt;
     font-weight: bold;
 }
         </style>
@@ -44,8 +47,8 @@ th {
 	
         </head>
 <body> 
-<img src = "{{ asset('/images/logo.png') }}" alt="Don Bosco Technical School" />
-<h5 align="center">REGISTRATION/ASSESSMENT FORM</h5>
+    <p style="font-size:10pt"><img src = "{{ asset('/images/logo.png') }}" alt="DBTI" align="middle"  width="70px"/>Don Bosco Technical Institute of Makati, Inc.</p>
+<h3 align="center">REGISTRATION/ASSESSMENT FORM</h3>
 <table width='80%'>
 <tr><td>Student Id</td><td> : </td><td>{{$user->idno}}</td></tr>
 <tr><td>Name</td><td> : </td><td>{{$user->lastname}}, {{$user->firstname}} {{$user->middlename}} {{$user->extensionname}}</td></tr>
@@ -88,22 +91,22 @@ th {
         <tr><td>&nbsp;&nbsp;&nbsp;Reservation</td><td align="right">({{number_format( $reserve,2)}})</td></tr>
         </tbody>
         <tfoot>
-        <tr ><td class='footer'>Total</td><td class='footer' align="right">{{number_format($totalamount-$totalplandiscount-$totalotherdiscount-$reserve,2)}}</td></tr>
+        <tr ><td class='footer'>Total</td><td class='footer' align="right"><strong>{{number_format($totalamount-$totalplandiscount-$totalotherdiscount-$reserve,2)}}</strong></td></tr>
         </tfoot>
     </table>
       
-     <div class="heading">Schedule of Payment</div>
-     <table><thead><tr><th>Due Date</th><th>Amount</th></tr></thead>
+     <div class="heading">Schedule of Payment <b>({{$status->plan}})</b></div>
+     <table><thead><tr><th>Due Dates</th><th>Amount</th></tr></thead>
          <tbody>
          @foreach($dues as $due)
          <tr>
          @if($due->duetype == '0')
          <td>
-         Upon Enrollment
-          </td><td align="right"><strong>{{number_format($due->amount - $due->plandiscount - $reserve - $due->otherdiscount,2)}}</strong></td></tr>
+             <strong style="font-size: 12pt">Upon Enrollment</strong>
+          </td><td align="right"><strong style="font-size: 12pt">{{number_format($due->amount - $due->plandiscount - $reserve - $due->otherdiscount,2)}}</strong></td></tr>
          @else
            <td>
-         {{$due->duedate}}
+         {{date("F d, Y",strtotime($due->duedate))}}
         
           </td><td align="right">{{number_format($due->amount - $due->plandiscount  - $due->otherdiscount,2)}}</td></tr>
          @endif
@@ -115,9 +118,37 @@ th {
       
 </div>
 <div class="notice">
-    In accordance with the financial policies of the school as set out in the Student Dairy, the failure to meet the financial
+    In accordance with the financial policies of the school as set out in the Student Diary, the failure to meet the financial
     obligation to the school within the specified period may result in the withholding of transfer credentials, deprivation of any quarterly or final
     examinations, refusal of re-admission, dropping from the rolls and availment of other applicable remedies.
     <br><br>
-    <i style="font-weight: bold">Failure to pay on the due date will be subjected to a penalty of 5% of the amount due or a minimum of P250.00 per month.</i>
+    <i style="font-weight: bold">*If check payment, write name of student and contact no at the back of the check.</i><br>
+    <i style="font-weight: bold">*Failure to pay on the due date will be subjected to a penalty of 5% of the amount due or a minimum of P250.00 per month.</i>
+</div>
+
+<div class="notice">
+    <table width = "100%">
+        
+        <tr><td>Assessed By:</td><td>Date:</td><td>OR#</td></tr>
+        <tr><td style="height: 5px;"></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td></tr>
+        <tr><td>{{$postedby->lastname}}, {{$postedby->firstname}}</td><td>{{$ledger->transactiondate}}</td><td>-------------------</td></tr>
+        
+    </table>    
+                       
+</div>    
+    
+<div class="footer">
+   <table width = "100%">
+        
+        <tr><td>Conforme:</td><td></td><td>Relationship to Student :<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td><td></td></tr>
+        <tr><td></td><td></td><td>Contact No :<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td><td></td></tr>
+        <tr><td style="height: 5px">------------------</td><td></td><td></td><td></td></tr>
+        
+        <tr><td></tr>
+        
+        
+    </table>    
+                  
+    
 </div>    

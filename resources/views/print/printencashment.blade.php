@@ -1,10 +1,7 @@
-@extends('appcashier')
-@section('content')
-
 <div class="container">
 <div class="col-md-12">    
 <h5> Encashment </h5>
-<table class="table table-striped"><tr><td>Payee</td><td>On-us</td><td>Bank</td><td>Check Number</td><td>Amount</td><td>Remarks</td><td></td></tr>
+<table class="table table-striped" width="100%"><tr><td>Payee</td><td>On-us</td><td>Bank</td><td>Check Number</td><td>Amount</td><td>Remarks</td><td></td></tr>
 <?php
 $totalcancell = 0;
 $totalcbc = 0;
@@ -66,7 +63,7 @@ $totalothers=0;
     @endif
     </td>
     <td>
-        <a href="{{url('viewencashmentdetail', $encashmentreport->refno)}}"> view </a>
+       
     </td>
 @endforeach
 </table>
@@ -82,11 +79,8 @@ $totalothers=0;
     <tr><td>Total</td><td style="text-align: right;font-weight: bold"><?php echo number_format($totalcbc + $totalbpi1 + $totalbpi2 +  $totalcbcother + $totalothers,2);?></td></tr>
     <tr><td>Cancelled Encashment</td><td  style="text-align: right; color: red;font-weight: bold"><?php echo number_format($totalcancell,2);?></td></tr>
 </table>
-<div class="form form-group">
-    <a href = "{{url('printencashment',\Auth::user()->idno)}}" class="btn btn-primary"> Print Encashment Report</a>
-</div>    
+   
 </div>
 
 </div>
 
-@stop

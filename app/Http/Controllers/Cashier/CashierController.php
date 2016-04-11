@@ -618,6 +618,18 @@ function otherpayment($idno){
         return view('cashier.viewencashmentreport',compact('encashmentreports'));
     }
     
+    function printencashment($idno){
+        
+        $matchfields=['postedby'=>$idno, 'transactiondate' => date('Y-m-d')];
+        $encashmentreports = \App\Encashment::where($matchfields)->get();
+        $pdf = \App::make('dompdf.wrapper');
+      
+        $pdf->loadView("print.printencashment",compact('encashmentreports'));
+       return $pdf->stream();
+        
+        
+    }
+    
     function reverseencashment($refno){
         $encashment = \App\Encashment::where('refno',$refno)->first();
         if($encashment->isreverse == '0'){

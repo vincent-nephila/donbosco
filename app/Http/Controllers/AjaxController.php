@@ -20,22 +20,23 @@ class AjaxController extends Controller
         $varrefno = strval($refno);
         $user->reference_number = $refno + 1;
         $user->update(); 
+        
         $sy = \App\ctrSchoolYear::first();
             for($i=strlen($varrefno); $i< 3 ;$i++){
                 $varrefno = "0" . $varrefno;    
             }
             
-            $value = substr($sy->schoolyear,2,2) . $user->id . $varrefno;
+            $value = substr($sy->schoolyear,2,2) . $user->idref . $varrefno;
             $intval = 0;
             
             for($y=1; $y<= strlen($value); $y++){
                 $sub = substr($value,$y);
                 $intval = $intval + intval($sub);
             }
-              $intval = $intval%11;
-              $varrefno = $value . strval($intval%11); 
+              //$intval = $intval%9;
+              $varrefno = $value . strval($intval%9); 
             
-            
+         // return $user->idref;  
         return $varrefno;
         }else{
         return "Invalid Request";    

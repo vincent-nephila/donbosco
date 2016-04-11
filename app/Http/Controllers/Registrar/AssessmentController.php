@@ -331,10 +331,11 @@ function assess(Request $request){
     function printregistration($idno){
         $status = \App\Status::where('idno',$idno)->first();
         $user = \App\User::where('idno',$idno)->first();
-        $matchfiels=['idno'=>$idno, 'schoolyear'=>$status->schoolyear, 'period'=>$status->period];
-        $ledgers = \App\Ledger::where($matchfiels)->get();
-        $breakdownfees = DB::Select("select idno, sum(amount) as amount, sum(plandiscount) as plandiscount, sum(otherdiscount) as otherdiscount,categoryswitch, receipt_details from ledgers
-                where idno = '$idno' and schoolyear = '". $status->schoolyear ."' and period = '".$status->period."'group by idno, categoryswitch, receipt_details");
+        $matchfiels=['idno'=>$idno, 'schoolyear'=>$status->schoolyear, 'period'=>$status->period,'categoryswitch'=>'1'];
+        $ledger = \App\Ledger::where($matchfiels)->first();
+        $postedby = \App\User::where('id',$ledger->postedby)->first();
+        $breakdownfees = DB::Select("select idno, sum(amount) as amount, sum(plandiscount) as plandiscount, sum(otherdiscount) as otherdiscount,categoryswitch, receipt_details,postedby from ledgers
+                where idno = '$idno' and schoolyear = '". $status->schoolyear ."' and period = '".$status->period."'group by idno, categoryswitch, receipt_details, postedby");
         
         $dues = DB::Select("select idno, sum(amount) as amount, sum(plandiscount) as plandiscount, sum(otherdiscount) as otherdiscount, "
                 . "duetype, duedate from ledgers where idno = '$idno' and schoolyear = '". $status->schoolyear ."' and period = '".$status->period."' "
@@ -342,9 +343,9 @@ function assess(Request $request){
         $matchfields=['idno'=>$idno, 'status'=>'0'];
         $reservation = \App\AdvancePayment::where($matchfields)->first();
         $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadView('print.registration',compact('dues','status','user','ledgers','breakdownfees','reservation'));
+        $pdf->loadView('print.registration',compact('ledger','postedby','dues','status','user','ledgers','breakdownfees','reservation'));
         return $pdf->stream();
-        
+       
     }
     
     public function edit($id){

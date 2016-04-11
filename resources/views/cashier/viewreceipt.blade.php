@@ -42,6 +42,11 @@
            
             <tr><td colspan="2"><hr /></td></tr>
             <tr><td colspan="2"><span style="font-size: 18pt;font-weight: bold; color: red">NO. {{$tdate->receiptno}}</span></td></tr>
+            @if(isset($status->status))
+                @if($status->status=='2')
+                <tr><td colspan="2">Enrolled</td></tr>
+                @endif
+            @endif
             <tr><td></td><td>Received By</td></tr>
             <tr><td></td><td><b>{{$posted->firstname}} {{$posted->lastname}}</b></td></tr>
             <tr><td></td><td>&nbsp;&nbsp;&nbsp;Cashier</td></tr>
