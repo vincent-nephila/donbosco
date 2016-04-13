@@ -59,7 +59,7 @@ th {
     </tr>
     </table>
     <h3 align="center">REGISTRATION/ASSESSMENT FORM</h3>
-<table width='80%'">
+<table width='80%'>
 <tr><td>Student Id</td><td> : </td><td>{{$user->idno}}</td></tr>
 <tr><td>Name</td><td> : </td><td>{{$user->lastname}}, {{$user->firstname}} {{$user->middlename}} {{$user->extensionname}}</td></tr>
 @if($status->department != "TVET")
