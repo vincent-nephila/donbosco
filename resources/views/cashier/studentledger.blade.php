@@ -212,8 +212,7 @@
                 @endif
                 <tr><td>Amount To Be Paid</td><td align="right"><input type="text" name="totalamount" id ="totalamount" style="color: red; font-weight: bold; text-align: right" class="form-control" value="{{$totaldue-$reservation+$totalprevious+$totalother+$penalty}}" readonly></td></tr>
                 <!--<tr><td><input type="radio" value="1" name="paymenttype" checked onclick="getpaymenttype(this.value)"> Cash</td><td><input onclick="getpaymenttype(this.value)" type="radio" value="2" name="paymenttype" > ChecK</td></tr> -->
-                <tr><td colspan="2"><label>Cash Amount</label><input style ="text-align: right" type="text" value="0" name="receivecash" id="receivecash" onkeypress="validate(event)" onkeydown="submitcash(event,this.value)" class="form form-control">
-                        </td></tr>
+                
                 <tr><td colspan="2">
               
                     
@@ -231,6 +230,10 @@
                         </table>
                         
                 </td> </tr>
+                <tr><td colspan="2"><label>Cash Amount Rendered:</label><input style ="text-align: right" type="text" placeholder="0.00" name="receivecash" id="receivecash" onkeypress="validate(event)" onkeydown="submitcash(event,this.value)" class="form form-control">
+                        </td></tr>
+                <tr><td colspan="2"><label>Change:</label><input style ="text-align: right" type="text" value="0" name="change" id="change" onkeypress="validate(event)" readonly class="form form-control">
+                        </td></tr>
                 <tr><td colspan="2">
                         <input type="radio" name="depositto" value="China Bank" checked="checked"> China Bank
                                             <input type="radio" name="depositto" value="BPI 1"> BPI 1

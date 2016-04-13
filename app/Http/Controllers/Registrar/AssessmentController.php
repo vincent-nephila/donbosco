@@ -343,6 +343,7 @@ function assess(Request $request){
         $matchfields=['idno'=>$idno, 'status'=>'0'];
         $reservation = \App\AdvancePayment::where($matchfields)->first();
         $pdf = \App::make('dompdf.wrapper');
+        $pdf->setPaper("Folio", "portrait");
         $pdf->loadView('print.registration',compact('ledger','postedby','dues','status','user','ledgers','breakdownfees','reservation'));
         return $pdf->stream();
        

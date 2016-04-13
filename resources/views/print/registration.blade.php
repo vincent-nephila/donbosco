@@ -6,7 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta author="Roy Plomantes">
         <meta poweredby = "Nephila Web Technology, Inc">
-        <style>
+       
+        
+ <style>
     .body table, th  , .body td{
     border: 1px solid black;
     font-size: 12pt;
@@ -47,9 +49,17 @@ th {
 	
         </head>
 <body> 
-    <p style="font-size:10pt"><img src = "{{ asset('/images/logo.png') }}" alt="DBTI" align="middle"  width="70px"/>Don Bosco Technical Institute of Makati, Inc.</p>
-<h3 align="center">REGISTRATION/ASSESSMENT FORM</h3>
-<table width='80%'>
+    <table border = '0'celpacing="0" cellpadding = "0" width="550px" align="center"><tr><td width="10px">
+        <img src = "{{ asset('/images/logo.png') }}" alt="DBTI" align="middle"  width="70px"/></td>
+            <td width="530px"><p align="center"><span style="font-size:20pt;">Don Bosco Technical Institute of Makati, Inc. </span><br>
+        Chino Roces Ave., Makati City <br>
+        Tel No : 892-01-01
+        </p>
+    </td>
+    </tr>
+    </table>
+    <h3 align="center">REGISTRATION/ASSESSMENT FORM</h3>
+<table width='80%'">
 <tr><td>Student Id</td><td> : </td><td>{{$user->idno}}</td></tr>
 <tr><td>Name</td><td> : </td><td>{{$user->lastname}}, {{$user->firstname}} {{$user->middlename}} {{$user->extensionname}}</td></tr>
 @if($status->department != "TVET")
@@ -71,7 +81,7 @@ th {
    <div class="heading">Breakdown of Fees</div>
     <table> 
     <thead>
-        <tr><th>Description</th><th>Amount</th></tr>
+        <tr><th width = "60%">Description</th><th>Amount</th></tr>
     </thead>    
     <tbody>
         <?php $totalamount=0; $totalplandiscount=0; $totalotherdiscount=0; ?>
@@ -85,18 +95,18 @@ th {
               }else{$reserve=0;}
               ?>
         @endforeach
-        <tr><td>Sub Total</td><td align="right">{{number_format($totalamount,2)}}</td></tr>
+        <tr><td style="background-color:#ccc">Sub Total</td><td style="background-color:#ccc;font-weight: bold" align="right">{{number_format($totalamount,2)}}</td></tr>
         <tr><td>&nbsp;&nbsp;Less : Plan Discount</td><td align="right">({{number_format( $totalplandiscount,2)}})</td></tr>
         <tr><td>&nbsp;&nbsp;&nbsp;Other Discount</td><td align="right">({{number_format( $totalotherdiscount,2)}})</td></tr>
         <tr><td>&nbsp;&nbsp;&nbsp;Reservation</td><td align="right">({{number_format( $reserve,2)}})</td></tr>
         </tbody>
         <tfoot>
-        <tr ><td class='footer'>Total</td><td class='footer' align="right"><strong>{{number_format($totalamount-$totalplandiscount-$totalotherdiscount-$reserve,2)}}</strong></td></tr>
+        <tr ><td class='footer' style="background-color:#ccc">Total</td><td class='footer' align="right" style="background-color:#ccc"><strong>{{number_format($totalamount-$totalplandiscount-$totalotherdiscount-$reserve,2)}}</strong></td></tr>
         </tfoot>
     </table>
       
      <div class="heading">Schedule of Payment <b>({{$status->plan}})</b></div>
-     <table><thead><tr><th>Due Dates</th><th>Amount</th></tr></thead>
+     <table><thead><tr><th width = "60%">Due Dates</th><th>Amount</th></tr></thead>
          <tbody>
          @foreach($dues as $due)
          <tr>
@@ -129,10 +139,10 @@ th {
 <div class="notice">
     <table width = "100%">
         
-        <tr><td>Assessed By:</td><td>Date:</td><td>OR#</td></tr>
+        <tr><td>Assessed By:</td><td>Date:</td><td>Cashier:</td><td>OR#</td></tr>
         <tr><td style="height: 5px;"></td><td></td><td></td></tr>
         <tr><td></td><td></td><td></td></tr>
-        <tr><td>{{$postedby->lastname}}, {{$postedby->firstname}}</td><td>{{$ledger->transactiondate}}</td><td>-------------------</td></tr>
+        <tr><td>{{$postedby->lastname}}, {{$postedby->firstname}}</td><td>{{$ledger->transactiondate}}</td><td><hr></td><td><hr /></td></tr>
         
     </table>    
                        
@@ -141,9 +151,9 @@ th {
 <div class="footer">
    <table width = "100%">
         
-        <tr><td>Conforme:</td><td></td><td>Relationship to Student :<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td><td></td></tr>
-        <tr><td></td><td></td><td>Contact No :<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td><td></td></tr>
-        <tr><td style="height: 5px">------------------</td><td></td><td></td><td></td></tr>
+        <tr><td>Conforme:</td><td></td><td align="right">Relationship to Student :</td><td width ="30%"><br><hr /></td></tr>
+        <tr><td></td><td></td><td align="right">Contact No :</td><td width ="30%"><br><hr /></td></tr>
+        <tr><td style="height: 5px"><hr /></td><td></td><td></td><td></td></tr>
         
         <tr><td></tr>
         

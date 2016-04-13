@@ -100,16 +100,32 @@ function submitother(event,amount,original,id){
 }
 
 function submitcash(event,amount){
+    
       if(document.getElementById('submit').style.visibility == "visible"){
        document.getElementById('submit').style.visibility = "hidden" 
+       document.getElementById('change').value=""
     }
     
     if(event.keyCode == 13) {  
-       
-     if(eval(document.getElementById("totalamount").value) == eval(amount)){ 
-         
-           document.getElementById('submit').style.visibility="visible";
+     
+     checkreceive = 0;
+     if(document.getElementById('receivecheck').value == ""){
+       checkreceive = 0;  
+     }   
+     else {
+      checkreceive =  eval(document.getElementById('receivecheck').value)  
+     }
+     
+     
+     if(eval(document.getElementById("totalamount").value) <= (eval(amount) + eval(checkreceive))){ 
+        
+        if(eval(document.getElementById("totalamount").value) < eval(amount) + eval(checkreceive)){
+            //alert("hello")
+         document.getElementById('change').value =   eval(amount) + eval(checkreceive)- eval(document.getElementById("totalamount").value)    
+        }
+          document.getElementById('submit').style.visibility="visible";
           document.getElementById('submit').focus();
+          
       }  else {
           
       document.getElementById('submit').style.visibility="hidden";    
@@ -156,17 +172,25 @@ function submitiscbc(event, isSelected){
 }
 
 function submitcheck(event, amount){
+    
     if(document.getElementById('submit').style.visibility == "visible"){
        document.getElementById('submit').style.visibility = "hidden" 
+       document.getElementById('change').value=""
     }
     if(event.keyCode == 13) {
-        if((eval(document.getElementById("receivecash").value)) + eval(amount) == eval(
-                document.getElementById("totalamount").value)){
+        checkreceive = 0
+       
+        if(eval(amount) == eval(document.getElementById("totalamount").value)){
                 document.getElementById('submit').style.visibility="visible";
                 document.getElementById('submit').focus();
-        } else {
+        } 
+        else if(eval(amount) > eval(document.getElementById("totalamount").value)){
+            alert("Amount Rreceive should not be greater than the amount to be collected!")
+            document.getElementById('receivecheck').value= ""
+        }
+        else {
             document.getElementById('submit').style.visibility="hidden";
-            alert("Erroneous Amount");
+            document.getElementById('receivecash').focus();
         }
      event.preventDefault();
      return false;

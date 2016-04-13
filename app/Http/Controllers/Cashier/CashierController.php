@@ -140,6 +140,7 @@ class CashierController extends Controller
             $orno = $this->getOR();
             $refno = $this->getRefno();
             $discount = 0;
+            $change = 0;
           
             
             if($request->totaldue > 0 ){
@@ -256,7 +257,9 @@ class CashierController extends Controller
                     $iscbc = 1;
                 }
             $depositto = $request->depositto;    
-            $this->debit($request->idno,env('DEBIT_CHECK') , $bank_branch, $check_number,$request->receivecash, $request->receivecheck, $iscbc,$depositto);
+            $totalcash = $request->receivecash - $request->change;
+            $receiveamount = $request->receivecash ;
+            $this->debit($request->idno,env('DEBIT_CHECK') , $bank_branch, $check_number,$totalcash, $request->receivecheck, $iscbc,$depositto,$receiveamount);
             //}
             
             
@@ -313,7 +316,7 @@ class CashierController extends Controller
         }
     }
    
-    function debit($idno, $paymenttype, $bank_branch, $check_number,$cashamount,$checkamount,$iscbc,$depositto){
+    function debit($idno, $paymenttype, $bank_branch, $check_number,$cashamount,$checkamount,$iscbc,$depositto,$receiveamount){
         $student= \App\User::where('idno', $idno)->first();
         $debitaccount = new \App\Dedit;
         $debitaccount->idno = $idno;
@@ -324,6 +327,7 @@ class CashierController extends Controller
         $debitaccount->bank_branch = $bank_branch;
         $debitaccount->check_number = $check_number;
         $debitaccount->receivefrom = $student->lastname . ", " . $student->firstname . " " . $student->extensionname . " " .$student->middlename;
+        $debitaccount->receiveamount=$receiveamount;
         $debitaccount->iscbc = $iscbc;
         $debitaccount->depositto = $depositto;
         $debitaccount->checkamount = $checkamount;

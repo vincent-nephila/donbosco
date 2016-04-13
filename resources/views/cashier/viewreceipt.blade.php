@@ -6,10 +6,7 @@
     </div>    
     <div class="col-md-6">
        
-       <h4 align="center"> DON BOSCO TECHNICAL INSTITUTE of MAKATI, INC</h4>
-       <p align='center'>Chino Roces Avenue, City of Makati <br />
-           Tel No. 892-01-01 to 10<br />
-           TIN 000-450-347-000 NAN VAT</p>
+      
        <h3 align="center">OFFICIAL RECEIPT</h3>
        <table class = "table table-responsive">
            <tr><td>Received From : {{$student->lastname}}, {{$student->firstname}} {{$student->extensionname}} {{$student->midddlename}}</td><td></td></tr>
