@@ -27,7 +27,7 @@
          </script>
     </div>   
     <div class="col-lg-4">
-        <div class="btn btn-primary" onclick = "search()">Search</div> <a class="btn btn-primary" href="{{url('/registrar/show')}}">New</a>
+        <div class="btn btn-primary" onclick = "search()">Search</div> 
     </div>
     <div class="col-lg-12">
   <div id="searchbody">   

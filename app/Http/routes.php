@@ -62,7 +62,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('previous/{idno}','Cashier\CashierController@previous');
     Route::get('actualcashcheck','Cashier\CashierController@actualcashcheck');
     Route::get('printencashment/{idno}','Cashier\CashierController@printencashment');
-   
+    Route::get('printcollection/{idno}','Cashier\CashierController@printcollection');
+    Route::get('nonstudent','Cashier\CashierController@nonstudent');
+    Route::post('nonstudent','Cashier\CashierController@postnonstudent');
 });
 
 

@@ -39,14 +39,14 @@ class CashierController extends Controller
        }}
        //get reservation
        if(isset($status->status)){
-           if($status->status == "1"){
+           //if($status->status == "1"){
            $reservations = DB::Select("select amount as amount from advance_payments where idno = '$idno' and status = '0'");
            if(count($reservations)>0){
                foreach($reservations as $reserve)
                {
                    $reservation = $reservation + $reserve->amount;
                }
-       }}}
+       }}
            
        //get current account
           if(isset($status->department)){
@@ -147,7 +147,7 @@ class CashierController extends Controller
             $totaldue = $request->totaldue;       
             //$accounts = \App\Ledger::where('idno',$request->idno)->where('categoryswitch','<=','6')->orderBy('categoryswitch')->get();
             $accounts = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch <= '6' "
-                     . " and (amount - payment - debitmemo - plandiscount - otherdiscount) > 0 order By categoryswitch");    
+                     . " and (amount - payment - debitmemo - plandiscount - otherdiscount) > 0 order By duedate, categorySwitch");    
                     foreach($accounts as $account){
                     $discount = $discount + $account->plandiscount + $account->otherdiscount;
                     $balance = $account->amount - $account->payment - $account->plandiscount - $account->otherdiscount - $account->debitmemo;
@@ -169,6 +169,11 @@ class CashierController extends Controller
                     
                 }
              
+                $this->changestatatus($request->idno, $request->reservation);
+                if($request->reservation > 0){
+                $this->debit_reservation_discount($request->idno,env('DEBIT_RESERVATION') , $request->reservation);
+                $this->consumereservation($request->idno);
+                }
             }
             
             
@@ -271,14 +276,10 @@ class CashierController extends Controller
               $this->debit_reservation_discount($request->idno,env('DEBIT_DISCOUNT') , $discount);
             }      
          
-            if($request->reservation > 0){
-                $this->debit_reservation_discount($request->idno,env('DEBIT_RESERVATION') , $request->reservation);
-                $this->consumereservation($request->idno);
-                
-            }
             
             
-            $this->changestatatus($request->idno);
+            
+           
             
             $this->reset_or();
           
@@ -290,16 +291,60 @@ class CashierController extends Controller
             //return view("cashier.payment", compact('previous','idno','reservation','totaldue','totalother','totalprevious','totalpenalty'));
    }
    
-   function changestatatus($idno){
+   function changestatatus($idno, $reservation){
    $status = \App\Status::where('idno',$idno)->first();    
        if(count($status)> 0 ){
            if($status->status == "1"){
+               if($reservation == "0"){
+               $this->addreservation($idno);
+               }
                $status->status='2';
                $status->save();
            }
        }
    }
    
+  function addreservation($idno){
+      $status=  \App\Status::where('idno',$idno)->first();
+      $addcredit = new \App\Credit;
+      $addcredit->idno = $idno;
+      $addcredit->transactiondate = Carbon::now();
+      $addcredit->refno = $this->getRefno();
+      $addcredit->receiptno = $this->getOR();
+      $addcredit->categoryswitch = "9";
+      $addcredit->acctcode = "Reservation";
+      $addcredit->description = "Reservation";
+      $addcredit->receipt_details = "Reservation";
+      $addcredit->amount = "1000.00";
+      if(isset($status->schoolyear)){
+      $addcredit->schoolyear=$status->schoolyear;
+      }
+      $addcredit->postedby=\Auth::user()->idno;
+      $addcredit->save();
+      
+      $adddebit = new \App\Dedit;
+      $adddebit->idno = $idno;
+      $adddebit->transactiondate = Carbon::now();
+      $adddebit->paymenttype = '5';
+      $adddebit->amount = "1000.00";
+      $adddebit->refno = $this->getRefno();
+      $adddebit->receiptno = $this->getOR();
+      $adddebit->postedby = \Auth::user()->idno;
+      if(isset($status->schoolyear)){
+      $adddebit->schoolyear = $status->schoolyear;
+      }
+      $adddebit->save();
+      
+      $addreservation = new \App\AdvancePayment;
+      $addreservation->idno = $idno;
+      $addreservation->amount = "1000.00";
+      $addreservation->refno = $this->getRefno();
+      $addreservation->transactiondate=Carbon::now();
+      $addreservation->postedby=\Auth::user()->idno;
+      $addreservation->status = "1";
+      $addreservation->save();
+      
+  } 
     function reset_or(){
         $resetor = \App\User::where('idno', \Auth::user()->idno)->first();
         $resetor->receiptno = $resetor->receiptno + 1;
@@ -404,7 +449,7 @@ class CashierController extends Controller
        $tdate = \App\Dedit::where('refno',$refno)->first();
        $posted = \App\User::where('idno',$tdate->postedby)->first();
        $pdf = \App::make('dompdf.wrapper');
-       $pdf->setPaper([0, 0, 378, 450], 'portray');
+       $pdf->setPaper([0, 0, 336, 440], 'portrait');
        $pdf->loadView("cashier.printreceipt",compact('posted','tdate','student','debits','credits','status','debit_discount','debit_reservation','debit_cash','debit_dm'));
        return $pdf->stream();
         
@@ -414,7 +459,7 @@ class CashierController extends Controller
 function otherpayment($idno){
     $student =  \App\User::where('idno',$idno)->first();
     $status = \App\Status::where('idno',$idno)->first();
-    $advances = \App\AdvancePayment::where("idno",$idno)->where("status",0)->get();
+    $advances = \App\AdvancePayment::where("idno",$idno)->where("status",'2')->get();
     $advance=0;
     if(count($advances)>0){    
         foreach($advances as $adv){
@@ -422,13 +467,14 @@ function otherpayment($idno){
         }
     }
     $accounttypes = DB::Select("select distinct accounttype from ctr_other_payments");
-    $paymentothers = DB::Select("select sum(amount) as amount, receipt_details from credits where idno ='" . $idno . "' and (categoryswitch = '7' OR categoryswitch = '9') group by receipt_details");
+    $paymentothers = DB::Select("select sum(amount) as amount, receipt_details from credits where idno ='" . $idno . "' and (categoryswitch = '7' OR categoryswitch = '9') and isreverse = '0' group by receipt_details");
     return view('cashier.otherpayment',compact('student','status','accounttypes','advance','paymentothers'));
 }
 
     function othercollection(Request $request){
         $or = $this->getOR();
         $refno = $this->getRefno();
+        $status = \App\Status::where('idno',$request->idno)->where('status','2')->first();
         $student=  \App\User::where('idno',$request->idno)->first();
         if($request->reservation > 0 ){
             $newreservation = new \App\AdvancePayment;
@@ -436,6 +482,7 @@ function otherpayment($idno){
             $newreservation->transactiondate = Carbon::now();
             $newreservation->refno = $refno;
             $newreservation->amount = $request->reservation;
+            $newreservation->status = '2';
             $newreservation->postedby = \Auth::user()->idno;
             $newreservation->save();
             $creditreservation = new \App\Credit;
@@ -547,23 +594,56 @@ function otherpayment($idno){
         $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
                 . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno from users, dedits where users.idno = dedits.idno and"
                 . " dedits.postedby = '".\Auth::user()->idno."' and dedits.transactiondate = '" 
-                . date('Y-m-d') . "' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno" );
+                . date('Y-m-d') . "' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno order by dedits.receiptno" );
         //$collections = \App\User::where('postedby',\Auth::user()->idno)->first()->dedits->where('transactiondate',date('Y-m-d'))->get();
         return view('cashier.collectionreport', compact('collections'));
+    }
+    
+    function printcollection($idno){
+        
+         $matchfields = ['postedby'=>$idno, 'transactiondate'=>date('Y-m-d')];
+        //$collections = \App\Dedit::where($matchfields)->get();
+        $collectionreports = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
+                . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno from users, dedits where users.idno = dedits.idno and"
+                . " dedits.postedby = '".\Auth::user()->idno."' and dedits.transactiondate = '" 
+                . date('Y-m-d') . "' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno" );
+        
+        
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadView("print.printcollection",compact('collectionreports'));
+        return $pdf->stream();  
     }
     function cancell($refno,$idno){
         
         $credits = \App\Credit::where('refno',$refno)->get();
         foreach($credits as $credit){
-        $ledger = \App\Ledger::find($credit->referenceid);
-        $ledger->payment = $ledger->payment - $credit->amount + $ledger->plandiscount + $ledger->otherdiscount;
-        $ledger->save();
+          
+         $ledger = \App\Ledger::find($credit->referenceid);
+         if(isset($ledger->payment)){
+         $ledger->payment = $ledger->payment - $credit->amount + $ledger->plandiscount + $ledger->otherdiscount;
+         $ledger->save();
+         }
+         if($credit->description == "Reservation"){
+             \App\AdvancePayment::where('refno',$refno)->delete();
+         }
+         }
+        
+         
+        $matchfield=["refno"=>$refno,"paymenttype"=>"5"];
+        $debitreservation = \App\Dedit::where($matchfield)->first();
+        if(count($debitreservation)>0){
+          $res=\App\AdvancePayment::where('idno',$idno)->where('status','1')->first();
+          if(isset($res->status)){
+          $res->status = '0';
+          $res->save();//->update(['status'=>'0']);
+         
         }
         
         \App\Credit::where('refno',$refno)->update(['isreverse'=>'1','reversedate'=>  Carbon::now(), 'reverseby'=> \Auth::user()->idno]);
         \App\Dedit::where('refno',$refno)->update(['isreverse'=>'1']);
-        
+        //\App\AdvancePayment::where('refno',$refno)->where('idno',$idno)->update(['status' => '2']);
         return redirect(url('cashier',$idno));
+    }
     }
     
     function restore($refno,$idno){
@@ -571,13 +651,36 @@ function otherpayment($idno){
         $credits = \App\Credit::where('refno',$refno)->get();
         foreach($credits as $credit){
         $ledger = \App\Ledger::find($credit->referenceid);
+        if(isset($ledger->payment)){
         $ledger->payment = $ledger->payment + $credit->amount - $ledger->plandiscount - $ledger->otherdiscount;
         $ledger->save();
+        }
+         if($credit->description == "Reservation"){
+            $res = new \App\AdvancePayment;
+            $res->idno = $idno;
+            $res->transactiondate = Carbon::now();
+            $res->refno = $refno;
+            $res->amount=$credit->amount;
+            $debrest=  \App\Dedit::where('refno',$refno)->where('paymenttype','5')->first();
+            if(count($debrest)>0){
+            $res->status="1";    
+            }else{
+            $res->status="2";
+            }
+            $res->postedby = \Auth::user()->idno;
+            $res->save();
+         }
+        }
+        
+       $debitreservation = \App\Dedit::where('refno',$refno)->where('paymenttype','5')->first();
+        if(count($debitreservation)>0){
+           
+            \App\AdvancePayment::where('idno',$idno)->where('status','0')->update(['status'=>'1']);
         }
         
         \App\Credit::where('refno',$refno)->update(['isreverse'=>'0','reversedate'=>  '0000-00-00', 'reverseby'=> '']);
         \App\Dedit::where('refno',$refno)->update(['isreverse'=>'0']);
-        
+       // \App\AdvancePayment::where('refno',$refno)->where('idno',$idno)->update(['status' => '0']);
         return redirect(url('cashier',$idno));
     }
     
@@ -671,6 +774,47 @@ function otherpayment($idno){
                 . " and transactiondate = '". date('Y-m-d')."' and isreverse = '0' group by withdrawfrom");
         
         return view('cashier.actualcashcheck',compact('chinabank','bpi1','bpi2','chinabank1','encashments'));
+        
+    }
+    function nonstudent(){
+       
+        $accounttypes = DB::Select("select distinct accounttype from ctr_other_payments");
+        return view('cashier.nonstudent', compact('accounttypes'));
+        
+    }
+    
+    function postnonstudent(Request $request){
+       $refno = $this->getRefno();
+       $or = $this->getOR(); 
+       $newcredit = new \App\Credit;
+       $newcredit->idno="9999999";
+       $newcredit->transactiondate = Carbon::now();
+       $newcredit->referenceid = $idledger;
+       $newcredit->refno = $refno;
+       $newcredit->receiptno=$or;
+       $newcredit->categoryswitch = '7';
+       $newcredit->acctcode = 'Others';
+       $newcredit->description = $request->particular;
+       $newcredit->receipt_details = $request->particular;
+       $newcredit->amount=$request->amount;
+       $newcredit->postedby=\Auth::user()->idno;
+       $newcredit->save();
+        
+       $debit = new \App\Dedit;
+        $debit->idno = "9999999";
+        $debit->transactiondate = Carbon::now();
+        $debit->refno = $refno;
+        $debit->receiptno = $or;
+        $debit->paymenttype= "1";
+        $debit->bank_branch=$request->bank_branch;
+        $debit->check_number=$request->check_number;
+        $debit->iscbc=$iscbc;
+        $debit->amount = $request->cash;
+        $debit->checkamount=$request->check;
+        $debit->receivefrom=$student->lastname . ", " . $student->firstname . " " . $student->extensionname . " " .$student->middlename;
+        $debit->depositto=$request->depositto;
+        $debit->postedby= \Auth::user()->idno;
+        $debit->save();
         
     }
     

@@ -1,16 +1,23 @@
+<html>
+<head>
 
-</head>
 <style>
 @page { margin: 0px; }
 body { margin: 0px; }
+@media print {
+    table {page-break-after: avoid;}
+}
 </style>
-    
+</head> 
+<body>   
 <div style="margin-left: 20px ;font-size: 10pt; width: 311">
        
        
            <table width="311" cellpadding = "0" cellspacing = "0" border = "0">
-           <tr><td colspan="2" height="85"  valign="top"></td></tr>
+           <tr><td colspan="2" height="78"  valign="top"></td></tr>
            <tr><td><div style="margin-left: 110px">{{$student->idno}} - {{$student->lastname}}, {{$student->firstname}} {{$student->extensionname}} {{$student->midddlename}}</div></td><td height="20" valign="top"></td></tr>
+	   </table>
+	  <table width="311" celpadding ="0" celspacing = "0">
            @if(isset($status->level))
            <tr><td><div style="margin-left: 100px">{{$status->level}} {{$status->strand}} {{$status->section}}</div></td><td>{{$tdate->transactiondate}}</td></tr>
            @else
@@ -18,7 +25,7 @@ body { margin: 0px; }
            @endif
            <tr><td colspan="2" height="28"></td></tr>
             
-           <tr><td colspan="2" height="215"  valign="top" style="padding-left:20px">
+           <tr><td colspan="2" height="190"  valign="top" style="padding-left:20px">
            <table width="280" cellpadding = "0" cellspacing = "0" border="0">        
            @foreach($credits as $credit)
            <tr><td>{{$credit->receipt_details}}</td><td align="right">{{number_format($credit->amount,2)}}</td></tr>
@@ -33,7 +40,12 @@ body { margin: 0px; }
            @endif
             
             <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total</td><td align="right"><b>{{number_format($debit_cash->amount + $debit_cash->checkamount,2)}}</b></td></tr>
-          
+          @if(isset($status->status))
+                @if($status->status=='2')
+                <tr><td colspan="2" style="padding-left:20px;font-size:12pt">Status : Enrolled</td></tr>
+                @endif
+                @endif
+
            
            </table>
                </td></tr>
@@ -44,6 +56,7 @@ body { margin: 0px; }
                 @endif
                        </table>
                  
+
            <table width = "100%" border="0"> 
            
             <tr><td colspan="2"><span style="margin-left: 70px">{{$debit_cash->bank_branch}}</span></td></tr>
@@ -57,3 +70,7 @@ body { margin: 0px; }
     </div>    
  
 
+
+
+</body>
+</html>

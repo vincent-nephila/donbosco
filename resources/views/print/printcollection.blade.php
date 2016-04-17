@@ -1,5 +1,4 @@
-@extends('appcashier')
-@section('content')
+
 <div class="container">
 <table class="table table-striped"><tr><td>Receipt No</td><td>Received From</td><td align="center">Cash Amount</td><td align="center"> Check Amount</td><td align="center">Total</td><td>Status</td><td>View</td></tr>
 <?php  $totalchecks = 0; $totalcash=0; $totalcheck=0; $totalcancelled=0;?>
@@ -29,9 +28,9 @@ if($collection->isreverse == '1'){
     <tr><td>Total Cancelled</td><td align="right"><b><?php echo number_format($totalcancelled,2);?></b></td></tr>  
 </table>
    
-    <div class="form form-group">
-    <a href = "{{url('printcollection',\Auth::user()->idno)}}" class="btn btn-primary"> Print Collection Report</a>
-</div>
+  
         </div> 
 </div>    
-@stop
+
+
+

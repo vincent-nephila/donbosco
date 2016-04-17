@@ -95,13 +95,13 @@ th {
               }else{$reserve=0;}
               ?>
         @endforeach
-        <tr><td style="background-color:#ccc">Sub Total</td><td style="background-color:#ccc;font-weight: bold" align="right">{{number_format($totalamount,2)}}</td></tr>
+        <tr><td style="font-weight:bold">Sub Total</td><td style="font-weight: bold" align="right">{{number_format($totalamount,2)}}</td></tr>
         <tr><td>&nbsp;&nbsp;Less : Plan Discount</td><td align="right">({{number_format( $totalplandiscount,2)}})</td></tr>
         <tr><td>&nbsp;&nbsp;&nbsp;Other Discount</td><td align="right">({{number_format( $totalotherdiscount,2)}})</td></tr>
         <tr><td>&nbsp;&nbsp;&nbsp;Reservation</td><td align="right">({{number_format( $reserve,2)}})</td></tr>
         </tbody>
         <tfoot>
-        <tr ><td class='footer' style="background-color:#ccc">Total</td><td class='footer' align="right" style="background-color:#ccc"><strong>{{number_format($totalamount-$totalplandiscount-$totalotherdiscount-$reserve,2)}}</strong></td></tr>
+        <tr ><td class='footer' style="font-weight:bold">Total</td><td class='footer' align="right" ><strong>{{number_format($totalamount-$totalplandiscount-$totalotherdiscount-$reserve,2)}}</strong></td></tr>
         </tfoot>
     </table>
       
@@ -111,9 +111,9 @@ th {
          @foreach($dues as $due)
          <tr>
          @if($due->duetype == '0')
-         <td>
-             <strong style="font-size: 12pt">Upon Enrollment</strong>
-          </td><td align="right"><strong style="font-size: 12pt">{{number_format($due->amount - $due->plandiscount - $reserve - $due->otherdiscount,2)}}</strong></td></tr>
+         <td style="background-color:#ccc">
+             <strong style="font-size: 12pt;">Upon Enrollment</strong>
+          </td><td align="right" style="background-color:#ccc"><strong style="font-size: 12pt;">{{number_format($due->amount - $due->plandiscount - $reserve - $due->otherdiscount,2)}}</strong></td></tr>
          @else
            <td>
          {{date("F d, Y",strtotime($due->duedate))}}

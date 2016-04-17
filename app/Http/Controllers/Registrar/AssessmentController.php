@@ -172,6 +172,13 @@ function assess(Request $request){
         $changestatus->level="";
         $changestatus->update();
         
+        $ress=  \App\AdvancePayment::where('idno',$request->id)->where('status','0')->get();
+        if(count($ress)>0){
+            foreach($ress as $res){
+                \App\AdvancePayment::where('id',$res->id)->update(['status'=>'2']);
+            }
+        }
+        
         return redirect('registrar/evaluate/'. $request->id);
         
         
@@ -325,6 +332,12 @@ function assess(Request $request){
                     $newgrade->save();
                 }
                 }   
+                $ress = \App\AdvancePayment::where('idno',$id)->where('status','2')->get();
+                if(count($ress)>0){
+                    foreach($ress as $res){
+                       \App\AdvancePayment::where('id',$res->id)->update(['status'=>'0']);
+                    }
+                }
                  return true;
     }
 

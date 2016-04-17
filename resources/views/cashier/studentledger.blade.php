@@ -133,7 +133,7 @@
                             $totaldue = $totaldue + $due->balance;
                         }
                         ?>
-                         {{$due->duedate}}
+                         {{date('M d, Y',strtotime($due->duedate))}}
                      @endif    
                      </td><td align="right">{{number_format($due->balance,2)}}</td></tr>
                  @endforeach
@@ -188,7 +188,7 @@
              <input type="hidden" id="penalty" name="penalty" value="{{$penalty}}">
              <table class="table table-responsive table-bordered">
                
-                <tr><td>Main Account</td><td align="right"><input onkeypress = "validate(event)"  onkeydown = "duenosubmit(event)" type="text" name="totaldue" id="totaldue" style="text-align:right" class="form-control" value="<?php echo $totaldue;?>"></td></tr>
+                <tr><td>Main Account</td><td align="right"><input onkeypress = "validate(event)"  onkeydown = "duenosubmit(event)"   type="text" name="totaldue" id="totaldue" style="text-align:right" class="form-control" value="<?php echo number_format($totaldue,2,'.','');?>"></td></tr>
            
                 @if(count($previousbalances)> 0 )
                 
@@ -210,7 +210,7 @@
                 @if($reservation > 0)
                 <tr><td>Less: Reservation</td><td align="right"><span class="form-control">{{number_format($reservation,2)}}</span></td></tr>
                 @endif
-                <tr><td>Amount To Be Paid</td><td align="right"><input type="text" name="totalamount" id ="totalamount" style="color: red; font-weight: bold; text-align: right" class="form-control" value="{{$totaldue-$reservation+$totalprevious+$totalother+$penalty}}" readonly></td></tr>
+                <tr><td>Amount To Be Paid</td><td align="right"><input type="text" name="totalamount" id ="totalamount" style="color: red; font-weight: bold; text-align: right" class="form-control" value="{{ number_format($totaldue-$reservation+$totalprevious+$totalother+$penalty,2,'.','')}}" readonly></td></tr>
                 <!--<tr><td><input type="radio" value="1" name="paymenttype" checked onclick="getpaymenttype(this.value)"> Cash</td><td><input onclick="getpaymenttype(this.value)" type="radio" value="2" name="paymenttype" > ChecK</td></tr> -->
                 
                 <tr><td colspan="2">
@@ -228,7 +228,7 @@
                         </td></tr>
                                        
                         </table>
-                        
+                        <div style="color:red;font-weight: bold" id="cashdiff"></div>
                 </td> </tr>
                 <tr><td colspan="2"><label>Cash Amount Rendered:</label><input style ="text-align: right" type="text" placeholder="0.00" name="receivecash" id="receivecash" onkeypress="validate(event)" onkeydown="submitcash(event,this.value)" class="form form-control">
                         </td></tr>

@@ -4,10 +4,10 @@
     <div class="col-md-3">
     </div>    
     <div class="col-md-6" style="background-color: #ccc">
-    <form method="POST" action="{{url('encashment')}}">
+    <form method="POST" action="{{url('encashment')}}" onsubmit = "return confirm('Process encashment?')">
     {!! csrf_field() !!}
         <div class="form form-group">
-            <label for="payee">Payee</label><input onkeypress="nosubmit(event,'bank')" type="text" name="payee" id="payee" class="form-control">
+            <label for="payee">Payee</label><input onkeypress="nosubmit(event,'bank_branch')" type="text" name="payee" id="payee" class="form-control">
              
         </div>  
    <div class="form-group">
@@ -39,7 +39,7 @@
               <label for="payee">Check No</label><input type="text" name="check_number" id="check_number" onkeypress="nosubmit(event,'amount')" class="form-control">
           </div>
            <div class="form form-group">
-               <label for="payee">Amount</label><input type="text" name="amount" id="amount" onkeypress = "validate(event)" style="text-align: right" class="form-control">
+               <label for="payee">Amount</label><input type="text" name="amount" id="amount" onkeypress = "encashvalidate(event)" style="text-align: right" class="form-control">
            </div>  
            <div class="form form-group">
                <h5>From</h5>
@@ -48,7 +48,7 @@
                <input type = "radio" name="withdrawfrom" value="BPI 2">BPI 2
            </div>
             <div class="form form-group">
-                <input type="submit" value="Process Encashment" class="btn btn-danger form-control">
+                <input id="submitencashment" name="submitencashment" style = "visibility: hidden" type="submit" value="Process Encashment" class="btn btn-danger form-control">
             </div> 
         </form> 
        </div>     
@@ -57,6 +57,36 @@
 
 <script src="{{url('/js/nephilajs/cashier.js')}}"></script>   
 <script>
+     function encashvalidate(evt) {
+  var theEvent = evt || window.event;
+  var key = theEvent.keyCode || theEvent.which;
+        if ((key < 48 || key > 57) && !(key == 8 || key == 9 || key == 13 || key == 37 || key == 39 || key == 46) ){ 
+            theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+        
+        if(key == 13){
+            $amount1 = 0;
+            if(document.getElementById('amount').value==""){
+            $amount1=0;}
+            else{
+            $amount1 = eval(document.getElementById('amount').value)
+                }
+            if($amount1>0){
+                document.getElementById('submitencashment').style.visibility='visible'
+                document.getElementById('submitencashment').focus();
+            }
+            else{
+             document.getElementById('submitencashment').style.visibility="hidden"   
+            }
+            theEvent.preventDefault();
+            return false;
+            
+        }
+  
+   
+}
+    
     function popcheckno(value){
         if(value == "Other Check"){
           document.getElementById('bank_branch').value = "";  

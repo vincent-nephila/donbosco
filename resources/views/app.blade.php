@@ -8,7 +8,7 @@
         <meta poweredby = "Nephila Web Technology, Inc">
         
         @if (Auth::guest())
-        <title>Don Bosco Technical Institute - Makati</title>
+        <title>Don Bosco Technical Institute of Makati, Inc.</title>
         @else
 	<title>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }} - Don Bosco Technical Institute</title>
 
@@ -22,9 +22,9 @@
 	<link href="{{ asset('/css/app_1.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/fileinput.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/datepicker.css') }}" rel="stylesheet">
-	<!-- Fonts -->
+	<!-- Fonts 
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
-
+ -->
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -58,7 +58,7 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-                                <li><a href="#">DBTS-Makati School Information System</a></li>
+                                <li><a href="#">DBTI - Makati School Information System</a></li>
                                  @if(Auth::guest())
                                  @else
                                     @if(Auth::user()->accesslevel == env('USER_REGISTRAR'))
@@ -111,7 +111,7 @@
 
 <div class="container_fluid">
      <div class="col-md-12"> 
-<p class="text-muted"> Copyright 2016, Don Bosco Technical School - Makati All Rights Reserved.<br />
+<p class="text-muted"> Copyright 2016, Don Bosco Technical Institute of Makati, Inc.  All Rights Reserved.<br />
  <a href="http://www.nephilaweb.com.ph">Powered by: Nephila Web Technology, Inc.</a></p>
 </div>
   </div>

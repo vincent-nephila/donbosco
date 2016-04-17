@@ -53,7 +53,7 @@ function computetotal(){
     var penalty = document.getElementById('penalty').value;
     var reservation = document.getElementById('reservation').value;
     var total = parseFloat(totaldue) + parseFloat(totalprevious) + parseFloat(totalother) + parseFloat(penalty) - parseFloat(reservation);
-    document.getElementById('totalamount').value = total;
+    document.getElementById('totalamount').value = total.toFixed(2);
     //alert(total);
 }
 
@@ -91,7 +91,7 @@ function submitother(event,amount,original,id){
         var penalty = document.getElementById('penalty').value;
         var reservation = document.getElementById('reservation').value;
         var total = parseFloat(totaldue) + parseFloat(totalprevious) + parseFloat(totalother) + parseFloat(penalty) - parseFloat(reservation)+parseFloat(amount)-parseFloat(original);
-        document.getElementById('totalamount').value = total;
+        document.getElementById('totalamount').value = total.toFixed(2);
         }
         event.preventDefault();
         return false;
@@ -121,13 +121,24 @@ function submitcash(event,amount){
         
         if(eval(document.getElementById("totalamount").value) < eval(amount) + eval(checkreceive)){
             //alert("hello")
-         document.getElementById('change').value =   eval(amount) + eval(checkreceive)- eval(document.getElementById("totalamount").value)    
+         var num =    eval(amount) + eval(checkreceive)- eval(document.getElementById("totalamount").value)
+         document.getElementById('change').value =   num.toFixed(2);
+         document.getElementById('cashdiff').innerHTML ="";
+         
         }
           document.getElementById('submit').style.visibility="visible";
           document.getElementById('submit').focus();
           
       }  else {
           
+        if(document.getElementById('receivecheck').value==""){
+                receivedcash = 0;
+            } else {
+                receivedcash = document.getElementById('receivecheck').value;
+            }
+            
+       var diff =  eval(document.getElementById("totalamount").value)-eval(amount)-eval(receivedcash);   
+       document.getElementById('cashdiff').innerHTML = "DIFFERENCE : " + diff.toFixed(2);    
       document.getElementById('submit').style.visibility="hidden";    
       document.getElementById('iscbc').focus();
   }
@@ -172,7 +183,7 @@ function submitiscbc(event, isSelected){
 }
 
 function submitcheck(event, amount){
-    
+    document.getElementById('cashdiff').innerHTML =""
     if(document.getElementById('submit').style.visibility == "visible"){
        document.getElementById('submit').style.visibility = "hidden" 
        document.getElementById('change').value=""
@@ -189,7 +200,14 @@ function submitcheck(event, amount){
             document.getElementById('receivecheck').value= ""
         }
         else {
+            if(document.getElementById('receivecash').value==""){
+                receivedcash = 0;
+            } else {
+                receivedcash = document.getElementById('receivecash').value;
+            }
+            var diff =  eval(document.getElementById("totalamount").value)-eval(amount)-eval(receivedcash);
             document.getElementById('submit').style.visibility="hidden";
+            document.getElementById('cashdiff').innerHTML = "DIFFERENCE : " + diff.toFixed(2);
             document.getElementById('receivecash').focus();
         }
      event.preventDefault();
