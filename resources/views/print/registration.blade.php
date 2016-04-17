@@ -109,18 +109,31 @@ th {
      <table><thead><tr><th width = "60%">Due Dates</th><th>Amount</th></tr></thead>
          <tbody>
          @foreach($dues as $due)
+         
          <tr>
          @if($due->duetype == '0')
-         <td style="background-color:#ccc">
-             <strong style="font-size: 12pt;">Upon Enrollment</strong>
-          </td><td align="right" style="background-color:#ccc"><strong style="font-size: 12pt;">{{number_format($due->amount - $due->plandiscount - $reserve - $due->otherdiscount,2)}}</strong></td></tr>
+                <td style="background-color:#ccc">
+                <strong style="font-size: 12pt;">Upon Enrollment</strong>
+                </td><td align="right" style="background-color:#ccc"><strong style="font-size: 12pt;">{{number_format($due->amount - $due->plandiscount - $reserve - $due->otherdiscount,2)}}</strong></td></tr>
          @else
+         
+          @if($status->plan =="Monthly 1" || $status->plan=="Monthly 2")
+           <td> 
+           July 05, {{date("Y",strtotime($due->duedate))}} to Feb 05, {{date("Y",strtotime($due->duedate)) + 1}} 
+           </td><td align="right">{{number_format($due->amount - $due->plandiscount  - $due->otherdiscount,2)}}</td></tr>
+          @break
+          @else
            <td>
          {{date("F d, Y",strtotime($due->duedate))}}
         
           </td><td align="right">{{number_format($due->amount - $due->plandiscount  - $due->otherdiscount,2)}}</td></tr>
          @endif
-            
+         
+        
+         
+         @endif
+         
+         
          @endforeach
          </tbody>
      </table>    

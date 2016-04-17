@@ -256,20 +256,20 @@
         <div id="screendisplay">
             @if(isset($status->status))
             @if($status->status == '1' && $currentschoolyear->schoolyear == $status->schoolyear && $currentschoolyear->period == $status->period)
-                <table class ="table table-bordered"><tr><td>Description</td><td>Due Date</td><td>Amount</td><tr>
+                <table class ="table table-bordered"><tr><td>Description</td><td>Amount</td><tr>
                 <?php $totalamount = 0; $totalplandiscount=0; $totalotherdiscount=0; ?>
                 @foreach($ledgers as $ledger)
                 <?php $totalamount = $totalamount + $ledger->amount; 
                       $totalplandiscount = $totalplandiscount + $ledger->plandiscount;
                       $totalotherdiscount = $totalotherdiscount + $ledger->otherdiscount;
                 ?>
-                <tr><td>{{$ledger->receipt_details}}</td><td>{{$ledger->duedate}}</td><td align="right">{{$ledger->amount}}</td></tr>
+                <tr><td>{{$ledger->receipt_details}}</td><td align="right">{{$ledger->amount}}</td></tr>
                 @endforeach
-                <tr><td colspan = "2">Sub Total</td><td align="right"><?php echo number_format($totalamount,2); ?></td><tr>
-                <tr><td colspan = "2">Less: Plan Discount</td><td align="right"><span style="color:red">(<?php echo number_format($totalplandiscount,2); ?>)</span></td><tr>    
-                <tr><td colspan = "2"> Other Discount</td><td align="right"><span style="color:red">(<?php echo number_format($totalotherdiscount,2); ?>)</span></td><tr> 
-                <tr><td colspan = "2">Reservation</td><td align="right"><span style="color:red">(<?php echo number_format($reservation,2); ?>)</span></td><tr>
-                <tr><td colspan = "2">Total</td><td align="right"><b><?php echo number_format($totalamount-$totalotherdiscount-$totalplandiscount-$reservation,2); ?></td></b><tr>
+                <tr><td>Sub Total</td><td align="right"><?php echo number_format($totalamount,2); ?></td><tr>
+                <tr><td>Less: Plan Discount</td><td align="right"><span style="color:red">(<?php echo number_format($totalplandiscount,2); ?>)</span></td><tr>    
+                <tr><td> Other Discount</td><td align="right"><span style="color:red">(<?php echo number_format($totalotherdiscount,2); ?>)</span></td><tr> 
+                <tr><td>Reservation</td><td align="right"><span style="color:red">(<?php echo number_format($reservation,2); ?>)</span></td><tr>
+                <tr><td>Total</td><td align="right"><b><?php echo number_format($totalamount-$totalotherdiscount-$totalplandiscount-$reservation,2); ?></td></b><tr>
                 </table>
                 <div class="col-md-6">
                 <input type="submit" class="btn btn-primary form-control" value = "Reassess">

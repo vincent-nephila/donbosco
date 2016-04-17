@@ -7,7 +7,7 @@
     <div class="col-md-6">
        
       
-       <h3 align="center">OFFICIAL RECEIPT</h3>
+       <h5>OFFICIAL RECEIPT : <span style="font-weight: bold; color: red">{{$tdate->receiptno}}</span></h5>
        <table class = "table table-responsive">
            <tr><td>Received From : {{$student->lastname}}, {{$student->firstname}} {{$student->extensionname}} {{$student->midddlename}}</td><td></td></tr>
          
@@ -32,18 +32,18 @@
            
            </table>
            </td></tr> 
-           
-            <tr><td colspan="2">Bank : {{$debit_cash->bank_branch}}</td></tr>
-            <tr><td colspan="2">Check No : {{$debit_cash->check_number}}</td></tr>
-            <tr><td colspan="2">Check Amount : {{$debit_cash->checkamount}}</td></tr>
-           
-            <tr><td colspan="2"><hr /></td></tr>
-            <tr><td colspan="2"><span style="font-size: 18pt;font-weight: bold; color: red">NO. {{$tdate->receiptno}}</span></td></tr>
-            @if(isset($status->status))
-                @if($status->status=='2')
-                <tr><td colspan="2">Enrolled</td></tr>
-                @endif
-            @endif
+  
+          
+            <tr><td colspan="2">
+           <table width="35%" border="0" cellspacing="0" cellpadding="0" style="font-size:9pt"> 
+           <tr><td>Bank</td> <td>: </td><td align="right">{{$debit_cash->bank_branch}}</td></tr>
+            <tr><td>Check No</td> <td>: </td><td align="right">{{$debit_cash->check_number}}</td></tr>       
+          <tr><td>Check Amount<td> :</td> </td><td align="right">{{number_format($debit_cash->checkamount,2)}}</td></tr>
+          <tr><td>Cash Amount <td> :</td> </td><td align="right">{{number_format($debit_cash->amount,2)}}</td></tr> 
+          <tr><td>Cash Rendered <td> :</td> </td><td align="right">{{number_format($debit_cash->receiveamount,2)}}</td></tr> 
+          <tr><td>Changed <td> :</td> </td><td align="right">{{number_format($debit_cash->receiveamount-$debit_cash->amount ,2)}}</td></tr> 
+          </table>        
+            </td></tr>        
             <tr><td></td><td>Received By</td></tr>
             <tr><td></td><td><b>{{$posted->firstname}} {{$posted->lastname}}</b></td></tr>
             <tr><td></td><td>&nbsp;&nbsp;&nbsp;Cashier</td></tr>

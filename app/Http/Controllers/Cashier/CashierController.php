@@ -299,6 +299,7 @@ class CashierController extends Controller
                $this->addreservation($idno);
                }
                $status->status='2';
+               $status->date_enrolled=Carbon::now();
                $status->save();
            }
        }
