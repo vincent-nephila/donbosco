@@ -70,10 +70,10 @@
                                
                                         <ul class="dropdown-menu" role="menu">
                                        
-                                        <li><a href="{{url('collectionreport')}}"><i class="fa fa-btn fa-sign-out"></i>Collection Report</a></li>
+                                        <li><a href="{{url('collectionreport',date('Y-m-d'))}}"><i class="fa fa-btn fa-sign-out"></i>Collection Report</a></li>
                                         <li><a href="{{url('encashmentreport')}}"><i class="fa fa-btn fa-sign-out"></i>Encashment Report</a></li>
-                                        <li><a href="{{url('actualcashcheck')}}"><i class="fa fa-btn fa-sign-out"></i>Summary Report </a></li>
-                                        
+                                        <li><a href="{{url('actualcashcheck',date('Y-m-d'))}}"><i class="fa fa-btn fa-sign-out"></i>Summary Report </a></li>
+                                        <li><a href="{{url('checklist')}}"><i class="fa fa-btn fa-sign-out"></i>List Of Checks </a></li>
                                         </ul>
                                         </li>
                                         <li>
@@ -86,12 +86,13 @@
                                         <ul class='dropdown-menu' role='menu'>
                                         <li> <a href = "{{url('consolidate')}}"><i class="fa fa-btn sa-sign-out"></i>Consolidated Report</a></li>
                                          <li> <a href = "{{url('posting')}}"><i class="fa fa-btn sa-sign-out"></i>Posting To Ledger</a></li>
-                            
+                                         
                                         </ul>
                                             </li>
                                         @endif
                                         <li><a href="{{url('encashment')}}">Encashment</a></li>
                                         <li><a href="{{url('nonstudent')}}">Other Payment</a></li>
+                                        <li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Register</a></li>
                                     @endif
                                  @endif
                                  

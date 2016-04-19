@@ -49,7 +49,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/viewreceipt/{refno}/{idno}','Cashier\CashierController@viewreceipt');
     Route::get('/otherpayment/{idno}','Cashier\CashierController@otherpayment');
     Route::post('/othercollection','Cashier\CashierController@othercollection');
-    Route::get('collectionreport','Cashier\CashierController@collectionreport');
+    Route::get('collectionreport/{transactiondate}','Cashier\CashierController@collectionreport');
     Route::get('cancell/{refno}/{idno}','Cashier\CashierController@cancell');
     Route::get('restore/{refno}/{idno}','Cashier\CashierController@restore');
     Route::get('encashment','Cashier\CashierController@encashment');
@@ -60,13 +60,13 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('printregistration/{idno}','Registrar\AssessmentController@printregistration');
     Route::get('/printreceipt/{refno}/{idno}','Cashier\CashierController@printreceipt');
     Route::get('previous/{idno}','Cashier\CashierController@previous');
-    Route::get('actualcashcheck','Cashier\CashierController@actualcashcheck');
+    Route::get('actualcashcheck/{transactiondate}','Cashier\CashierController@actualcashcheck');
     Route::get('printencashment/{idno}','Cashier\CashierController@printencashment');
-    Route::get('printcollection/{idno}','Cashier\CashierController@printcollection');
+    Route::get('printcollection/{idno}/{transactiondate}','Cashier\CashierController@printcollection');
     Route::get('nonstudent','Cashier\CashierController@nonstudent');
     Route::post('nonstudent','Cashier\CashierController@postnonstudent');
+    Route::get('checklist','Cashier\CashierController@checklist');
 });
-
 
 //Ajax route
 

@@ -1,6 +1,11 @@
 
 <div class="container">
-<table class="table table-striped"><tr><td>Receipt No</td><td>Received From</td><td align="center">Cash Amount</td><td align="center"> Check Amount</td><td align="center">Total</td><td>Status</td><td>View</td></tr>
+<h4>Don Bosco Technical Institute of Makati, Inc.</h4>
+<p>Collection Report<br>
+    as of {{$transactiondate}} <br>
+Teller : {{$teller}}    
+    </p>
+    <table width = "100%" border="0" cellspacing="0" cellpadding = "3"><tr><td>Receipt No</td><td>Received From</td><td align="center">Cash Amount</td><td align="center"> Check Amount</td><td align="center">Total</td><td>Status</td></tr>
 <?php  $totalchecks = 0; $totalcash=0; $totalcheck=0; $totalcancelled=0;?>
 @foreach($collections as $collection)
 <?php $remarks = "Ok";
@@ -14,9 +19,7 @@ if($collection->isreverse == '1'){
 ?>
 
 
-<tr><td>{{$collection->receiptno}}</td><td>{{$collection->lastname}}, {{$collection->firstname}}</td><td align="right">{{number_format($collection->amount,2)}}</td><td align="right">{{number_format($collection->checkamount,2)}}</td><td align="right">{{number_format($collection->checkamount + $collection->amount,2)}}</td><td><?php echo $remarks;?></td><td>
-    <a href="{{url('/viewreceipt',array($collection->refno,$collection->idno))}}">View</a>
-    </td></tr>
+<tr><td>{{$collection->receiptno}}</td><td>{{$collection->lastname}}, {{$collection->firstname}}</td><td align="right">{{number_format($collection->amount,2)}}</td><td align="right">{{number_format($collection->checkamount,2)}}</td><td align="right">{{number_format($collection->checkamount + $collection->amount,2)}}</td><td> <?php echo $remarks;?></td></tr>
 
 @endforeach
 </table>

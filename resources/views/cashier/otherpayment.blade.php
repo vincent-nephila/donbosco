@@ -176,7 +176,7 @@
                         <td><input type="checkbox" name="iscbc" id="iscbc" value="cbc" onkeydown="submitiscbc(event,this.checked)"> China Bank Check<label>Check Number</label>
                         <input  type="text" name="check_number" id="check_number" onkeydown = "nosubmit(event,'check')" class="form form-control">
                         </td></tr>
-                        <tr><td colspan="2"><label>Check Amount</label><input style ="text-align: right" type="text" name="check" id="receivecheck" onkeypress="validateother(event)"   value="0.00" class="form form-control">
+                        <tr><td colspan="2"><label>Check Amount</label><input style ="text-align: right" type="text" name="check" id="check" onkeypress="validateother(event,'cash')"   value="0.00" class="form form-control">
                         </td></tr>
                                        
                         </table>
@@ -263,7 +263,7 @@
             else if(varcontrol=="cash"){
                 var totalcredit = eval(document.getElementById('totalcredit').value);
                 var totalcash = eval(document.getElementById('cash').value);
-                var totalcheck = eval(document.getElementById('receivecheck').value);
+                var totalcheck = eval(document.getElementById('check').value);
                 if(totalcredit == totalcash+totalcheck){
                     document.getElementById('submit').style.visibility="visible";
                     document.getElementById('submit').focus();

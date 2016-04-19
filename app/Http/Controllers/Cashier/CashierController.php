@@ -578,6 +578,7 @@ function otherpayment($idno){
         $debit->check_number=$request->check_number;
         $debit->iscbc=$iscbc;
         $debit->amount = $request->cash;
+        $debit->receiveamount = $request->cash;
         $debit->checkamount=$request->check;
         $debit->receivefrom=$student->lastname . ", " . $student->firstname . " " . $student->extensionname . " " .$student->middlename;
         $debit->depositto=$request->depositto;
@@ -589,29 +590,29 @@ function otherpayment($idno){
         return redirect(url('/viewreceipt',array($refno,$request->idno)));
     }
     
-    function collectionreport(){
-        $matchfields = ['postedby'=>\Auth::user()->idno, 'transactiondate'=>date('Y-m-d')];
+    function collectionreport($transactiondate){
+        $matchfields = ['postedby'=>\Auth::user()->idno, 'transactiondate'=>$transactiondate];
         //$collections = \App\Dedit::where($matchfields)->get();
         $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
                 . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno from users, dedits where users.idno = dedits.idno and"
                 . " dedits.postedby = '".\Auth::user()->idno."' and dedits.transactiondate = '" 
-                . date('Y-m-d') . "' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno order by dedits.receiptno" );
+                . $transactiondate . "' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno order by dedits.refno" );
         //$collections = \App\User::where('postedby',\Auth::user()->idno)->first()->dedits->where('transactiondate',date('Y-m-d'))->get();
-        return view('cashier.collectionreport', compact('collections'));
+        return view('cashier.collectionreport', compact('collections','transactiondate'));
     }
     
-    function printcollection($idno){
+    function printcollection($idno,$transactiondate){
         
-         $matchfields = ['postedby'=>$idno, 'transactiondate'=>date('Y-m-d')];
+         $matchfields = ['postedby'=>$idno, 'transactiondate'=>$transactiondate];
         //$collections = \App\Dedit::where($matchfields)->get();
-        $collectionreports = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
+        $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
                 . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno from users, dedits where users.idno = dedits.idno and"
                 . " dedits.postedby = '".\Auth::user()->idno."' and dedits.transactiondate = '" 
-                . date('Y-m-d') . "' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno" );
+                . $transactiondate . "' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno" );
         
-        
+        $teller=\Auth::user()->firstname." ". \Auth::user()->lastname;
         $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadView("print.printcollection",compact('collectionreports'));
+        $pdf->loadView("print.printcollection",compact('collections','transactiondate','teller'));
         return $pdf->stream();  
     }
     function cancell($refno,$idno){
@@ -619,11 +620,15 @@ function otherpayment($idno){
         $credits = \App\Credit::where('refno',$refno)->get();
         foreach($credits as $credit){
           
+         
          $ledger = \App\Ledger::find($credit->referenceid);
+        
          if(isset($ledger->payment)){
          $ledger->payment = $ledger->payment - $credit->amount + $ledger->plandiscount + $ledger->otherdiscount;
          $ledger->save();
          }
+         
+         
          if($credit->description == "Reservation"){
              \App\AdvancePayment::where('refno',$refno)->delete();
          }
@@ -639,12 +644,12 @@ function otherpayment($idno){
           $res->save();//->update(['status'=>'0']);
          
         }
-        
+        }
         \App\Credit::where('refno',$refno)->update(['isreverse'=>'1','reversedate'=>  Carbon::now(), 'reverseby'=> \Auth::user()->idno]);
         \App\Dedit::where('refno',$refno)->update(['isreverse'=>'1']);
-        //\App\AdvancePayment::where('refno',$refno)->where('idno',$idno)->update(['status' => '2']);
+        
         return redirect(url('cashier',$idno));
-    }
+    
     }
     
     function restore($refno,$idno){
@@ -754,27 +759,27 @@ function otherpayment($idno){
         $schoolyears = DB::Select("select distinct schoolyear from ledgers where idno = '$idno'");
         return view('cashier.previous',compact('student','schoolyears'));
     }
-    function actualcashcheck(){
+    function actualcashcheck($transactiondate){
         
         $chinabank = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
                 . " from dedits where postedby = '".\Auth::user()->idno . "' and "
-                . " transactiondate = '" . date('Y-m-d'). "' and paymenttype = '1' and "
+                . " transactiondate = '" . $transactiondate . "' and paymenttype = '1' and "
                 . " depositto = 'China Bank' and isreverse = '0'");
         
         
         
         $bpi1 = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
                 . " from dedits where postedby = '".\Auth::user()->idno . "' and "
-                . " transactiondate = '" . date('Y-m-d'). "' and paymenttype = '1' and "
+                . " transactiondate = '" .$transactiondate. "' and paymenttype = '1' and "
                 . " depositto = 'BPI 1' and isreverse = '0'");
         $bpi2 = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
                 . " from dedits where postedby = '".\Auth::user()->idno . "' and "
-                . " transactiondate = '" . date('Y-m-d'). "' and paymenttype = '1' and "
+                . " transactiondate = '" . $transactiondate. "' and paymenttype = '1' and "
                 . " depositto = 'BPI 2' and isreverse = '0'");
         $encashments = DB::Select("select sum(amount) as amount, withdrawfrom from encashments where postedby = '" . \Auth::user()->idno. "' "
-                . " and transactiondate = '". date('Y-m-d')."' and isreverse = '0' group by withdrawfrom");
+                . " and transactiondate = '". $transactiondate."' and isreverse = '0' group by withdrawfrom");
         
-        return view('cashier.actualcashcheck',compact('chinabank','bpi1','bpi2','chinabank1','encashments'));
+        return view('cashier.actualcashcheck',compact('chinabank','bpi1','bpi2','chinabank1','encashments','transactiondate'));
         
     }
     function nonstudent(){
@@ -818,5 +823,12 @@ function otherpayment($idno){
         $debit->save();
         
     }
-    
+    function checklist(){
+        $checklists = DB::Select("select bank_branch, check_number, sum(checkamount) as checkamount  from dedits "
+                . "where paymenttype = '1' and isreverse = '0' and postedby = '" . \Auth::user()->idno . "'"
+                . " and transactiondate = '" . date('Y-m-d') . "' group by bank_branch, check_number");
+      //$checklist = DB::Select("select * from dedits");
+        
+        return view('cashier.checklist', compact('checklists')); 
+    }
     }
