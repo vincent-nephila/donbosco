@@ -176,6 +176,26 @@ class AjaxController extends Controller
                     }
                 }
                 
+                function getsearchaccounting($varsearch){
+                    if(Request::ajax()){
+                    $searches = DB::Select("Select * From users where accesslevel = '0' AND (lastname like '$varsearch%' OR
+                           firstname like '$varsearch%' OR idno = '$varsearch') Order by lastname, firstname");
+                    $value = "<table class=\"table table-striped\"><thead>
+            <tr><th>Student Number</th><th>Student Name</th><th>Gender</th><th>View</th></tr>        
+            </thead><tbody>";
+                    foreach($searches as $search){
+                        $value = $value . "<tr><td>" .$search->idno . "</td><td>". $search->lastname . ", " .
+                                $search->firstname . " " . $search->middlename . " " . $search->extensionname .
+                                "</td><td>" . $search->gender . "</td><td><a href = '/accounting/".$search->idno."'>view</a>";
+                    }
+                      
+                    $value = $value . "</tbody>
+            </table>"; 
+                        
+                    return $value; 
+                    }
+                }
+                
                 function compute(){
                 $otherdiscountname = "None";
                 $otherdiscountrate = 0;

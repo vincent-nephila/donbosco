@@ -26,6 +26,13 @@ class CashierController extends Controller
        $dues = null;
        $penalty = 0;
        $totalmain = 0;
+      // $fape = 0;
+       
+       //if(isset($status->isesc)){
+      //     if($status->isesc == '1'){
+       //        $fape = "10000.00";
+       //    }
+       //}
        //Get other added collection
        $matchfields = ["idno"=>$idno, "categoryswitch"=>env("OTHER_FEE")];
        $othercollections = \App\Ledger::where($matchfields)->get();
@@ -92,7 +99,9 @@ class CashierController extends Controller
            $debits = DB::SELECT("select * from dedits where idno = '" . $idno . "' and "
                    . "paymenttype <= '2' order by transactiondate");
         
-           return view('cashier.studentledger',  compact('debits','penalty','totalmain','totalprevious','previousbalances','othercollections','student','status','ledgers','reservation','dues'));
+           $debitdms = DB::SELECT("select * from dedits where idno = '" . $idno . "' and "
+                   . "paymenttype = '3' order by transactiondate");
+           return view('cashier.studentledger',  compact('debitdms','debits','penalty','totalmain','totalprevious','previousbalances','othercollections','student','status','ledgers','reservation','dues'));
 
        }   
        
@@ -149,20 +158,26 @@ class CashierController extends Controller
             $accounts = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch <= '6' "
                      . " and (amount - payment - debitmemo - plandiscount - otherdiscount) > 0 order By duedate, categorySwitch");    
                     foreach($accounts as $account){
-                    $discount = $discount + $account->plandiscount + $account->otherdiscount;
+                    
                     $balance = $account->amount - $account->payment - $account->plandiscount - $account->otherdiscount - $account->debitmemo;
                        
                         if($balance < $totaldue){
+                            $discount = $discount + $account->plandiscount + $account->otherdiscount;
                             $updatepay = \App\Ledger::where('id',$account->id)->first();
                             $updatepay->payment = $updatepay->payment + $balance;
                             $updatepay->save();
                             $totaldue = $totaldue - $balance;
-                            $this->credit($request->idno, $account->id, $refno, $orno, $account->amount-$account->payment);
+                            $this->credit($request->idno, $account->id, $refno, $orno, $account->amount-$account->payment-$account->debitmemo);
                         } else {
                             $updatepay = \App\Ledger::where('id',$account->id)->first();
                             $updatepay->payment = $updatepay->payment + $totaldue;
                             $updatepay->save();
-                            $this->credit($request->idno, $account->id, $refno, $orno, $totaldue + $account->plandiscount + $account->otherdiscount);
+                            if($totaldue==$balance){
+                            $discount = $discount + $account->plandiscount + $account->otherdiscount;    
+                            $this->credit($request->idno, $account->id, $refno, $orno, $account->amount -$account->payment - $account->debitmemo);
+                            }else{      
+                            $this->credit($request->idno, $account->id, $refno, $orno, $totaldue);
+                          }
                             $totaldue = 0;
                             break;
                         }
@@ -234,21 +249,8 @@ class CashierController extends Controller
                        }
            }
             
-            /*
-            $currentperiod = \App\ctrSchoolYear::first();
-            $penalty = new \App\Credit;
-            $penalty->idno = $request->idno;
-            $penalty->refno = $refno;
-            $penalty->receiptno = $orno;
-            $penalty->categoryswitch = env("PENALTY_CHARGE");
-            $penalty->acctcode="Penalty";
-            $penalty->description="Penalty";
-            $penalty->receipt_details = "Penalty";
-            $penalty->amount=$request->penalty;
-            $penalty->schoolyear = $currentperiod->schoolyear;
-            $penalty->save(); 
-            }     
-          */
+           
+          
            
        }
             $bank_branch = "";
@@ -824,9 +826,9 @@ function otherpayment($idno){
         
     }
     function checklist(){
-        $checklists = DB::Select("select bank_branch, check_number, sum(checkamount) as checkamount  from dedits "
+        $checklists = DB::Select("select bank_branch, check_number, sum(checkamount) as checkamount, receiptno, receivefrom  from dedits "
                 . "where paymenttype = '1' and isreverse = '0' and postedby = '" . \Auth::user()->idno . "'"
-                . " and transactiondate = '" . date('Y-m-d') . "' group by bank_branch, check_number");
+                . " and transactiondate = '" . date('Y-m-d') . "' group by bank_branch, check_number, receiptno, receivefrom order by transactiondate, refno");
       //$checklist = DB::Select("select * from dedits");
         
         return view('cashier.checklist', compact('checklists')); 

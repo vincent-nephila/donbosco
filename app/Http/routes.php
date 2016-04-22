@@ -66,6 +66,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('nonstudent','Cashier\CashierController@nonstudent');
     Route::post('nonstudent','Cashier\CashierController@postnonstudent');
     Route::get('checklist','Cashier\CashierController@checklist');
+    //accounting module
+    Route::get('accounting/{idno}','Accounting\AccountingController@view');
+    Route::post('debitcredit','Accounting\AccountingController@debitcredit');
+    Route::get('viewdm/{refno}/{idno}','Accounting\AccountingController@viewdm');
+    Route::get('printdmcm/{refno}/{idno}','Accounting\AccountingController@printdmcm');
 });
 
 //Ajax route
@@ -78,6 +83,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/getdiscount','AjaxController@getdiscount');
     Route::get('/getsearch/{varsearch}','AjaxController@getsearch');
     Route::get('/getsearchcashier/{varsearch}','AjaxController@getsearchcashier');
+    Route::get('/getsearchaccounting/{varsearch}','AjaxController@getsearchaccounting');
     Route::get('/compute','AjaxController@compute');
     Route::get('/getpaymenttype/{ptype}','AjaxController@getpaymenttype');
     Route::get('/getparticular/{group}/{particular}','AjaxController@getparticular');

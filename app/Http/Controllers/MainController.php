@@ -36,11 +36,12 @@ class MainController extends Controller
                    return view('cashier.index',compact('myid','myname','students'));
                    break;
                    
-                   break;
+                   
                    
                case env('USER_ACCOUNTING');
-                  
-                   break;    
+                   $students = \App\User::where('accesslevel','0')->orderBy('lastname','firstname')->take(30)->get();
+                   return view('accounting.index',compact('myid','myname','students')) ;                  
+                  break;    
             }
             
         } else {    

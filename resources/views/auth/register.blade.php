@@ -109,7 +109,8 @@
                                 <select class="form-control" name="accesslevel">
                                 <option value = "1">Registration</option>
                                  <option value = "2">Cashier</option>
-                                  <option value = "3">Accounting</option>
+                                  <option value = "3">Cashier Head</option>
+                                  <option value = "4">Accounting</option>
                                     </select>    
 
                                 @if ($errors->has('accesslevel'))
