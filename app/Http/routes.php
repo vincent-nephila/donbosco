@@ -71,6 +71,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('debitcredit','Accounting\AccountingController@debitcredit');
     Route::get('viewdm/{refno}/{idno}','Accounting\AccountingController@viewdm');
     Route::get('printdmcm/{refno}/{idno}','Accounting\AccountingController@printdmcm');
+    Route::get('dmcmreport/{transationdate}','Accounting\AccountingController@dmcmreport');
 });
 
 //Ajax route

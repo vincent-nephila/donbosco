@@ -68,6 +68,7 @@ th {
 <table width='80%'>
 <tr><td>Student Id</td><td> : </td><td>{{$student->idno}}</td></tr>
 <tr><td>Name</td><td> : </td><td>{{$student->lastname}}, {{$student->firstname}} {{$student->middlename}} {{$student->extensionname}}</td></tr>
+@if(isset($status->level))
 @if($status->department != "TVET")
     <tr><td>Level</td><td> : </td><td>{{$status->level}}</td></tr>
     @if($status->level == 'Grade 9' || $status->level == 'Grade 10')
@@ -78,6 +79,7 @@ th {
     @endif
 @else
     <tr><td>Course</td><td> : </td><td>{{$status->course}}</td></tr>
+@endif
 @endif
 </table>
      <div>

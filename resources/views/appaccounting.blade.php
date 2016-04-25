@@ -69,7 +69,7 @@
                                         <span class="caret"></span></a>
                                
                                         <ul class="dropdown-menu" role="menu">
-                                       
+                                       <li><a href="{{url('dmcmreport',date('Y-m-d'))}}"><i class="fa fa-btn fa-sign-out"></i>DM/CM Report</a></li>
                                         <li><a href="{{url('transactionreport',date('Y-m-d'))}}"><i class="fa fa-btn fa-sign-out"></i>Transaction Report</a></li>
                                        
                                         </ul>

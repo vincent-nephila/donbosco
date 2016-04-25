@@ -73,6 +73,11 @@
                                         
                                         </ul>
                                         </li>
+                                        <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Statistics
+                                        <span class="caret"></span></a>   
+                                        
+                                        <li>    
                                     @endif
                                  @endif
                                  

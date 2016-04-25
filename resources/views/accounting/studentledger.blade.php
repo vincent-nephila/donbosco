@@ -201,8 +201,12 @@
              <input type="hidden" id="totalpenalty" name="totalpenalty" value="{{$penalty}}"> 
             
              <table class="table table-responsive table-bordered">
-               
+               @if($totalmain > 0 )
                 <tr><td>Main Account<br>{{$totalmain}}</td><td align="right"><input onkeypress = "validate(event)"  onkeydown = "duenosubmit(event)"   type="text" name="totaldue" id="totaldue" style="text-align:right" class="form-control"></td></tr>
+               @else
+               <input type="hidden" name="totaldue" id="totaldue" value="0">
+               @endif
+                
                 @if(count($previousbalances)> 0 )   
                 <tr><td>Previous Balance<br>{{$totalprevious}}</td><td><input type="text" onkeypress = "validate(event)" onkeydown = "submitprevious(event,this.value)" name="previous" id="previous" style="text-align:right" class="form-control" ></td></tr>
                 @else   

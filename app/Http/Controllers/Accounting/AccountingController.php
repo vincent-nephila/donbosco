@@ -219,11 +219,11 @@ class AccountingController extends Controller
                             $credit->description = $up->description;
                             $credit->receipt_details = $up->receipt_details;
                             $credit->duedate=$up->duedate;
-                            if($balance == $totaldue){
+                            if($balance == $previous){
                             $discount = $discount + $up->plandiscount + $up->otherdiscount;
                             $credit->amount=$up->amount-$up->payment-$up->debitmemo;
                                 } else {
-                            $credit->amount=$totaldue;
+                            $credit->amount=$previous;
                                 }       
                             $credit->schoolyear=$up->schoolyear;
                             $credit->period=$up->period;
@@ -450,4 +450,16 @@ class AccountingController extends Controller
        return $pdf->stream();
   
 }
+function dmcmreport($transactiondate){
+$matchfields = ['postedby'=>\Auth::user()->idno, 'transactiondate'=>$transactiondate];
+        //$collections = \App\Dedit::where($matchfields)->get();
+        $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
+                . " dedits.transactiondate, dedits.isreverse,  dedits.refno, dedits.acctcode from users, dedits where users.idno = dedits.idno and"
+                . " dedits.postedby = '".\Auth::user()->idno."' and dedits.transactiondate = '" 
+                . $transactiondate . "' and dedits.paymenttype = '3' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.refno, dedits.acctcode order by dedits.refno" );
+        //$collections = \App\User::where('postedby',\Auth::user()->idno)->first()->dedits->where('transactiondate',date('Y-m-d'))->get();
+
+        return view('accounting.dmcmreport', compact('collections','transactiondate'));
+}
+
 }
