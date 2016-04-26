@@ -66,6 +66,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('nonstudent','Cashier\CashierController@nonstudent');
     Route::post('nonstudent','Cashier\CashierController@postnonstudent');
     Route::get('checklist','Cashier\CashierController@checklist');
+    Route::post('postactual','Cashier\CashierController@postactual');
     //accounting module
     Route::get('accounting/{idno}','Accounting\AccountingController@view');
     Route::post('debitcredit','Accounting\AccountingController@debitcredit');
