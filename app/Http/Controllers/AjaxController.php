@@ -92,6 +92,17 @@ class AjaxController extends Controller
                     return $value;
                     }
                      else{
+                         
+                    if($vardepartment == "TVET"){
+                        $plans = DB::Select("select distinct plan from ctr_payment_schedules where  course = '$varlevelcourse'");
+                        $value = "<div class=\"col-md-12\">Plan</div><div class=\"col-md-12\"><select name = \"plan\" id=\"plan\" class=\"form-control\" onchange = \"getdiscount()\"><option>Select Plan</option>";
+                         foreach($plans as $plan){
+                            $value = $value . "<option value=\"" . $plan->plan ."\">" .$plan->plan . "</option>"; 
+                            }
+                            $value = $value . "</select></div>";
+                    return $value;
+                        
+                    }else{     
                     $plans = DB::Select("select distinct plan from ctr_payment_schedules where level = '$varlevelcourse'");
                      $value = "<div class=\"col-md-12\">Plan</div><div class=\"col-md-12\"><select name = \"plan\" id=\"plan\" class=\"form-control\" onchange = \"getdiscount()\"><option>Select Plan</option>";
                          foreach($plans as $plan){
@@ -103,7 +114,7 @@ class AjaxController extends Controller
                 }
                 }
                 
-               
+                }
            }
          
       
@@ -222,7 +233,9 @@ class AjaxController extends Controller
              
                 
                 if($department == "TVET"){
-                    
+                     $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level   from ctr_payment_schedules
+                             where  course = '$course' and plan = '$plan' Group by receipt_details, plan, level ");
+
                 }
                 elseif($department == "Senior High School"){
                     $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level   from ctr_payment_schedules

@@ -194,7 +194,7 @@
              <form onsubmit="return dosubmit();" class="form-horizontal" id = "assess" role="form" method="POST" action="{{ url('/debitcredit') }}">
              {!! csrf_field() !!} 
              <input type="hidden" name="idno" value="{{$student->idno}}">
-             <input type="hidden" id="reservation" id = "reservation" name="reservation" value="{{$reservation}}">
+             <input type="hidden" id = "reservation" name="reservation" value="{{$reservation}}">
              <input type="hidden" name="totalprevious" id = "totalprevious" value="{{$totalprevious}}">
              <input type="hidden" name="totalother" id = "totalother" value="{{$totalother}}">
              <input type="hidden" name="totalmain" id = "totalmain" value="{{$totalmain}}">
@@ -215,7 +215,7 @@
                 @if(count($othercollections)>0)
                 @foreach($othercollections as $coll)
                     @if(($coll->amount - $coll->payment - $coll->debitmemo) > 0)
-                         <tr><td>{{$coll->description}}</td><td><input type="text" name="other[{{$coll->id}}]"  id="other[{{$coll->id}}]" style="text-align:right" class="form-control" onkeypress = "validate(event)" onkeydown = "submitother(event,this.value,'{{$coll->amount-$coll->payment-$coll->debitmemo}}','{{$coll->id}}')" value="{{$coll->amount-$coll->payment-$coll->debitmemo}}"></td></tr>
+                         <tr><td>{{$coll->description}} <br>{{$coll->amount-$coll->payment-$coll->debitmemo}}</td><td><input type="text" name="other[{{$coll->id}}]"  id="other" style="text-align:right" class="form-control" onkeypress = "validate(event)" onkeydown = "submitother(event,this.value,'{{$coll->amount-$coll->payment-$coll->debitmemo}}','{{$coll->id}}')" value=""></td></tr>
                     @endif
                @endforeach
                 @endif
@@ -248,7 +248,7 @@
                        
                                             
                         </td></tr> 
-                <tr><td colspan="2"><input  style="font-weight: bold" type="submit" name="submit" id="submit" value ="Process Debit Memo" class="btn btn-danger form form-control"> </td></tr>
+                <tr><td colspan="2"><input  style="font-weight: bold;visibility: hidden" type="submit" name="submit" id="submit" value ="Process Debit Memo" class="btn btn-danger form form-control"> </td></tr>
                
              </table>    
    
@@ -271,6 +271,10 @@ function duenosubmit(event){
             
              //document.getElementById('receivecash').focus(); 
              computetotal();
+             //document.getElementById('other').focus();
+             document.getElementById('submit').style.visibility="visible";
+             document.getElementById('submit').focus();
+        
         }
       event.preventDefault();
       return false;
@@ -279,13 +283,66 @@ function duenosubmit(event){
 }
 
 function computetotal(){
-    
-    var totaldue = document.getElementById('totaldue').value;
+    if(document.getElementById('totaldue').value==""){
+     totaldue = 0; }
+    else { 
+    totaldue = document.getElementById('totaldue').value;
+    }
     var totalprevious = document.getElementById('previous').value;
     var penalty = document.getElementById('penalty').value;
-    var total = parseFloat(totaldue) + parseFloat(totalprevious)  + parseFloat(penalty);
+    var totalother = 0;
+    $('#other').each(function(index,element){
+       totalother = totalother + element.value; 
+    });
+    var total = parseFloat(totaldue) + parseFloat(totalprevious)  + parseFloat(penalty) + parseFloat(totalother);
     document.getElementById('totalamount').value = total.toFixed(2);
     //alert(total);
+    
+}
+
+
+function submitother(event,amount,original,id){
+    if(event.keyCode == 13) {
+        
+        if( parseFloat(original) < parseFloat(amount)){
+            alert('Amount should not be more than ' + original)
+            //document.getElementById("other[" + id +"]").value=original;
+        }
+        else{
+        /*    
+        document.getElementById('receive').focus(); 
+        var totaldue = document.getElementById('totaldue').value;
+        var totalprevious = document.getElementById('previous').value;
+        var totalother = document.getElementById('totalother').value;
+        var penalty = document.getElementById('penalty').value;
+        var reservation = document.getElementById('reservation').value;
+        var total = parseFloat(totaldue) + parseFloat(totalprevious) + parseFloat(totalother) + parseFloat(penalty) - parseFloat(reservation)+parseFloat(amount)-parseFloat(original);
+        document.getElementById('totalamount').value = total.toFixed(2);
+        */
+       computetotal();
+       if(document.getElementById('totalmain').value > 0 ){
+           document.getElementById('totaldue').focus();
+       }else{
+           document.getElementById('submit').style.visibility="visible";
+             document.getElementById('submit').focus();
+       }
+       //document.getElementById('receivecash').focus(); 
+            }
+        event.preventDefault();
+        return false;
+}
+
+}
+
+
+function dosubmit(){
+    if(confirm("Continue to process DM ?")){
+        return true;
+    }else{
+        document.getElementById('submit').style.visibility="hidden";
+        //document.getElementById('receivecash').focus();
+        return false;
+    }
     
 }
 </script>

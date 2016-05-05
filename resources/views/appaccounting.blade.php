@@ -61,7 +61,7 @@
                                 <li><a href="#">DBTI - Makati School Information System</a></li>
                                  @if(Auth::guest())
                                  @else
-                                    @if(Auth::user()->accesslevel == env('USER_ACCOUNTING'))
+                                    @if(Auth::user()->accesslevel == env('USER_ACCOUNTING') || Auth::user()->accesslevel == env('USER_ACCOUNTING_HEAD'))
                                         <li><a href="{{url('/')}}">Home</a>
                                         </li>    
                                         <li class="dropdown">
@@ -70,8 +70,12 @@
                                
                                         <ul class="dropdown-menu" role="menu">
                                        <li><a href="{{url('dmcmreport',date('Y-m-d'))}}"><i class="fa fa-btn fa-sign-out"></i>DM/CM Report</a></li>
-                                        <li><a href="{{url('transactionreport',date('Y-m-d'))}}"><i class="fa fa-btn fa-sign-out"></i>Transaction Report</a></li>
-                                       
+                                       @if(Auth::user()->accesslevel == env('USER_ACCOUNTING_HEAD'))
+                                       <li><a href="{{url('summarymain')}}"><i class="fa fa-btn"></i>Account Summary</a>
+                                           <a href="{{url('studentledger','all')}}"><i class="fa fa-btn"></i>Student Ledger Summary</a>
+                                           <a href="{{url('maincollection',date('Y-m-d'))}}"><i class="fa fa-btn"></i>Transaction Report</a>
+                                           <a href="{{url('cashcollection',date('Y-m-d'))}}"><i class="fa fa-btn"></i>Collection Report</a>
+                                       @endif
                                         </ul>
                                         </li>
                                         
@@ -80,9 +84,6 @@
                                  
                                  @if(Auth::guest())
                                  @else
-                                 @if(Auth::user()->accesslevel == env('USER_REGISTRAR'))
-                                <li><a href="#">Sectioning</a></li>
-                                 @endif
                                  @endif
 				</ul>
 

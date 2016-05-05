@@ -67,12 +67,20 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('nonstudent','Cashier\CashierController@postnonstudent');
     Route::get('checklist','Cashier\CashierController@checklist');
     Route::post('postactual','Cashier\CashierController@postactual');
+    Route::get('printactualcash/{transactiondate}','Cashier\CashierController@printactualcash');
     //accounting module
     Route::get('accounting/{idno}','Accounting\AccountingController@view');
     Route::post('debitcredit','Accounting\AccountingController@debitcredit');
     Route::get('viewdm/{refno}/{idno}','Accounting\AccountingController@viewdm');
     Route::get('printdmcm/{refno}/{idno}','Accounting\AccountingController@printdmcm');
     Route::get('dmcmreport/{transationdate}','Accounting\AccountingController@dmcmreport');
+    Route::get('collectionreport/{datefrom}/{dateto}','Accounting\AccountingController@collectionreport');
+    Route::get('printdmcmreport/{idno}/{transactiondate}','Accounting\AccountingController@printdmcmreport');
+    Route::get('summarymain','Accounting\AccountingController@summarymain');
+    Route::get('maincollection/{transactiondate}','Accounting\AccountingController@maincollection');
+    Route::get('studentledger/{level}','Accounting\AccountingController@studentledger');
+    Route::get('cashcollection/{transactiondate}','Accounting\AccountingController@cashcollection');
+    
 });
 
 //Ajax route

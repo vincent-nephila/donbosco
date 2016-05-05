@@ -81,12 +81,18 @@ function assess(Request $request){
         $course="";
     }
     
+     if(isset($request->level)){
+        $level = $request->level;
+    }else{
+        $level="";
+    }
+    
     $action = $request->action;
     
     switch($action){
     case "add":
        
-              if($this->addLedger($request->id,$request->level,$request->plan,$request->discount,$request->department,$strand,$course)){  
+              if($this->addLedger($request->id,$level,$request->plan,$request->discount,$request->department,$strand,$course)){  
                 $status = new \App\Status;
                 $status->idno=$request->id;
                 $status->date_registered=Carbon::now();
@@ -120,7 +126,7 @@ function assess(Request $request){
         $newstudent->password = bcrypt($request->idno);
         $newstudent->save();
         
-        if($this->addLedger($request->idno,$request->level,$request->plan,$request->discount,$request->department, $strand,$course)){  
+        if($this->addLedger($request->idno,$level,$request->plan,$request->discount,$request->department, $strand,$course)){  
                 $status = new \App\Status;
                 $status->idno=$request->idno;
                 $status->date_registered=Carbon::now();
@@ -170,6 +176,7 @@ function assess(Request $request){
         $changestatus->course="";
         $changestatus->track="";
         $changestatus->level="";
+        $changestatus->period="";
         $changestatus->update();
         
         $ress=  \App\AdvancePayment::where('idno',$request->id)->where('status','0')->get();
@@ -185,7 +192,7 @@ function assess(Request $request){
         //return $request->department;
         break;
         case "update";
-         if($request->department == "Kindergarten" || $request->department =="Elementary" || $request->department == "Junior High School" || $request->department == "Senior High School"){
+            if($request->department == "Kindergarten" || $request->department =="Elementary" || $request->department == "Junior High School" || $request->department == "Senior High School" ||$request->department == "TVET" ){
               if($this->addLedger($request->id,$request->level,$request->plan,$request->discount,$request->department,$strand,$course)){  
                 $status = \App\Status::where('idno',$request->id)->first();
                 $status->date_registered=Carbon::now();
@@ -225,7 +232,7 @@ function assess(Request $request){
                 $discounts = \App\CtrDiscount::where('discountcode',$discount)->first();   
                 
                  if($department == "TVET"){
-                   $matchfields = ["department"=>"TVET", "course", $course];  
+                   $matchfields = ["department"=>"TVET", "course"=> $course];  
                  } else{ 
                     if($level == "Grade 9" || $level == "Grade 10" || $level == "Grade 11" || $level == "Grade 12"){
                     $matchfields=['level'=>$level, 'plan' =>$plan, 'strand'=>$strand];
@@ -323,7 +330,7 @@ function assess(Request $request){
                     foreach($newsubjects as $newsubject){
                     $newgrade = new \App\Grade;
                     $newgrade->idno = $id;
-                    $newgrade->course = $level;
+                    $newgrade->course = $course;
                     $newgrade->strand=$newsubject->strand;
                     $newgrade->subjectcode=$newsubject->subjectcode;
                     $newgrade->subjectname=$newsubject->subjectname;

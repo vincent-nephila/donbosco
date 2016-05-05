@@ -19,7 +19,7 @@ class AccountingController extends Controller
 //
     
     function view($idno){
-       if(\Auth::user()->accesslevel==env('USER_ACCOUNTING')){
+       if(\Auth::user()->accesslevel==env('USER_ACCOUNTING')|| \Auth::user()->accesslevel==env('USER_ACCOUNTING_HEAD')){
        $student = \App\User::where('idno',$idno)->first();
        $status = \App\Status::where('idno',$idno)->first();  
        $reservation = 0;
@@ -108,6 +108,8 @@ class AccountingController extends Controller
    function debitcredit(Request $request){
        $account=null;
        $discount = 0;
+       $discount1= 0;
+       $other = 0;
        $refno = $this->getRefno();
        
        if($request->totaldue > '0'){
@@ -237,16 +239,34 @@ class AccountingController extends Controller
                  
              }   
             }
-            /*
+            
             if(isset($request->other)){
                 foreach($request->other as $key=>$value){
+                    $other = $other + $value;
                     $updateother = \App\Ledger::find($key);
                     $updateother->debitmemo = $updateother->debitmemo + $value;
                     $updateother->save();
-                    $this->credit($updateother->idno, $updateother->id, $refno, $orno, $value);
+                    //$this->credit($updateother->idno, $updateother->id, $refno, $orno, $value);
+                    $ledger = \App\Ledger::find($key);
+                    $newcredit = new \App\Credit;
+                    $newcredit->idno=$request->idno;
+                    $newcredit->transactiondate = Carbon::now();
+                    $newcredit->referenceid = $updateother->id;
+                    $newcredit->refno = $refno;
+                    $newcredit->categoryswitch = $ledger->categoryswitch;
+                    $newcredit->acctcode = $ledger->acctcode;
+                    $newcredit->description = $ledger->description;
+                    $newcredit->receipt_details = $ledger->receipt_details;
+                    $newcredit->duedate=$ledger->duedate;
+                    $newcredit->amount=$value;
+                    $newcredit->schoolyear=$ledger->schoolyear;
+                    $newcredit->period=$ledger->period;
+                    $newcredit->postedby=\Auth::user()->idno;
+                    $newcredit->save();    
+                    
                 }
             }
-            */
+            
               if($request->penalty > 0){
            $penalty = $request->penalty;
             $updatepenalties = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch = '". env('PENALTY_CHARGE'). "' "
@@ -317,7 +337,7 @@ class AccountingController extends Controller
         $debitaccount->paymenttype = "3";
         $debitaccount->acctcode=$request->debitdescription;
         $debitaccount->receivefrom = $student->lastname . ", " . $student->firstname . " " . $student->extensionname . " " .$student->middlename;
-        $debitaccount->amount = $request->totaldue + $request->penalty + $request->previous;    
+        $debitaccount->amount = $request->totaldue + $request->penalty + $request->previous + $other;    
         $debitaccount->postedby=\Auth::user()->idno;
         $debitaccount->save();
         $this->reset_or(); 
@@ -452,7 +472,9 @@ class AccountingController extends Controller
 }
 function dmcmreport($transactiondate){
 $matchfields = ['postedby'=>\Auth::user()->idno, 'transactiondate'=>$transactiondate];
-        //$collections = \App\Dedit::where($matchfields)->get();
+//$matchfields = ['transactiondate'=>$transactiondate];
+
+    //$collections = \App\Dedit::where($matchfields)->get();
         $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
                 . " dedits.transactiondate, dedits.isreverse,  dedits.refno, dedits.acctcode from users, dedits where users.idno = dedits.idno and"
                 . " dedits.postedby = '".\Auth::user()->idno."' and dedits.transactiondate = '" 
@@ -462,4 +484,64 @@ $matchfields = ['postedby'=>\Auth::user()->idno, 'transactiondate'=>$transaction
         return view('accounting.dmcmreport', compact('collections','transactiondate'));
 }
 
+function collectionreport($datefrom, $dateto){
+    $credits = DB::Select("select sum(amount) as amount, acctcode from credits where isreverse = '0' and transactiondate between '" . $datefrom . "' and '" . $dateto ."' "
+            . " group by acctcode");
+    
+    $debits = DB::Select("select sum(amount) as amount, acctcode from dedits where isreverse = '0' and transactiondate between '" . $datefrom . "' and '".$dateto. "' "
+            . " group by acctcode");
+    return view('accounting.collectionreport',compact('credits', 'debits','datefrom','dateto'));
+}
+
+ function printdmcmreport($idno,$transactiondate){
+        
+         $matchfields = ['postedby'=>$idno, 'transactiondate'=>$transactiondate];
+        //$collections = \App\Dedit::where($matchfields)->get();
+        $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
+                . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno from users, dedits where users.idno = dedits.idno and"
+                . " dedits.postedby = '".\Auth::user()->idno."' and dedits.transactiondate = '" 
+                . $transactiondate . "' and dedits.paymenttype = '3' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno" );
+        
+        $teller=\Auth::user()->firstname." ". \Auth::user()->lastname;
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadView("print.printdmcmreport",compact('collections','transactiondate','teller'));
+        return $pdf->stream();  
+    }
+
+ function summarymain(){
+     $totalmains = DB::Select("select acctcode, sum(amount) as amount, sum(payment) as payment, sum(debitmemo) as debitmemo, "
+             . " sum(plandiscount) as plandiscount, "
+             . " sum(otherdiscount) as otherdiscount from ledgers where categoryswitch <= '6' group by acctcode");
+     
+     return view('accounting.showsummarymain',compact('totalmains'));
+     
+ }   
+ function maincollection($transactiondate){
+     $credits = DB::Select("select sum(amount) as amount,receipt_details from credits where transactiondate = '$transactiondate' and isreverse = '0' group by receipt_details");
+     $debitcashchecks = DB::Select("select sum(amount)+sum(checkamount) as totalamount, depositto from dedits where transactiondate = '$transactiondate' and isreverse = '0' and (paymenttype = '1' or paymenttype = '2') group by depositto");
+     $debitdebitmemos = DB::Select("select sum(amount)+sum(checkamount) as totalamount, acctcode from dedits where transactiondate = '$transactiondate' and paymenttype = '3' and isreverse = '0' group by acctcode");
+     $debitdiscounts = DB::Select("select sum(amount)+sum(checkamount) as totalamount from dedits where transactiondate = '$transactiondate' and isreverse = '0' and paymenttype = '4'");
+     $debitreservations = DB::Select("select sum(amount)+sum(checkamount) as totalamount from dedits where transactiondate = '$transactiondate' and isreverse = '0' and paymenttype = '5'");
+   
+    return view('accounting.maincollection',compact('credits','debitcashchecks','debitdebitmemos','debitdiscounts','debitreservations')); 
+ }
+ 
+ function studentledger($level){
+     
+     if($level == 'all'){
+         $ledgers = DB::Select("select u.idno, u.lastname, u.firstname, u.middlename, sum(l.amount) as amount, sum(l.payment) as payment, sum(l.debitmemo) as debitmemo, "
+                 . "sum(l.plandiscount) as plandiscount,sum(l.otherdiscount) as otherdiscount, s.level, s.strand, s.course from users u, ledgers l, statuses s where u.idno = l.idno and u.idno = "
+                 . "s.idno and s.status='2' group by u.idno, u.lastname, u.firstname, u.middlename, s.level, s.strand, s.course order by s.level, u.lastname, u.firstname");
+     
+         
+     } else {
+          $ledgers = DB::Select("select u.idno, u.lastname, u.firstname, u.middlename, sum(l.amount) as amount, sum(l.payment) as payment, sum(l.debitmemo) as debitmemo, "
+                 . "sum(l.plandiscount) as plandiscount,sum(l.otherdiscount) as otherdiscount, s.level, s.strand, s.course from users u, ledgers l, statuses s where u.idno = l.idno and u.idno = "
+                 . "s.idno and s.status='2' and s.level = '$level' group by u.idno, u.lastname, u.firstname, u.middlename, s.level, s.strand, s.course order by s.level, u.lastname, u.firstname");
+     
+        
+     }
+     return view('accounting.studentgenledger',compact('ledgers'));
+ }
+ 
 }

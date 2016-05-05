@@ -926,4 +926,94 @@ function otherpayment($idno){
         return redirect(url('actualcashcheck',$request->transactiondate));
     }
     
+    function printactualcash($transactiondate){
+        $cbcash=0;
+        $cbcheck=0;
+        $bpi1cash=0;
+        $bpi1check=0;
+        $bpi2cash=0;
+        $bpi2check=0;
+        $action="add";
+        $totalissued=0;
+        $actual = \App\ActualDeposit::where('postedby',\Auth::user()->idno)->where('transactiondate',$transactiondate)->first();
+        
+        if(count($actual)>0){
+          $action="update";  
+        }
+        
+        
+        $chinabank = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
+                . " from dedits where postedby = '".\Auth::user()->idno . "' and "
+                . " transactiondate = '" . $transactiondate . "' and paymenttype = '1' and "
+                . " depositto = 'China Bank' and isreverse = '0'");
+        
+        if(count($chinabank)>0){
+            foreach($chinabank as $cb){
+                $cbcash = $cbcash + $cb->amount;
+                $cbcheck = $cbcheck + $cb->checkamount;
+            }
+        }
+        
+        $bpi1 = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
+                . " from dedits where postedby = '".\Auth::user()->idno . "' and "
+                . " transactiondate = '" .$transactiondate. "' and paymenttype = '1' and "
+                . " depositto = 'BPI 1' and isreverse = '0'");
+        
+        if(count($bpi1)>0){
+            foreach($bpi1 as $cb){
+                $bpi1cash = $bpi1cash + $cb->amount;
+                $bpi1check = $bpi1check + $cb->checkamount;
+            }
+        }
+        
+        $bpi2 = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
+                . " from dedits where postedby = '".\Auth::user()->idno . "' and "
+                . " transactiondate = '" . $transactiondate. "' and paymenttype = '1' and "
+                . " depositto = 'BPI 2' and isreverse = '0'");
+        
+        if(count($bpi2)>0){
+            foreach($bpi2 as $cb){
+                $bpi2cash = $bpi2cash + $cb->amount;
+                $bpi2check = $bpi2check + $cb->checkamount;
+            }
+        }
+        
+        $totalissued = $cbcash + $cbcheck + $bpi1cash + $bpi1check + $bpi2cash + $bpi2check;
+        
+        $encashments = DB::Select("select sum(amount) as amount, withdrawfrom from encashments where postedby = '" . \Auth::user()->idno. "' "
+                . " and transactiondate = '". $transactiondate."' and isreverse = '0' group by withdrawfrom");
+        
+        $encashcbc=0;
+        $encashbpi1=0;
+        $encashbpi2=0;
+        
+        foreach($encashments as $encash){
+            if($encash->withdrawfrom == "China Bank"){
+                $encashcbc = $encashcbc + $encash->amount;
+            }
+            if($encash->withdrawfrom == "BPI 1"){
+                $encashbpi1 = $encashbpi1 + $encash->amount;
+            }
+            if($encash->withdrawfrom == "BPI 2"){
+                $encashbpi2 = $encashbpi2 + $encash->amount;
+            }
+        }
+        
+        $totalissued = $cbcash + $cbcheck + $bpi1cash + $bpi1check + $bpi2cash + $bpi2check;
+        $totalissued = $totalissued - $encashcbc - $encashbpi1 - $encashbpi2;
+        
+        
+       $pdf = \App::make('dompdf.wrapper');
+       //$pdf->setPaper([0, 0, 336, 440], 'portrait');
+       $pdf->loadView("print.printactualcash",compact('chinabank','bpi1','bpi2',
+       'chinabank1','encashments','transactiondate','cbcash','cbcheck','bpi1cash',
+       'bpi1check','bpi2cash','bpi2check','encashcbc','encashbpi1','encashbpi2','actual','action','transactiondate','totalissued'));
+       return $pdf->stream();
+        
+        
+        
+        
+    }
+    
+    
     }

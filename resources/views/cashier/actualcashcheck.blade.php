@@ -44,7 +44,7 @@
     <tr><td colspan="5" style="color:red;background-color: #ccc">BPI 2</td></tr>
     <tr><td>Cash</td><td align="right">{{number_format($bpi2cash,2)}}</td><td align="right">{{number_format($encashbpi2,2)}}</td><td><input type="text" name="actualbpi2cash" id="actutalbpi2cash" class="form" style="text-align:right" value="<?php echo $abpi2cash; ?>"></td><td>{{number_format(($bpi2cash- $encashbpi2 - $abpi2cash),2)}}</td></tr>
     <tr><td>Check</td><td align="right">{{number_format($bpi2check,2)}}</td><td></td><td><input type="text" name="actualbpi2check" id="actutalbpi2check" class="form" style="text-align:right" value="<?php echo $abpi2check; ?>"></td><td>{{number_format(($bpi2check - $abpi2check),2)}}</td></tr>
-     <tr><td>Check</td><td align="right"></td><td></td><td></td><td><input type="submit" name="submit"  class="btn btn-primary" value="{{$txtbutton}}" ></td></tr>
+    <tr><td>Check</td><td align="right"></td><td></td><td><a href="{{url('printactualcash',$transactiondate)}}" class="btn btn-primary">Print Actual Deposit</a></td><td><input type="submit" name="submit"  class="btn btn-primary" value="{{$txtbutton}}" ></td></tr>
     </table>
     </form>
     <!--

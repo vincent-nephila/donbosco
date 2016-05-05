@@ -31,7 +31,7 @@ if($collection->isreverse == '1'){
 </table>
    
     <div class="form form-group">
-    <a href = "{{url('printcollection',\Auth::user()->idno)."/".$transactiondate}}" class="btn btn-primary"> Print Collection Report</a>
+    <a href = "{{url('printdmcmreport',\Auth::user()->idno)."/".$transactiondate}}" class="btn btn-primary"> Print DM Report</a>
 </div>
         </div> 
 </div> 

@@ -49,7 +49,21 @@ function computetotal(){
     
     var totaldue = document.getElementById('totaldue').value;
     var totalprevious = document.getElementById('previous').value;
-    var totalother = document.getElementById('totalother').value;
+    var totalother = 0;
+    
+    $('#other').each(function(index,element){
+       totalother = totalother + element.value; 
+    });
+   //for(i=0;ioth.)
+   /*
+    if(document.getElementById('other')){
+      var tother = document.getElementById('other');
+      for(i=0;i<tother.length;i++){
+          totalother = totalother + tother[i].value;
+      }
+    }*/
+    //alert(tother.length)
+    //var totalother = document.getElementById('totalother').value;
     var penalty = document.getElementById('penalty').value;
     var reservation = document.getElementById('reservation').value;
     var total = parseFloat(totaldue) + parseFloat(totalprevious) + parseFloat(totalother) + parseFloat(penalty) - parseFloat(reservation);
@@ -83,7 +97,7 @@ function submitother(event,amount,original,id){
             document.getElementById("other[" + id +"]").value=original;
         }
         else{
-            
+        /*    
         document.getElementById('receive').focus(); 
         var totaldue = document.getElementById('totaldue').value;
         var totalprevious = document.getElementById('previous').value;
@@ -92,7 +106,10 @@ function submitother(event,amount,original,id){
         var reservation = document.getElementById('reservation').value;
         var total = parseFloat(totaldue) + parseFloat(totalprevious) + parseFloat(totalother) + parseFloat(penalty) - parseFloat(reservation)+parseFloat(amount)-parseFloat(original);
         document.getElementById('totalamount').value = total.toFixed(2);
-        }
+        */
+       computetotal();
+       document.getElementById('receivecash').focus(); 
+            }
         event.preventDefault();
         return false;
 }

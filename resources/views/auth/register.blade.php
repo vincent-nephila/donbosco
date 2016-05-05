@@ -111,6 +111,7 @@
                                  <option value = "2">Cashier</option>
                                   <option value = "3">Cashier Head</option>
                                   <option value = "4">Accounting</option>
+                                  <option value = "5">Accounting Head</option>
                                     </select>    
 
                                 @if ($errors->has('accesslevel'))
