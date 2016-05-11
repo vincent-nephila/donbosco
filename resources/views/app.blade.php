@@ -74,8 +74,12 @@
                                         </ul>
                                         </li>
                                         <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Statistics
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"> Reports
                                         <span class="caret"></span></a>   
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{{url('enrollmentstat')}}"><i class="fa fa-btn"></i>Enrollment Statistics</a></li>
+                                            <li><a href="{{url('studentlist')}}"><i class="fa fa-btn"></i>Student List</a></li>
+                                         </ul>   
                                         
                                         <li>    
                                     @endif

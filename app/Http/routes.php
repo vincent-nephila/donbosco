@@ -33,6 +33,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
     Route::get('/', 'MainController@index');
     //Registrar module
+    Route::get('studentlist','Registrar\StudentlistController@studentlist');
+    Route::get('enrollmentstat','Registrar\EnrollmentstatController@enrollmentstat');
     Route::get('registrar/assessment','Registrar\AssessmentController@index');
     Route::get('registrar/show', 'Registrar\AssessmentController@show');
     Route::get('registrar/evaluate/{id}','Registrar\AssessmentController@evaluate');
@@ -98,7 +100,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/getpaymenttype/{ptype}','AjaxController@getpaymenttype');
     Route::get('/getparticular/{group}/{particular}','AjaxController@getparticular');
     Route::get('/getprevious/{idno}/{schoolyear}','AjaxController@getprevious');
-    
+    Route::get('/studentlist/{level}','AjaxController@studentlist');
+    Route::get('/strand/{strand}/{level}','AjaxController@strand');
 
-    
+    //Ajax Route Sheryl
+   
     
