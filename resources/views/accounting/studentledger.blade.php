@@ -225,7 +225,10 @@
                 <input type="hidden" id="penalty" name="penalty" value="0">
                 @endif
                
-               
+                @if($reservation > 0)
+                <tr><td>Add: Reservation</td><td align="right"><span class="form-control">{{number_format($reservation,2)}}</span></td></tr>
+                @endif
+                
                 <tr><td>Amount To Be Credited</td><td align="right"><input type="text" name="totalamount" id ="totalamount" style="color: red; font-weight: bold; text-align: right" class="form-control"  readonly></td></tr>
                 <!--<tr><td><input type="radio" value="1" name="paymenttype" checked onclick="getpaymenttype(this.value)"> Cash</td><td><input onclick="getpaymenttype(this.value)" type="radio" value="2" name="paymenttype" > ChecK</td></tr> -->
                 
@@ -290,11 +293,12 @@ function computetotal(){
     }
     var totalprevious = document.getElementById('previous').value;
     var penalty = document.getElementById('penalty').value;
+    var reservation = document.getElementById('reservation').value;
     var totalother = 0;
     $('#other').each(function(index,element){
        totalother = totalother + element.value; 
     });
-    var total = parseFloat(totaldue) + parseFloat(totalprevious)  + parseFloat(penalty) + parseFloat(totalother);
+    var total = parseFloat(totaldue) + parseFloat(totalprevious)  + parseFloat(penalty) + parseFloat(totalother) + parseFloat(reservation);
     document.getElementById('totalamount').value = total.toFixed(2);
     //alert(total);
     

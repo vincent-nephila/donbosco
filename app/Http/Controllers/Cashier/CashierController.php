@@ -761,7 +761,7 @@ function otherpayment($idno){
         $schoolyears = DB::Select("select distinct schoolyear from ledgers where idno = '$idno'");
         return view('cashier.previous',compact('student','schoolyears'));
     }
-    function actualcashcheck($transactiondate){
+    function actualcashcheck($batch,$transactiondate){
         $cbcash=0;
         $cbcheck=0;
         $bpi1cash=0;
@@ -770,7 +770,8 @@ function otherpayment($idno){
         $bpi2check=0;
         $action="add";
         $totalissued=0;
-        $actual = \App\ActualDeposit::where('postedby',\Auth::user()->idno)->where('transactiondate',$transactiondate)->first();
+        
+        $actual = \App\ActualDeposit::where('postedby',\Auth::user()->idno)->where('transactiondate',$transactiondate)->where('batch',$batch)->first();
         
         if(count($actual)>0){
           $action="update";  
@@ -780,7 +781,7 @@ function otherpayment($idno){
         $chinabank = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
                 . " from dedits where postedby = '".\Auth::user()->idno . "' and "
                 . " transactiondate = '" . $transactiondate . "' and paymenttype = '1' and "
-                . " depositto = 'China Bank' and isreverse = '0'");
+                . " depositto = 'China Bank' and isreverse = '0' and batch='$batch'");
         
         if(count($chinabank)>0){
             foreach($chinabank as $cb){
@@ -792,7 +793,7 @@ function otherpayment($idno){
         $bpi1 = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
                 . " from dedits where postedby = '".\Auth::user()->idno . "' and "
                 . " transactiondate = '" .$transactiondate. "' and paymenttype = '1' and "
-                . " depositto = 'BPI 1' and isreverse = '0'");
+                . " depositto = 'BPI 1' and isreverse = '0' and batch='$batch'");
         
         if(count($bpi1)>0){
             foreach($bpi1 as $cb){
@@ -804,7 +805,7 @@ function otherpayment($idno){
         $bpi2 = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
                 . " from dedits where postedby = '".\Auth::user()->idno . "' and "
                 . " transactiondate = '" . $transactiondate. "' and paymenttype = '1' and "
-                . " depositto = 'BPI 2' and isreverse = '0'");
+                . " depositto = 'BPI 2' and isreverse = '0' and batch='$batch'");
         
         if(count($bpi2)>0){
             foreach($bpi2 as $cb){
@@ -813,7 +814,7 @@ function otherpayment($idno){
             }
         }
         
-        $totalissued = $cbcash + $cbcheck + $bpi1cash + $bpi1check + $bpi2cash + $bpi2check;
+        //$totalissued = $cbcash + $cbcheck + $bpi1cash + $bpi1check + $bpi2cash + $bpi2check;
         
         $encashments = DB::Select("select sum(amount) as amount, withdrawfrom from encashments where postedby = '" . \Auth::user()->idno. "' "
                 . " and transactiondate = '". $transactiondate."' and isreverse = '0' group by withdrawfrom");
@@ -835,10 +836,10 @@ function otherpayment($idno){
         }
         
         $totalissued = $cbcash + $cbcheck + $bpi1cash + $bpi1check + $bpi2cash + $bpi2check;
-        $totalissued = $totalissued - $encashcbc - $encashbpi1 - $encashbpi2;
+        //$totalissued = $totalissued - $encashcbc - $encashbpi1 - $encashbpi2;
         return view('cashier.actualcashcheck',compact('chinabank','bpi1','bpi2',
                 'chinabank1','encashments','transactiondate','cbcash','cbcheck','bpi1cash',
-                'bpi1check','bpi2cash','bpi2check','encashcbc','encashbpi1','encashbpi2','actual','action','transactiondate','totalissued'));
+                'bpi1check','bpi2cash','bpi2check','encashcbc','encashbpi1','encashbpi2','actual','action','transactiondate','totalissued','batch'));
         
     }
     function nonstudent(){
@@ -901,14 +902,19 @@ function otherpayment($idno){
             $postactual->bpi1check = $request->actualbpi1check;
             $postactual->bpi2cash = $request->actualbpi2cash;
             $postactual->bpi2check = $request->actualbpi2check;
+            $postactual->encashcbc = $request->actualencashcbc;
+            $postactual->encashbpi1 = $request->actualencashbpi1;
+            $postactual->encashbpi2 = $request->actualencashbpi2;
             $postactual->variance = $request->actualcbccash + $request->actualcbccheck +
                     $request->actualbpi1cash + $request->actualbpi1check +
-                    $request->actualbpi2cash + $request->actualbpi2check - $request->totalissued;
+                    $request->actualbpi2cash + $request->actualencashcbc + $request->actualencashbpi1 +
+                    $request->actualencashbpi2 + $request->actualbpi2check - $request->totalissued;
+            
             $postactual->save();
         }
           else  
           {
-          $postactual = \App\ActualDeposit::where('postedby',\Auth::user()->idno)->where('transactiondate',$request->transactiondate)->first();   
+          $postactual = \App\ActualDeposit::where('postedby',\Auth::user()->idno)->where('transactiondate',$request->transactiondate)->where('batch',$request->batch)->first();   
             $postactual->postedby = \Auth::user()->idno;
             $postactual->transactiondate = $request->transactiondate;
             $postactual->cbccash = $request->actualcbccash;
@@ -917,13 +923,16 @@ function otherpayment($idno){
             $postactual->bpi1check = $request->actualbpi1check;
             $postactual->bpi2cash = $request->actualbpi2cash;
             $postactual->bpi2check = $request->actualbpi2check;
+            $postactual->encashcbc = $request->actualencashcbc;
+            $postactual->encashbpi1 = $request->actualencashbpi1;
+            $postactual->encashbpi2 = $request->actualencashbpi2;
             $postactual->variance = $request->actualcbccash + $request->actualcbccheck +
             $request->actualbpi1cash + $request->actualbpi1check +
             $request->actualbpi2cash + $request->actualbpi2check - $request->totalissued;
                $postactual->update();
         }
         
-        return redirect(url('actualcashcheck',$request->transactiondate));
+        return redirect(url('actualcashcheck',array($request->batch,$request->transactiondate)));
     }
     
     function printactualcash($transactiondate){
@@ -1014,6 +1023,60 @@ function otherpayment($idno){
         
         
     }
+    function actualdeposit($transactiondate){
+            $batches = \App\ActualDeposit::where('postedby',\Auth::user()->idno)->where('transactiondate',$transactiondate)->get();
+            $debits = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount, "
+                    . " depositto from dedits where paymenttype = '1' and isreverse = '0' and postedby = '"
+                    . \Auth::user()->idno . "' and transactiondate = '$transactiondate' and batch='0' group by depositto");
+            $encashments = DB::Select("select whattype, sum(amount) as amount from encashments where "
+                    . "isreverse = '0' and postedby ='". \Auth::user()->idno ."' and transactiondate = '$transactiondate' "
+                    . "group by whattype");
+            
+            $debitstotal= DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
+                    . "  from dedits where paymenttype = '1' and isreverse = '0' and postedby = '"
+                    . \Auth::user()->idno . "' and transactiondate = '$transactiondate'");
+            $totaldebit = 0;
+            if(count($debitstotal)>0){
+                foreach($debitstotal as $dt){
+            $totaldebit = $totaldebit + $dt->amount + $dt->checkamount;
+            }
+            } else {
+                $totaldebit = 0;
+            }
+            return view('cashier.actualdeposit',compact('batches','transactiondate','debits','encashments','totaldebit'));       
+        
+            
+    }
     
+    function cutoff($transactiondate){
+        $batch = \App\Dedit::where('transactiondate',$transactiondate)->where('postedby',\Auth::user()->idno)->orderBy('batch','desc')->first();
+        //return $batch->batch +1;
+        
+        $updatecreditbatch = \App\Credit::where('transactiondate',$transactiondate)->where('postedby',\Auth::user()->idno)
+                ->where('batch','0')->get();
+        foreach($updatecreditbatch as $updatecredit){
+            $updatecredit->batch=$batch->batch+1;
+            $updatecredit->update();
+        }
+        
+        $updatedebitbatch = \App\Dedit::where('transactiondate',$transactiondate)->where('postedby',\Auth::user()->idno)
+                ->where('batch','0')->get();
+        
+        foreach($updatedebitbatch as $updatedebit){
+            $updatedebit->batch=$batch->batch+1;
+            $updatedebit->update();
+        }
+            
+        
+        
+        $newactual = new \App\ActualDeposit;
+        $newactual->batch=$batch->batch+1;
+        $newactual->transactiondate = $transactiondate;
+        $newactual->postedby=\Auth::user()->idno;
+        $newactual->save();
+        
+        return redirect(url('actualdeposit',$transactiondate));
+        
+    }
     
     }

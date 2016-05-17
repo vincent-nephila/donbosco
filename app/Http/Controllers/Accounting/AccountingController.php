@@ -113,7 +113,10 @@ class AccountingController extends Controller
        $refno = $this->getRefno();
        
        if($request->totaldue > '0'){
-           $totaldue = $request->totaldue;        
+           $totaldue = $request->totaldue;
+           if($request->reservation > 0 ){
+               $totaldue=$totaldue + $request->reservation;
+           }
                 $accounts = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch <= '6' "
                      . " and (amount - payment - debitmemo - plandiscount - otherdiscount) > 0 order By duedate, categorySwitch");    
                     foreach($accounts as $account){
@@ -176,6 +179,7 @@ class AccountingController extends Controller
                 $this->debit_reservation_discount($request->idno,env('DEBIT_RESERVATION') , $request->reservation);
                 $this->consumereservation($request->idno);
                 }
+                
        } 
        
              if($request->previous > 0 ){
@@ -328,6 +332,19 @@ class AccountingController extends Controller
           
            
        }
+        if($discount > 0){
+        $student = \App\User::where('idno',$request->idno)->first();
+        $debitaccount = new \App\Dedit;
+        $debitaccount->idno = $request->idno;
+        $debitaccount->transactiondate=Carbon::now();
+        $debitaccount->refno=$this->getRefno();
+        $debitaccount->paymenttype = '4';
+        $debitaccount->acctcode="Discount";
+        $debitaccount->receivefrom = $student->lastname . ", " . $student->firstname . " " . $student->extensionname . " " .$student->middlename;
+        $debitaccount->amount = $discount;    
+        $debitaccount->postedby=\Auth::user()->idno;
+        $debitaccount->save();
+        }
         $student= \App\User::where('idno', $request->idno)->first();
         $debitaccount = new \App\Dedit;
         $debitaccount->idno = $request->idno;
@@ -340,6 +357,7 @@ class AccountingController extends Controller
         $debitaccount->amount = $request->totaldue + $request->penalty + $request->previous + $other;    
         $debitaccount->postedby=\Auth::user()->idno;
         $debitaccount->save();
+        
         $this->reset_or(); 
           
                 return redirect(url('/viewdm',array($refno,$request->idno)));    
@@ -543,5 +561,17 @@ function collectionreport($datefrom, $dateto){
      }
      return view('accounting.studentgenledger',compact('ledgers'));
  }
+
+function cashcollection($transactiondate){
+    $computedreceipts = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount, postedby, transactiondate, depositto  from dedits where "
+            . "transactiondate = '" . $transactiondate . "' and isreverse = '0' and paymenttype = '1' group by transactiondate, postedby, depositto order by postedby");
+    
+    $actualcashs = DB::Select("select * from actual_deposits where transactiondate = '$transactiondate' order by postedby");
+    $encashments = DB::Select("select sum(amount) as amount, whattype, postedby from encashments  "
+            . " where transactiondate = '$transactiondate' group by whattype, postedby");
+       
+    return view('accounting.cashcollection', compact('computedreceipts','transactiondate','actualcashs', 'encashments'));
+}
+
  
 }
