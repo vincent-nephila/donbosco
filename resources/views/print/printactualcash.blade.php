@@ -30,6 +30,14 @@
    </table>
    <h3>Actual Cash</h3>
    <table width="90%">
-   <tr><td>Bank</td><td>Check</td><td>Cash</td><td>Encashment</td><td>Total</td></tr>
+   <tr><td></td>
+       <td>CBC Cash</td><td>CBC Check</td><td>CBC Encashment</td>
+       <td>BPI1 Cash</td><td>BPI1 Check</td><td>BPI1 Encashment</td>
+       <td>BPI2 Cash</td><td>BPI2 Check</td><td>BPI2 Encashment</td>
+       <td>Variance</td></tr>
+   @foreach($actual as $ac)
+   <tr><td>{{$ac->cashcbc}}</td></tr>
+   @endforeach
+   
    </table>
    

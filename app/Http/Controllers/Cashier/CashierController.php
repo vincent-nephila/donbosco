@@ -593,6 +593,7 @@ function otherpayment($idno){
     }
     
     function collectionreport($transactiondate){
+
         $matchfields = ['postedby'=>\Auth::user()->idno, 'transactiondate'=>$transactiondate];
         //$collections = \App\Dedit::where($matchfields)->get();
         $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
@@ -1024,10 +1025,10 @@ function otherpayment($idno){
         
     }
     function actualdeposit($transactiondate){
-            $batches = \App\ActualDeposit::where('postedby',\Auth::user()->idno)->where('transactiondate',$transactiondate)->get();
+          
             $debits = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount, "
                     . " depositto from dedits where paymenttype = '1' and isreverse = '0' and postedby = '"
-                    . \Auth::user()->idno . "' and transactiondate = '$transactiondate' and batch='0' group by depositto");
+                    . \Auth::user()->idno . "' and transactiondate = '$transactiondate' group by depositto");
             $encashments = DB::Select("select whattype, sum(amount) as amount from encashments where "
                     . "isreverse = '0' and postedby ='". \Auth::user()->idno ."' and transactiondate = '$transactiondate' "
                     . "group by whattype");
@@ -1040,13 +1041,46 @@ function otherpayment($idno){
                 foreach($debitstotal as $dt){
             $totaldebit = $totaldebit + $dt->amount + $dt->checkamount;
             }
-            } else {
-                $totaldebit = 0;
-            }
-            return view('cashier.actualdeposit',compact('batches','transactiondate','debits','encashments','totaldebit'));       
+            } 
+            
+            $deposit_slips = \App\DepositSlip::where('transactiondate', $transactiondate)
+                    ->where('postedby',\Auth::user()->idno)->orderBy('bank')->get();
+                    
+            
+            return view('cashier.actualdeposit',compact('deposit_slips','transactiondate','debits','encashments','totaldebit'));       
         
             
     }
+    
+    function printactualdeposit($transactiondate){
+        
+        $debits = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount, "
+                    . " depositto from dedits where paymenttype = '1' and isreverse = '0' and postedby = '"
+                    . \Auth::user()->idno . "' and transactiondate = '$transactiondate' group by depositto");
+            $encashments = DB::Select("select whattype, sum(amount) as amount from encashments where "
+                    . "isreverse = '0' and postedby ='". \Auth::user()->idno ."' and transactiondate = '$transactiondate' "
+                    . "group by whattype");
+            
+            $debitstotal= DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount "
+                    . "  from dedits where paymenttype = '1' and isreverse = '0' and postedby = '"
+                    . \Auth::user()->idno . "' and transactiondate = '$transactiondate'");
+            $totaldebit = 0;
+            if(count($debitstotal)>0){
+                foreach($debitstotal as $dt){
+            $totaldebit = $totaldebit + $dt->amount + $dt->checkamount;
+            }
+            } 
+            
+            $deposit_slips = \App\DepositSlip::where('transactiondate', $transactiondate)
+                    ->where('postedby',\Auth::user()->idno)->orderBy('bank')->get();
+    
+             $pdf = \App::make('dompdf.wrapper');
+       $pdf->loadView("cashier.printactualdeposit",compact('deposit_slips','transactiondate','debits','encashments','totaldebit'));
+       return $pdf->stream();
+                }
+    
+    
+    
     
     function cutoff($transactiondate){
         $batch = \App\Dedit::where('transactiondate',$transactiondate)->where('postedby',\Auth::user()->idno)->orderBy('batch','desc')->first();

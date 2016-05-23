@@ -563,15 +563,55 @@ function collectionreport($datefrom, $dateto){
  }
 
 function cashcollection($transactiondate){
+ 
     $computedreceipts = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount, postedby, transactiondate, depositto  from dedits where "
             . "transactiondate = '" . $transactiondate . "' and isreverse = '0' and paymenttype = '1' group by transactiondate, postedby, depositto order by postedby");
     
-    $actualcashs = DB::Select("select * from actual_deposits where transactiondate = '$transactiondate' order by postedby");
+//    $actualcashs = DB::Select("select * from actual_deposits where transactiondate = '$transactiondate' order by postedby");
     $encashments = DB::Select("select sum(amount) as amount, whattype, postedby from encashments  "
             . " where transactiondate = '$transactiondate' group by whattype, postedby");
        
-    return view('accounting.cashcollection', compact('computedreceipts','transactiondate','actualcashs', 'encashments'));
-}
+    
+    $actualcbc =  \App\DepositSlip::where('transactiondate',$transactiondate)->where('bank',"China Bank")->get();
+    $actualbpi1 = \App\DepositSlip::where('transactiondate', $transactiondate)->where('bank',"BPI 1")->get();
+    $actualbpi2 = \App\DepositSlip::where('transactiondate',$transactiondate)->where('bank',"BPI 2")->get();
+    
+    return view('accounting.cashcollection', compact('computedreceipts','transactiondate','actualcbc','actualbpi1','actualbpi2', 'encashments'));
 
- 
+    }
+  
+ function printactualoverall($transactiondate){
+     $computedreceipts = DB::Select("select sum(amount) as amount, sum(checkamount) as checkamount, postedby, transactiondate, depositto  from dedits where "
+            . "transactiondate = '" . $transactiondate . "' and isreverse = '0' and paymenttype = '1' group by transactiondate, postedby, depositto order by postedby");
+    
+//    $actualcashs = DB::Select("select * from actual_deposits where transactiondate = '$transactiondate' order by postedby");
+    $encashments = DB::Select("select sum(amount) as amount, whattype, postedby from encashments  "
+            . " where transactiondate = '$transactiondate' group by whattype, postedby");
+       
+    
+    $actualcbc =  \App\DepositSlip::where('transactiondate',$transactiondate)->where('bank',"China Bank")->get();
+    $actualbpi1 = \App\DepositSlip::where('transactiondate', $transactiondate)->where('bank',"BPI 1")->get();
+    $actualbpi2 = \App\DepositSlip::where('transactiondate',$transactiondate)->where('bank',"BPI 2")->get();
+    
+    
+    
+ $pdf = \App::make('dompdf.wrapper');
+      // $pdf->setPaper([0, 0, 336, 440], 'portrait');
+       $pdf->loadView('accounting.printactualoverall', compact('computedreceipts','transactiondate','actualcbc','actualbpi1','actualbpi2', 'encashments'));
+       return $pdf->stream();
+       
+ }   
+  
+
+function overallcollection($transactiondate){
+  $matchfields = ['transactiondate'=>$transactiondate];
+        //$collections = \App\Dedit::where($matchfields)->get();
+        $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
+                . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno, dedits.postedby from users, dedits where users.idno = dedits.idno and"
+                . " dedits.transactiondate = '" 
+                . $transactiondate . "' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, dedits.postedby, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno order by dedits.refno" );
+        
+    return view('accounting.overallcollection',compact('collections','transactiondate'));
+    
+} 
 }

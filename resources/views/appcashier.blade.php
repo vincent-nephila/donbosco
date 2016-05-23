@@ -72,7 +72,6 @@
                                        
                                         <li><a href="{{url('collectionreport',date('Y-m-d'))}}"><i class="fa fa-btn fa-sign-out"></i>Collection Report</a></li>
                                         <li><a href="{{url('encashmentreport')}}"><i class="fa fa-btn fa-sign-out"></i>Encashment Report</a></li>
-                                        <li><a href="{{url('actualcashcheck',date('Y-m-d'))}}"><i class="fa fa-btn fa-sign-out"></i>Summary Report </a></li>
                                         <li><a href="{{url('actualdeposit',date('Y-m-d'))}}"><i class="fa fa-btn fa-sign-out"></i> Actual Deposit</a>
                                         <li><a href="{{url('checklist')}}"><i class="fa fa-btn fa-sign-out"></i>List Of Checks </a></li>
                                         </ul>

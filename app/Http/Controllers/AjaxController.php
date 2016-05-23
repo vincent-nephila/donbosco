@@ -444,5 +444,29 @@ class AjaxController extends Controller
         
     }
 
+     function myDeposit(){
+        if(Request::ajax()){  
+            $idno = Input::get('idno');
+            $bank = Input::get('bank');
+            $deposittype = Input::get('deposittype');
+            $amount = Input::get('amount');
+            $transactiondate=Input::get('transactiondate');
             
+            
+            $deposit_slip = new \App\DepositSlip;
+            $deposit_slip->transactiondate = $transactiondate;
+            $deposit_slip->bank=$bank;
+            $deposit_slip->deposittype=$deposittype;
+            $deposit_slip->postedby=$idno;
+            $deposit_slip->amount = $amount;
+            $deposit_slip->save();
+            return "true";
+        }    
+     }
+        function removeslip($refid){
+            \App\DepositSlip::where('id',$refid)->delete();
+            
+             return "true";
+        }
+        
                                     }

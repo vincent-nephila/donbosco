@@ -72,6 +72,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('printactualcash/{transactiondate}','Cashier\CashierController@printactualcash');
     Route::get('actualdeposit/{trasactiondate}', 'Cashier\CashierController@actualdeposit');
     Route::get('cutoff/{transactiondate}','Cashier\CashierController@cutoff');
+    Route::get('printactualdeposit/{transactiondate}', 'Cashier\CashierController@printactualdeposit');
     //accounting module
     Route::get('accounting/{idno}','Accounting\AccountingController@view');
     Route::post('debitcredit','Accounting\AccountingController@debitcredit');
@@ -84,11 +85,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('maincollection/{transactiondate}','Accounting\AccountingController@maincollection');
     Route::get('studentledger/{level}','Accounting\AccountingController@studentledger');
     Route::get('cashcollection/{transactiondate}','Accounting\AccountingController@cashcollection');
-    
+    Route::get('overallcollection/{transactiondate}','Accounting\AccountingController@overallcollection');
+    Route::get('printactualoverall/{transactiondate}','Accounting\AccountingController@printactualoverall');
 });
 
 //Ajax route
-
+   Route::get('/myDeposit','AjaxController@myDeposit');
     Route::get('/getid/{varid}','AjaxController@getid');
     Route::get('/getlevel/{vardepartment}','AjaxController@getlevel');
     Route::get('/gettrack/{vardepartment}','AjaxController@gettrack');
@@ -104,7 +106,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/getprevious/{idno}/{schoolyear}','AjaxController@getprevious');
     Route::get('/studentlist/{level}','AjaxController@studentlist');
     Route::get('/strand/{strand}/{level}','AjaxController@strand');
-
+    Route::get('/removeslip/{refid}','AjaxController@removeslip');
+   
+    
     //Ajax Route Sheryl
    
     
