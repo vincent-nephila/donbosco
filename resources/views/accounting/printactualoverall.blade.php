@@ -1,7 +1,11 @@
 <html>
     <body>
         
-  
+   <?php
+    $totalcbc=0;
+    $totalbpi1=0;
+    $totalbpi2=0;
+    ?>
     <h3>Don Bosco Technical Institute, Inc.</h3>
     <p>Collection report as of {{$transactiondate}}</p>
     <hr>

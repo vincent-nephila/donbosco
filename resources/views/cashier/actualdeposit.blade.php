@@ -16,21 +16,23 @@
     </div>
      <div class="col-md-6">
          <h5>Create Deposit Slip</h5>
-            <div class="col-md-4"><label for="bank">Select <br> Bank</label>
+            <div class="col-md-3"><label for="bank">Select <br> Bank</label>
                 <select name="bank" id="bank" class="form form-control"><option value = "China Bank">China Bank</option>
                         <option value = "BPI 1">BPI 1</option>
                         <option value = "BPI 2">BPI 2</option>
                 </select>
             </div>   
-            <div class="col-md-4"><label for='deposittype'>Select Type <br>of Deposit</label>
+            <div class="col-md-3"><label for='deposittype'>Select Type <br>of Deposit</label>
                 <select name="deposittype" id ="deposittype" class="form form-control"><option value ="0">Cash</option>
                     <option value ="1">Check</option>
                 </select> 
             </div>
-            <div class="col-md-4"><label for="amount">Deposit <br> Amount</label>
+            <div class="col-md-3"><label for="amount">Deposit <br> Amount</label>
                 <input type="text" name="amount" id="amount" class="form form-control" style="text-align:right" onkeypress="validate(event)">
             </div>
-            
+             <div class="col-md-3"> <br>
+            <a href="#" onclick="myDeposit()" class="btn btn-primary">Add</a>
+            </div>
 
     
             <div class="col-md-12">
@@ -134,11 +136,11 @@
 
 <script>
 function myDeposit(){
-   var idno = {{\Auth::user()->idno}};
-    var bank = document.getElementById('bank').value
-    var deposittype = document.getElementById('deposittype').value
-    var amount = document.getElementById('amount').value
-    
+    var idno = "{{\Auth::user()->idno}}";
+    var bank = $("#bank").val();//document.getElementById('bank').value
+    var deposittype = $("#deposittype").val()//document.getElementById('deposittype').value
+    var amount = $("#amount").val();//document.getElementById('amount').value
+    //alert(idno);
      var arrays ={} ;
     arrays["bank"] = bank;
     arrays["deposittype"] = deposittype; 

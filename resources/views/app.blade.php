@@ -88,7 +88,15 @@
                                  @if(Auth::guest())
                                  @else
                                  @if(Auth::user()->accesslevel == env('USER_REGISTRAR'))
-                                <li><a href="#">Sectioning</a></li>
+                                <li class="dropdown">
+                                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button"> Sectioning
+                                    <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="sectionk"><i class="fa fa-btn"></i>K-12</a></li>
+                                        <li><a href=""><i class="fa fa-btn"></i>TVET</a></li>
+                                     </ul>   
+                                
+                                </li>
                                  @endif
                                  @endif
 				</ul>

@@ -43,6 +43,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('registrar/assessment','Registrar\AssessmentController@assess');
     Route::get('studentregister', 'MainController@getid');
     Route::post('studentregister', 'MainController@addstudent');
+    Route::get('sectionk','Registrar\SectionController@sectionk');
     //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
     Route::post('payment','Cashier\CashierController@payment');
@@ -107,7 +108,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/studentlist/{level}','AjaxController@studentlist');
     Route::get('/strand/{strand}/{level}','AjaxController@strand');
     Route::get('/removeslip/{refid}','AjaxController@removeslip');
-   
+    Route::get('/getstudentlist/{level}','AjaxController@getstudentlist');
+    Route::get('/getsection/{level}','AjaxController@getsection');
+    Route::get('/getsectionlist/{level}/{section}','AjaxController@getsectionlist');
+    Route::get('/setsection/{id}/{section}','AjaxController@setsection');
+    Route::get('/rmsection/{id}','AjaxController@rmsection');
+    Route::get('/getstrand/{level}','AjaxController@getstrand');
     
     //Ajax Route Sheryl
    

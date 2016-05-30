@@ -1,6 +1,11 @@
 @extends('appaccounting')
 @section('content')
 <div class="container">
+    <?php
+    $totalcbc=0;
+    $totalbpi1=0;
+    $totalbpi2=0;
+    ?>
     <h3>Don Bosco Technical Institute, Inc.</h3>
     <p>Collection report as of {{$transactiondate}}</p>
     <h5>Deposit (China Bank)</h5>
@@ -86,7 +91,7 @@
     <table class="table table-striped">
     <tr><td>Total Computed Receipt</td><td>{{number_format($totalamount + $totalcheckamount,2)}}</td></tr>
     <tr><td>Total Actual Deposit</td><td>{{number_format($totalcbc + $totalbpi1 + $totalbpi2,2)}}</td></tr> 
-    <tr><td>Difference</td><td>{{number_format($totalamount + $totalcheckamount-$totalcbc - $totalbpi1 - $totalbpi2,2)}}</td></tr> 
+    <tr><td>Difference</td><td>{{number_format($totalamount + $totalcheckamount - $totalcbc - $totalbpi1 - $totalbpi2,2)}}</td></tr> 
     </table>
     </div>
     <div class="col-md-12">
