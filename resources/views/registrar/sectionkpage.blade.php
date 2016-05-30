@@ -113,10 +113,10 @@ function getsectionlist(){
 
 function setsection(id){
     strand="";
-   // if($("#strand").length>0){
+    if($("#strand").length>0){
         strand=$("#strand").val();
-    //}
-    alert($("#strand").val());
+    }
+    //alert($("#strand").val());
     $.ajax({
             type: "GET", 
             url: "/setsection/" + id + "/" + $('#section').val() , 
