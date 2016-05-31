@@ -473,7 +473,8 @@ class AjaxController extends Controller
         
         function getstudentlist($level){
             if(Request::ajax()){
-                
+                   
+                   
                     $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
                         . "users.firstname, users.middlename, statuses.section  from statuses, users where statuses.idno = "
                         . "users.idno and statuses.level = '$level' and strand = '" . Input::get("strand") ."' order by users.lastname, users.firstname, users.middlename");
@@ -495,11 +496,11 @@ class AjaxController extends Controller
                 $strand = Input::get("strand");
                 $sections = DB::Select("select  * from ctr_sections where level = '$level' and strand = '$strand'");
                    $data = "";
-                   $data = $data . "<select id=\"section\" onchange=\"callsection()\" class=\"form form-control\">";
+                   $data = $data . "<div class=\"col-md-6\"><label for=\"section\">Select Section</label><select id=\"section\" onchange=\"callsection()\" class=\"form form-control\">";
                     foreach($sections as $section){
                       $data = $data . "<option value= '". $section->section ."'>" .$section->section . "</option>";  
                     }
-                   $data = $data."</select>";
+                   $data = $data."</select></div>";
                 return $data;   
                 //return "roy";
             }
@@ -507,18 +508,19 @@ class AjaxController extends Controller
         
         function getsectionlist($level,$section){
             if(Request::ajax()){
-                
+                 $ad = \App\CtrSection::where('level',$level)->where('section',$section)->where('strand',Input::get('strand'))->first();
+                 $adviser = $ad->adviser;
                 $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
                         . "users.firstname, users.middlename, statuses.section from statuses, users where statuses.idno = "
                         . "users.idno and statuses.level = '$level'  AND statuses.section = '$section' and strand = '" . Input::get("strand") . "' order by users.lastname, users.firstname, users.middlename");
                 $cn=1;
-                $data = "";
+                $data = "<div class=\"col-md-6\"><label for=\"adviser\">Adviser</label><input type=\"text\" id=\"adviser\" class=\"form form-control\" value=\"" . $adviser . "\" onkeyup = \"updateadviser(this.value,'" . $ad->id . "')\"></div>";
                 $data = $data . "<table class=\"table table-stripped\"><tr><td>ID No</td><td>CN</td><td>Name</td><td>Section</td></tr>";
                     foreach($studentnames as $studentname){
                         $data = $data . "<tr><td>".$studentname->idno."</td><td>" . $cn++ . "</td><td><span style=\"cursor:pointer\" onclick=\"rmsection('" . $studentname->id . "')\">".$studentname->lastname . ", " . $studentname->firstname . " " .$studentname->middlename . "</span></td><td>" . $studentname->section . "</td></tr>"; 
                     }
                 $data = $data."</table>";
-                
+                $data = $data . "<a href = \"". url('/printsection', array($level,$section,Input::get('strand')))."\" class =\"btn btn-primary\"> Print Section</a>";
                 return $data;
                 
             }
@@ -544,7 +546,7 @@ class AjaxController extends Controller
         
         function getstrand($level){
             if(Request::ajax()){
-                $strands = DB::Select("select distinct strand from ctr_payment_schedules where level = '$level'");
+                $strands = DB::Select("select distinct strand from ctr_sections where level = '$level'");
                 $data = "<div class=\"form form-group\"><label for=\"strand\">Select Shop/Strand</label>";
                 $data=$data. "<Select name =\"strand\" id=\"strand\" class=\"form form-control\" onchange=\"getstrandall(this.value)\" >";
                 $data=$data. "<option>--Select--</option>";
@@ -556,4 +558,11 @@ class AjaxController extends Controller
             }
         }
         
+        function updateadviser($id, $value){
+            $adviser = \App\CtrSection::find($id);
+            $adviser->adviser = $value;
+            $adviser->update();
+            
+            return true;
+        }
             }

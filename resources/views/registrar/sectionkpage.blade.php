@@ -21,11 +21,10 @@
     </div> 
     <div class="col-md-6">
         <div class="form form-group">
-            <label for="section"> Select Section</label>
             <div id="sectioncontrol">
             </div>
             <div id="sectionlist">
-            </div>    
+            </div>
         </div>    
     </div>    
 </div>
@@ -46,7 +45,7 @@ if($('#level').val() == "Grade 9" || $('#level').val() == "Grade 10" || $('#leve
 
 function getstrandall(strand){
     getstudentlist(strand);
-    getsection("");
+    getsection(strand);
 }
 
 function getstrand(){
@@ -146,6 +145,16 @@ function rmsection(id){
                 
             }
 });
+}
+
+function updateadviser(value, id){
+    $.ajax({
+       type: "GET",
+       url: "/updateadviser/" + id + "/" + value,
+       success:function(data){
+           
+       }
+    });
 }
 </script>
 @stop

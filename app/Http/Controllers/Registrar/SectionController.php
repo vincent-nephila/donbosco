@@ -21,5 +21,37 @@ class SectionController extends Controller
          //return $levels;
          return view('registrar.sectionkpage',compact('levels'));
      }   
+    function printsection($level, $section){
+        $sy = \App\CtrRefSchoolyear::first();
+        $schoolyear=$sy->schoolyear;
+        $ad = \App\CtrSection::where('level',$level)->where('section',$section)->first();
+          $adviser = $ad->adviser;
+         $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
+                        . "users.firstname, users.middlename, statuses.section from statuses, users where statuses.idno = "
+                        . "users.idno and statuses.level = '$level'  AND statuses.section = '$section' order by users.lastname, users.firstname, users.middlename");
+   
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->setPaper("Folio", "portrait");
+        $pdf->loadView('print.printsection',compact('studentnames','adviser','level','section','schoolyear'));
+        return $pdf->stream();
+
+        //return $studentnames;
+    }
     
+      function printsection1($level, $section, $strand){
+          $sy = \App\CtrRefSchoolyear::first();
+        $schoolyear=$sy->schoolyear;
+          $ad = \App\CtrSection::where('level',$level)->where('section',$section)->where('strand',$strand)->first();
+          $adviser = $ad->adviser;
+           $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
+                        . "users.firstname, users.middlename, statuses.section from statuses, users where statuses.idno = "
+                        . "users.idno and statuses.level = '$level'  AND statuses.section = '$section' and strand = '$strand' order by users.lastname, users.firstname, users.middlename");
+   
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->setPaper("Folio", "portrait");
+         $pdf->loadView('print.printsection',compact('studentnames','level','section','strand','adviser','schoolyear'));
+        return $pdf->stream();
+
+           //return $studentnames;
+    }
 }
