@@ -8,7 +8,7 @@
     </head>
     <body>
         <table border="0" cellspacing="0" cellpadding ="0" width="100%">
-            <tr><td rowspan="3" width="50" align="center"><img src="{{url('/images/logo.png')}}" width="50"></td>
+            <tr><td rowspan="3" width="50" align="center"><img src="<?php echo $_SERVER['DOCUMENT_ROOT']; ?>/images/logo.png" width="50"></td>
                 <td><span style="font-size: 12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc.</span></td>
                 <td rowspan="5" valign="top" width="40%">
                 <table border ="0" celspacing="0" cellpadding="0">
