@@ -65,7 +65,7 @@
             <td align="right">{{number_format($allcollection[10],2)}}</td>
             <td align="right">{{number_format($allcollection[11],2)}}</td>
             <td>@if($allcollection[12]=="0")
-                Ok {{$allcollection[2]+$allcollection[3]+$allcollection[13]-$allcollection[4]-$allcollection[5]-$allcollection[6]-$allcollection[7]-$allcollection[8]-$allcollection[9]-$allcollection[10]-$allcollection[11]}} 
+                Ok  
                 @else
                 Cancelled
                 @endif
