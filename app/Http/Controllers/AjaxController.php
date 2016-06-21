@@ -512,7 +512,7 @@ class AjaxController extends Controller
                  $adviser = $ad->adviser;
                 $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
                         . "users.firstname, users.middlename, statuses.section from statuses, users where statuses.idno = "
-                        . "users.idno and statuses.level = '$level'  AND statuses.section = '$section' and strand = '" . Input::get("strand") . "' order by users.lastname, users.firstname, users.middlename");
+                        . "users.idno and statuses.level = '$level'  AND statuses.section = '$section' and strand = '" . Input::get("strand") . "' order by users.gender, users.lastname, users.firstname, users.middlename");
                 $cn=1;
                 $data = "<div class=\"col-md-6\"><label for=\"adviser\">Adviser</label><input type=\"text\" id=\"adviser\" class=\"form form-control\" value=\"" . $adviser . "\" onkeyup = \"updateadviser(this.value,'" . $ad->id . "')\"></div>";
                 $data = $data . "<table class=\"table table-stripped\"><tr><td>ID No</td><td>CN</td><td>Name</td><td>Section</td></tr>";

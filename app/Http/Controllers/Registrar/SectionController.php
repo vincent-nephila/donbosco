@@ -28,7 +28,7 @@ class SectionController extends Controller
           $adviser = $ad->adviser;
          $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
                         . "users.firstname, users.middlename, statuses.section from statuses, users where statuses.idno = "
-                        . "users.idno and statuses.level = '$level'  AND statuses.section = '$section' order by users.lastname, users.firstname, users.middlename");
+                        . "users.idno and statuses.level = '$level'  AND statuses.section = '$section' order by users.gender,users.lastname, users.firstname, users.middlename");
    
         $pdf = \App::make('dompdf.wrapper');
         $pdf->setPaper("Folio", "portrait");
@@ -45,7 +45,7 @@ class SectionController extends Controller
           $adviser = $ad->adviser;
            $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
                         . "users.firstname, users.middlename, statuses.section from statuses, users where statuses.idno = "
-                        . "users.idno and statuses.level = '$level'  AND statuses.section = '$section' and strand = '$strand' order by users.lastname, users.firstname, users.middlename");
+                        . "users.idno and statuses.level = '$level'  AND statuses.section = '$section' and strand = '$strand' order by users.gender, users.lastname, users.firstname, users.middlename");
    
         $pdf = \App::make('dompdf.wrapper');
         $pdf->setPaper("Folio", "portrait");

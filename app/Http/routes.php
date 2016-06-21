@@ -90,6 +90,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('cashcollection/{transactiondate}','Accounting\AccountingController@cashcollection');
     Route::get('overallcollection/{transactiondate}','Accounting\AccountingController@overallcollection');
     Route::get('printactualoverall/{transactiondate}','Accounting\AccountingController@printactualoverall');
+    Route::get('cashreceipts/{transactiondate}','Accounting\AccountingController@cashreceipts');
+    
 });
 
 //Ajax route

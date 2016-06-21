@@ -614,4 +614,101 @@ function overallcollection($transactiondate){
     return view('accounting.overallcollection',compact('collections','transactiondate'));
     
 } 
+
+function cashreceipts($transactiondate){
+    
+    $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
+                . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno, dedits.postedby from users, dedits where users.idno = dedits.idno and"
+                . " dedits.transactiondate = '" 
+                . $transactiondate . "' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, dedits.postedby, users.lastname, users.firstname, dedits.isreverse,dedits.receiptno,dedits.refno order by dedits.refno" );
+      
+     $otheraccounts = DB::Select("select sum(credits.amount) as amount, credits.receipt_details, users.idno, users.lastname, users.firstname,"
+                . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno, dedits.postedby from users, dedits, credits where users.idno = dedits.idno and"
+                . " dedits.transactiondate = '" 
+                . $transactiondate . "' and credits.refno=dedits.refno and credits.categoryswitch >= '9'  and credits.receipt_details != 'Reservation' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, dedits.postedby, users.lastname, "
+                . " users.firstname, credits.receipt_details, dedits.isreverse,dedits.receiptno,dedits.refno order by dedits.refno" );
+    
+     $othersummaries = DB::Select("select sum(credits.amount) as amount, credits.receipt_details, "
+                . " dedits.transactiondate from users, dedits, credits where users.idno = dedits.idno and"
+                . " dedits.transactiondate = '" 
+                . $transactiondate . "' and credits.refno=dedits.refno and credits.categoryswitch >= '9'  and credits.receipt_details != 'Reservation' and dedits.paymenttype = '1' and dedits.isreverse = '0' group by  dedits.transactiondate, "
+                . " credits.receipt_details order by credits.receipt_details" );
+      
+     
+    $allcollections = array();
+    $int=0;
+foreach ($collections as $collection){
+    $allcollections[$int] = array(
+        $collection->receiptno,
+        $collection->firstname . " " . $collection->lastname,
+        $collection->amount+$collection->checkamount, 
+        $this->getReservationDebit($collection->refno),
+        $this->getcreditamount($collection->refno,1),
+        $this->getcreditamount($collection->refno,2),
+        $this->getcreditamount($collection->refno,3),
+        $this->getcreditamount($collection->refno,4),
+        $this->getcreditamount($collection->refno,5),
+        $this->getcreditamount($collection->refno,6),
+        $this->getReservationCredit($collection->refno),
+        $this->getcreditamount1($collection->refno,9),
+        $collection->isreverse,
+        $this->getDiscount($collection->refno)
+        );
+    $int=$int+1;
+}
+    //return $othersummaries;
+    return view('accounting.cashreceiptdetails',compact('allcollections','transactiondate','otheraccounts','othersummaries'));
+}
+
+    function getDiscount($refno){
+        $discount = \App\Dedit::where('refno',$refno)->where('paymenttype','4')->first();
+        $mt=0;
+        if(count($discount)>0){
+          $mt=$discount->amount;  
+        }
+        return $mt;
+    }
+
+    function getReservationCredit($refno){
+        $mt=0;
+        $amount=  \App\Credit::where('refno',$refno)->where('acctcode','Reservation')->first();
+        if(count($amount)>0){
+            $mt = $amount->amount;
+        }
+        return $mt;
+    }
+    function getReservationDebit($refno){
+        $mt=0;
+        $amount = \App\Dedit::where('refno',$refno)->where('paymenttype','5')->first();
+        if(count($amount)>0){
+            $mt = $amount->amount;
+        }
+        return $mt;
+        }
+    function getcreditamount($refno,$categoryswitch){
+        $amount = DB::Select("select sum(amount) as amount from credits where refno = '$refno' and categoryswitch = '$categoryswitch'");
+        
+        foreach($amount as $mnt){
+            $mt = $mnt->amount;
+        }
+        
+        if(!isset($mt)){
+            $mt=0;
+        }
+        return $mt;
+    }
+    
+    function getcreditamount1($refno,$categoryswitch){
+        $amount = DB::Select("select sum(amount) as amount from credits where refno = '$refno' and categoryswitch >= '$categoryswitch' and acctcode != 'Reservation'");
+        
+        foreach($amount as $mnt){
+            $mt = $mnt->amount;
+        }
+        
+        if(!isset($mt)){
+            $mt=0;
+        }
+        return $mt;
+    }
+
 }

@@ -46,6 +46,8 @@
                  Assessed
                  @elseif($status->status == "2")
                  Enrolled
+                 @elseif($status->status == "3")
+                 <b>Dropped</b>
                  @endif
                  @else
                  Registered

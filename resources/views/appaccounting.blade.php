@@ -76,7 +76,8 @@
                                            <a href="{{url('maincollection',date('Y-m-d'))}}"><i class="fa fa-btn"></i>Transaction Report</a>
                                            <a href="{{url('cashcollection',date('Y-m-d'))}}"><i class="fa fa-btn"></i>Actual Deposit</a>
                                            <a href="{{url('overallcollection',date('Y-m-d'))}}"><i class="fa fa-btn"></i>Collection Report</a>
-                                       @endif
+                                           <a href ="{{url('cashreceipts', date('Y-m-d'))}}"><i class="fa fa-btn"></i>Cash Receipts</a>
+                                        @endif
                                         </ul>
                                         </li>
                                         

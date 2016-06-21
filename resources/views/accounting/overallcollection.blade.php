@@ -1,4 +1,4 @@
-@extends('appcashier')
+@extends('appaccounting')
 @section('content')
 <div class="container">
 <table class="table table-striped"><tr><td>Receipt No</td><td>Received From</td><td align="center">Cash Amount</td><td align="center"> Check Amount</td><td align="center">Total</td><td>Status</td><td>View</td><td>Posted By</td></tr>

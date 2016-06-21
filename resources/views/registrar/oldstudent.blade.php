@@ -36,6 +36,8 @@
                             <input type="hidden" name="action" value="reassessed">
                         @elseif($status->status == '2' && $currentschoolyear->schoolyear == $status->schoolyear && $currentschoolyear->period == $status->period)
                             <strong style="color:red">Enrolled</strong>
+                        @elseif($status->status == '3' && $currentschoolyear->schoolyear == $status->schoolyear && $currentschoolyear->period == $status->period)
+                         <strong style="color:red">Dropped</strong>
                         @else
                             <i>Registered</i> 
                             <input type="hidden" name="action" value="update">
@@ -54,6 +56,10 @@
                 @if($status->status=='2')
                     <div class="panel-body">
                         <h5>This student is already <b>ENROLLED</b>. Please see accounting for payment details</h5>
+                    </div>
+                @elseif($status->status == '3')
+                 <div class="panel-body">
+                        <h5>This student is already <b>DROPPED</b>. Please see accounting to verify remaining account.</h5>
                     </div>
                 @elseif($status->status == '1')
                     <div class="col-md-6">
