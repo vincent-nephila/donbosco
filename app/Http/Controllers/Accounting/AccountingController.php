@@ -710,5 +710,68 @@ foreach ($collections as $collection){
         }
         return $mt;
     }
+    function statementofaccount(){
+        $schoolyear = \App\CtrRefSchoolyear::first();
+        $sy=$schoolyear->schoolyear;
+        $levels = \App\CtrLevel::all();
+        return view('accounting.statementofaccount',compact('sy','levels'));
+    }
+ function printsoa($idno, $trandate){
+       $statuses = \App\Status::where('idno',$idno)->first();
+       $users = \App\User::where('idno',$idno)->first();
+       $balances = DB::Select("select sum(amount) as amount , sum(plandiscount) + sum(otherdiscount) as discount, "
+               . "sum(payment) as payment, sum(debitmemo) as debitmemo, receipt_details  from ledgers  where "
+               . " idno = '$idno'  group by "
+               . "receipt_details order by categoryswitch");
+       $schedules=DB::Select("select sum(amount) as amount , sum(plandiscount) + sum(otherdiscount) as discount, "
+               . "sum(payment) as payment, sum(debitmemo) as debitmemo, duedate  from ledgers  where "
+               . " idno = '$idno' and categoryswitch <= '6' and duedate <= '$trandate' group by "
+               . "duedate order by duedate");
+       
+       $others=DB::Select("select sum(amount) - sum(plandiscount) - sum(otherdiscount) - "
+               . "sum(payment) - sum(debitmemo) as balance, receipt_details, transactiondate  from ledgers  where "
+               . " idno = '$idno' and categoryswitch > '6'  group by "
+               . "receipt_details, transactiondate having balance > '0' order by categoryswitch");
+       $schedulebal = 0;
+       if(count($schedules)>0){
+           foreach($schedules as $sched){
+               $schedulebal = $schedulebal + $sched->amount - $sched->discount -$sched->debitmemo - $sched->payment;
+           }
+       }
+       $otherbalance = 0;
+       if(count($others)>0){
+           foreach($others as $ot){
+               $otherbalance = $otherbalance+$ot->balance;
+           }
+       }
+       
+       $totaldue = $schedulebal + $otherbalance;
+       
+       $pdf = \App::make('dompdf.wrapper');
+       // $pdf->setPaper([0, 0, 336, 440], 'portrait');
+       $pdf->loadView("print.printsoa",compact('statuses','users','balances','trandate','schedules','others','otherbalance','totaldue'));
+       return $pdf->stream();
+ }
+ 
+ function getsoasummary($level,$strand,$section,$trandate){
+       if($strand=="none"){
+           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename order by users.lastname, users.firstname");    
 
+       }   else{  
+        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level' and statuses.strand='$strand' and statuses.section='$section' and ledgers.duedate <= '$trandate' "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename order by users.lastname, users.firstname");    
+       }
+        
+       
+            return view('accounting.showsoa',compact('soasummary','trandate','level','section','strand'));
+        }
+        
+ 
 }

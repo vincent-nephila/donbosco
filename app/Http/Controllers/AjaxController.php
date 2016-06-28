@@ -497,10 +497,53 @@ class AjaxController extends Controller
                 $sections = DB::Select("select  * from ctr_sections where level = '$level' and strand = '$strand'");
                    $data = "";
                    $data = $data . "<div class=\"col-md-6\"><label for=\"section\">Select Section</label><select id=\"section\" onchange=\"callsection()\" class=\"form form-control\">";
-                    foreach($sections as $section){
+                 $data = $data . "<option>--Select--</option>";
+                   foreach($sections as $section){
                       $data = $data . "<option value= '". $section->section ."'>" .$section->section . "</option>";  
                     }
                    $data = $data."</select></div>";
+                return $data;   
+                //return "roy";
+            }
+        }
+        
+        function getsection1($level){
+            if(Request::ajax()){
+              if($level=="Grade 9" || $level=="Grade 10" || $level=="Grade 11" || $level=="Grade 12"){
+                  $strands = DB::Select("select distinct strand from ctr_sections where level = '$level'");
+                  $data="";
+                  $data = $data . "<label for=\"strand\">Select Strand/Shop</label><select id=\"strand\"  onchange=\"getsectiontrack(this.value)\" name=\"strand\" class=\"form form-control\">";
+                  $data = $data . "<option>--Select--</option>";
+                  foreach($strands as $strand){
+                      $data = $data . "<option value= '". $strand->strand ."'>" .$strand->strand . "</option>";  
+                    }
+                   $data = $data."</select>";
+              }  else {
+                $sections = DB::Select("select  * from ctr_sections where level = '$level'");
+                   $data = "";
+                   $data = $data . "<label for=\"section\">Select Section</label><select id=\"section\"  class=\"form form-control\">";
+                   $data = $data . "<option>--Select--</option>"; 
+                   foreach($sections as $section){
+                      $data = $data . "<option value= '". $section->section ."'>" .$section->section . "</option>";  
+                    }
+                   $data = $data."</select>";
+              }
+                return $data;   
+                //return "roy";
+            }
+        }
+        
+        function getsectionstrand($level,$strand){
+            if(Request::ajax()){
+             
+                $sections = DB::Select("select  * from ctr_sections where level = '$level' and strand='$strand'");
+                   $data = "";
+                   $data = $data . "<label for=\"section\">Select Section</label><select id=\"section\"  class=\"form form-control\">";
+                    foreach($sections as $section){
+                      $data = $data . "<option value= '". $section->section ."'>" .$section->section . "</option>";  
+                    }
+                   $data = $data."</select>";
+              
                 return $data;   
                 //return "roy";
             }
@@ -565,4 +608,35 @@ class AjaxController extends Controller
             
             return true;
         }
+        
+        function getsoasummary($level,$strand,$section,$trandate){
+       if($strand=="none"){
+           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename order by users.lastname, users.firstname");    
+
+       }   else{  
+        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level' and statuses.strand='$strand' and statuses.section='$section' and ledgers.duedate <= '$trandate' "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename order by users.lastname, users.firstname");    
+       }
+        $data = "";
+        $data = $data . "<table class = \"table table-stripped\"><tr><td>Student No</td><td>Name</td><td>Balance</td><td></td></tr>";
+        foreach($soasummary as $soa){
+        if($soa->amount > 0){    
+        $data = $data . "<tr><td>" . $soa->idno . "</td><td>"
+                . $soa->lastname . ", "
+                . $soa->firstname . " " . $soa->middlename. "</td>"
+                . "<td align=\"right\">" . number_format($soa->amount,2) . "</td>"
+                . "<td><a href=\"/printsoa/". $soa->idno. "/".$trandate ."\">Print</a></td></tr>";
+        }}
+        $data = $data."</table>";
+        return $data;
+           // return $level.$strand.$section.$trandate;
+        }
+        
             }

@@ -26,16 +26,19 @@ class CashierController extends Controller
        $dues = null;
        $penalty = 0;
        $totalmain = 0;
-      // $fape = 0;
-       
-       //if(isset($status->isesc)){
-      //     if($status->isesc == '1'){
-       //        $fape = "10000.00";
-       //    }
-       //}
+       $totalothers=0;
+
        //Get other added collection
        $matchfields = ["idno"=>$idno, "categoryswitch"=>env("OTHER_FEE")];
        $othercollections = \App\Ledger::where($matchfields)->get();
+       //get total othercollection
+       
+       if(count($othercollections) > 0 ){
+           foreach($othercollections as $othercollection){
+               $totalothers = $totalothers + $othercollection->amount - $othercollection->payment - $othercollection->debitmemo;
+           }
+       }
+       
        //get previous balance
        $previousbalances = DB::Select("select schoolyear, sum(amount)- sum(plandiscount)- sum(otherdiscount)
                - sum(debitmemo) - sum(payment) as amount from ledgers where idno = '$idno' 
@@ -44,6 +47,7 @@ class CashierController extends Controller
        foreach($previousbalances as $prev){
             $totalprevious = $totalprevious + $prev->amount;
        }}
+       
        //get reservation
        if(isset($status->status)){
            //if($status->status == "1"){
@@ -101,7 +105,7 @@ class CashierController extends Controller
         
            $debitdms = DB::SELECT("select * from dedits where idno = '" . $idno . "' and "
                    . "paymenttype = '3' order by transactiondate");
-           return view('cashier.studentledger',  compact('debitdms','debits','penalty','totalmain','totalprevious','previousbalances','othercollections','student','status','ledgers','reservation','dues'));
+           return view('cashier.studentledger',  compact('debitdms','debits','penalty','totalmain','totalprevious','previousbalances','othercollections','student','status','ledgers','reservation','dues','totalothers'));
 
        }   
        
@@ -1111,6 +1115,47 @@ function otherpayment($idno){
         
         return redirect(url('actualdeposit',$transactiondate));
         
+    }
+    function addtoaccount($studentid){
+        $accounts = \App\CtrCrAccount::all();
+        $studentdetails = \App\User::where('idno',$studentid)->first();
+        $tatuses = \App\Status::where('idno',$studentid)->first();
+        $ledgers = DB::Select("Select * from ledgers where idno='$studentid' AND categoryswitch = '7' and amount > payment ");
+        return view('cashier.addtoaccount',compact('studentid','accounts','studentdetails','statuses','ledgers'));
+        
+    }
+    
+    function posttoaccount(Request $request){
+        $idno = $request->studentid;
+        $status = \App\Status::where('idno',$request->idno)->first();
+        $newledger = new \App\Ledger;
+        if(count($status)>0){
+        $newledger->level=$status->level;
+        $newledger->course=$status->course;
+        $newledger->strand=$status->strand;
+        $newledger->department = $status->department;
+        $newledger->schoolyear=$status->schoolyear;
+        $newledger->period=$status->period;
+        }
+        $newledger->idno = $request->idno;
+        $newledger->categoryswitch = '7';
+        $newledger->transactiondate = Carbon::now();       
+        $newledger->acctcode=$request->accttype;
+        $newledger->description=$request->accttype;
+        $newledger->postedby=\Auth::user()->idno;
+        $newledger->receipt_details=$request->accttype;
+        $newledger->duetype="0";
+        $newledger->duedate=Carbon::now();
+        $newledger->amount=$request->amount;
+        $newledger->save();
+        return redirect(url('addtoaccount',$request->idno));
+    }
+    function addtoaccountdelete($id){
+        $account = \App\Ledger::where('id',$id)->first();
+        if($account->postedby == \Auth::user()->idno && $account->payemnt+$account->debitmemo==0){
+        $account->delete();    
+        }
+        return redirect(url('addtoaccount',$account->idno));
     }
     
     }

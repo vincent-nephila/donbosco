@@ -76,6 +76,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('actualdeposit/{trasactiondate}', 'Cashier\CashierController@actualdeposit');
     Route::get('cutoff/{transactiondate}','Cashier\CashierController@cutoff');
     Route::get('printactualdeposit/{transactiondate}', 'Cashier\CashierController@printactualdeposit');
+    Route::get('addtoaccount/{studentid}','Cashier\CashierController@addtoaccount');
+    Route::post('addtoaccount','Cashier\CashierController@posttoaccount');
+    Route::get('addtoaccountdelete/{id}','Cashier\CashierController@addtoaccountdelete');
+     
     //accounting module
     Route::get('accounting/{idno}','Accounting\AccountingController@view');
     Route::post('debitcredit','Accounting\AccountingController@debitcredit');
@@ -91,6 +95,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('overallcollection/{transactiondate}','Accounting\AccountingController@overallcollection');
     Route::get('printactualoverall/{transactiondate}','Accounting\AccountingController@printactualoverall');
     Route::get('cashreceipts/{transactiondate}','Accounting\AccountingController@cashreceipts');
+    Route::get('statementofaccount','Accounting\AccountingController@statementofaccount');
+    Route::get('printsoa/{idno}/{tradate}','Accounting\AccountingController@printsoa');
+    Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}','Accounting\AccountingController@getsoasummary');
     
 });
 
@@ -114,11 +121,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/removeslip/{refid}','AjaxController@removeslip');
     Route::get('/getstudentlist/{level}','AjaxController@getstudentlist');
     Route::get('/getsection/{level}','AjaxController@getsection');
+    Route::get('/getsection1/{level}','AjaxController@getsection1');
     Route::get('/getsectionlist/{level}/{section}','AjaxController@getsectionlist');
     Route::get('/setsection/{id}/{section}','AjaxController@setsection');
     Route::get('/rmsection/{id}','AjaxController@rmsection');
     Route::get('/getstrand/{level}','AjaxController@getstrand');
     Route::get('/updateadviser/{id}/{value}','AjaxController@updateadviser');
+    Route::get('/getsectionstrand/{level}/{strand}','AjaxController@getsectionstrand');
+   // Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}','AjaxController@getsoasummary');
     
     //Ajax Route Sheryl
    

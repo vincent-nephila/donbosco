@@ -10,7 +10,10 @@
                 <a href="{{url('/cashier', $student->idno)}}" class="btn btn-primary">Refresh</a>
                 <a href="{{url('/otherpayment',$student->idno)}}" class="btn btn-primary"> Other Payment</a>
                  <a href="{{url('/previous',$student->idno)}}" class="btn btn-primary"> Previous Accounts</a>
-                <div class="pull-right">
+                @if(\Auth::user()->accesslevel=='2')
+                <a href="{{url('/addtoaccount',$student->idno)}}" class="btn btn-primary"> Add To Account</a>
+                @endif
+                 <div class="pull-right">
                 <label for="receiotno">Receipt No</label>
                 <div class="btn btn-danger"><strong>{{Auth::user()->receiptno}}</strong>
             </div>
@@ -200,7 +203,7 @@
         <div class="col-md-3">
             <div class="col-md-12">
                 <h5>Due Today</h5>
-                <div class="btn btn-danger form-control" style="font-size:20pt; font-weight: bold; height: 50px">{{number_format($totaldue + $totalprevious - $reservation ,2) }}</div>
+                <div class="btn btn-danger form-control" style="font-size:20pt; font-weight: bold; height: 50px">{{number_format($totaldue + $totalothers +$totalprevious - $reservation ,2) }}</div>
             </div>    
             <div class="col-md-12" style=" margin-top: 10px;background-color: ">
              <h5>Amount Due</h5>
