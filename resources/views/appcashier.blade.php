@@ -79,19 +79,11 @@
                                         <li>
                                             <a href="{{url('/setreceipt',Auth::user()->id)}}" >Set Receipt</a>
                                         </li>
-                                        @if(Auth::user()->accesslevel == env('USER_CASHIER_HEAD'))
-                                        <li class='dropdown'>
-                                        <a href='#' class="dropdown-toggle" data-toggle="dropdown" role="button">Admin
-                                        <span class="caret"></span></a>
-                                        <ul class='dropdown-menu' role='menu'>
-                                        <li> <a href = "{{url('consolidate')}}"><i class="fa fa-btn sa-sign-out"></i>Consolidated Report</a></li>
-                                         <li> <a href = "{{url('posting')}}"><i class="fa fa-btn sa-sign-out"></i>Posting To Ledger</a></li>
-                                         
-                                        </ul>
-                                            </li>
+                                        @if(Auth::user()->accesslevel == env('USER_CASHIER'))
+                                        <li><a href="{{url('statementofaccount')}}"><i class="fa fa-btn fa-sign-out"></i>Statement of Account</a></li>
                                         @endif
                                         <li><a href="{{url('encashment')}}">Encashment</a></li>
-                                        <li><a href="{{url('nonstudent')}}">Other Payment</a></li>
+                                        <!--<li><a href="{{url('nonstudent')}}">Other Payment</a></li>-->
                                         <li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Register</a></li>
                                     @endif
                                  @endif
