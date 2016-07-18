@@ -411,7 +411,7 @@ class AjaxController extends Controller
          
         $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
                  . "statuses.level, statuses.strand from users, statuses where users.idno = statuses.idno "
-                 . "and statuses.level = '". $level. "'  order by users.lastname, users.firstname");
+                 . "and statuses.level = '". $level. "'  and statuses.status='2' order by users.lastname, users.firstname");
          $data = "<h3>$level</h3><table class=\"table table-stripped\"><tr><td>Student Id</td><td>Name</td></tr>";
          foreach($lists as $list){
          $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td></tr>";
@@ -477,7 +477,7 @@ class AjaxController extends Controller
                    
                     $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
                         . "users.firstname, users.middlename, statuses.section  from statuses, users where statuses.idno = "
-                        . "users.idno and statuses.level = '$level' and strand = '" . Input::get("strand") ."' order by users.lastname, users.firstname, users.middlename");
+                        . "users.idno and statuses.level = '$level' and statuses.strand = '" . Input::get("strand") ."'  and statuses.status = '2' order by users.lastname, users.firstname, users.middlename");
                
                 
                 $data = "";

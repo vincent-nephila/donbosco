@@ -62,17 +62,32 @@
                                  @if(Auth::guest())
                                  @else
                                     @if(Auth::user()->accesslevel == env('USER_REGISTRAR'))
+                                    
+                                    
                                         <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Students
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Students Information
                                         <span class="caret"></span></a>
                                
                                         <ul class="dropdown-menu" role="menu">
-                                        <li><a href=""><i class="fa fa-btn fa-sign-out"></i>Student Information</a></li>
+                                        
+                                                <li><a href=""><i class="fa fa-btn"></i>Add/Update</a></li>
+                                                <li><a href="{{url('printinfo')}}"><i class="fa fa-btn"></i>Print List</a></li>
+                                        
+                                        </ul>
+                                        </li>
+                                        
+                                         <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Assessment/Registration
+                                        <span class="caret"></span></a>
+                               
+                                        <ul class="dropdown-menu" role="menu">
+                           
                                         <li><a href="{{url('/')}}"><i class="fa fa-btn fa-sign-out"></i>Assessment</a></li>
                                         <li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Register</a></li>
                                         
                                         </ul>
                                         </li>
+                                        
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"> Reports
                                         <span class="caret"></span></a>   

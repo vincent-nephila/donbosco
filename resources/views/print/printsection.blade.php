@@ -2,8 +2,8 @@
     <head>
         <style>
             table tr td{font-size: 9pt;}
-            table.list tr td{border-width: .05px}
-            table.footer tr td{border-width: .05px; font-size: 7pt;}
+            table.list tr td{border-width: 1px}
+            table.footer tr td{border-width: 1px; font-size: 7pt;}
         </style>    
     </head>
     <body>
@@ -38,12 +38,12 @@
         ?>
         @foreach($studentnames as $studentname)
         <tr><td align="center">{{$studentname->idno}}</td><td align="center">
-        <?php if($cnt++ <= 9){echo "0".$cnt;} else {echo $cnt;}?>    
+        <?php if($cnt++ < 9){echo "0".$cnt;} else {echo $cnt;}?>    
         </td><td>{{$studentname->lastname}}, {{$studentname->firstname}} {{$studentname->middlename}}</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         @endforeach
         </table>   
         <p>&nbsp;</p>
-        <table border = "0" width="100%" class="footer">
+        <table border = "0" width="100%" cellspacing = '0' class="footer">
             <tr align="center"><td>Prepared By:<br><br></td><td>Checked By:<br><br></td><td></td><td>Noted By:<br><br></td><td></tr>
             <tr align="center"><td>Subject Teacher</td><td>Subject Area Head</td><td>Date Submitted</td><td>Asst. Principal</td><td>Due Date</td></tr>
             </table>

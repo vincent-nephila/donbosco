@@ -46,6 +46,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('sectionk','Registrar\SectionController@sectionk');
     Route::get('printsection/{level}/{section}/{strand}', 'Registrar\SectionController@printsection1');
     Route::get('printsection/{level}/{section}', 'Registrar\SectionController@printsection');
+    Route::get('printinfo','Registrar\StudentlistController@printinfo');
     //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
     Route::post('payment','Cashier\CashierController@payment');

@@ -230,7 +230,7 @@
                 @if(count($othercollections)>0)
                 @foreach($othercollections as $coll)
                     @if(($coll->amount - $coll->payment - $coll->debitmemo) > 0)
-                         <tr><td>{{$coll->description}}</td><td><input type="text" name="other[{{$coll->id}}]"  id="other" style="text-align:right" class="form-control" onkeypress = "validate(event)" onkeydown = "submitother(event,this.value,'{{$coll->amount-$coll->payment-$coll->debitmemo}}','{{$coll->id}}')" value="{{$coll->amount-$coll->payment-$coll->debitmemo}}"></td></tr>
+                         <tr><td>{{$coll->description}}</td><td><input type="text" name="other[{{$coll->id}}]"  class="other" style="text-align:right" class="form-control" onkeypress = "validate(event)" onkeydown = "submitother(event,this.value,'{{$coll->amount-$coll->payment-$coll->debitmemo}}','{{$coll->id}}')" value="{{$coll->amount-$coll->payment-$coll->debitmemo}}"></td></tr>
                     @endif
                @endforeach
                 @endif

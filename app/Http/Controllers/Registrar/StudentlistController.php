@@ -22,4 +22,11 @@ $lists=DB::Select("SELECT DISTINCT level from statuses ORDER BY level");
    
 }
 
+public function printinfo(){
+    $schoolyear = \App\CtrRefSchoolyear::first();
+        $sy=$schoolyear->schoolyear;
+        $levels = \App\CtrLevel::all();
+    return view('registrar.printinfo',compact('sy','levels'));
+}
+
 }

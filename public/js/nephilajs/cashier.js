@@ -51,8 +51,8 @@ function computetotal(){
     var totalprevious = document.getElementById('previous').value;
     var totalother = 0;
     
-    $('#other').each(function(index,element){
-       totalother = totalother + element.value; 
+    $('input.other').each(function(){
+       totalother = parseFloat(totalother) + parseFloat(this.value); 
     });
    //for(i=0;ioth.)
    /*

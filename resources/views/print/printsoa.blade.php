@@ -50,7 +50,7 @@ th {
         </head>
 <body> 
     <table border = '0' cellpacing="0" cellpadding = "0" width="100%" align="center">
-        <tr><td rowspan="3" width="65"><img src="{{url('/')}}/images/logo.png" width="60"></td><td><span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span></td></tr>
+        <tr><td rowspan="3" width="65"><img src="<?php echo $_SERVER['DOCUMENT_ROOT']; ?>/images/logo.png" width="60"></td><td><span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span></td></tr>
         <tr><td style="font-size:10pt;">Chino Roces Ave., Makati City </td></tr>
         <tr><td style="font-size:10pt;">Tel No : 892-01-01</td></tr>
     </table>
@@ -106,7 +106,7 @@ th {
  <span style="font-size: 9pt;font-weight: bold"><u>DUE DETAILS</u></span><br> 
  @if(count($schedules)>0)
  <span style="font-size:8pt;font-style: italic">Installment Schedule</span>
- <table style="font-size: 8pt;"><tr><td>Due Date</td><td align="center">Balance</td>
+ <table style="font-size: 8pt;"><tr><td>For the month of</td><td align="center">Due Amount</td>
       @foreach($schedules as $schedule)
       @if($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment > 0)
       <tr><td>{{date('M d, Y',strtotime($schedule->duedate))}}</td><td align="right">{{number_format($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment,2)}}</td></tr>
@@ -116,7 +116,7 @@ th {
  @endif
  @if(count($others)>0)
         <span style="font-size:8pt;font-style: italic">Other Payment</span>
-        <table style="font-size:8pt;width: 60%"><tr><td>Date</td><td>Description</td><td align="center">Balance</td></tr>
+        <table style="font-size:8pt;width: 60%"><tr><td>Date</td><td>Description</td><td align="center">Due Amount</td></tr>
                 <?php
                 $to=0;
                 ?>
@@ -132,14 +132,14 @@ th {
 </td>
 </table>
     <table><tr><td width="70%">
-    <p style="font-size: 8pt;"><b>Reminder:</b><br>Settle all your account on or before <b>{{date('M d, Y',strtotime($trandate))}}</b> prior to the final examination.
-         Please disregard this statement if payment has been made. ADMINISTRATION</P>
+    <p style="font-size: 8pt;"><b>Reminder:</b><br>Please disregard this statement if payment has been made. Last day of payment is <b>{{date('M d, Y',strtotime($trandate))}}</b>. Payments made after due date is subject 
+        to penalty of 5% or P250.00 whichever is higher. ADMINISTRATION</P>
     </td>
-    <td>
-        <p align="center; font-size:9pt;">Fr. Manuel H. Nicholas, SBD<br>
+    <td><img src="<?php echo $_SERVER['DOCUMENT_ROOT']; ?>/images/frbocsignature.png" height="80" style="position:absolute;margin-left:20"><br><br>
+        <p align="center; font-size:9pt;">Fr. Manuel H. Nicholas, SDB<br>
             Administrator</p>
     </tr>
     </table>
 </body>
-</html>
+</html>Please disregard this statement if payment has been made. Last day of payment  is July 12, 2016. Payments made after due date is subject to penalty of 5% or P250.00 whichever is higher. ADMINISTRATION
 
