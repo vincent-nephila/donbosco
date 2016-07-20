@@ -45,6 +45,7 @@ return array(
     'CreateParentsTable' => $baseDir . '/database/migrations/2016_07_04_143905_create_parents_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migratin_backup/2014_10_12_100000_create_password_resets_table.php',
     'CreatePaymentsTable' => $baseDir . '/database/migratin_backup/2016_01_28_054855_create_payments_table.php',
+    'CreatePenaltyPostingsTable' => $baseDir . '/database/migrations/2016_07_19_161815_create_penalty_postings_table.php',
     'CreateStatusesTable' => $baseDir . '/database/migratin_backup/2016_02_05_064523_create_statuses_table.php',
     'CreateStudentInfosTable' => $baseDir . '/database/migrations/2016_07_04_121924_create_student_infos_table.php',
     'CreateUsersTable' => $baseDir . '/database/migratin_backup/2014_10_12_000000_create_users_table.php',

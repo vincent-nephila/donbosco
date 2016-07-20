@@ -99,7 +99,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('statementofaccount','Accounting\AccountingController@statementofaccount');
     Route::get('printsoa/{idno}/{tradate}','Accounting\AccountingController@printsoa');
     Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}','Accounting\AccountingController@getsoasummary');
-    
+    Route::get('penalties','Accounting\AccountingController@penalties');
+    Route::post('postpenalties','Accounting\AccountingController@postpenalties');
 });
 
 //Ajax route

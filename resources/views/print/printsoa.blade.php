@@ -109,7 +109,7 @@ th {
  <table style="font-size: 8pt;"><tr><td>For the month of</td><td align="center">Due Amount</td>
       @foreach($schedules as $schedule)
       @if($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment > 0)
-      <tr><td>{{date('M d, Y',strtotime($schedule->duedate))}}</td><td align="right">{{number_format($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment,2)}}</td></tr>
+      <tr><td>{{date('M  Y',strtotime($schedule->duedate))}}</td><td align="right">{{number_format($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment,2)}}</td></tr>
       @endif
       @endforeach
  </table>
@@ -141,5 +141,4 @@ th {
     </tr>
     </table>
 </body>
-</html>Please disregard this statement if payment has been made. Last day of payment  is July 12, 2016. Payments made after due date is subject to penalty of 5% or P250.00 whichever is higher. ADMINISTRATION
-
+</html>

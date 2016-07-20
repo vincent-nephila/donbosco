@@ -772,6 +772,66 @@ foreach ($collections as $collection){
        
             return view('accounting.showsoa',compact('soasummary','trandate','level','section','strand'));
         }
-        
+        function penalties(){    
+        $currentdate= Carbon::now();  
+        $postings = \App\penaltyPostings::all();
+        $schoolyear = \App\CtrRefSchoolyear::first();
+        $sy=$schoolyear->schoolyear;
+        $levels = \App\CtrLevel::all();
+        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
+                . " ledgers.duedate <= '$currentdate' and statuses.status='2' "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.level, statuses.section, statuses.strand, users.lastname, users.firstname");    
+
+        return view('accounting.penalties',compact('sy','levels','currentdate','postings','soasummary'));
+        }
  
+        function postpenalties(Request $request){
+            $idnumber = $request->idnumber;
+            $schoolyear = \App\CtrRefSchoolyear::first();
+            foreach($idnumber as $key=>$value){
+                $status=  \App\Status::where('idno',$value)->first();
+                $newpenalty = new \App\Ledger;
+                $newpenalty->idno = $value;
+                $newpenalty->department=$status->department;
+                $newpenalty->level=$status->level;
+                $newpenalty->course=$status->course;
+                $newpenalty->strand=$status->strand;
+                $newpenalty->transactiondate= Carbon::now();
+                $newpenalty->categoryswitch = '7';
+                $newpenalty->acctcode="Penalty";
+                $newpenalty->description="Penalty";
+                $newpenalty->receipt_details="Penalty(" . date('M Y') .")";
+                $newpenalty->amount=$this->addpenalties($value);
+                $newpenalty->schoolyear=$status->schoolyear;
+                $newpenalty->period=$status->period;
+                $newpenalty->duedate=Carbon::now();
+                $newpenalty->duetype='0';
+                $newpenalty->postedby=\Auth::user()->idno;
+                $newpenalty->save();              
+            }
+            $addpost = new \App\penaltyPostings;
+            $addpost->dateposted=Carbon::now();
+            $addpost->postedby=\Auth::user()->idno;
+            $addpost->save();
+            return view('accounting.successfullyadded');
+        }
+ 
+        function addpenalties($idnumber){
+            $currentdate= Carbon::now();
+            $soasummary = DB::Select("select "
+                . " sum(amount) - sum(payment) - sum(debitmemo) - sum(plandiscount) - sum(otherdiscount) as amount from"
+                . " ledgers where idno = '$idnumber' and "
+                . " duedate <= '$currentdate'  and categoryswitch <= '6'");
+            foreach($soasummary as $soa){
+                $amount = $soa->amount;
+            }
+            
+            $penalty = $soa->amount * 0.05;
+            if($penalty < 250){
+                $penalty = 250;
+            }
+            return $penalty;
+        }
 }
