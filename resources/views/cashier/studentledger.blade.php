@@ -5,6 +5,17 @@
       <div class="col-md-12">
              
           <div class="col-md-6" >
+              <div class="form-group">
+                  <label>SOA as of</label>
+                  <input type="text" name="soadate" id="soadate" value="{{date('Y-m-d')}}" class="form">
+                  <a href="#" class="btn btn-danger" onclick = "viewsoa('{{$student->idno}}')">View SOA</a>
+              </div>
+              <script>
+                  function viewsoa(idno){
+                      var soadate = document.getElementById('soadate').value
+                      window.location="{{url('printsoa',$student->idno)}}/" + soadate
+                  }
+              </script>    
             <div class="form-group">
                 <a href="{{url('/')}}" class="btn btn-primary">Back</a>
                 <a href="{{url('/cashier', $student->idno)}}" class="btn btn-primary">Refresh</a>
