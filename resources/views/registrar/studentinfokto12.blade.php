@@ -14,10 +14,12 @@
             }
             td{
                 border: none!important;
+                padding:0px 10px;
             }
             .collapse{
                 border: 1px solid;
                 border-top: none;
+                padding-bottom: 10px
             }
             .error{
                 border: 2px solid #cf2020;
@@ -52,836 +54,826 @@
              /> 
     
  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo"><strong>STUDENT DATA</strong></button>
-  <div id="demo" class="collapse">
-  
+ <div id="demo" class="collapse" >
+     <table border="0" cellspacing="10px" cellpadding="10" width="1138px">
+         
+             <tr>
+                 <td colspan="4">
+                     <label>STUDENT NAME: (Please fill up with the complete name as it appears in the birth certificate)</label>
+                 </td>
+             </tr>
+             <tr>
+                 <td>
+                  <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Enter your Family Name" 
+                         @if($student != NULL)
+                         value="{{$student->lastname}}"
+                         @endif
+                         />
+                         <p style="text-align: center">(PRINT) FAMILY NAME</p>
+                 </td>
+                 <td>
+                  <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter your First Name" 
+                         @if($student != NULL)
+                         value="{{$student->firstname}}"
+                         @endif
+                         />
+                         <p style="text-align: center">(PRINT) GIVEN NAME</p>
+                 </td>
+                 <td>
+                  <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Enter your Middle Name" 
+                         @if($student != NULL)
+                         value="{{$student->middlename}}"
+                         @endif             
+                         />
+                         <p style="text-align: center">(PRINT) MIDDLE NAME</p>
+                 </td>
+                 <td>
+                  <input type="text" class="form-control" name="extensionname" id="extensionname" placeholder="Enter extension name" 
+                         @if($student != NULL)
+                         value="{{$student->extensionname}}"
+                         @endif             
+                         />
+                         <p style="text-align: center">(PRINT) EXTENSION NAME</p>
 
-            
-  <table class="table">
-    <tbody>
-      <tr>
-      <td colspan="2">
-      <label>STUDENT NAME: (Please fill up with the complete name as it appears in the birth certificate)</label>            
-      
-      <div class="row_form">
-      <div class="col-sm-3">     
-      <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Enter your Family Name" 
-             @if($student != NULL)
-             value="{{$student->lastname}}"
-             @endif
-             />
-             <p style="text-align: center">(PRINT) FAMILY NAME</p>
-      </div>
-      <div class="col-sm-3">    
-      <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter your First Name" 
-             @if($student != NULL)
-             value="{{$student->firstname}}"
-             @endif
-             />
-             <p style="text-align: center">(PRINT) GIVEN NAME</p>
-      </div>
-      <div class="col-sm-3">
-      <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Enter your Middle Name" 
-             @if($student != NULL)
-             value="{{$student->middlename}}"
-             @endif             
-             />
-             <p style="text-align: center">(PRINT) MIDDLE NAME</p>
-      </div>
-      <div class="col-sm-3">
-      <input type="text" class="form-control" name="extensionname" id="extensionname" placeholder="Enter extension name" 
-             @if($student != NULL)
-             value="{{$student->extensionname}}"
-             @endif             
-             />
-             <p style="text-align: center">(PRINT) EXTENSION NAME</p>
-      </div>
-      </div>
-      
-      <!-- <div class="form-group">
-      <div class="col-sm-3">    
-      <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter your First Name" />
-      </div>
-      </div> 
-      
-      <div class="form-group">
-      <div class="col-sm-3">
-      <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Enter your Middle Name" />
-      </div>
-      </div> 
-      
-      <div class="form-group"> 
-      <div class="col-sm-3">  	
-      <input type="text" class="form-control" name="extensioname" id="extensioname" placeholder="Enter extension name" /> 
-      </div> 
-      </div>   -->
-      
-      </td>
-      </tr>
-      <tr>
-      <td>
-      <div class="col-md-6 form-inline" style="padding-left: 20px;padding-right: 0px;">      
-      <div class="form-group date col-md-8">
-        <label>DATE OF BIRTH:</label>
-        <input type="text" name="birthDate" id="birthDate" class="form-control datepicker" style="width: 55%;" placeholder="Date of Birth" 
+                 </td>
+             </tr>
+         
+     </table>
+     <table width="1138px">
+         <tr>
+             <td><label>Date of Birth:</label></td>
+             <td><input type="text" name="birthDate" id="birthDate" class="form-control datepicker" placeholder="Date of Birth" 
                @if($studentInfo != NULL)
                value="{{$studentInfo->birthDate}}"
                @endif             
                />
-      </div>
-      <div class="form-group col-md-4">  	
-        <label for="age">AGE:</label>
-        <input type="text" class="form-control" name="age" id="age" placeholder="Enter your age" style="width: 78%;">
-      </div>        
-    <div class="form-group col-md-12 ">
-    <label>PLACE OF BIRTH:</label>
-    <input type="text" class="form-control" name="birthPlace" id="birthPlace" style="width: 78%;" placeholder="Place of Birth"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->birthPlace}}"
-             @endif           
-           >
-    </div>          
-      </div>          
-
-        <div class="col-md-6 form-inline" style="padding-left:50px;padding-right: 0px;" >
-    <div class="form-group col-md-5"> 
-    <label>GENDER:</label>
-    <input type="text" class="form-control" name="gender" id="gender" style="width: 56%;" placeholder="Enter Gender"
-             @if($student != NULL)
-             value="{{$student->gender}}"
-             @endif           
-           >
-    </div>
-      <div class="form-group col-md-7">
-      <label>CIVIL STATUS </label> 
-      <select class="form-control" name="status" id="status" style="width: 56%;">
-        <option value="SINGLE">SINGLE</option>
-        <option value="MARRIED">MARRIED</option>
-      </select>
-    </div>            
-    <div class="form-group col-md-12">
-    <label>RELIGION:</label>
-    <input type="text" class="form-control" name="religion" id="religion" style="width: 79.5%;" placeholder="Enter Religion"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->religion}}"
-             @endif           
-           >
-    </div>    
-        </div>
-
-    </td>    
-
-      
-      </tr>   
-      <tr>
-          <td>
-    <div class="col-md-6 form-inline" style="padding-left:20px;padding-right: 0px;">
-    <div class="form-group col-md-12">
-    <label>NATIONALITY:</label>
-    <input type="text" class="form-control" name="citizenship" style="width:81%" id="citizenship" placeholder="Enter Nationality"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->citizenship}}"
-             @endif           
-           >
-    </div>
-    </div>
-              <div class="col-md-6 form-inline" style="padding-left:50px;padding-right: 0px;">
-    <div class="form-group col-md-12">
-    <label>ACR Number:</label>
-    <input type="text" class="form-control" name="acr" id="acr" style="width:75%" placeholder="Enter ACR"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->acr}}"
-             @endif             
-           >
-    </div>         
-    <div class="form-group col-md-12" style="padding-left: 10%">
-    <label>Visa Type:</label>
-    <input type="text" class="form-control" name="visaType" id="visaType" placeholder="Enter Type of Visa"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->visaType}}"
-             @endif             
-           >
-    </div>                            
-              </div>
-          </td>
-      </tr>
-    <tr>
-    <td>
-        <div class="col-md-6 form-inline" style="padding-left:20px;padding-right: 0px;">
-            <b4><b>City Address</b></b4>
-                <div class="form-group col-md-12">
-                <label>HOUSE NO. / STREET:</label>
-                <input type="text" class="form-control" name="address1" id="address1" style="width:73%" placeholder="Enter House No. / Street"
+             </td>
+             <td><label for="age">Age:</label></td>
+             <td>
+                 <input type="text" class="form-control" name="age" id="age" placeholder="Enter your age" >
+             </td>
+             <td style="width:40px"></td>
+             <td width="103px"><label>Gender:</label></td>
+             <td>
+                 <input type="text" class="form-control" name="gender" id="gender" placeholder="Enter Gender"
+                 @if($student != NULL)
+                 value="{{$student->gender}}"
+                 @endif           
+                 >
+             </td>
+             <td width="90px"><label>Civil Status </label> </td>
+             <td>
+                 <select class="form-control" name="status" id="status">
+                    <option value="SINGLE">SINGLE</option>
+                    <option value="MARRIED">MARRIED</option>
+                    <option value="DIVORCED">DIVORCED</option>
+                    <option value="DECEASED">DECEASED</option>
+                    <option value="WWIDOWED">WIDOWED</option>
+                    <option value="ANNULLED">ANNULLED</option>
+                    <option value="SEPARATED">SEPARATED</option>
+                 </select>
+             </td>
+               
+         </tr>
+         <tr>
+             <td width="110px"><label>Place of Birth:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="birthPlace" id="birthPlace" placeholder="Place of Birth"
+                   @if($studentInfo != NULL)
+                    value="{{$studentInfo->birthPlace}}"
+                   @endif           
+                  >
+             </td>
+             <td style="width:40px"></td>
+             <td><label>Religion:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="religion" id="religion" placeholder="Enter Religion"
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->religion}}"
+                 @endif           
+                 >
+             </td>
+         </tr>
+         <tr>
+             <td><label>Citizenship:</label></td>
+             <td colspan="3">
+                <input type="text" class="form-control" name="citizenship" id="citizenship" placeholder="Enter Nationality"
+                @if($studentInfo != NULL)
+                value="{{$studentInfo->citizenship}}"
+                @endif           
+                >
+             </td>
+             <td style="width:40px;"></td>
+             <td><label>ACR Number:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="acr" id="acr" placeholder="Enter ACR"
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->acr}}"
+                 @endif             
+                 >
+             </td>
+         </tr>
+         <tr>
+             <td colspan="5"></td>
+             <td><label>Visa Type:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="visaType" id="visaType" placeholder="Enter Type of Visa"
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->visaType}}"
+                 @endif             
+                 ><br>
+             </td>
+         </tr>
+         <tr>
+             <td colspan="5"><b>CITY ADDRESS</b></td>
+             <td colspan="4"><b>PROVINCIAL ADDRESS</b></td>
+         </tr>
+         <tr>
+             <td width="130px"><label>House No./Street:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="address1" id="address1"  placeholder="Enter House No. / Street"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->address1}}"
                          @endif             
                        >
-                </div>            
-                <div class="form-group col-md-12">
-                <label>VIL. / SUBDIV. / BRGY.:</label>
-                <input type="text" class="form-control" name="address2" id="address2" style="width:72%" placeholder="Enter Vil. / Subdiv. / Brgy."
-                         @if($studentInfo != NULL)
-                         value="{{$studentInfo->address2}}"
-                         @endif             
-                       >
-                </div>
-                <div class="form-group col-md-5" style="padding-right: 0px;">
-                <label>DISTRICT:</label>
-                <input type="text" class="form-control" name="address5" id="address5" style="width:60%" placeholder="Enter District"
-                         @if($studentInfo != NULL)
-                         value="{{$studentInfo->address5}}"
-                         @endif             
-                       >
-                </div>
-                <div class="form-group col-md-7" style="padding-left: 0px">
-                <label>CITY/ MUNICIPALITY:</label>
-                <input type="text" class="form-control" name="address3" id="address3" style="width: 54%;" placeholder="Enter city municipality"
-                         @if($studentInfo != NULL)
-                         value="{{$studentInfo->address3}}"
-                         @endif             
-                       >
-                </div>
-                <div class="form-group col-md-7">
-                <label>REGION:</label>
-                <input type="text" class="form-control" name="address4" id="address4" placeholder="Enter region"
-                         @if($studentInfo != NULL)
-                         value="{{$studentInfo->address4}}"
-                         @endif            
-                       >
-                </div>
-                <div class="form-group col-md-5">
-                <label>ZIPCODE:</label>
-                <input type="text" class="form-control" name="zipcode" id="zipcode" style="width:67%" placeholder="Enter zipcode"
-                         @if($studentInfo != NULL)
-                         value="{{$studentInfo->zipcode}}"
-                         @endif            
-                       >
-                </div>
-            
-        </div>
-        <div class="col-md-6 form-inline" style="padding-left:50px;padding-right: 0px;">
-                <b4><b>Provincial Address</b></b4>
-                <div class="form-group col-md-12">
-                <label>HOUSE NO. / STREET:</label>
-                <input type="text" class="form-control" name="address6" id="address6" style="width: 65%;" placeholder="Enter House No. / Street"
+             </td>
+             <td></td>
+             <td width="130px"><label>House No./Street:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="address6" id="address6"  placeholder="Enter House No. / Street"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->address6}}"
                          @endif            
                        >
-                </div>
-                <div class="form-group col-md-12">
-                <label>VIL. / SUBDIV. / BRGY.:</label>
-                <input type="text" class="form-control" name="address7" id="address7" style="width: 64%;" placeholder="Enter Vil. / Subdiv. / Brgy."
+             </td>
+         </tr>
+         <tr>
+             <td><label>Vil./Subd./Brgy:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="address2" id="address2"  placeholder="Enter Vil. / Subdiv. / Brgy."
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->address2}}"
+                         @endif             
+                       >
+             </td>
+             <td></td>
+             <td><label>Vil./Subd./Brgy:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="address7" id="address7" placeholder="Enter Vil. / Subdiv. / Brgy."
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->address7}}"
+                         @endif             
+                       >
+             </td>
+             
+         </tr>
+         <tr>
+             <td><label>District:</label></td>
+             <td>
+                 <input type="text" class="form-control" name="address5" id="address5"  placeholder="Enter District"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->address5}}"
+                         @endif             
+                       >
+             </td>
+             
+             <td><label>City/Municipality:</label></td>
+             <td>
+                 <input type="text" class="form-control" name="address3" id="address3" placeholder="Enter city municipality"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->address3}}"
                          @endif            
                        >
-                </div>
-               
-                <div class="form-group col-md-12">
-                <label>CITY/ MUNICIPALITY:</label>
-                <input type="text" class="form-control" name="address8" id="address8" style="width: 65%;" placeholder="Enter city municipality"
+             </td>
+             <td></td>
+             <td><label>City/Municipality:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="address8" id="address8" placeholder="Enter city municipality"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->address8}}"
                          @endif            
                        >
-                </div>
-                <div class="form-group col-md-12">
-                <label>PROVINCE:</label>
-                <input type="text" class="form-control" name="address9" id="address9" style="width: 78%;" placeholder="Enter province"
+             </td>             
+         </tr>
+         <tr>
+             <td><label>Region:</label></td>
+             <td>
+                 <input type="text" class="form-control" name="address4" id="address4" placeholder="Enter region"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->address4}}"
+                         @endif            
+                       >
+             </td>
+             <td><label>Zip Code:</label></td>
+             <td>
+                 <input type="text" class="form-control" name="zipcode" id="zipcode"  placeholder="Enter zipcode"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->zipcode}}"
+                         @endif            
+                       >
+             </td>
+             <td></td>
+             <td>Province:</td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="address9" id="address9"  placeholder="Enter province"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->address9}}"
                          @endif            
                        >
-                </div>
-        </div>
-    </td>    
-    </tr>    
-    <tr>
-    <td>
-    
-    <tr>
-        <td>
-            <div class="col-md-6 form-inline" style="padding-left:20px;padding-right: 0px;">
-    <div class="form-group col-md-12">
-    <label>E-MAIL ADDRESS :</label>
-    <input type="text" class="form-control" name="email" id="email" style="width: 77%;" placeholder="Enter e-mail"
-             @if($student != NULL)
-             value="{{$student->email}}"
-             @endif            
-           >
-    </div>
-    <div class="form-group col-md-6">
-    <label>LANDLINE NO. :</label>
-    <input type="text" class="form-control" name="phone1" id="phone1" style="width:58.5%" placeholder="Enter landline number"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->phone1}}"
-             @endif            
-           >
-    </div>    
-    <div class="form-group col-md-6">
-    <label>MOBILE NO. :</label>
-    <input type="text" class="form-control" name="phone2" style="width:65%" id="phone2" placeholder="Enter mobile number"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->phone2}}"
-             @endif            
-           >
-    </div>                
-            </div>
-            <div class="col-md-6 form-inline" style="padding-left:50px;padding-right: 0px;">
-    <div class="form-group col-md-12">
-    <label>SCHOOL LAST ATTENDED:</label>
-    <input type="text" class="form-control" name="lastattended" style="width: 59%;" id="lastattended" placeholder="Enter school last attended"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->lastattended}}"
-             @endif            
-           >
-    </div>
-    
-    <div class="form-group col-md-6">
-    <label>GRADE / YEAR:</label>
-    <input type="text" class="form-control" style="width: 56.5%;" name="lastlevel" id="lastlevel" placeholder="Enter grade year"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->lastlevel}}"
-             @endif            
-           >
-    </div>
-    
-    <div class="form-group col-md-6" style="padding-left: 0px;">
-    <label>SCHOOL YEAR:</label>
-    <input type="text" class="form-control" style="width: 47%;" name="lastyear" id="lastyear" placeholder="Enter school year"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->lastyear}}"
-             @endif            
-           >
-    </div>    
-                
-            </div>            
-        </td>    
-    </tr>
-    <tr>
-    <td>
-    <div class="col-md-6" style="padding-left:20px;padding-right: 0px;">
-        <label>NO. OF CHILDREN (INCLUDING THIS STUDENT):</label>    
-    <div class="form-group">
-    
-    
-    <div class="col-md-offset-2 col-md-4">
-    <input type="text" class="form-control" name="countboys" id="noofstudentboys" placeholder="Enter No. Boys"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->countboys}}"
-             @endif                       
-           >
-           <p style="text-align: center">boys</p>
-    </div> 
-    <div class="col-md-4">
-    <input type="text" class="form-control" name="countgirls" id="noofstudentgirls" placeholder="Enter No. Girls"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->countgirls}}"
-             @endif                       
-           >
-           <p style="text-align: center">girls</p>
-    </div>   
-    
-    </div>
-    </div>
-        <div class="col-md-6 form-inline" style="padding-left:50px;padding-right: 0px;">
-    <div class="form-group col-md-12">
-    <label>LRN:</label>
-    <input type="text" class="form-control" style="width: 86%;" name="lrn"  id="lrn" placeholder="Enter LRN No."
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->lrn}}"
-             @endif
-           >
-    </div>
-    
-    <div class="form-group col-md-5">
-    <label>ESC Gurantee:</label>
-    <input type="checkbox" class="form-control" value="1" name="esc" id="esc">
-        
-        
-    </div>
-    
-    <div class="form-group col-md-7">
-    <label>ESC ID No:</label>
-    <input type="text" class="form-control" name="escNo" id="escNo" style="width:62%" placeholder="Enter ESC No."
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->escNo}}"
-             @endif                       
-           >
-    </div>                
-        </div>
-    </td>    
-    </tr>
-      
-    </tbody>
-  </table>
+             </td>
+         </tr>
+         <tr>
+             <td colspan="9"><br><br></td>
+         </tr>
+       
+         <tr>
+             <td><label>Email:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="email" id="email" placeholder="Enter e-mail"
+                 @if($student != NULL)
+                 value="{{$student->email}}"
+                 @endif            
+                 >
+             </td>
+             <td></td>
+             <td style="width: 152px;"><label>School Last Attended</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="lastattended" id="lastattended" placeholder="Enter school last attended"
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->lastattended}}"
+                 @endif            
+                 >
+             </td>
+         </tr>
+         <tr>
+             <td><label>Landline No.:</label></td>
+             <td>
+                 <input type="text" class="form-control" name="phone1" id="phone1" placeholder="Enter landline number"
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->phone1}}"
+                 @endif            
+                 >
+             </td>
+             <td><label>Mobile No.:</label></td>
+             <td>
+                 <input type="text" class="form-control" name="phone2" id="phone2" placeholder="Enter mobile number"
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->phone2}}"
+                 @endif            
+                 >
+             </td>
+             <td></td>
+             <td><label>Grade/Year:</label></td>
+             <td>
+                 <input type="text" class="form-control" name="lastlevel" id="lastlevel" placeholder="Enter grade year"
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->lastlevel}}"
+                 @endif            
+                 >
+             </td>
+             <td width="96px"><label>School Year:</label></td>
+             <td>
+                 <input type="text" class="form-control"  name="lastyear" id="lastyear" placeholder="Enter school year"
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->lastyear}}"
+                 @endif            
+                 >
+             </td>             
+         </tr>
+         <tr>
+             <td><label>No. Of Children:</label></td>
+             <td>
+                 <div class="form-inline">
+                     <div class="form-group">
+                         <input type="text" class="form-control" name="countboys" id="noofstudentboys" style="width:74%" placeholder="Enter No. Boys"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->countboys}}"
+                         @endif                       
+                         >
+                         <label>boys</label>
+                    </div>
+                 </div>
+             </td>
+             <td></td>
+             <td>
+                 <div class="form-inline">
+                         <div class="form-group">                 
+                 <input type="text" class="form-control" name="countgirls" id="noofstudentgirls" style="width:75%" placeholder="Enter No. Girls"
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->countgirls}}"
+                 @endif                       
+                 >
+           <label>girls</label>
+                         </div>
+                 </div>
+             </td>
+             <td></td>
+             <td><label>LRN:</label></td>
+             <td colspan="3">
+                 <input type="text" class="form-control" name="lrn"  id="lrn" placeholder="Enter LRN No."
+                 @if($studentInfo != NULL)
+                 value="{{$studentInfo->lrn}}"
+                 @endif
+                 >
+             </td>
+         </tr>
+         <tr>
+             <td colspan="4"><sup>(INCLUDING THIS STUDENT)</sup></td>
+                <td></td>
+                <td><label>ESC Gurantee:</label></td>
+                <td>
+                    <input type="checkbox" class="form-control" value="1" name="esc" id="esc">
+                </td>
+                <td>ESC No.</td>
+                <td>
+                    <input type="text" class="form-control" name="escNo" id="escNo" placeholder="Enter ESC No."
+                    @if($studentInfo != NULL)
+                    value="{{$studentInfo->escNo}}"
+                    @endif                       
+                    >
+                </td>
+         </tr>
 
-
-</div>
+     </table>
+ </div>
+    
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo4"><strong>PARENTS DATA</strong></button>
  <div id="demo4" class="collapse">
   
-            
-  <table class="table">
-    <tbody>
-    
-    <tr>       
-    <td> 
-    
-    <div class="col-md-6 form-inline" style="padding-left:20px;padding-right: 0px;">
-    <h5><b>FATHER</b></h5>
-        <div class="form-group col-md-12">
-    <label>NAME:</label>
-    <input type="text" class="form-control" name="fname" id="fname" style="width:91%" placeholder="Enter name "
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->fname}}"
-             @endif                       
-           >
-    </div>
-    
-        <div class="form-group col-md-12">
-      <label>ARE YOU A DBTI-MAKATI ALUMNUS? </label> 
-      <select style = "width: 130px" class="form-control" name="falumnus" id="falumnus">
-        <option value="1">YES</option>
-        <option value="0">NO</option>
-      </select>
-    </div>
-    
-        <div class="form-group col-md-offset-2 col-md-10">
-    <label>YEAR GRADUATED:</label>
-    <input type="text" class="form-control" name="fyeargraduated" style="width:35%" id="fyeargraduated" placeholder="Enter year"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->fyeargraduated}}"
-             @endif                       
-           />
-    </div>
-      
-        <div class="form-group col-md-7 date">
-      <label>DATE OF BIRTH:</label>          
-      <input type="text" name="fbirthdate" style="width: 58%;" id="fbirthdate" class="form-control datepicker" placeholder="Date of Birth"/
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->fbirthdate}}"
-             @endif                         
-             >
-      </div>
-    
-        <div class="form-group col-md-5">
-      <label>CIVIL STATUS </label> 
-      <select class="form-control" name="fstatus" id="fstatus" style="width: 55%;">
-        <option value="SINGLE">SINGLE</option>
-        <option value="MARRIED">MARRIED</option>
-        <option value="DIVORCED">DIVORCED</option>
-        <option value="DECEASED">DECEASED</option>
-        <option value="WWIDOWED">WIDOWED</option>
-        <option value="ANNULLED">ANNULLED</option>
-        <option value="SEPARATED">SEPARATED</option>
-      </select>
-    </div>    
-    </div>
-    <div class="col-md-6 form-inline" style="padding-left: 50px;padding-right: 0px;">
-<h5><b>MOTHER</b></h5>
-    
-        <div class="form-group col-md-12">
-    <label>NAME:</label>
-    <input type="text" class="form-control" name="mname" style="width:90%" id="mname" placeholder="Enter name "
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->mname}}"
-             @endif                       
-           >
-    </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-        <div class="form-group col-md-7 date">
-      <label>DATE OF BIRTH:</label>          
-      <input type="text" name="mbirthdate" style="width: 55%;" id="mbirthdate" class="form-control datepicker" placeholder="Date of Birth"/
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->mbirthdate}}"
-             @endif                         
-             >
-      </div>
-    
-        <div class="form-group col-md-5">
-      <label>CIVIL STATUS </label> 
-      <select class="form-control" name="mstatus" id="mstatus" style="width: 52%;">
-        <option value="SINGLE">SINGLE</option>
-        <option value="MARRIED">MARRIED</option>
-        <option value="DIVORCED">DIVORCED</option>
-        <option value="DECEASED">DECEASED</option>
-        <option value="WIDOWED">WIDOWED</option>
-        <option value="ANNULED">ANNULLED</option>
-        <option value="SEPARATED">SEPARATED</option>
-      </select>
-    </div>
-    </div>
-    </td>
-    </tr>
-    <tr>
-        <td>
-            <div class="col-md-6 form-inline" style="padding-left: 20px;padding-right: 0px;">
-                <div class="form-group col-md-6">
-                <label>RELIGION :</label>
-                <input type="text" class="form-control" name="freligion" style="width:70%" id="freligion" placeholder="Enter Religion"
-                         @if($studentInfo != NULL)
-                         value="{{$studentInfo->freligion}}"
-                         @endif
-                       >
-                </div>
-
-                <div class="form-group col-md-6">
-                <label>NATIONALITY:</label>
-                <input type="text" class="form-control" name="fnationality" style="width:60%" id="fnationality" placeholder="Enter Nationality"
-                         @if($studentInfo != NULL)
-                         value="{{$studentInfo->fnationality}}"
-                         @endif
-                       >
-                </div>
-                
-                <div class="col-md-12">
-                <label>MOBILE NO. :</label>
-                <input type="text" class="form-control" style="width:83%" name="fmobile" id="fmobile" placeholder="Enter Mobile No"
-                         @if($studentInfo != NULL)
-                         value="{{$studentInfo->fmobile}}"
-                         @endif
-                       >
-                </div>                
-            </div>
-            <div class="col-md-6 form-inline" style="padding-left: 50px;padding-right: 0px;">
-                <div class="form-group col-md-6">
-                <label>RELIGION :</label>
-                <input type="text" class="form-control" name="mreligion" id="mreligion" style="width:68.9%" placeholder="Enter Religion"
+     <table width="1138px">
+         <tbody>
+             <tr>
+                 <td colspan="4"><h5><b>FATHER</b></h5></td>
+                 <td></td>
+                 <td colspan="4"><h5><b>MOTHER</b></h5></td>
+             </tr>
+             <tr>
+                 <td><label>Name:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="fname" id="fname" placeholder="Enter name "
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->fname}}"
+                     @endif                       
+                     >
+                 </td>
+                 <td></td>
+                 <td><label>Name:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="mname" id="mname" placeholder="Enter name "
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->mname}}"
+                     @endif                       
+                     >
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="3"><label>Are you a DBTI-Makati Alumnus?</label></td>
+                 <td>
+                     <select class="form-control" name="falumnus" id="falumnus">
+                      <option value="1">YES</option>
+                      <option value="0">NO</option>
+                     </select>
+                 </td>
+                 <td colspan="5"></td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td>Year Graduated</td>
+                 <td colspan="2">
+                     <input type="text" class="form-control" name="fyeargraduated" id="fyeargraduated" placeholder="Enter year"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->fyeargraduated}}"
+                     @endif                       
+                     />
+                 </td>
+                 <td colspan="5">
+             </tr>
+             <tr>
+                 <td width="101px"><label>Date of Birth:</label></td>
+                 <td>
+                     <input type="text" name="fbirthdate" id="fbirthdate" class="form-control datepicker" placeholder="Date of Birth"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->fbirthdate}}"
+                     @endif                         
+                     />
+                 </td>
+                 <td width="92px"><label>Civil Status:</label></td>
+                 <td>
+                    <select class="form-control" name="fstatus" id="fstatus">
+                      <option value="SINGLE">SINGLE</option>
+                      <option value="MARRIED">MARRIED</option>
+                      <option value="DIVORCED">DIVORCED</option>
+                      <option value="DECEASED">DECEASED</option>
+                      <option value="WIDOWED">WIDOWED</option>
+                      <option value="ANNULLED">ANNULLED</option>
+                      <option value="SEPARATED">SEPARATED</option>
+                    </select>                     
+                 </td>
+                 <td width="40px"></td>
+                 <td width="101px"><label>Date of Birth:</label></td>
+                 <td>
+                     <input type="text" name="mbirthdate" id="mbirthdate" class="form-control datepicker" placeholder="Date of Birth"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->mbirthdate}}"
+                     @endif                         
+                     />
+                 </td>
+                 <td width="92px"><label>Civil Status:</label></td>
+                 <td>
+                    <select class="form-control" name="mstatus" id="mstatus">
+                      <option value="SINGLE">SINGLE</option>
+                      <option value="MARRIED">MARRIED</option>
+                      <option value="DIVORCED">DIVORCED</option>
+                      <option value="DECEASED">DECEASED</option>
+                      <option value="WIDOWED">WIDOWED</option>
+                      <option value="ANNULLED">ANNULLED</option>
+                      <option value="SEPARATED">SEPARATED</option>
+                    </select>                     
+                 </td>                 
+             </tr>
+             <tr>
+                 <td><label>Religion:</label></td>
+                 <td>
+                     <input type="text" class="form-control" name="mreligion" id="mreligion" placeholder="Enter Religion"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->mreligion}}"
                          @endif
                        >
-                </div>
-
-                <div class="form-group col-md-6">
-                <label>NATIONALITY:</label>
-                <input type="text" class="form-control" name="mnationality" id="mnationality" style="width:59.5%" placeholder="Enter Nationality"
+                 </td>
+                 <td><label>Nationality:</label></td>
+                 <td>
+                     <input type="text" class="form-control" name="mnationality" id="mnationality"  placeholder="Enter Nationality"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->mnationality}}"
                          @endif
                        >
-                </div>
-                <div class="col-md-12">
-                <label>MOBILE NO. :</label>
-                <input type="text" class="form-control" name="mmobile" style="width:82.5%" id="mmobile" placeholder="Enter Mobile No"
+                 </td>
+                 <td></td>
+                 <td><label>Religion:</label></td>
+                 <td>
+                     <input type="text" class="form-control" name="mreligion" id="mreligion" placeholder="Enter Religion"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->mreligion}}"
+                         @endif
+                       >
+                 </td>
+                 <td><label>Nationality:</label></td>
+                 <td>
+                     <input type="text" class="form-control" name="mnationality" id="mnationality" placeholder="Enter Nationality"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->mnationality}}"
+                         @endif
+                       >
+                 </td>
+             </tr>
+             <tr>
+                 <td><label>Mobile No.:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="fmobile" id="fmobile" placeholder="Enter Mobile No"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->fmobile}}"
+                         @endif
+                       >
+                 </td>
+                 <td></td>
+                 <td><label>Mobile No.:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="mmobile" id="mmobile" placeholder="Enter Mobile No"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->mmobile}}"
                          @endif
                        >
-                </div>                                
-            </div>            
-        </td>
-    </tr>
-    <tr>
-        <td>
-    <div class="col-md-6"  style="padding-left: 35px;padding-right: 0px;">
-    <label>WHAT COURSE DID YOU TAKE-UP IN COLLEGE?</label>
-    <input type="text" class="form-control" name="fcourse" id="fcourse" placeholder="Enter year"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->fcourse}}"
-             @endif                                  
-           >
-    </div>
-    <div class="col-md-6"  style="padding-left: 65px;padding-right: 0px;">
-    <label>WHAT COURSE DID YOU TAKE-UP IN COLLEGE?</label>
-    <input type="text" class="form-control" name="mcourse" id="mcourse" placeholder="Enter year"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->mcourse}}"
-             @endif                                  
-           >
-    </div>            
-    </td>    
-    </tr>
-    
-    <tr>     
-    <td>      
-        <div class="col-md-6 form-inline " style="padding-left: 20px;padding-right: 0px;">
-            <h5><b>Occupation</b></h5>
-            <div class="form-group col-md-12">
-              <label>ARE YOU SELF-EMPLOYED? </label> 
-              <select style = "width: 80px" class="form-control" name="fselfemployed" id="fselfemployed">
-                  <option value="1">YES</option>
-                  <option value="0">NO</option>
-              </select>
-            </div>
-            <div class="form-group col-md-12">
-            <label>FULL-TIME:</label>
-            <input type="text" class="form-control" style="width: 85.5%;" name="fFulljob" id="fFulljob" placeholder="Enter full time "
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="4"><label>What course did you take up in college?</label></td>
+                 <td></td>
+                 <td colspan="4"><label>What course did you take up in college?</label></td>
+             </tr>
+             <tr>
+                 <td colspan="4">
+                     <input type="text" class="form-control" name="fcourse" id="fcourse" placeholder="Enter year"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->fcourse}}"
+                     @endif                                  
+                     >
+                 </td>
+                 <td></td>
+                 <td colspan="4">
+                     <input type="text" class="form-control" name="mcourse" id="mcourse" placeholder="Enter year"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->mcourse}}"
+                     @endif                                  
+                     >
+                 </td>
+             </tr>
+             <tr>
+                 <td>
+                     <br>
+                     <br>
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="4">
+                     <h5><b>Occupation</b></h5>
+                 </td>
+                 <td></td>
+                 <td colspan="4">
+                     <h5><b>Occupation</b></h5>
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="3"><label>Are you self-employed</label></td>
+                 <td>
+                     <select class="form-control" name="fselfemployed" id="fselfemployed">
+                      <option value="1">YES</option>
+                      <option value="0">NO</option>
+                     </select>
+                 </td>
+                 <td></td>
+                 <td colspan="3"><label>Are you self-employed</label></td>
+                 <td>
+                     <select class="form-control" name="mselfemployed" id="mselfemployed">
+                        <option value="1">YES</option>
+                        <option value="0">NO</option>
+                     </select>
+                 </td>
+             </tr>
+             <tr>
+                 <td><label>Full-time:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="fFulljob" id="fFulljob" placeholder="Enter full time "
                      @if($studentInfo != NULL)
                      value="{{$studentInfo->fFulljob}}"
                      @endif                                             
                    >
-            </div>            
-            <div class="form-group col-md-12">
-            <label>PART-TIME:</label>
-            <input type="text" class="form-control" name="fPartjob" style="width: 85.5%;" id="fPartjob" placeholder="Enter part time "
-                     @if($studentInfo != NULL)
-                     value="{{$studentInfo->fPartjob}}"
-                     @endif
-                   >
-            </div>
-            <label class="col-md-12">POSITION: (MAIN SOURCE OF INCOME) </label> 
-          <div class="col-md-12">      
-          <select class="form-control" name="fposition" id="fposition">
-            <option value="TOP MANAGEMENT">TOP MANAGEMENT</option>
-            <option value="MIDDLE MANAGEMENT">MIDDLE MANAGEMENT</option>
-            <option value="SUPERVISORY">SUPERVISORY</option>
-            <option value="RANK & FILE">RANK & FILE</option>
-          </select>
-        </div>
-        <div class="col-md-12">
-        <label>MONTHLY INCOME: </label>
-        <input type="text" class="form-control" name="fincome" id="fincome" style="width: 75.5%;" placeholder="Enter course in college"
-                 @if($studentInfo != NULL)
-                 value="{{$studentInfo->fincome}}"
-                 @endif                                             
-               >
-        </div>
-        <div class="col-md-12">
-        <label>COMPANY NAME: </label>
-        <input type="text" class="form-control" name="fcompany" id="fcompany" style="width: 77.8%;" placeholder="Enter company name"
-                 @if($studentInfo != NULL)
-                 value="{{$studentInfo->fcompany}}"
-                 @endif                                             
-               >
-        </div>
-        <label class="col-md-12">COMPANY ADDRESS: </label>
-    <div class="col-md-12">
-    <input typ  e="text" class="form-control" name="fComAdd" id="fComAdd" style="width:100%" placeholder="Enter company address"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->fComAdd}}"
-             @endif                                             
-           >
-    </div>
-    <div class="col-md-12">
-    <label>OFFICE TEL. NO.: </label>
-    <input type="text" class="form-control" name="fOfficePhone" id="fOfficePhone" style="width:79.4%;" placeholder="Enter office tel. no."
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->fOfficePhone}}"
-             @endif                                             
-           >
-    </div>
-    <div class="col-md-12">
-    <label>OFFICE FAX NO.: </label>
-    <input type="text" class="form-control" name="ffax" id="ffax" style="width: 79.4%;" placeholder="Enter office fax no."
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->ffax}}"
-             @endif                                             
-           >
-    </div>
-    <div class="col-md-12">
-    <label>EMAIL ADDRESS: </label>
-    <input type="text" class="form-control" name="femail" id="femail" style="width: 78.5%;" placeholder="Enter email"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->femail}}"
-             @endif                                             
-           >
-    </div>
-        </div>
-
-        
-        <div class="col-md-6 form-inline" style="padding-left: 50px;padding-right: 0px;" >
-            <h5><b>Occupation</b></h5>
-            <div class="form-group col-md-12">
-              <label>ARE YOU SELF-EMPLOYED? </label> 
-              <select style = "width: 80px" class="form-control" name="mselfemployed" id="mselfemployed">
-                  <option value="1">YES</option>
-                  <option value="0">NO</option>
-              </select>
-            </div>
-            <div class="form-group col-md-12">
-            <label>FULL-TIME:</label>
-            <input type="text" class="form-control" name="mFulljob" id="mFulljob" style="width: 84.8%;" placeholder="Enter full time "
+                 </td>
+                 <td></td>
+                 <td><label>Full-time:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="mFulljob" id="mFulljob" placeholder="Enter full time "
                      @if($studentInfo != NULL)
                      value="{{$studentInfo->mFulljob}}"
                      @endif                                             
                    >
-            </div>            
-            <div class="form-group col-md-12">
-            <label>PART-TIME:</label>
-            <input type="text" class="form-control" name="mPartjob" id="mPartjob" style="width: 84.8%;" placeholder="Enter part time "
+                 </td>
+             </tr>
+             <tr>
+                 <td><label>Part-time:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="fPartjob" id="fPartjob" placeholder="Enter part time "
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->fPartjob}}"
+                     @endif
+                   >
+                 </td>
+                 <td></td>
+                 <td><label>Part-time:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="mPartjob" id="mPartjob" placeholder="Enter part time "
                      @if($studentInfo != NULL)
                      value="{{$studentInfo->mPartjob}}"
                      @endif
                    >
-            </div>
-            <label class="col-md-12">POSITION: (MAIN SOURCE OF INCOME) </label> 
-          <div class="col-md-12">      
-          <select class="form-control" name="mposition" id="mposition">
-            <option value="TOP MANAGEMENT">TOP MANAGEMENT</option>
-            <option value="MIDDLE MANAGEMENT">MIDDLE MANAGEMENT</option>
-            <option value="SUPERVISORY">SUPERVISORY</option>
-            <option value="RANK & FILE">RANK & FILE</option>
-          </select>
-        </div>
-        <div class="col-md-12">
-        <label>MONTHLY INCOME: </label>
-        <input type="text" class="form-control" name="mincome" id="mincome" style="width: 74.4%;" placeholder="Enter course in college"
-                 @if($studentInfo != NULL)
-                 value="{{$studentInfo->mincome}}"
-                 @endif                                             
-               >
-        </div>
-        <div class="col-md-12">
-        <label>COMPANY NAME: </label>
-        <input type="text" class="form-control" name="mcompany" id="mcompany" style="width: 76.5%;" placeholder="Enter company name"
-                 @if($studentInfo != NULL)
-                 value="{{$studentInfo->mcompany}}"
-                 @endif                                             
-               >
-        </div>
-        <label class="col-md-12">COMPANY ADDRESS: </label>
-    <div class="col-md-12">
-    <input typ  e="text" class="form-control" name="mComAdd" id="mComAdd" style="width: 100%;" placeholder="Enter company address"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->mComAdd}}"
-             @endif                                             
-           >
-    </div>
-    <div class="col-md-12">
-    <label>OFFICE TEL. NO.: </label>
-    <input type="text" class="form-control" name="mOfficePhone" id="mOfficePhone" style="width: 78.1%;" placeholder="Enter office tel. no."
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->mOfficePhone}}"
-             @endif                                             
-           >
-    </div>
-    <div class="col-md-12">
-    <label>OFFICE FAX NO.: </label>
-    <input type="text" class="form-control" name="mfax" id="mfax" style="width: 78.3%;" placeholder="Enter office fax no."
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->mfax}}"
-             @endif                                             
-           >
-    </div>
-    <div class="col-md-12">
-    <label>EMAIL ADDRESS: </label>
-    <input type="text" class="form-control" name="memail" id="memail" style="width: 77.3%;" placeholder="Enter email"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->memail}}"
-             @endif                                             
-           >
-    </div>
-        </div>        
-    </td>    
-    </tr>
-    
-  </tbody>
-  </table>
-
-
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="4"><label>Position:(Main source of income)</label></td>
+                 <td></td>
+                 <td colspan="4"><label>Position:(Main source of income)</label></td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td colspan="2">
+                     <select class="form-control" name="fposition" id="fposition">
+                        <option value="TOP MANAGEMENT">TOP MANAGEMENT</option>
+                        <option value="MIDDLE MANAGEMENT">MIDDLE MANAGEMENT</option>
+                        <option value="SUPERVISORY">SUPERVISORY</option>
+                        <option value="RANK & FILE">RANK & FILE</option>
+                    </select>
+                 </td>
+                 <td colspan="3"></td>
+                 <td colspan="2">
+                     <select class="form-control" name="mposition" id="mposition">
+                        <option value="TOP MANAGEMENT">TOP MANAGEMENT</option>
+                        <option value="MIDDLE MANAGEMENT">MIDDLE MANAGEMENT</option>
+                        <option value="SUPERVISORY">SUPERVISORY</option>
+                        <option value="RANK & FILE">RANK & FILE</option>
+                     </select>
+                 </td>
+                 <td></td>
+             </tr>
+             <tr>
+                 <td width="123px"><label>Monthly Income:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="fincome" id="fincome" placeholder="Enter course in college"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->fincome}}"
+                     @endif                                             
+                     >
+                 </td>
+                 <td></td>
+                 <td width="123px"><label>Monthly Income:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="mincome" id="mincome" placeholder="Enter course in college"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->mincome}}"
+                     @endif                                             
+                     >
+                 </td>
+             </tr>
+             <tr>
+                 <td><label>Company Name:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="fcompany" id="fcompany" placeholder="Enter company name"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->fcompany}}"
+                     @endif                                             
+                     >
+                 </td>
+                 <td></td>
+                 <td><label>Company Name:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="mcompany" id="mcompany" placeholder="Enter company name"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->mcompany}}"
+                     @endif                                             
+                     >
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="4"><label>Company Address:</label></td>
+                 <td></td>
+                 <td colspan="4"><label>Company Address:</label></td>
+             </tr>
+             <tr>
+                 <td colspan="4">
+                     <input typ  e="text" class="form-control" name="fComAdd" id="fComAdd" placeholder="Enter company address"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->fComAdd}}"
+                     @endif                                             
+                     >
+                 </td>
+                 <td></td>
+                 <td colspan="4">
+                     <input typ  e="text" class="form-control" name="mComAdd" id="mComAdd" placeholder="Enter company address"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->mComAdd}}"
+                     @endif                                             
+                     >
+                 </td>
+             </tr>
+             <tr>
+                 <td><label>Office Tel. No.:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="fOfficePhone" id="fOfficePhone" placeholder="Enter office tel. no."
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->fOfficePhone}}"
+                     @endif                                             
+                     >
+                 </td>
+                 <td></td>
+                 <td><label>Office Tel. No.:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="mOfficePhone" id="mOfficePhone" placeholder="Enter office tel. no."
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->mOfficePhone}}"
+                     @endif                                             
+                     >
+                 </td>
+             </tr>
+             <tr>
+                 <td><label>Office Fax No.:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="ffax" id="ffax" placeholder="Enter office fax no."
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->ffax}}"
+                     @endif                                             
+                     >
+                 </td>
+                 <td></td>
+                 <td><label>Office Fax No.:</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="mfax" id="mfax" placeholder="Enter office fax no."
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->mfax}}"
+                     @endif                                             
+                     >
+                 </td>
+             </tr>
+             <tr>
+                 <td><label>Email Address</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="femail" id="femail" placeholder="Enter email"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->femail}}"
+                     @endif                                             
+                     >
+                 </td>
+                 <td></td>
+                 <td><label>Email Address</label></td>
+                 <td colspan="3">
+                     <input type="text" class="form-control" name="memail" id="memail" placeholder="Enter email"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->memail}}"
+                     @endif                                             
+                     >
+                 </td>
+             </tr>
+         </tbody>
+     </table>
 </div>    
 
 
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo5"><strong>RESIDENCE AND TRANSPORTATION DATA</strong></button>
  <div id="demo5" class="collapse">
-  
-            
-  <table class="table">
-    <tbody>
-    
-    <tr>       
-    <td> 
-        
-    <div class="col-md-4">
-      <label>RESIDENCE TYPE : </label> 
-      <select style = "width: 140px"class="form-control" name="residence" id="residence">
-        <option value="HOUSE">HOUSE</option>
-        <option value="APARTMENT">APARTMENT</option>
-        <option value="CONDOMINIUM">CONDOMINIUM</option>
-        <option value="TOWNHOUSE">TOWNHOUSE</option>
-      </select> 
-    </div>
-        
-        <div class="col-md-4">
-      <label>OWNERSHIP OF RESIDENCE: </label> 
-      <select style = "width: 190px"class="form-control" name="ownership" id="ownership">
-        <option value="OWN">OWN</option>
-        <option value="RENTED">RENTED</option>
-        <option value="WITH PARENTS">LIVING WITH PARENTS</option>
-      </select>
-    </div>
-        
-        <div class="col-md-4">
-      <label>NUMBER OF HOUSEHOLD HELPER(S) </label> 
-      <input type="text" style = "width: 115px"class="form-control" name="numHouseHelp" id="numHouseHelp" placeholder="Enter number"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->numHouseHelp}}"
-             @endif             
-             >
-    </div>
-    </td>
-    </tr>
-        
-    <tr>
-    <td>    
-    <div class="col-md-4">
-      <label>MEANS OF TRANSPORTATION : </label> 
-      <select style = "width: 140px"class="form-control" name="transportation" id="transportation">
-        <option value="COMMUTE">COMMUTE</option>
-        <option value="SCHOOL BUS">SCHOOL BUS</option>
-        <option value="OWN">OWN VEHICLE</option>
-      </select>
-    </div>
-
-    <div class="col-md-4" id="carcount">
-      <label>HOW MANY? </label> 
-      <input type="text" style = "width: 115px"class="form-control" name="carcount" placeholder="Enter number"
-             @if($studentInfo != NULL)
-             value="{{$studentInfo->carcount}}"
-             @endif             
-             >
-    </div>        
-        
-        <div class="col-md-4">
-      <label>DO YOU HAVE A COMPUTER AT HOME? </label> 
-      <select style = "width: 80px" class="form-control" name="haveComputer" id="haveComputer">
-        <option value="1">YES</option>
-        <option value="0">NO</option>
-      </select>
-    </div>
-        
-    </td>
-    </tr>
-        
-    <tr>       
-    <td>         
-        <div class="col-md-5">
-      <label>DO YOU HAVE AN INTERNET CONNECTION AT HOME? </label> 
-      <select style = "width: 80px" class="form-control" name="haveInternet" id="haveInternet">
-        <option value="1">YES</option>
-        <option value="0">NO</option>
-      </select>
-    </div> 
-        
-        
-      <div class="col-md-5">
-      <label>     IF YES, WHAT TYPE OF INTERNET CONNECTION? </label> 
-      <select style = "width: 110px" class="form-control" name="internetType" id="internetType">
-        <option value="DSL">DSL</option>
-        <option value="WIRELESS">WIRELESS</option>
-        <option value="DIAL-UP">DIAL-UP</option>
-        <option value="OTHERS">OTHERS</option>        
-      </select>
-    </div>
-        
-    </td>    
-    </tr>    
-    
-    
-  </tbody>
-  </table>
-
+     <table width="1138px">
+         <tbody>
+             <tr>
+                 <td colspan="2"><label>Residence Type: </label> </td>
+                 <td>
+                     <select class="form-control" name="residence" id="residence">
+                        <option value="HOUSE">HOUSE</option>
+                        <option value="APARTMENT">APARTMENT</option>
+                        <option value="CONDOMINIUM">CONDOMINIUM</option>
+                        <option value="TOWNHOUSE">TOWNHOUSE</option>
+                     </select> 
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="2"><label>Ownership of Residence:</label></td>
+                 <td >
+                     <select class="form-control" name="ownership" id="ownership">
+                        <option value="OWN">OWN</option>
+                        <option value="RENTED">RENTED</option>
+                        <option value="WITH PARENTS">LIVING WITH PARENTS</option>
+                     </select>
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="2"><label>Number of Household Helper(s):</label></td>
+                 <td>
+                     <input type="text" class="form-control" name="numHouseHelp" id="numHouseHelp" placeholder="Enter number"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->numHouseHelp}}"
+                     @endif             
+                     >
+                 </td>
+             </tr>
+             <tr>
+                 <td><label>Means of Transportation</label></td>
+                 <td>
+                     <select class="form-control" name="transportation" id="transportation">
+                        <option value="COMMUTE">COMMUTE</option>
+                        <option value="SCHOOL BUS">SCHOOL BUS</option>
+                        <option value="OWN">OWN VEHICLE</option>
+                     </select>
+                 </td>
+                 <td><label>How many?</label></td>
+                 <td>
+                     <input type="text" class="form-control" name="carcount" placeholder="Enter number"
+                     @if($studentInfo != NULL)
+                     value="{{$studentInfo->carcount}}"
+                     @endif             
+                     >
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="2"><label>Do you have any computer at home?</label></td>
+                 <td>
+                     <select  class="form-control" name="haveComputer" id="haveComputer">
+                        <option value="1">YES</option>
+                        <option value="0">NO</option>
+                     </select>
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="2"><label>Do you have an internet connection at home?</label></td>
+                 <td>
+                     <select  class="form-control" name="haveInternet" id="haveInternet">
+                        <option value="1">YES</option>
+                        <option value="0">NO</option>
+                     </select>
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="2">If yes, what type of internet connection:</td>
+                 <td>
+                     <select  class="form-control" name="internetType" id="internetType">
+                        <option value="DSL">DSL</option>
+                        <option value="WIRELESS">WIRELESS</option>
+                        <option value="DIAL-UP">DIAL-UP</option>
+                        <option value="OTHERS">OTHERS</option>        
+                     </select>
+                 </td>
+             </tr>
+         </tbody>
+     </table>
 
 </div>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo6 "><strong>SIBLING DATA</strong></button>
 <div class="collapse" id="demo6">
-  <table class="table">
+  <table width="1138px">
       <thead>
       <th class="col-sm-2">Name of student according to age (eldest to youngest)</th>
       <th class="col-sm-2">Birthday</th>

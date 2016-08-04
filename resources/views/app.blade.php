@@ -71,8 +71,7 @@
                                         <ul class="dropdown-menu" role="menu">
                                         
                                                 <li><a href="{{url('studentinfokto12')}}"><i class="fa fa-btn"></i>Add/Update</a></li>
-                                                <li><a href="{{url('printinfo')}}"><i class="fa fa-btn"></i>Print List</a></li>
-                                        
+                                              
                                         </ul>
                                         </li>
                                         
