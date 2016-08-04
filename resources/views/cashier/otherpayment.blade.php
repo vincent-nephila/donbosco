@@ -150,7 +150,7 @@
                          <h5> Total </h5>
                          </div>
                         <div class="col-md-4">
-                            <input type="text" style="text-align:right" value="0.00" disabled="true" id="totalcredit" name="totalcredit" class="form-control">
+                            <input type="text" style="text-align:right" value="0.00" readonly="readonly" id="totalcredit" name="totalcredit" class="form-control">
                         </div>
                     </div>
                     
@@ -164,9 +164,12 @@
                  
                    
                      <div class="form-group">
-                      <label>Cash Rendered</label> <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "cash" name="cash">
-                    </div>
+                      <label>Cash Rendered : </label> <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cashrendered')" class="form-control" id = "cash" name="cash">
                     
+                     </div>
+                    <div class="form-group">
+                      <div>Change : <span style="color:red;font-size: 10pt; font-weight: bold" id="change">0.00</span></div>
+                    </div>    
                     <div class="form-group">
                          <table class="table table-responsive"  style="background-color: #ccc"><tr>
                            
@@ -176,7 +179,7 @@
                         <td><input type="checkbox" name="iscbc" id="iscbc" value="cbc" onkeydown="submitiscbc(event,this.checked)"> China Bank Check<label>Check Number</label>
                         <input  type="text" name="check_number" id="check_number" onkeydown = "nosubmit(event,'check')" class="form form-control">
                         </td></tr>
-                        <tr><td colspan="2"><label>Check Amount</label><input style ="text-align: right" type="text" name="check" id="check" onkeypress="validateother(event,'cash')"   value="0.00" class="form form-control">
+                        <tr><td colspan="2"><label>Check Amount : </label><input style ="text-align: right" type="text" name="check" id="check" onkeypress="validateother(event,'check')"   placeholder="0.00" class="form form-control">
                         </td></tr>
                                        
                         </table>
@@ -271,6 +274,50 @@
                 }*/
                 document.getElementById('cash').focus();
             }
+                else if(varcontrol=="cashrendered"){
+                  if(document.getElementById('cash').value==""){
+                      alert("No amount entered!!")
+                      document.getElementById('bank_branch').focus()
+                  }  else {
+                    if(eval(document.getElementById('totalcredit').value)==0){
+                        alert('Nothing to Process')
+                        document.getElementById('amount1').focus();
+                    }
+                    else{
+                     var totalcredit = eval(document.getElementById('totalcredit').value);
+                     var totalcash = eval(document.getElementById('cash').value);
+                     if(totalcash >= totalcredit){
+                         total=totalcash-totalcredit;
+                         document.getElementById('change').innerHTML = total.toFixed(2)
+                         document.getElementById('submit').style.visibility="visible";
+                         document.getElementById('submit').focus();
+                     }
+                     else{
+                         document.getElementById('bank_branch').focus();
+                     }
+                    }}
+                } else if(varcontrol == "check"){
+                    if(document.getElementById("check").value==""){
+                        alert("No amount entered!!")
+                    }else{
+                     if(eval(document.getElementById('check').value) > eval(document.getElementById("totalcredit").value)){
+                         alert("Invalid amount")
+                         document.getElementById('check').value = "";
+                     }   else {
+                      totalcredit = eval(document.getElementById('totalcredit').value);
+                      totalcash = eval(document.getElementById('cash').value);
+                      totalcheck = eval(document.getElementById('check').value);
+                     if(totalcredit <= totalcheck + totalcash){
+                         total = totalcheck+totalcash-totalcredit
+                         document.getElementById('change').innerHTML = total.toFixed(2)
+                         document.getElementById('submit').style.visibility="visible";
+                         document.getElementById('submit').focus();
+           
+                        }
+                     }
+                    }
+                }
+            
             theEvent.preventDefault();
             
             return false; 

@@ -583,7 +583,7 @@ function otherpayment($idno){
         $debit->bank_branch=$request->bank_branch;
         $debit->check_number=$request->check_number;
         $debit->iscbc=$iscbc;
-        $debit->amount = $request->cash;
+        $debit->amount = $request->totalcredit - $request->check;
         $debit->receiveamount = $request->cash;
         $debit->checkamount=$request->check;
         $debit->receivefrom=$student->lastname . ", " . $student->firstname . " " . $student->extensionname . " " .$student->middlename;
