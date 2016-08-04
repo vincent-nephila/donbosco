@@ -47,7 +47,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('printsection/{level}/{section}/{strand}', 'Registrar\SectionController@printsection1');
     Route::get('printsection/{level}/{section}', 'Registrar\SectionController@printsection');
     Route::get('printinfo','Registrar\StudentlistController@printinfo');
-    //cashier module
+     Route::get('studentinfokto12/{idno}','Registrar\Studentinfokto12Controller@studentinfokto12edit');
+    Route::post('studentinfokto12/{idno}','Registrar\Studentinfokto12Controller@updateInfo');
+    Route::get('studentinfokto12/{idno}/delete','Registrar\Studentinfokto12Controller@deleteStudent');
+    Route::get('studentinfokto12/{idno}/print','Registrar\Studentinfokto12Controller@printInfo');    
+    Route::get('studentinfokto12','Registrar\Studentinfokto12Controller@studentinfokto12');
+    Route::post('studentinfokto12','Registrar\Studentinfokto12Controller@saveInfo');
+    
+//cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
     Route::post('payment','Cashier\CashierController@payment');
     Route::get('/setreceipt/{id}','Cashier\CashierController@setreceipt');
@@ -87,6 +94,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('viewdm/{refno}/{idno}','Accounting\AccountingController@viewdm');
     Route::get('printdmcm/{refno}/{idno}','Accounting\AccountingController@printdmcm');
     Route::get('dmcmreport/{transationdate}','Accounting\AccountingController@dmcmreport');
+    Route::get('dmcmallreport/{transactiondate}','Accounting\AccountingController@dmcmallreport');
     Route::get('collectionreport/{datefrom}/{dateto}','Accounting\AccountingController@collectionreport');
     Route::get('printdmcmreport/{idno}/{transactiondate}','Accounting\AccountingController@printdmcmreport');
     Route::get('summarymain','Accounting\AccountingController@summarymain');

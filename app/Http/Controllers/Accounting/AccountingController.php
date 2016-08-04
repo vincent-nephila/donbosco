@@ -488,6 +488,15 @@ class AccountingController extends Controller
        return $pdf->stream();
   
 }
+function dmcmallreport($transactiondate){
+    $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
+                . " dedits.transactiondate, dedits.isreverse,  dedits.refno, dedits.acctcode from users, dedits where users.idno = dedits.idno and"
+                . " dedits.transactiondate = '" 
+                . $transactiondate . "' and dedits.paymenttype = '3' group by users.idno, dedits.transactiondate, users.lastname, users.firstname, dedits.isreverse,dedits.refno, dedits.acctcode order by dedits.refno" );
+
+              return view('accounting.dmcmreport', compact('collections','transactiondate'));
+}
+
 function dmcmreport($transactiondate){
 $matchfields = ['postedby'=>\Auth::user()->idno, 'transactiondate'=>$transactiondate];
 //$matchfields = ['transactiondate'=>$transactiondate];

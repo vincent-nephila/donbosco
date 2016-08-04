@@ -64,7 +64,7 @@
                     {!! csrf_field() !!} 
                     <input type="hidden" name="idno" value="{{$student->idno}}">
                     <div class="form-group">
-                        <h5>Reservation : </h5> <input class="form-control" style="text-align:right" type="text" name="reservation" onkeypress = "validateother(event,'reservation')"   value="0.00" id="reservation" onblur="ctotal()">
+                        <h5>Reservation : </h5> <input class="form-control" style="text-align:right" type="text" name="reservation" onkeypress = "validateother(event,'reservation')"   placeholder="0.00" id="reservation" onblur="ctotal()">
                     </div>
                     <h5>Other Collection</h5>
                     <div class="col-md-4">Account Type</div><div class="col-md-4">Particular</div><div class="col-md-4">Amount</div>
@@ -83,7 +83,7 @@
                     </select>  
                     </div>
                      <div class="col-md-4">
-                         <input type="text" style="text-align:right" value = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount1" name="amount1" onblur="ctotal()">
+                         <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount1" name="amount1" onblur="ctotal()">
                     </div>
                     </div>
                     <div class="form-group">
@@ -101,7 +101,7 @@
                     </select>  
                     </div>
                      <div class="col-md-4">
-                      <input type="text" style="text-align:right" value = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount2" name="amount2" onblur="ctotal()">
+                      <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount2" name="amount2" onblur="ctotal()">
                     </div>
                     </div>
                     
@@ -120,7 +120,7 @@
                     </select>  
                     </div>
                      <div class="col-md-4">
-                      <input type="text" style="text-align:right" value = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount3" name="amount3" onblur="ctotal()">
+                      <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount3" name="amount3" onblur="ctotal()">
                     </div>
                     </div>
                     
@@ -139,7 +139,7 @@
                     </select>  
                     </div>
                      <div class="col-md-4">
-                      <input type="text" style="text-align:right" value = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount4" name="amount4" onblur="ctotal()">
+                      <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount4" name="amount4" onblur="ctotal()">
                     </div>
                     </div>
                     
@@ -164,7 +164,7 @@
                  
                    
                      <div class="form-group">
-                      <label>Cash Amount</label> <input type="text" style="text-align:right" value = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "cash" name="cash">
+                      <label>Cash Rendered</label> <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "cash" name="cash">
                     </div>
                     
                     <div class="form-group">
@@ -261,13 +261,15 @@
             document.getElementById('cash').focus();   
             }
             else if(varcontrol=="cash"){
+                /*
                 var totalcredit = eval(document.getElementById('totalcredit').value);
                 var totalcash = eval(document.getElementById('cash').value);
                 var totalcheck = eval(document.getElementById('check').value);
                 if(totalcredit == totalcash+totalcheck){
                     document.getElementById('submit').style.visibility="visible";
                     document.getElementById('submit').focus();
-                }
+                }*/
+                document.getElementById('cash').focus();
             }
             theEvent.preventDefault();
             
@@ -279,15 +281,15 @@
         
         function ctotal(){
  // alert(document.getElementById('reservation').value)
-            var r = eval(document.getElementById('reservation').value);
-            var amount1 = eval(document.getElementById('amount1').value);
-            var amount2 = eval(document.getElementById('amount2').value);
-            var amount3 = eval(document.getElementById('amount3').value);
-            var amount4 = eval(document.getElementById('amount4').value);
+            var r = document.getElementById('reservation').value != "" ? eval(document.getElementById('reservation').value):0;
+            var amount1 = document.getElementById('amount1').value != "" ? eval(document.getElementById('amount1').value):0;
+            var amount2 = document.getElementById('amount2').value != "" ? eval(document.getElementById('amount2').value):0;
+            var amount3 = document.getElementById('amount3').value != "" ? eval(document.getElementById('amount3').value):0;
+            var amount4 = document.getElementById('amount4').value != "" ? eval(document.getElementById('amount4').value):0;
             document.getElementById('totalcredit').value = r + amount1 + amount2 + amount3 + amount4;
             var totalcredit = eval(document.getElementById('totalcredit').value);
-                var totalcash = eval(document.getElementById('cash').value);
-                var totalcheck = eval(document.getElementById('receivecheck').value);
+                var totalcash = document.getElementById('cash').value != "" ? eval(document.getElementById('cash').value):0;
+                var totalcheck = document.getElementById('receivecheck').value  != "" ? eval(document.getElementById('receivecheck').value):0;
                 if(totalcredit == totalcash+totalcheck){
                     document.getElementById('submit').style.visibility="visible";
                     document.getElementById('submit').focus();

@@ -65,8 +65,9 @@ body { margin: 0px; }
             <tr><td colspan="2"><span style="margin-left: 70px">{{$debit_cash->bank_branch}}</span></td></tr>
             <tr><td><span style="margin-left: 80px">{{$debit_cash->check_number}} - {{$debit_cash->checkamount}}</span></td><td align="right">{{$posted->firstname}} {{$posted->lastname}}</td></tr>
             <tr><td colspan = "2"></td></tr>
-           
-            <tr><td></td><td>OR : <span style = "font-size:10pt; font-weight:bold">{{$tdate->receiptno}}</span></td></tr>
+           </table>
+           <table width="100%" border = "0">
+            <tr><td width="30%"></td><td>OR : <span style = "font-size:10pt; font-weight:bold">{{$tdate->receiptno}}</span></td></tr>
             <tr><td></td><td>Ref No : <span style = "font-size:10pt; font-weight:bold">{{$tdate->refno}}</span></td></tr>
             </table>
     
