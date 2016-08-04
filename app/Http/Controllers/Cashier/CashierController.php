@@ -270,7 +270,8 @@ class CashierController extends Controller
             $depositto = $request->depositto;    
             $totalcash = $request->receivecash - $request->change;
             $receiveamount = $request->receivecash ;
-            $this->debit($request->idno,env('DEBIT_CHECK') , $bank_branch, $check_number,$totalcash, $request->receivecheck, $iscbc,$depositto,$receiveamount);
+            $remarks=$request->remarks;
+            $this->debit($request->idno,env('DEBIT_CHECK') , $bank_branch, $check_number,$totalcash, $request->receivecheck, $iscbc,$depositto,$receiveamount,$remarks);
             //}
             
             
@@ -368,7 +369,7 @@ class CashierController extends Controller
         }
     }
    
-    function debit($idno, $paymenttype, $bank_branch, $check_number,$cashamount,$checkamount,$iscbc,$depositto,$receiveamount){
+    function debit($idno, $paymenttype, $bank_branch, $check_number,$cashamount,$checkamount,$iscbc,$depositto,$receiveamount,$remarks){
         $student= \App\User::where('idno', $idno)->first();
         $debitaccount = new \App\Dedit;
         $debitaccount->idno = $idno;
@@ -383,7 +384,8 @@ class CashierController extends Controller
         $debitaccount->iscbc = $iscbc;
         $debitaccount->depositto = $depositto;
         $debitaccount->checkamount = $checkamount;
-        $debitaccount->amount = $cashamount;    
+        $debitaccount->amount = $cashamount;
+        $debitaccount->remarks = $remarks;
         $debitaccount->postedby=\Auth::user()->idno;
         $debitaccount->save();
         
@@ -588,6 +590,7 @@ function otherpayment($idno){
         $debit->checkamount=$request->check;
         $debit->receivefrom=$student->lastname . ", " . $student->firstname . " " . $student->extensionname . " " .$student->middlename;
         $debit->depositto=$request->depositto;
+        $debit->remarks=$request->remarks;
         $debit->postedby= \Auth::user()->idno;
         $debit->save();
         

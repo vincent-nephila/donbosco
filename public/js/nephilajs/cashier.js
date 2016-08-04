@@ -144,7 +144,7 @@ function submitcash(event,amount){
          
         }
           document.getElementById('submit').style.visibility="visible";
-          document.getElementById('submit').focus();
+          document.getElementById('remarks').focus();
           
       }  else {
           
@@ -210,7 +210,7 @@ function submitcheck(event, amount){
        
         if(eval(amount) == eval(document.getElementById("totalamount").value)){
                 document.getElementById('submit').style.visibility="visible";
-                document.getElementById('submit').focus();
+                document.getElementById('remarks').focus();
         } 
         else if(eval(amount) > eval(document.getElementById("totalamount").value)){
             alert("Amount Rreceive should not be greater than the amount to be collected!")

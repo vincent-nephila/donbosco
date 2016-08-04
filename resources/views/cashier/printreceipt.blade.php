@@ -43,7 +43,7 @@ body { margin: 0px; }
             <tr><td colspan="2">&nbsp;&nbsp;</td></tr>
           <tr><td colspan="2">
                   <table border="0" cellspacing="0" cellpadding="0" style="font-size:9pt">        
-          <tr><td>Check Amount<td> :</td> </td><td align="right">{{number_format($debit_cash->checkamount,2)}}</td></tr>
+          <tr><td>Check Amount<td> :</td> </td><td align="right">{{number_format($debit_cash->checkamount,2)}}</td><td rowspan="4" width="10">&nbsp;</td><td rowspan="4" valign="top">Description: <br> {{$debit_cash->remarks}}</td></tr>
           <tr><td>Cash Amount <td> :</td> </td><td align="right">{{number_format($debit_cash->amount,2)}}</td></tr> 
           <tr><td>Cash Rendered <td> :</td> </td><td align="right">{{number_format($debit_cash->receiveamount,2)}}</td></tr> 
           <tr><td>Change <td> :</td> </td><td align="right">{{number_format($debit_cash->receiveamount-$debit_cash->amount ,2)}}</td></tr> 

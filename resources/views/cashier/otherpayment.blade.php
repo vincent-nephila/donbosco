@@ -191,7 +191,10 @@
                         <input type="radio" name="depositto" value="BPI 2"> BPI 2
                         
                     </div>   
-                    
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" name="remarks" id="remarks" class="form-control" onkeydown = "nosubmit(event,'submit')">
+                    </div>    
                     <div class="form-group">
                     <input type="submit" value="Process Payment" id="submit"  style="visibility:hidden" class="form-control btn-danger">
                     </div>
@@ -290,7 +293,7 @@
                          total=totalcash-totalcredit;
                          document.getElementById('change').innerHTML = total.toFixed(2)
                          document.getElementById('submit').style.visibility="visible";
-                         document.getElementById('submit').focus();
+                         document.getElementById('remarks').focus();
                      }
                      else{
                          document.getElementById('bank_branch').focus();
@@ -311,7 +314,7 @@
                          total = totalcheck+totalcash-totalcredit
                          document.getElementById('change').innerHTML = total.toFixed(2)
                          document.getElementById('submit').style.visibility="visible";
-                         document.getElementById('submit').focus();
+                         document.getElementById('remarks').focus();
            
                         }
                      }
