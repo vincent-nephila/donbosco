@@ -37,7 +37,7 @@
             <tbody>
                 <tr>
                     <td colspan="2">
-                        <div class="info" style="margin-left: auto; margin-right: auto;">
+                        <div class="info" style="margin-left: auto;margin-right: auto;">
                             <p>Individual Account Summary </br>
                                 Account Title : {{$request->accountname}}<br>
                             Date Covered : {{Date('M d,Y', strtotime($request->from))}} To {{Date('M d,Y',strtotime($request->to))}}
