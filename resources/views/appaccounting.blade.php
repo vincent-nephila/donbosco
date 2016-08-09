@@ -77,7 +77,8 @@
                                            <a href="{{url('cashcollection',date('Y-m-d'))}}"><i class="fa fa-btn"></i>Actual Deposit</a>
                                            <a href="{{url('overallcollection',date('Y-m-d'))}}"><i class="fa fa-btn"></i>Collection Report</a>
                                            <a href ="{{url('cashreceipts', date('Y-m-d'))}}"><i class="fa fa-btn"></i>Cash Receipts</a>
-                                           <a href="{{url('dmcmallreport',date('Y-m-d'))}}"><i class="fa fa-btn"></i>DM CM Issued</a>
+                                           <a href="{{url('dmcmallreport',date('Y-m-d'))}}"><i class="fa fa-btn"></i>DM Issued</a>
+                                           <a href ="{{url('subsidiary')}}"><i class="fa fa-btn"></i>Individual Account Summary</a>
                                        </li>  
                                        
                                         @endif

@@ -230,6 +230,7 @@
             
     <script>
         function getParticular(group, particular){
+            
            // alert(particular);
             $.ajax({
             type: "GET", 
@@ -254,7 +255,9 @@
         }
         
         function validateother(evt, varcontrol){
-            
+            var totalcheck = 0;
+            var totalcredit =0;
+            var totalcash=0;
       var theEvent = evt || window.event;
         var key = theEvent.keyCode || theEvent.which;
         if ((key < 48 || key > 57) && !(key == 8 || key == 9 || key == 13 || key == 37 || key == 39 || key == 46) ){ 
@@ -287,8 +290,8 @@
                         document.getElementById('amount1').focus();
                     }
                     else{
-                     var totalcredit = eval(document.getElementById('totalcredit').value);
-                     var totalcash = eval(document.getElementById('cash').value);
+                     totalcredit = eval(document.getElementById('totalcredit').value);
+                     totalcash = eval(document.getElementById('cash').value);
                      if(totalcash >= totalcredit){
                          total=totalcash-totalcredit;
                          document.getElementById('change').innerHTML = total.toFixed(2)
@@ -308,7 +311,7 @@
                          document.getElementById('check').value = "";
                      }   else {
                       totalcredit = eval(document.getElementById('totalcredit').value);
-                      totalcash = eval(document.getElementById('cash').value);
+                      totalcash = document.getElementById('cash').value != "" ? eval(document.getElementById('cash').value):0;
                       totalcheck = eval(document.getElementById('check').value);
                      if(totalcredit <= totalcheck + totalcash){
                          total = totalcheck+totalcash-totalcredit
@@ -316,6 +319,8 @@
                          document.getElementById('submit').style.visibility="visible";
                          document.getElementById('remarks').focus();
            
+                        } else {
+                            alert("error")
                         }
                      }
                     }
