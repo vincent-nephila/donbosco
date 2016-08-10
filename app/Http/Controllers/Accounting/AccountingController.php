@@ -857,11 +857,12 @@ foreach ($collections as $collection){
                if(\Auth::user()->accesslevel==env('USER_ACCOUNTING')|| \Auth::user()->accesslevel==env('USER_ACCOUNTING_HEAD')){
          if($request->all=="1"){
              $dblist = DB::Select("select users.idno, users.lastname, users.firstname, users.middlename, credits.transactiondate, credits.receiptno, credits.amount, credits.postedby "
-                     . "from users, credits where users.idno = credits.idno and credits.receipt_details = '".$request->accountname ."' and credits.isreverse='0'");
+                     . "from users, credits where users.idno = credits.idno and credits.receipt_details = '".$request->accountname ."' and credits.isreverse='0' order by users.lastname, users.firstname");
              }
            else{
              $dblist = DB::Select("select users.idno, users.lastname, users.firstname, users.middlename, credits.transactiondate, credits.receiptno, credits.amount, credits.postedby "
-                     . "from users, credits where users.idno = credits.idno and credits.isreverse = '0' and credits.receipt_details = '".$request->accountname ."' and credits.transactiondate between '".$request->from ."' AND '" . $request->to ."'");
+                     . "from users, credits where users.idno = credits.idno and credits.isreverse = '0' and credits.receipt_details = '".$request->accountname ."' and credits.transactiondate between '".$request->from ."' AND '" . $request->to ."'"
+                     . "order by users.lastname, users.firstname");
            }
            $all = $request->all;
            $from = $request->from;
