@@ -116,6 +116,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('subsidiary','Accounting\AccountingController@subsidiary');
     Route::post('subsidiary','Accounting\AccountingController@postsubsidiary');
     
+    //Registrar Vincent
+    Route::get('/reportcards/{level}/{section}','Vincent\GradeController@viewSectionGrade');    
+    Route::get('/resetgrades','Vincent\GradeController@reset');  
+    Route::get('/studentgrade/{idno}','Vincent\GradeController@studentGrade');  
+    
 });
 
 //Ajax route
@@ -150,4 +155,5 @@ Route::group(['middleware' => 'web'], function () {
    
     //Ajax Route Sheryl
    
+    
     
