@@ -641,15 +641,50 @@ class AjaxController extends Controller
         }
         
         function displaygrade(){
-            $grades = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->get();
-            $data = "<h1>Hello</h1>";
-            $data = "<table class=\"table table-stripped\"><tr><td>Subject</td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
-            foreach($grades as $grade){
-            $data = $data . "<tr><td>".$grade->subjectname."</td><td>".$grade->first_grading."</td><td>" . $grade->second_grading . ""
-                    . "</td><td>" . $grade->third_grading . "</td><td>" . $grade->fourth_grading . "</td><td>" . $grade->finalgrade 
+            $academics = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->where('subjecttype','0')->orderBy('sortto')->get();
+            $data = "";
+            $data = $data . "<table class=\"table table-stripped\"><tr><td><span class=\"subjecttitle\">Academic Subject</span></td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
+            foreach($academics as $grade){
+            $data = $data . "<tr><td width=\"50%\">".$grade->subjectname."</td><td>".round($grade->first_grading)."</td><td>" . round($grade->second_grading) . ""
+                    . "</td><td>" . round($grade->third_grading) . "</td><td>" . round($grade->fourth_grading) . "</td><td>" . round($grade->finalgrade) 
                     . "</td><td>". $grade->remarks . "</td><td></tr>";    
             }
             $data = $data . "</table>";
+            
+            $technicals = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->where('subjecttype','1')->orderBy('sortto')->get();
+            if(count($technicals)>0){
+            
+            $data = $data . "<table class=\"table table-stripped\"><tr><td width=\"50%\"><span class=\"subjecttitle\">Technical Subject</span></td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
+            foreach($technicals as $grade){
+            $data = $data . "<tr><td>".$grade->subjectname." (".$grade->weighted.")</td><td>".round($grade->first_grading)."</td><td>" . round($grade->second_grading) . ""
+                    . "</td><td>" . round($grade->third_grading) . "</td><td>" . round($grade->fourth_grading) . "</td><td>" . round($grade->finalgrade) 
+                    . "</td><td>". $grade->remarks . "</td><td></tr>";    
+            }
+            $data = $data . "</table>";
+            }
+            
+            $conduct = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->where('subjecttype','3')->orderBy('sortto')->get();
+            if(count($conduct)>0){
+           
+            $data = $data . "<table class=\"table table-stripped\"><tr><td width=\"40%\"><span class=\"subjecttitle\">Conduct Criteria</span></td><td>Points</td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
+            foreach($conduct as $grade){
+            $data = $data . "<tr><td>".$grade->subjectname."</td><td>".$grade->points."</td><td>".round($grade->first_grading)."</td><td>" . round($grade->second_grading) . ""
+                    . "</td><td>" . round($grade->third_grading) . "</td><td>" . round($grade->fourth_grading) . "</td><td>" . round($grade->finalgrade) 
+                    . "</td><td>". $grade->remarks . "</td><td></tr>";    
+            }
+            $data = $data . "</table>";
+            }
+            $attendance = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->where('subjecttype','2')->orderBy('sortto')->get();
+            if(count($attendance)>0){
+            
+            $data = $data . "<table class=\"table table-stripped\"><tr><td width=\"50%\"><span class=\"subjecttitle\">Attendance</span></td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
+            foreach($attendance as $grade){
+            $data = $data . "<tr><td>".$grade->subjectname." (".$grade->weighted.")</td><td>".round($grade->first_grading)."</td><td>" . round($grade->second_grading) . ""
+                    . "</td><td>" . round($grade->third_grading) . "</td><td>" . round($grade->fourth_grading) . "</td><td>" . round($grade->finalgrade) 
+                    . "</td><td>". $grade->remarks . "</td><td></tr>";    
+            }
+            $data = $data . "</table>";
+            }
             
             return $data;
         }
