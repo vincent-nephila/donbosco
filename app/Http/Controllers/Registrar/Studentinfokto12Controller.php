@@ -24,8 +24,10 @@ public function studentinfokto12()
    
 }
 
-public function studentinfokto12edit($idno)
-{   $student = \App\User::where('idno',$idno)->first();
+public function studentinfokto12edit($idno){
+    $sy = \App\CtrRefSchoolyear::first()->schoolyear;
+    $status = \App\Status::where('idno',$idno)->where('schoolyear',$sy)->first();
+    $student = \App\User::where('idno',$idno)->first();
     $studentcount = \App\User::where('idno',$idno)->count();
     $studentInfo = \App\StudentInfo::where('idno',$idno)->first();
     $sibling = DB::Select("Select * from siblings where idno='$idno' order by sort asc");
@@ -33,8 +35,8 @@ public function studentinfokto12edit($idno)
     if($studentcount == 0){
         return redirect ('studentinfokto12');
     }
-    
-    return view('registrar.studentinfokto12',compact('student','studentInfo','sibling'));
+    //return $sy;
+    return view('registrar.studentinfokto12',compact('student','studentInfo','sibling','status'));
     
 }
 

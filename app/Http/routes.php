@@ -53,6 +53,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('studentinfokto12/{idno}/print','Registrar\Studentinfokto12Controller@printInfo');    
     Route::get('studentinfokto12','Registrar\Studentinfokto12Controller@studentinfokto12');
     Route::post('studentinfokto12','Registrar\Studentinfokto12Controller@saveInfo');
+    Route::get('importExport', 'ExportController@importExport');
+    Route::post('importExcel', 'ExportController@importExcel');
+   // Route::get('updategrades','Registrar\AssessmentController@updategrades');
+     Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
     
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
@@ -141,8 +145,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/getstrand/{level}','AjaxController@getstrand');
     Route::get('/updateadviser/{id}/{value}','AjaxController@updateadviser');
     Route::get('/getsectionstrand/{level}/{strand}','AjaxController@getsectionstrand');
+    Route::get('/displaygrade','AjaxController@displaygrade');
    // Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}','AjaxController@getsoasummary');
-    
+   
     //Ajax Route Sheryl
    
     

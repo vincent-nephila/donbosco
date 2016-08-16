@@ -64,15 +64,10 @@
                                     @if(Auth::user()->accesslevel == env('USER_REGISTRAR'))
                                     
                                     
-                                        <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Students Information
-                                        <span class="caret"></span></a>
-                               
-                                        <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                        <a href="{{url('/')}}" >Home</a>
                                         
-                                                <li><a href="{{url('studentinfokto12')}}"><i class="fa fa-btn"></i>Add/Update</a></li>
-                                              
-                                        </ul>
+                                        
                                         </li>
                                         
                                          <li class="dropdown">

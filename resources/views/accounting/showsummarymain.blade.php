@@ -1,4 +1,4 @@
-@extends('appaccounting');
+@extends('appaccounting')
 @section('content')
 <div class="container">
 <h4>Summary of Account (Main)</h4>

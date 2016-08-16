@@ -1,5 +1,31 @@
-@extends('app')
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta author="Roy Plomantes">
+        <meta poweredby = "Nephila Web Technology, Inc">
+       <link href="{{ asset('/css/app_1.css') }}" rel="stylesheet">
+        <link href="{{ asset('/css/fileinput.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/datepicker.css') }}" rel="stylesheet">
+	<!-- Fonts 
+	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+-->
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+       
+        <script src="{{asset('/js/jquery.js')}}"></script>
+        <script src="{{asset('/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('/js/fileinput.js')}}"></script>
+        <script src="{{asset('/js/bootstrap-datepicker.js')}}"></script>
+        
+        
+        
         <style type="text/css">
             .form-control {
                 background: none!important;
@@ -30,8 +56,15 @@
                 border-bottom-left-radius: 0px;
             }
         </style>
+<body> 
+    <div class="container">
+    <table border = '1' cellpacing="0" cellpadding = "0" width="100%" align="center">
+        <tr><td rowspan="4" width="65"><img src="{{asset('/images/logo.png')}}" width="60"></td><td><span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span></td><td>Gr/Yr</td><td>@if(count($status)>0){{$status->level}} @endif</td></tr>
+        <tr><td style="font-size:10pt;">Chino Roces Ave., Makati City </td><td>Section</td><td>@if(count($status)>0){{$status->section}} @endif</td></tr>
+        <tr><td style="font-size:10pt;">Tel No : 892-01-01</td><td>Shop</td><td>@if(count($status)>0){{$status->strand}} @endif</td></tr>
+        <tr><td></td><td>Student No</td><td>{{$studentInfo->idno}}</td></tr>
+    </table>
 
-<div class="container">
     @if(count($errors)>0)
     <div class="error">
         @foreach($errors->all() as $error)
@@ -380,7 +413,7 @@
          <tr>
              <td colspan="4"><sup>(INCLUDING THIS STUDENT)</sup></td>
                 <td></td>
-                <td><label>ESC Gurantee:</label></td>
+                <td><label>ESC Grantee:</label></td>
                 <td>
                     <input type="checkbox" class="form-control" value="1" name="esc" id="esc">
                 </td>
@@ -1290,7 +1323,7 @@ for($counter = 1;$counter<=$numberofrow;$counter++){ ?>
  @if($student != NULL)
     <a href="#" id="delete" class="btn btn-primary">Delete</a>
     <a href="{{url('studentinfokto12/'.$student->idno.'/print')}}" id="print" class="btn btn-primary">Print</a>
-    <a href="{{url('studentinfokto12')}}" id="print" class="btn btn-primary">Create New</a>
+    
  @endif
     </form>
     
@@ -1320,11 +1353,16 @@ function getAge(){
     var date1 = new Date(bdate);
     var date2 = new Date();
     var timeDiff = Math.abs(date2.getYear() - date1.getYear());
+    var month =0
     if(date2.getMonth() < date1.getMonth()){
         timeDiff = timeDiff-1;
+        month = 12-date1.getMonth();
+        month = month+date2.getMonth();
+    } else {
+        month=date2.getMonth()-date1.getMonth();
     }
 
-    document.getElementById("age").value = timeDiff;    
+    document.getElementById("age").value = timeDiff + "." + month;    
 }
 @if($student == NULL)
     @if(Auth::guest())
@@ -1366,7 +1404,7 @@ function getAge(){
             @endif                 
         <?php } ?>
     @endif
-
+/*
     var date1 = new Date("{{$studentInfo->birthDate}}");
     var date2 = new Date();
     var timeDiff = Math.abs(date2.getYear() - date1.getYear());
@@ -1375,6 +1413,9 @@ function getAge(){
     }
 
     document.getElementById("age").value = timeDiff;
+ */
+    getAge();
+    
     document.getElementById("status").value = "{{ $studentInfo->status == NULL ? 'S' : $studentInfo->status }}"; 
     
     document.getElementById("fselfemployed").value = "{{$studentInfo->fselfemployed== NULL ? '0' : $studentInfo->fselfemployed}}";
@@ -1554,4 +1595,3 @@ function getAge(){
 
 -->
 
-@endsection

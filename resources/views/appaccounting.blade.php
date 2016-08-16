@@ -6,7 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta author="Roy Plomantes">
         <meta poweredby = "Nephila Web Technology, Inc">
-        
+        <style type="text/css" media="print">
+            .top_head{display:none}
+        </style>    
         @if (Auth::guest())
         <title>Don Bosco Technical Institute of Makati, Inc.</title>
         @else
@@ -38,7 +40,8 @@
         <script src="{{asset('/js/bootstrap-datepicker.js')}}"></script>
         </head>
 <body> 
-<div class= "container-fluid">
+    
+<div class= "container-fluid top_head">
         <div class="col-md-12">
          <img class ="img-responsive" style ="margin-top:10px;" src = "{{ asset('/images/logo.png') }}" alt="Don Bosco Technical School" />
         </div>

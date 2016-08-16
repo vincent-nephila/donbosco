@@ -24,13 +24,21 @@ class AssessmentController extends Controller
     }
     
     public function evaluate($id){
+        $schoolyear = \App\CtrRefSchoolyear::first()->schoolyear;
         $balance = "";
         $reservation = 0;
         $currentschoolyear = "";
         $mydiscount="";
         $ledgers="";
         $student = \App\User::where('idno',$id)->first();
-        $status = \App\Status::where('idno',$id)->first();
+        $status1 = \App\Status::where('schoolyear',$schoolyear)->first();
+        if(count($status1)> 0 ){
+        $department = \App\ctrSchoolYear::where('department',$status1->department)->first();
+        $deptperiod=$department->period;
+        }else{
+        $deptperiod="";    
+        }
+        $status = \App\Status::where('schoolyear',$schoolyear)->where('period',$deptperiod)->first();
         if(count($status) > 0){
         $currentschoolyear = \App\ctrSchoolYear::where('department', $status->department)->first();
         $matchfields=["idno"=>$id, "schoolyear" =>$currentschoolyear->schoolyear, "period" => $currentschoolyear->period ];
@@ -306,6 +314,10 @@ function assess(Request $request){
                     $newgrade->subjectname=$newsubject->subjectname;
                     $newgrade->schoolyear=$schoolperiod->schoolyear;
                     $newgrade->period=$schoolperiod->period;
+                    $newgrade->subjecttype=$newsubject->subjecttype;
+                    $newgrade->points=$newsubject->points;
+                    $newgrade->weighted=$newsubject->weighted;
+                    $newgrade->sortto=$newsubject->sortto;
                     $newgrade->save();
                 }
                     
@@ -321,6 +333,10 @@ function assess(Request $request){
                     $newgrade->subjectname=$newsubject->subjectname;
                     $newgrade->schoolyear=$schoolperiod->schoolyear;
                     $newgrade->period=$schoolperiod->period;
+                    $newgrade->subjecttype=$newsubject->subjecttype;
+                    $newgrade->points=$newsubject->points;
+                    $newgrade->weighted=$newsubject->weighted;
+                    $newgrade->sortto=$newsubject->sort;
                     $newgrade->save();
                 }
                 
@@ -336,6 +352,10 @@ function assess(Request $request){
                     $newgrade->subjectname=$newsubject->subjectname;
                     $newgrade->schoolyear=$schoolperiod->schoolyear;
                     $newgrade->period=$schoolperiod->period;
+                    $newgrade->subjecttype=$newsubject->subjecttype;
+                    $newgrade->points=$newsubject->points;
+                    $newgrade->weighted=$newsubject->weighted;
+                    $newgrade->sortto=$newsubject->sort;
                     $newgrade->save();
                 }
                 }   
@@ -389,4 +409,27 @@ function assess(Request $request){
         
     }
    
+    function updategrades(){
+        $students = \App\Status::where('status',2)->where('level','!=','Grade 11')->where('department','!=','TVET')->get();
+        foreach($students as $student ){
+            $subjects = \App\CtrSubjects::where('level',$student->level)->get();
+                foreach($subjects as $newsubject){
+                    $newgrade = new \App\Grade;
+                    $newgrade->idno = $student->idno;
+                    $newgrade->course = $student->course;
+                    $newgrade->strand=$student->strand;
+                    $newgrade->department=$student->department;
+                    $newgrade->level=$student->level;
+                    $newgrade->subjectcode=$newsubject->subjectcode;
+                    $newgrade->subjectname=$newsubject->subjectname;
+                    $newgrade->schoolyear=$student->schoolyear;
+                    $newgrade->period=$student->period;
+                    $newgrade->subjecttype=$newsubject->subjecttype;
+                    $newgrade->points=$newsubject->points;
+                    $newgrade->weighted=$newsubject->weighted;
+                    $newgrade->sortto=$newsubject->sortto;
+                    $newgrade->save();
+    }}
+        
+    }
 }

@@ -152,12 +152,12 @@ class AjaxController extends Controller
                     $searches = DB::Select("Select * From users where accesslevel = '0' AND (lastname like '$varsearch%' OR
                            firstname like '$varsearch%' OR idno = '$varsearch') Order by lastname, firstname");
                     $value = "<table class=\"table table-striped\"><thead>
-            <tr><th>Student Number</th><th>Student Name</th><th>Gender</th><th>View</th></tr>        
+            <tr><th>Student Number</th><th>Student Name</th><th>Gender</th><th>Assessment</th><th>Student Info</th><th>Student Grade</th></tr>        
             </thead><tbody>";
                     foreach($searches as $search){
                         $value = $value . "<tr><td>" .$search->idno . "</td><td>". $search->lastname . ", " .
                                 $search->firstname . " " . $search->middlename . " " . $search->extensionname .
-                                "</td><td>" . $search->gender . "</td><td><a href = '/registrar/evaluate/".$search->idno."'>view</a>";
+                                "</td><td>" . $search->gender . "</td><td><a href = '/registrar/evaluate/".$search->idno."'>Assess</a></td><td><a href = '/studentinfokto12/".$search->idno."'>Viewn Info</a></td><td><a href = '/seegrade/".$search->idno."'>View Grades</a></td>";
                     }
                       
                     $value = $value . "</tbody>
@@ -410,11 +410,12 @@ class AjaxController extends Controller
          }  else{
          
         $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
-                 . "statuses.level, statuses.strand from users, statuses where users.idno = statuses.idno "
-                 . "and statuses.level = '". $level. "'  and statuses.status='2' order by users.lastname, users.firstname");
-         $data = "<h3>$level</h3><table class=\"table table-stripped\"><tr><td>Student Id</td><td>Name</td></tr>";
+                 . "statuses.level, statuses.strand, student_infos.fname, student_infos.fmobile, student_infos.mname, student_infos.mmobile from users, statuses, student_infos  where users.idno = statuses.idno "
+                 . "and statuses.level = '". $level. "'  and statuses.status='2' and statuses.idno = student_infos.idno order by users.lastname, users.firstname");
+         $data = "<h3>$level</h3><table class=\"table table-stripped\"><tr><td>Id No</td><td>Name</td><td>Father</td><td>Contact No</td><td>Mother</td><td>Contact No.</td></tr>";
          foreach($lists as $list){
-         $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td></tr>";
+         $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td><td>".$list->fname."</td>"
+                 . "<td>".$list->fmobile."</td><td>".$list->mname."</td><td>".$list->mmobile."</td></tr>";
          
          }
          $data = $data . "</table>"; 
@@ -637,6 +638,20 @@ class AjaxController extends Controller
         $data = $data."</table>";
         return $data;
            // return $level.$strand.$section.$trandate;
+        }
+        
+        function displaygrade(){
+            $grades = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->get();
+            $data = "<h1>Hello</h1>";
+            $data = "<table class=\"table table-stripped\"><tr><td>Subject</td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
+            foreach($grades as $grade){
+            $data = $data . "<tr><td>".$grade->subjectname."</td><td>".$grade->first_grading."</td><td>" . $grade->second_grading . ""
+                    . "</td><td>" . $grade->third_grading . "</td><td>" . $grade->fourth_grading . "</td><td>" . $grade->finalgrade 
+                    . "</td><td>". $grade->remarks . "</td><td></tr>";    
+            }
+            $data = $data . "</table>";
+            
+            return $data;
         }
         
             }
