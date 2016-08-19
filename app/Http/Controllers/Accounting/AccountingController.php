@@ -723,7 +723,8 @@ foreach ($collections as $collection){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $sy=$schoolyear->schoolyear;
         $levels = \App\CtrLevel::all();
-        return view('accounting.statementofaccount',compact('sy','levels'));
+        $payscheds=DB::Select("select distinct plan from ctr_payment_schedules order by plan");
+        return view('accounting.statementofaccount',compact('sy','levels','payscheds'));
     }
  function printsoa($idno, $trandate){
        $statuses = \App\Status::where('idno',$idno)->first();
@@ -762,25 +763,26 @@ foreach ($collections as $collection){
        return $pdf->stream();
  }
  
- function getsoasummary($level,$strand,$section,$trandate){
+ function getsoasummary($level,$strand,$section,$trandate,$plan){
        if($strand=="none"){
            $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
-                . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' "
+                . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' and statuses.plan = '$plan'"
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename order by users.lastname, users.firstname");    
 
        }   else{  
         $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
-                . " statuses.level = '$level' and statuses.strand='$strand' and statuses.section='$section' and ledgers.duedate <= '$trandate' "
+                . " statuses.level = '$level' and statuses.strand='$strand' and statuses.section='$section' and ledgers.duedate <= '$trandate' and statuses.plan = '$plan'"
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename order by users.lastname, users.firstname");    
        }
         
        
             return view('accounting.showsoa',compact('soasummary','trandate','level','section','strand'));
         }
+        
         function penalties(){    
         $currentdate= Carbon::now();  
         $postings = \App\penaltyPostings::all();

@@ -9,6 +9,7 @@
             <word>Cancelled</word>
             <word>endfoeach</word>
             <word>endforeach</word>
+            <word>foreach</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

@@ -24,21 +24,28 @@ class AssessmentController extends Controller
     }
     
     public function evaluate($id){
-        $schoolyear = \App\CtrRefSchoolyear::first()->schoolyear;
         $balance = "";
         $reservation = 0;
         $currentschoolyear = "";
         $mydiscount="";
         $ledgers="";
         $student = \App\User::where('idno',$id)->first();
-        $status1 = \App\Status::where('schoolyear',$schoolyear)->first();
-        if(count($status1)> 0 ){
-        $department = \App\ctrSchoolYear::where('department',$status1->department)->first();
-        $deptperiod=$department->period;
-        }else{
-        $deptperiod="";    
-        }
-        $status = \App\Status::where('schoolyear',$schoolyear)->where('period',$deptperiod)->first();
+        $status = \App\Status::where('idno',$id)->first();
+       // $schoolyear = \App\CtrRefSchoolyear::first()->schoolyear;
+        //$balance = "";
+        //$reservation = 0;
+        //$currentschoolyear = "";
+        //$mydiscount="";
+        //$ledgers="";
+        //$student = \App\User::where('idno',$id)->first();
+        //$status1 = \App\Status::where('schoolyear',$schoolyear)->first();
+        //if(count($status1)> 0 ){
+        //$department = \App\ctrSchoolYear::where('department',$status1->department)->first();
+        //$deptperiod=$department->period;
+        //}else{
+        //$deptperiod="";    
+        //}
+        //$status = \App\Status::where('schoolyear',$schoolyear)->where('period',$deptperiod)->first();
         if(count($status) > 0){
         $currentschoolyear = \App\ctrSchoolYear::where('department', $status->department)->first();
         $matchfields=["idno"=>$id, "schoolyear" =>$currentschoolyear->schoolyear, "period" => $currentschoolyear->period ];

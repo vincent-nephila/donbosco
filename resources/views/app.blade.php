@@ -88,6 +88,7 @@
                                         <ul class="dropdown-menu">
                                             <li><a href="{{url('enrollmentstat')}}"><i class="fa fa-btn"></i>Enrollment Statistics</a></li>
                                             <li><a href="{{url('studentlist')}}"><i class="fa fa-btn"></i>Student List</a></li>
+                                            <li><a href="{{url('printreportcard')}}"><i class="fa fa-btn"></i>Report Card</a></li>
                                          </ul>   
                                         
                                         <li>    

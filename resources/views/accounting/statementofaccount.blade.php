@@ -2,6 +2,14 @@
 @section('content')
 <div class="container_fluid">
     <div class="col-md-6">
+        <h5>Plan</h5>
+        <div class="form form-group col-md-12">
+            <select id="plan" name="plan" class="form form-control">
+                @foreach($payscheds as $ps)
+                <option value="{{$ps->plan}}">{{$ps->plan}}</option>
+                @endforeach
+            </select>    
+         </div>   
         <h5>Due Date</h5>
         <div class="form form-group col-md-4">
             <label>Month</label>
@@ -99,6 +107,7 @@
      var level  = $("#level").val();
      var trandate = $("#year").val() + "-" + $("#month").val() + "-" + $("#day").val();
      var strand="none";
+     var plan = $("#plan").val();
      
    
      if(document.getElementById('strand')){
@@ -106,7 +115,7 @@
      }
      
      var section = $('#section').val();
-     document.location = "/getsoasummary/" + level + "/" + strand + "/" + section + "/" + trandate;
+     document.location = "/getsoasummary/" + level + "/" + strand + "/" + section + "/" + trandate + "/" + plan;
        /* 
      $.ajax({
             type: "GET", 

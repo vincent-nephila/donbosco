@@ -57,6 +57,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('importExcel', 'ExportController@importExcel');
    // Route::get('updategrades','Registrar\AssessmentController@updategrades');
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
+     Route::get('printreportcard','Registrar\GradeController@printreportcard');
     
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
@@ -110,7 +111,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('cashreceipts/{transactiondate}','Accounting\AccountingController@cashreceipts');
     Route::get('statementofaccount','Accounting\AccountingController@statementofaccount');
     Route::get('printsoa/{idno}/{tradate}','Accounting\AccountingController@printsoa');
-    Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}','Accounting\AccountingController@getsoasummary');
+    Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}/{plan}','Accounting\AccountingController@getsoasummary');
     Route::get('penalties','Accounting\AccountingController@penalties');
     Route::post('postpenalties','Accounting\AccountingController@postpenalties');
     Route::get('subsidiary','Accounting\AccountingController@subsidiary');

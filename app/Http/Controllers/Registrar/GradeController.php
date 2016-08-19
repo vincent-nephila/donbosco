@@ -19,4 +19,9 @@ class GradeController extends Controller
     } 
     }
     
+    function printreportcard(){
+        $levels = \App\CtrLevel::get();
+        return view('registrar.printreportcard', compact('levels'));
+    }
+    
 }
