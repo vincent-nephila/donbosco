@@ -55,7 +55,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('studentinfokto12','Registrar\Studentinfokto12Controller@saveInfo');
     Route::get('importExport', 'ExportController@importExport');
     Route::post('importExcel', 'ExportController@importExcel');
-   // Route::get('updategrades','Registrar\AssessmentController@updategrades');
+    Route::get('updategrades','Registrar\AssessmentController@updategrades');
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
      Route::get('printreportcard','Registrar\GradeController@printreportcard');
     

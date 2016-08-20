@@ -468,6 +468,7 @@ class CashierController extends Controller
 function otherpayment($idno){
     $student =  \App\User::where('idno',$idno)->first();
     $status = \App\Status::where('idno',$idno)->first();
+    $acct_departments = DB::Select('Select * from ctr_acct_dept order by sub_department');
     $advances = \App\AdvancePayment::where("idno",$idno)->where("status",'2')->get();
     $advance=0;
     if(count($advances)>0){    
@@ -475,9 +476,9 @@ function otherpayment($idno){
            $advance=$advance+$adv->amount;
         }
     }
-    $accounttypes = DB::Select("select distinct accounttype from ctr_other_payments");
+    $accounttypes = DB::Select("select distinct accounttype from ctr_other_payments order by accounttype");
     $paymentothers = DB::Select("select sum(amount) as amount, receipt_details from credits where idno ='" . $idno . "' and (categoryswitch = '7' OR categoryswitch = '9') and isreverse = '0' group by receipt_details");
-    return view('cashier.otherpayment',compact('student','status','accounttypes','advance','paymentothers'));
+    return view('cashier.otherpayment',compact('acct_departments','student','status','accounttypes','advance','paymentothers'));
 }
 
     function othercollection(Request $request){
@@ -520,6 +521,7 @@ function otherpayment($idno){
             $creditreservation->receipt_details = $request->particular1;
             $creditreservation->amount = $request->amount1;
             $creditreservation->postedby = \Auth::user()->idno;
+            $creditreservation->sub_department = $request->acct_department1;
             $creditreservation->save(); 
             
         }
@@ -536,6 +538,7 @@ function otherpayment($idno){
             $creditreservation->receipt_details = $request->particular2;
             $creditreservation->amount = $request->amount2;
             $creditreservation->postedby = \Auth::user()->idno;
+            $creditreservation->sub_department = $request->acct_department2;
             $creditreservation->save(); 
             
         }
@@ -552,6 +555,7 @@ function otherpayment($idno){
             $creditreservation->receipt_details = $request->particular3;
             $creditreservation->amount = $request->amount3;
             $creditreservation->postedby = \Auth::user()->idno;
+            $creditreservation->sub_department = $request->acct_department3;
             $creditreservation->save(); 
             
         }
@@ -567,6 +571,7 @@ function otherpayment($idno){
             $creditreservation->receipt_details = $request->particular4;
             $creditreservation->amount = $request->amount4;
             $creditreservation->postedby = \Auth::user()->idno;
+            $creditreservation->sub_department = $request->acct_department4;
             $creditreservation->save(); 
             
         }

@@ -44,26 +44,25 @@ class ExportController extends Controller
 		if(Input::hasFile('import_file')){
 
 			$path = Input::file('import_file')->getRealPath();
-
-			$data = Excel::selectSheets('subject_repos')->load($path, function($reader) {
-
+                        
+			$data = Excel::selectSheets('Sheet1')->load($path, function($reader) {
 			})->get();
-
 			if(!empty($data) && $data->count()){
 
 				foreach ($data as $key => $value) {
-
-					$insert[] = ['idno' => $value->idno, 'subjectcode' => $value->subjectno,
+                                    
+					$insert[] = ['idno' => $value->idno, 'subjectcode' => $value->subjectcode,
                                             'level'=> $value->level, 'section'=> $value->section, 'grade'=> $value->grade,
                                             'qtrperiod'=> $value->qtrperiod,'schoolyear'=> $value->schoolyear];
-
+                                     
+                                 
 				}
 
 				if(!empty($insert)){
 
 					DB::table('subject_repos')->insert($insert);
 
-					dd('Insert Record successfully.');
+					//dd('Insert Record successfully.');
 
 				}
 
@@ -71,7 +70,7 @@ class ExportController extends Controller
 
 		}
 
-		return back();
+		return redirect(url('importExport'));
 
 	}
 }

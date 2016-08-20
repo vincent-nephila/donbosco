@@ -8,7 +8,7 @@
         <?php $totalcredit=0;?>
         @foreach($credits as $credit)
         <?php $totalcredit = $totalcredit + $credit->amount;?>
-        <tr><td>{{$credit->receipt_details}}</td><td align="right">{{number_format($credit->amount,2)}}</td></tr>
+        <tr><td>{{$credit->acctcode}}</td><td align="right">{{number_format($credit->amount,2)}}</td></tr>
         @endforeach
         <tr><td><b>Total Credit</b></td><td align="right"><b>{{number_format($totalcredit,2)}}</b></td></tr>
      </table>   

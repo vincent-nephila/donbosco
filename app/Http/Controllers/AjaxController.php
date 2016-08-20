@@ -641,8 +641,10 @@ class AjaxController extends Controller
         }
         
         function displaygrade(){
-            $academics = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->where('subjecttype','0')->orderBy('sortto')->get();
             $data = "";
+            $academics = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->where('subjecttype','0')->orderBy('sortto')->get();
+           if(count($academics)>0){
+           
             $data = $data . "<table class=\"table table-stripped\"><tr><td><span class=\"subjecttitle\">Academic Subject</span></td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
             foreach($academics as $grade){
             $data = $data . "<tr><td width=\"50%\">".$grade->subjectname."</td><td>".round($grade->first_grading)."</td><td>" . round($grade->second_grading) . ""
@@ -650,6 +652,31 @@ class AjaxController extends Controller
                     . "</td><td>". $grade->remarks . "</td><td></tr>";    
             }
             $data = $data . "</table>";
+           }
+           
+           
+            $core = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->where('subjecttype','5')->orderBy('sortto')->get();
+            if(count($core)>0){
+            $data = $data . "<table class=\"table table-stripped\"><tr><td><span class=\"subjecttitle\">Core Subject</span></td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
+            foreach($core as $grade){
+            $data = $data . "<tr><td width=\"50%\">".$grade->subjectname."</td><td>".round($grade->first_grading)."</td><td>" . round($grade->second_grading) . ""
+                    . "</td><td>" . round($grade->third_grading) . "</td><td>" . round($grade->fourth_grading) . "</td><td>" . round($grade->finalgrade) 
+                    . "</td><td>". $grade->remarks . "</td><td></tr>";    
+            }
+            $data = $data . "</table>";
+            }
+            
+            $specialize = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->where('subjecttype','6')->orderBy('sortto')->get();
+            if(count($specialize)>0){
+            $data = $data . "<table class=\"table table-stripped\"><tr><td><span class=\"subjecttitle\">Specialize Subject</span></td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
+            foreach($specialize as $grade){
+            $data = $data . "<tr><td width=\"50%\">".$grade->subjectname."</td><td>".round($grade->first_grading)."</td><td>" . round($grade->second_grading) . ""
+                    . "</td><td>" . round($grade->third_grading) . "</td><td>" . round($grade->fourth_grading) . "</td><td>" . round($grade->finalgrade) 
+                    . "</td><td>". $grade->remarks . "</td><td></tr>";    
+            }
+            $data = $data . "</table>";
+            }
+            
             
             $technicals = \App\Grade::where('idno',Input::get('idno'))->where('schoolyear',Input::get('sy'))->where('subjecttype','1')->orderBy('sortto')->get();
             if(count($technicals)>0){

@@ -93,6 +93,7 @@ th {
    
         
 </td><td valign="top">
+    <h5>Plan : {{$statuses->plan}}</h5>
     <table style="font-size:8pt;border:thin" border="1" cellpadding="1" cellspacing='0'>
     <tr><td>Total Amount</td><td align="right">{{number_format($totamount,2)}}</tr>
     <tr><td>Less : Discount</td><td align="right">({{number_format($totdiscount,2)}})</tr>

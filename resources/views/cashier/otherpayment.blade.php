@@ -2,9 +2,8 @@
 
 @section("content")
 <div class="container_fluid">
-    <div class="col-md-2">
-    </div>
-    <div class="col-md-7">
+    <div class="col-md-9">
+        <div class="col-md-12">
         <div class="form-group">
                 <a href="{{url('/cashier', $student->idno)}}" class="btn btn-primary">Back</a>
                
@@ -57,19 +56,25 @@
                     </td></tr>
             </table>
         <hr />
-       
-        <div class="col-md-7" > 
+       </div>
+        <div class="col-md-8" > 
             <div style="padding: 10px;">
                 <form class="form-horizontal" id = "assess" role="form" method="POST" action="{{ url('/othercollection') }}">
                     {!! csrf_field() !!} 
                     <input type="hidden" name="idno" value="{{$student->idno}}">
-                    <div class="form-group">
+                    
+                    <div class="form-group col-md-12">
                         <h5>Reservation : </h5> <input class="form-control" style="text-align:right" type="text" name="reservation" onkeypress = "validateother(event,'reservation')"   placeholder="0.00" id="reservation" onblur="ctotal()">
                     </div>
+                    
                     <h5>Other Collection</h5>
-                    <div class="col-md-4">Account Type</div><div class="col-md-4">Particular</div><div class="col-md-4">Amount</div>
+                    <div class="col-md-3">Account Type</div>
+                    <div class="col-md-3">Particular</div>
+                    <div class="col-md-3">Department</div>
+                    <div class="col-md-3">Amount</div>
+                    
                     <div class="form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <select name="groupaccount1"   class="form-control" onchange = "getParticular(this.value,'particular1')">
                         <option value = "none">--Select Group Account--</option>
                         @foreach($accounttypes as $accounttype)
@@ -78,16 +83,28 @@
                         </select>    
                     </div>    
                     
-                    <div class="col-md-4" id="accountparticular1">  
+                    <div class="col-md-3" id="accountparticular1">  
                     <select class="form-control" name="particular1">
                     </select>  
                     </div>
-                     <div class="col-md-4">
+                        
+                    <div class="col-md-3" id="acct_department1">  
+                    <select class="form-control" name="acct_department1">
+                        <option value="None">None</option>
+                        @foreach($acct_departments as $acct_dept)
+                        <option value = "{{$acct_dept->sub_department}}">{{$acct_dept->sub_department}}</option>
+                        @endforeach
+                    </select>  
+                    </div>
+                           
+                        
+                     <div class="col-md-3">
                          <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount1" name="amount1" onblur="ctotal()">
                     </div>
                     </div>
+                    
                     <div class="form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <select name="groupaccount2"   class="form-control" onchange = "getParticular(this.value,'particular2')">
                         <option value = "none">--Select Group Account--</option>
                         @foreach($accounttypes as $accounttype)
@@ -96,17 +113,27 @@
                         </select>    
                     </div>    
                     
-                    <div class="col-md-4" id="accountparticular2">  
+                    <div class="col-md-3" id="accountparticular2">  
                     <select class="form-control" name="particular2">
                     </select>  
                     </div>
-                     <div class="col-md-4">
+                        
+                        <div class="col-md-3" id="acct_department2">  
+                    <select class="form-control" name="acct_department2">
+                        <option value="None">None</option>
+                        @foreach($acct_departments as $acct_dept)
+                        <option value = "{{$acct_dept->sub_department}}">{{$acct_dept->sub_department}}</option>
+                        @endforeach
+                    </select>  
+                    </div>
+                        
+                     <div class="col-md-3">
                       <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount2" name="amount2" onblur="ctotal()">
                     </div>
                     </div>
                     
                     <div class="form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <select name="groupaccount3"   class="form-control" onchange = "getParticular(this.value,'particular3')">
                         <option value = "none">--Select Group Account--</option>
                         @foreach($accounttypes as $accounttype)
@@ -115,17 +142,27 @@
                         </select>    
                     </div>    
                     
-                    <div class="col-md-4" id="accountparticular3">  
+                    <div class="col-md-3" id="accountparticular3">  
                     <select class="form-control" name="particular3">
                     </select>  
                     </div>
-                     <div class="col-md-4">
+                        
+                        <div class="col-md-3" id="acct_department3">  
+                    <select class="form-control" name="acct_department3">
+                        <option value="None">None</option>
+                        @foreach($acct_departments as $acct_dept)
+                        <option value = "{{$acct_dept->sub_department}}">{{$acct_dept->sub_department}}</option>
+                        @endforeach
+                    </select>  
+                    </div>
+                        
+                     <div class="col-md-3">
                       <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount3" name="amount3" onblur="ctotal()">
                     </div>
                     </div>
                     
                     <div class="form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <select name="groupaccount4"   class="form-control" onchange = "getParticular(this.value,'particular4')">
                         <option value = "none">--Select Group Account--</option>
                         @foreach($accounttypes as $accounttype)
@@ -134,11 +171,20 @@
                         </select>    
                     </div>    
                     
-                    <div class="col-md-4" id="accountparticular4">  
+                    <div class="col-md-3" id="accountparticular4">  
                     <select class="form-control" name="particular4">
                     </select>  
                     </div>
-                     <div class="col-md-4">
+                        <div class="col-md-3" id="acct_department4">  
+                    <select class="form-control" name="acct_department4">
+                        <option value="None">None</option>
+                        @foreach($acct_departments as $acct_dept)
+                        <option value = "{{$acct_dept->sub_department}}">{{$acct_dept->sub_department}}</option>
+                        @endforeach
+                    </select>  
+                    </div>
+                        
+                     <div class="col-md-3">
                       <input type="text" style="text-align:right" placeholder = "0.00" onkeypress = "validateother(event,'cash')" class="form-control" id = "amount4" name="amount4" onblur="ctotal()">
                     </div>
                     </div>
@@ -159,7 +205,7 @@
                    
                   </div>
               </div>
-        <div class="col-md-5" style="background-color: #C6C6FF;">
+        <div class="col-md-4" style="background-color: #C6C6FF;">
              <div style="padding: 10px;">
                  
                    
