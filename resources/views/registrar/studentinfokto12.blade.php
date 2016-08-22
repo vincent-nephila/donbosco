@@ -157,7 +157,7 @@
              <td width="90px"><label>Civil Status </label> </td>
              <td>
                  <select class="form-control" name="status" id="status">
-                    <option value="SINGLE">SINGLE</option>
+                    <option value="SINGLE" default>SINGLE</option>
                     <option value="MARRIED">MARRIED</option>
                     <option value="DIVORCED">DIVORCED</option>
                     <option value="DECEASED">DECEASED</option>
@@ -527,7 +527,7 @@
              <tr>
                  <td><label>Religion:</label></td>
                  <td>
-                     <input type="text" class="form-control" name="mreligion" id="mreligion" placeholder="Enter Religion"
+                     <input type="text" class="form-control" name="freligion" id="mreligion" placeholder="Enter Religion"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->mreligion}}"
                          @endif
@@ -535,7 +535,7 @@
                  </td>
                  <td><label>Nationality:</label></td>
                  <td>
-                     <input type="text" class="form-control" name="mnationality" id="mnationality"  placeholder="Enter Nationality"
+                     <input type="text" class="form-control" name="fnationality" id="mnationality"  placeholder="Enter Nationality"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->mnationality}}"
                          @endif
@@ -1416,16 +1416,16 @@ function getAge(){
  */
     getAge();
     
-    document.getElementById("status").value = "{{ $studentInfo->status == NULL ? 'S' : $studentInfo->status }}"; 
+    document.getElementById("status").value = "{{ $studentInfo->status == NULL ? 'SINGLE' : $studentInfo->status }}"; 
     
     document.getElementById("fselfemployed").value = "{{$studentInfo->fselfemployed== NULL ? '0' : $studentInfo->fselfemployed}}";
     document.getElementById("falumnus").value = "{{$studentInfo->falumnus== NULL ? '0' : $studentInfo->falumnus}}";    
-    document.getElementById("fstatus").value = "{{$studentInfo->fstatus== NULL ? 'S' : $studentInfo->fstatus}}";
-    document.getElementById("fposition").value = "{{$studentInfo->fposition== NULL ? 'T' : $studentInfo->fposition}}";
+    document.getElementById("fstatus").value = "{{$studentInfo->fstatus== NULL ? 'SINGLE' : $studentInfo->fstatus}}";
+    document.getElementById("fposition").value = "{{$studentInfo->fposition== NULL ? 'TOP MANAGEMENT' : $studentInfo->fposition}}";
 
     document.getElementById("mselfemployed").value = "{{$studentInfo->mselfemployed == NULL ? '0' : $studentInfo->mselfemployed}}";
-    document.getElementById("mstatus").value = "{{$studentInfo->mstatus== NULL ? 'S' : $studentInfo->mstatus}}";
-    document.getElementById("mposition").value = "{{$studentInfo->mposition== NULL ? 'T' : $studentInfo->mposition}}";
+    document.getElementById("mstatus").value = "{{$studentInfo->mstatus== NULL ? 'SINGLE' : $studentInfo->mstatus}}";
+    document.getElementById("mposition").value = "{{$studentInfo->mposition== NULL ? 'TOP MANAGEMENT' : $studentInfo->mposition}}";
     
     document.getElementById("residence").value = "{{$studentInfo->residence== NULL ? 'HOUSE' : $studentInfo->residence}}";
     document.getElementById("ownership").value = "{{$studentInfo->ownership== NULL ? 'OWN' : $studentInfo->ownership}}";    

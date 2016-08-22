@@ -65,7 +65,22 @@
         <tbody width="100%">
             <tr>
                 <td colspan="3" style="vertical-align:top">
-                    <img src = "{{ asset('/images/logo.png') }}" alt="Don Bosco Technical School" height='60px' width='auto'/>
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="right">
+
+                    <tr>
+                        <td rowspan="4" style="text-align: right;" class="logo" width="55px">
+                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
+                        </td>
+                        <td>
+                            <span style="font-size:13pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span>
+                        </td>
+                    </tr>
+                    <tr><td style="font-size:10pt;">Chino Roces Ave.</td></tr>
+                    <tr><td style="font-size:10pt;">Makati City </td></tr>
+                    <tr><td style="font-size:10pt;">School Year 2016 - 2017</td></tr>
+                    <tr><td style="font-size:4pt;">&nbsp; </td></tr>
+                    <tr><td><span style="font-size"></td></tr>
+                    </table>                    
                 </td >
                 <td colspan="1" style="width:21%;vertical-align: top;">
                     <p style="text-align: right">DBTI-Form 1</p>
