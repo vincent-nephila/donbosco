@@ -119,6 +119,8 @@ Route::group(['middleware' => 'web'], function () {
     
     //Registrar Vincent
     Route::get('/reportcards/{level}/{section}','Vincent\GradeController@viewSectionGrade');    
+    Route::get('/reportcardsK/{level}/{section}/{quarter}','Vincent\GradeController@viewSectionKinder');    
+    Route::get('/reportcards/{level}/{shop}/{section}','Vincent\GradeController@viewSectionGrade9to10');    
     Route::get('/resetgrades','Vincent\GradeController@reset');  
     Route::get('/studentgrade/{idno}','Vincent\GradeController@studentGrade');  
     

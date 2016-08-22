@@ -1,4 +1,3 @@
-
 <html>
     <head>
 
@@ -45,7 +44,7 @@
                     <tr>
                         <td colspan="2">
                     <div style="text-align: center;font-size:8pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:8pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:8pt;"><b>JUNIOR HIGH SCHOOL DEPARTMENT</b></div>
 
                         </td>
                     </tr>
@@ -186,6 +185,65 @@
             <tr><td><span style="height:10pt"></td></tr>
             <tr>
                 <td>
+                    @if(count($info['tech']) != 0)
+                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" class="reports" style="font-size:12px;">
+                        <tr style="font-weight: bold;font-size: 10pt;text-align:center;">
+                            <td class="print-size" width="40%" style="padding: 2px 2px 2px 2px;">SUBJECTS</td>
+                            <td class="print-size" width="10%">1</td>
+                            <td class="print-size" width="10%">2</td>
+                            <td class="print-size" width="10%">3</td>
+                            <td class="print-size" width="10%">4</td>
+                            <td class="print-size" width="10%">FINAL RATING</td>
+                            <td class="print-size" width="10%">REMARKS</td>
+                        </tr>
+                        {{--*/$first=0/*--}}
+                        {{--*/$second=0/*--}}
+                        {{--*/$third=0/*--}}
+                        {{--*/$fourth=0/*--}}
+                        {{--*/$final=0/*--}}
+
+                        @foreach($info['tech'] as $key=>$tech)
+                        <?php $weight=$tech->weighted / 100;?>
+                        <tr style="text-align: center">
+                            <td style="text-align: left" class="print-size">
+                                <div style="width:70%;display:inline-block;" width="70%">{{ucwords(strtolower($tech->subjectname))}}</div><span>({{$tech->weighted}}%)</span>
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->first_grading,2)}}
+                                {{--*/$first = $first + round($tech->first_grading,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->second_grading,2)}}
+                                {{--*/$second = $second + round($tech->second_grading,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->third_grading,2)}}
+                                {{--*/$third = $third + round($tech->third_grading,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->fourth_grading,2)}}
+                                {{--*/$fourth = $fourth + round($tech->fourth_grading,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->final_grade,2)}}
+                                {{--*/$final = $final + round($tech->final_grade,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{$tech->remarks}}
+                            </td>                         
+                        </tr>
+                        @endforeach
+                        <tr style="text-align: center"><td class="print-size" style="text-align: right"><b>TECHNICAL AVERAGE</b></td><td class="print-size">{{round($first,0)}}</td><td class="print-size">{{$second}}</td><td class="print-size">{{$third}}</td><td class="print-size">{{$fourth}}</td><td class="print-size">{{$final}}</td>
+                            <td class="print-size">
+                            {{round($final/$count,2) >= 75 ? "Passed":"Failed"}}    
+                            </td></tr>
+                    </table>        
+                    @endif                    
+                </td>
+            </tr>
+            <tr><td><span style="height:10pt"></td></tr>
+            <tr>
+                <td>
                     <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
                         <tr style="font-weight:bold;">
                             <td width="36%" class="descriptors">
@@ -216,46 +274,7 @@
                     </table>                    
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
-                    <tr>
-                        <td style="font-weight: bold">
-                            CHRISTIAN LIVING DESCRIPTORS
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td width="50%" style="font-weight: bold">
-                            LEVEL OF "FRIENDSHIP WITH JESUS"
-                        </td>
-                        <td style="font-weight: bold">
-                            GRADING SCALE
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Best Friend of Jesus</td>
-                        <td>95 - 100</td>
-                    </tr>
-                    <tr>
-                        <td>Loyal Friend of Jesus</td>
-                        <td>89 - 94</td>
-                    </tr>     
-                    <tr>
-                        <td>Trustworthy Friend of Jesus</td>
-                        <td>83 - 88</td>
-                    </tr>
-                    <tr>
-                        <td>Good Friend of Jesus</td>
-                        <td>77 - 82</td>
-                    </tr>     
-                    <tr>
-                        <td>Common Friend of Jesus</td>
-                        <td>76 and Below</td>
-                    </tr>                    
-                </table>
-                </td>
-            </tr>
+            
         </table>
         <div class="page-break"></div>
         @endforeach

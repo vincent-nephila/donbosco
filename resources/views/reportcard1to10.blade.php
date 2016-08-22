@@ -269,5 +269,6 @@
         </tr>
         </tbody>
     </table>
+        @endforeach
     </body>
 </html>

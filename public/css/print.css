@@ -1,6 +1,19 @@
+@media print {
 @page  
 { 
-    margin: .42cm .51cm .42cm .51cm;
+    margin: 0cm .7cm 0cm .7cm;
     
     
-} 
+    
+}
+         .page-break{
+             page-break-after: always;
+         }
+
+}
+@font-face {
+    font-family: calibri;
+    src: url("../fonts/Calibri.ttf");
+}
+
+

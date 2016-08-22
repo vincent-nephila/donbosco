@@ -1,11 +1,10 @@
-
 <html>
     <head>
 
 
         <style type='text/css'>
 
-           table tr td{font-size:11pt;}
+           table tr td{font-size:10.5pt;}
            body{
                 font-family: calibri;
                 margin-left: auto;
@@ -34,18 +33,18 @@
                             <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:50px">
                         </td>
                         <td>
-                            <span style="font-size:10pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span>
+                            <span style="font-size:11pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span>
                         </td>
                     </tr>
-                    <tr><td style="font-size:8pt;">Chino Roces Ave., Makati City </td></tr>
-                    <tr><td style="font-size:8pt;">PAASCU Accredited</td></tr>
-                    <tr><td style="font-size:8pt;">School Year 2015 - 2016</td></tr>
+                    <tr><td style="font-size:9pt;">Chino Roces Ave., Makati City </td></tr>
+                    <tr><td style="font-size:9pt;">PAASCU Accredited</td></tr>
+                    <tr><td style="font-size:9pt;">School Year 2015 - 2016</td></tr>
                     <tr><td style="font-size:4pt;">&nbsp; </td></tr>
                     <tr><td><span style="font-size"></td></tr>
                     <tr>
                         <td colspan="2">
-                    <div style="text-align: center;font-size:8pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:8pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:9pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
+                    <div style="text-align: center;font-size:9pt;"><b>JUNIOR HIGH SCHOOL DEPARTMENT</b></div>
 
                         </td>
                     </tr>
@@ -57,130 +56,215 @@
                 <td>
                     <table width="100%" border = '0' cellpacing="0" cellpadding = "0">
                         <tr>
-                            <td width="15%" style="font-size:8pt;">
+                            <td width="15%" style="font-size:10pt;">
                                 <b>Name:</b>
                             </td>
-                            <td width="45%" style="font-size:8pt;">
+                            <td width="45%" style="font-size:10pt;">
                                 {{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}
                             </td>
-                            <td width="15%" style="font-size:8pt;">
-                                Student No:
+                            <td width="15%" style="font-size:10pt;">
+                                <b>Student No:</b>
                             </td>
-                            <td width="25%" style="font-size:8pt;">
+                            <td width="25%" style="font-size:10pt;">
                                 {{$info['info']->idno}}
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size:8pt;">
+                            <td style="font-size:10pt;">
                                 <b>Gr. and Sec:</b>
                             </td>
-                            <td style="font-size:8pt;">
+                            <td style="font-size:10pt;">
                                 {{$level}} - {{$section}}
                             </td>
-                            <td style="font-size:8pt;">
-                                Class No:
+                            <td style="font-size:10pt;">
+                                <b>Class No:</b>
                             </td>
-                            <td style="font-size:8pt;">
-
+                            <td style="font-size:10pt;">
+                                {{$info['info']->class_no}}
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size:8pt;">
-                                <b>Adviser:</b>
+                            <td style="font-size:10pt;">
+                                <b>Age:</b>
                             </td>
-                            <td style="font-size:8pt;">
-                                @if($teacher != null)
-                                {{$teacher->adviser}}
-                                @endif
+                            <td style="font-size:10pt;">
+                                {{$info['info']->age}}
                             </td>
-                            <td style="font-size:8pt;"  >
-                                LRN:
+                            <td style="font-size:10pt;"  >
+                                <b>LRN:</b>
                             </td>
-                            <td style="font-size:8pt;">
+                            <td style="font-size:10pt;">
                                 {{$info['info']->lrn}}
                             </td>
                         </tr>
-                    </table>                    
+                        <tr>
+                            <td style="font-size:10pt;">
+                                <b>Sex:</b>
+                            </td>
+                            <td style="font-size:10pt;">
+                                {{$info['info']->gender}}
+                            </td>
+                            <td style="font-size:10pt;"  >
+                                <b>Adviser:</b>
+                            </td>
+                            <td style="font-size:10pt;">
+                                {{$teacher->adviser}}
+                            </td>
+                        </tr>
+                        <tr><td style="font-size:5pt;">&nbsp;</td></tr>
+                        <tr>
+                            <td colspan="4" style="font-size:10pt;">
+                                <b>ACADEMIC TRACK</b>:@if($info['info']->strand == "STEM")
+                                <span>Science,Technology, Engineering, and Mathematics (STEM)</span>
+                                @else
+                                <span>Accountancy, Business, and Management (ABM)</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr><td colspan="4">1st Sem</td></tr>
+                        
+                    </table>
                 </td>
             </tr>
             <tr>
                 <td>
-                @if(sizeOf($info['aca'])!= 0)
+                
                 <table border = '1' cellspacing="0" cellpadding = "0" width="100%" class="reports">
                     <tr style="font-weight: bold;text-align:center;">
-                        <td width="35%" style="padding: 15px 0 15px 0;">SUBJECTS</td>
-                        <td width="10%">1</td>
-                        <td width="10%">2</td>
-                        <td width="10%">3</td>
-                        <td width="10%">4</td>
-                        <td width="12%">FINAL RATING</td>
-                        <td width="13%">REMARKS</td>
+                        <td width="35%" rowspan="2" style="padding: 15px 0 15px 0;">SUBJECTS</td>
+                        <td width="12%" colspan="2">QUARTER</td>
+                        <td width="12%" rowspan="2">FINAL GRADE</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center"><b>FIRST</b></td>
+                        <td style="text-align:center"><b>SECOND</b></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center"><b>Core Subjects</b></td>
+                        <td colspan="3"></td>
                     </tr>
                     {{--*/$first=0/*--}}
-                    {{--*/$second=0/*--}}
-                    {{--*/$third=0/*--}}
-                    {{--*/$fourth=0/*--}}
+                    {{--*/$second=0/*--}}                    
                     {{--*/$final=0/*--}}
                     {{--*/$count=0/*--}}
-                    @foreach($info['aca'] as $key=>$academics)
+                    @foreach($info['core'] as $key=>$core)
                     <tr style="text-align: center;font-size: 8pt;">
                         <td style="text-align: left">
-                            {{ucwords(strtolower($academics->subjectname))}}
+                            {{ucwords(strtolower($core->subjectname))}}
                         </td>
                         <td>
-                            {{round($academics->first_grading,2)}}
-                            {{--*/$first = $first + round($academics->first_grading,2)/*--}}
+                            {{round($core->first_grading,2)}}
+                            {{--*/$first = $first + round($core->first_grading,2)/*--}}
                         </td>
                         <td>
-                            {{round($academics->second_grading,2)}}
-                            {{--*/$second = $second + round($academics->second_grading,2)/*--}}
+                            {{round($core->second_grading,2)}}
+                            {{--*/$second = $second + round($core->second_grading,2)/*--}}
                         </td >
                         <td>
-                            {{round($academics->third_grading,2)}}
-                            {{--*/$third = $third + round($academics->third_grading,2)/*--}}
-                        </td>
-                        <td>
-                            {{round($academics->fourth_grading,2)}}
-                            {{--*/$fourth = $fourth + round($academics->fourth_grading,2)/*--}}
-                        </td>
-                        <td>
-                            {{round($academics->final_grade,2)}}
-                            {{--*/$final = $final + round($academics->final_grade,2)/*--}}
-                        </td>
-                        <td>
-                            {{$academics->remarks}}
-                            {{--*/$count ++/*--}}
-                        </td>                         
-                    </tr>
-                    @endforeach
-                    <tr style="text-align: center">
-                        <td style="text-align: right;">
-                            <b>GENERAL AVERAGE</b>
-                        </td>
-                        <td>
-                            {{round($first/$count,2)}}
-                        </td>
-                        <td>{{round($second/$count,2)}}
-                        </td>
-                        <td>
-                            {{round($third/$count,2)}}
-                        </td>
-                        <td>
-                            {{round($fourth/$count,2)}}
-                        </td>
-                        <td>
-                            {{round($final/$count,2)}}
+                            {{round($core->final_grade,2)}}
+                            {{--*/$final = $final + round($core->final_grade,2)/*--}}
                         </td>
 
-                        <td>
-                        @if((round($final/$count,2)) != 0)
-                        {{round($final/$count,2) >= 75 ? "Passed":"Failed"}}
-                        @endif
+                            {{--*/$count ++/*--}}                        
+                    </tr>
+                    @endforeach
+                    
+                    <tr>
+                        <td style="text-align:center"><b>Applied and Specialized Subjects</b></td>
+                        <td colspan="3"></td>
+                    </tr>                    
+                    
+                    @foreach($info['spec'] as $key=>$spec)
+                    <tr style="text-align: center;font-size: 8pt;">
+                        <td style="text-align: left">
+                            {{ucwords(strtolower($spec->subjectname))}}
                         </td>
-                        
+                        <td>
+                            {{round($spec->first_grading,2)}}
+                            {{--*/$first = $first + round($spec->first_grading,2)/*--}}
+                        </td>
+                        <td>
+                            {{round($spec->second_grading,2)}}
+                            {{--*/$second = $second + round($spec->second_grading,2)/*--}}
+                        </td >
+                        <td>
+                            {{round($spec->final_grade,2)}}
+                            {{--*/$final = $final + round($spec->final_grade,2)/*--}}
+                        </td>
+
+                            {{--*/$count ++/*--}}                        
+                    </tr>                    
+                    @endforeach
+                    <tr style="text-align: center">
+                        <td></td>
+                        <td colspan="2" style="text-align: right;">
+                            <b>GENERAL AVERAGE for the Semester</b>
+                        </td>
+                        <td>
+                            <b>{{round($final/$count,2)}}</b>
+                        </td>
                     </tr>
                 </table>
-                @endif                    
+                                  
+                </td>
+            </tr>
+            <tr><td><span style="height:10pt"></td></tr>
+            <tr>
+                <td>
+                    @if(count($info['tech']) != 0)
+                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" class="reports" style="font-size:12px;">
+                        <tr style="font-weight: bold;font-size: 10pt;text-align:center;">
+                            <td class="print-size" width="40%" style="padding: 2px 2px 2px 2px;">SUBJECTS</td>
+                            <td class="print-size" width="10%">1</td>
+                            <td class="print-size" width="10%">2</td>
+                            <td class="print-size" width="10%">3</td>
+                            <td class="print-size" width="10%">4</td>
+                            <td class="print-size" width="10%">FINAL RATING</td>
+                            <td class="print-size" width="10%">REMARKS</td>
+                        </tr>
+                        {{--*/$first=0/*--}}
+                        {{--*/$second=0/*--}}
+                        {{--*/$third=0/*--}}
+                        {{--*/$fourth=0/*--}}
+                        {{--*/$final=0/*--}}
+
+                        @foreach($info['tech'] as $key=>$tech)
+                        <?php $weight=$tech->weighted / 100;?>
+                        <tr style="text-align: center">
+                            <td style="text-align: left" class="print-size">
+                                <div style="width:70%;display:inline-block;" width="70%">{{ucwords(strtolower($tech->subjectname))}}</div><span>({{$tech->weighted}}%)</span>
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->first_grading,2)}}
+                                {{--*/$first = $first + round($tech->first_grading,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->second_grading,2)}}
+                                {{--*/$second = $second + round($tech->second_grading,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->third_grading,2)}}
+                                {{--*/$third = $third + round($tech->third_grading,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->fourth_grading,2)}}
+                                {{--*/$fourth = $fourth + round($tech->fourth_grading,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{round($tech->final_grade,2)}}
+                                {{--*/$final = $final + round($tech->final_grade,2)*$weight/*--}}
+                            </td>
+                            <td class="print-size">
+                                {{$tech->remarks}}
+                            </td>                         
+                        </tr>
+                        @endforeach
+                        <tr style="text-align: center"><td class="print-size" style="text-align: right"><b>TECHNICAL AVERAGE</b></td><td class="print-size">{{round($first,0)}}</td><td class="print-size">{{$second}}</td><td class="print-size">{{$third}}</td><td class="print-size">{{$fourth}}</td><td class="print-size">{{$final}}</td>
+                            <td class="print-size">
+                            {{round($final/$count,2) >= 75 ? "Passed":"Failed"}}    
+                            </td></tr>
+                    </table>        
+                    @endif                    
                 </td>
             </tr>
             <tr><td><span style="height:10pt"></td></tr>
@@ -216,46 +300,7 @@
                     </table>                    
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
-                    <tr>
-                        <td style="font-weight: bold">
-                            CHRISTIAN LIVING DESCRIPTORS
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td width="50%" style="font-weight: bold">
-                            LEVEL OF "FRIENDSHIP WITH JESUS"
-                        </td>
-                        <td style="font-weight: bold">
-                            GRADING SCALE
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Best Friend of Jesus</td>
-                        <td>95 - 100</td>
-                    </tr>
-                    <tr>
-                        <td>Loyal Friend of Jesus</td>
-                        <td>89 - 94</td>
-                    </tr>     
-                    <tr>
-                        <td>Trustworthy Friend of Jesus</td>
-                        <td>83 - 88</td>
-                    </tr>
-                    <tr>
-                        <td>Good Friend of Jesus</td>
-                        <td>77 - 82</td>
-                    </tr>     
-                    <tr>
-                        <td>Common Friend of Jesus</td>
-                        <td>76 and Below</td>
-                    </tr>                    
-                </table>
-                </td>
-            </tr>
+            
         </table>
         <div class="page-break"></div>
         @endforeach
@@ -269,24 +314,20 @@
 
 
         @foreach($collection as $info)
-        <h1>&nbsp;</h1>
+        
         <table width="95%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 20px;margin-bottom: 20px;">
         <tr>
-            <td colspan="2">
+            <td>
                 <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;">
                     <tr>
                         <td width="30%">CONDUCT CRITERIA</td>
                         <td width="10%">Points</td>
                         <td width="10%">1</td>
                         <td width="10%">2</td>
-                        <td width="10%">3</td>
-                        <td width="10%">4</td>
                         <td width="20%" rowspan="{{count($info['con'])}}"></td>
                     </tr>
                         {{--*/$first=0/*--}}
                         {{--*/$second=0/*--}}
-                        {{--*/$third=0/*--}}
-                        {{--*/$fourth=0/*--}}
                         {{--*/$counter = 0/*--}}
                         {{--*/$length = count($info['con'])/*--}}
                         @foreach($info['con'] as $key=>$conducts)
@@ -302,29 +343,20 @@
                             {{round($conducts->second_grading,2)}}
                             {{--*/$second = $second + round($conducts->second_grading,2)/*--}}
                         </td>
-                        <td>
-                            {{round($conducts->third_grading,2)}}
-                            {{--*/$third = $third + round($conducts->third_grading,2)/*--}}
-                        </td>
-                        <td>
-                            {{round($conducts->fourth_grading,2)}}
-                            {{--*/$fourth = $fourth + round($conducts->fourth_grading,2)/*--}}
-                        </td>
+
                         @if($length == $counter)
-                        <td>FINAL GRADE</td>
+                        <td><b>FINAL GRADE</b></td>
                         @endif
                         
 
                     </tr>
                         @endforeach                    
                         <tr>
-                            <td>CONDUCT GRADE</td>
+                            <td style="text-align:center"><b>CONDUCT GRADE</b></td>
                             <td>100</td>
                             <td>{{$first}}</td>
                             <td> {{$second}}</td>
-                            <td>{{$third}}</td>
-                            <td>{{$fourth}}</td>
-                            <td>{{round(($first+$second+$third+$fourth)/4,2)}}</td>
+                            <td>{{round(($first+$second)/2,2)}}</td>
                             
                         </tr>
                 </table>
@@ -393,7 +425,26 @@
                     @endforeach
                 </table>
                 <br>
-                <table width="100%">
+               
+            </td>
+        </tr>
+        <tr>
+            <td >
+                Dear Parent:
+                            <p style="text-indent: 20px">This report card shows the ability and progress your child has made in different learning areas as well as his/her core values.</p>
+                            <p style="text-indent: 20px">The school welcomes you should desire to know more about your child progress.</p>
+                            
+                            <p style="text-align: right;">__________________________<br>
+                                                    
+                           @if($teacher != null)
+                           <span style="padding-right: 30px">{{$teacher->adviser}}</span>
+                           @endif
+                                                    <br><span style="padding-right: 50px">Class Adviser</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                 <table width="100%">
                     <tr>
                         <td class="print-size"  width="49%">
                             <b>Certificate of eligibility for promotion</b>
@@ -407,35 +458,35 @@
                             The student is eligible for transfer and
                         </td>
                         <td class="print-size" >
-                            Admitted in:____________________________
+                            Admitted in:_____________________
                         </td>                                                    
                     </tr>
                     <tr>
-                        <td class="print-size" >Admission to:___________________________</td>
-                        <td class="print-size" >Grade:_________   Date:__________________</td>                                                    
+                        <td class="print-size" >Admission to:___________________</td>
+                        <td class="print-size" >Grade:__________________________</td>
                     </tr>
                     <tr>
-                        <td class="print-size" >Date of Issue:__________________________</td>
-                        <td></td>                                                    
+                        <td class="print-size" >Retained in ____________________</td>
+                        <td class="print-size" >Date ___________________________</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><br><br><br></td>                                                    
+                        <td class="print-size" >Date ___________________________</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><br><br></td>                                                    
                     </tr>
                                                                     <tr style="text-align: center">
-                        <td class="print-size">________________________________</td>
+                        <td class="print-size"></td>
                         <td class="print-size">________________________________</td>
                     </tr>
                     <tr style="text-align: center;">
-                        <td class="print-size" >
-                           @if($teacher != null)
-                            {{$teacher->adviser}}
-                           @endif
-                        </td>
-                        <td class="print-size" >Principal Name</td>
+                        <td></td>
+                        <td class="print-size" >Ms. Violeta F. Roxas</td>
                     </tr>
                     <tr style="text-align: center">
-                        <td class="print-size" ><b>Class Adviser</b></td>
-                        <td class="print-size" ><b>Grade School - Principal</b></td>
+                        <td class="print-size" ></td>
+                        <td class="print-size" ><b>Principal - High School Department</b></td>
                     </tr>
 
                 </table>

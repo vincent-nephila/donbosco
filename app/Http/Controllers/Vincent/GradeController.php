@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
+use PDF;
 
 class GradeController extends Controller
 {
@@ -36,9 +37,9 @@ class GradeController extends Controller
     
     function reset(){
         $no_student=0;
-                    $students = \App\Status::where('status',2)->where('department','!=','TVET')->where('level','!=','Grade 11')->where('id','1356')->get();
+                    $students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
         foreach($students as $student){
-            $subjects = \App\CtrSubjects::where('level',$student->level)->get();
+            $subjects = \App\CtrSubjects::where('level',$student->level)->where('subjecttype',3)->get();
                     foreach($subjects as $subject){
                             $newgrade = new \App\Grade;
                             $newgrade->idno = $student->idno;
@@ -56,18 +57,84 @@ class GradeController extends Controller
                     $no_student =$no_student +1;
                     echo "NO Of Student: ".$no_student;
         }
+        /*$students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
+        foreach($students as $student){
+            $subjects = \App\CtrCompetence::where('subject','Physical Education')->where('quarter',3)->get();
+                    foreach($subjects as $subject){
+                            $newgrade = new \App\Competency;
+                            $newgrade->idno = $student->idno;
+                            $newgrade->subject = $subject->subject;
+                            $newgrade->section = $subject->section;
+                            $newgrade->description = $subject->description;
+                            $newgrade->sortto = $subject->sortto;
+                            $newgrade->quarter = $subject->quarter;
+                            $newgrade->schoolyear = $student->schoolyear;
+                            $newgrade->save();
+                    }
+                    
+        }        
         
-        
-        
+        */
     }
+    
+    function viewSectionGrade9to10($level,$shop,$section){
+        $schoolyear = \App\CtrRefSchoolyear::first();
+        $collection = array();
+        //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
+        $students = DB::Select("SELECT department,gender,class_no,strand,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section' AND strand LIKE '$shop' AND statuses.idno=051250");
+        
+        
+        $matchfield = ["level"=>$level,"section"=>$section];
+        $teacher = \App\CtrSection::where($matchfield)->first();        
+        
+                foreach($students as $student){
+                    $match = ["idno"=>$student->idno,"subjecttype"=>0,"schoolyear"=>$schoolyear->schoolyear];
+                    $academic = \App\Grade::where($match)->orderBy("sortto","ASC")->get();
+
+                    $match2 = ["idno"=>$student->idno,"subjecttype"=>3,"schoolyear"=>$schoolyear->schoolyear];
+                    $conduct = \App\Grade::where($match2)->orderBy("sortto","ASC")->get();
+
+                    $match3 = ["idno"=>$student->idno,"subjecttype"=>2,"schoolyear"=>$schoolyear->schoolyear];
+                    $attendance = \App\Grade::where($match3)->orderBy("sortto","ASC")->get();
+                    
+                    $match4 = ["idno"=>$student->idno,"subjecttype"=>1,"schoolyear"=>$schoolyear->schoolyear];
+                    $technical = \App\Grade::where($match4)->orderBy("sortto","ASC")->get();
+                    
+                    $match5 = ["idno"=>$student->idno,"subjecttype"=>5,"schoolyear"=>$schoolyear->schoolyear];
+                    $core = \App\Grade::where($match5)->orderBy("sortto","ASC")->get();
+                    
+                    $match6 = ["idno"=>$student->idno,"subjecttype"=>6,"schoolyear"=>$schoolyear->schoolyear];
+                    $special = \App\Grade::where($match6)->orderBy("sortto","ASC")->get();
+                    
+                    
+                    
+                    $age_year = date_diff(date_create($student->birthDate), date_create('today'))->y;
+                    $age_month = date_diff(date_create($student->birthDate), date_create('today'))->m;
+                    $age= $age_year.".".$age_month;
+                    $student->age = $age;
+                    $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical,'core'=>$core,'spec'=>$special);
+                    //$collection[] = array('info'=>$student);
+                }
+                if($students[0]->department == "Senior High School"){
+                    return view('registrar.sectiongrade11',compact('collection','students','level','section','teacher'));
+                }
+                else{
+                    return view('registrar.sectiongrade9to10',compact('collection','students','level','section','teacher'));
+                }
+                
+                    
+                //return $collection;
+                
+    }
+    
     
     function viewSectionGrade($level,$section){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $collection = array();
         //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
-        $students = DB::Select("SELECT *  from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where level LIKE '$level' AND section LIKE '$section'");
+        //$students = DB::Select("SELECT * from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where level LIKE '$level' AND section LIKE '$section'");
+        $students = DB::Select("SELECT department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section'");
         $matchfield = ["level"=>$level,"section"=>$section];
-        
         $teacher = \App\CtrSection::where($matchfield)->first();        
         
                 foreach($students as $student){
@@ -81,11 +148,57 @@ class GradeController extends Controller
                     $match3 = ["idno"=>$student->idno,"subjecttype"=>2,"schoolyear"=>$schoolyear->schoolyear];
                     $attendance = \App\Grade::where($match3)->orderBy("sortto","ASC")->get();
                     
-                    $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance);
-                }
+                                        $match4 = ["idno"=>$student->idno,"subjecttype"=>1,"schoolyear"=>$schoolyear->schoolyear];
+                    $technical = \App\Grade::where($match4)->orderBy("sortto","ASC")->get();
+                    
+                    $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical);
+                }           
                 
-                //return $collection;
-                return view('registrar.sectiongradereport',compact('collection','students','level','section','teacher'));
+                if($students[0]->department == "Elementary"){
+                    //return view('registrar.sectiongrade11',compact('collection','students','level','section','teacher'));
+                    return view('registrar.sectiongradereport',compact('collection','students','level','section','teacher'));
+                }
+                else{
+                    return view('registrar.sectiongradeKinder',compact('collection','students','level','section','teacher'));
+                } 
+    }    
+    
+    function viewSectionKinder($level,$section,$quarter){
+        $schoolyear = \App\CtrRefSchoolyear::first();
+        $collection = array();
+        //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
+        //$students = DB::Select("SELECT * from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where level LIKE '$level' AND section LIKE '$section'");
+        $students = DB::Select("SELECT department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section' AND users.idno=1620070");
+        $matchfield = ["level"=>$level,"section"=>$section];
+        $teacher = \App\CtrSection::where($matchfield)->first();        
+        
+                foreach($students as $student){
+                    $match = ["idno"=>$student->idno,"subjecttype"=>0,"schoolyear"=>$schoolyear->schoolyear];
+                    $academic = \App\Grade::where($match)->orderBy("sortto","ASC")->get();
+
+
+                    $match2 = ["idno"=>$student->idno,"subjecttype"=>3,"schoolyear"=>$schoolyear->schoolyear];
+                    $conduct = \App\Grade::where($match2)->orderBy("sortto","ASC")->get();
+
+                    $match3 = ["idno"=>$student->idno,"subjecttype"=>2,"schoolyear"=>$schoolyear->schoolyear];
+                    $attendance = \App\Grade::where($match3)->orderBy("sortto","ASC")->get();
+                    
+                                        $match4 = ["idno"=>$student->idno,"subjecttype"=>1,"schoolyear"=>$schoolyear->schoolyear];
+                    $technical = \App\Grade::where($match4)->orderBy("sortto","ASC")->get();
+                    
+                    $match5 = ["idno"=>$student->idno,"quarter"=>$quarter,"schoolyear"=>$schoolyear->schoolyear];
+                    $competence = \App\Competency::where($match5)->orderBy("sortto","ASC")->get();
+                    
+                    $age_year = date_diff(date_create($student->birthDate), date_create('today'))->y;
+                    $age_month = date_diff(date_create($student->birthDate), date_create('today'))->m;
+                    $age= $age_year." years ".$age_month." months";
+                    $student->age = $age;
+                    
+                    $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical,'comp'=>$competence);
+                }           
+                
+                    return view('registrar.sectiongradeKinder2',compact('collection','students','level','section','teacher','quarter'));
+                
     }
     
     function studentGrade($idno){
