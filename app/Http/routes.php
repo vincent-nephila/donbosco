@@ -58,6 +58,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('updategrades','Registrar\AssessmentController@updategrades');
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
      Route::get('printreportcard','Registrar\GradeController@printreportcard');
+     Route::get('updateelective','Registrar\AssessmentController@updateelective');
     
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');

@@ -417,9 +417,9 @@ function assess(Request $request){
     }
    
     function updategrades(){
-        /*
-    }
-        $students = \App\Status::where('status',2)->where('level','!=','Grade 11')->where('department','!=','TVET')->get();
+        
+    
+        $students = \App\Status::where('status','2')->where('level','!=','Grade 11')->where('department','!=','TVET')->get();
         foreach($students as $student ){
             $subjects = \App\CtrSubjects::where('level',$student->level)->get();
                 foreach($subjects as $newsubject){
@@ -439,8 +439,8 @@ function assess(Request $request){
                     $newgrade->sortto=$newsubject->sortto;
                     $newgrade->save();
     }}
-          */
-         
+          
+         /*
     $seniorhigh =\App\Status::where('status',2)->where('level','Grade 11')->get();
     foreach($seniorhigh as $student){
         $subjects = \App\CtrSubjects::where('level',$student->level)->where('strand',$student->strand)->get();
@@ -463,5 +463,16 @@ function assess(Request $request){
                 }
         
     }
+          * 
+          */
 }
+function updateelective(){
+    $updates = DB::Select("select * from adjustelective");
+    foreach($updates as $update){
+        $elective = \App\Grade::where('idno',$update->idno)->where('subjectcode','ELE1')->first();
+        $elective->subjectname = "Elective 1 (" .$update->subjectname .")";
+        $elective->update();
+    }
+}
+
 }
