@@ -914,6 +914,7 @@
       <th class="col-sm-2">Civil Status</th>
       <th class="col-sm-1">Working</th>
       <th class="col-sm-1">Studying</th>
+      <th class="col-sm-1" style="text-align: center">DBTI Student</th>
       <th class="col-sm-2">Where</th>
       </thead>
     <tbody>
@@ -960,8 +961,10 @@ for($counter = 1;$counter<=$numberofrow;$counter++){ ?>
     </td>
     <td>
         <input type="checkbox" class="form-control" value="1" name="studying<?php echo $counter;?>" id="studying<?php echo $counter;?>">
-
     </td>
+    <td>
+        <input type="checkbox" class="form-control" value="1" name="dbti<?php echo $counter;?>" id="dbti<?php echo $counter;?>">
+    </td>    
     <td> 
         <input type="text" class="form-control" name="where<?php echo $counter;?>"
              @if($sibling != NULL)
@@ -1395,13 +1398,16 @@ function getAge(){
         <?php $rows = 10;
         for($counter = 1;$counter<=$numberofrow;$counter++){ ?>    
             document.getElementById("siblinggender<?php echo $counter;?>").value = "{{$sibling[$counter-1]->gender== NULL ? 'MALE' : $sibling[$counter-1]->gender}}";
-            document.getElementById("siblingstatus<?php echo $counter;?>").value = "{{$sibling[$counter-1]->status== NULL ? 'S' : $sibling[$counter-1]->status}}";                
+            document.getElementById("siblingstatus<?php echo $counter;?>").value = "{{$sibling[$counter-1]->status== NULL ? 'SINGLE' : $sibling[$counter-1]->status}}";                
             @if($sibling[$counter-1]->working == 1)
                 document.getElementById("working<?php echo $counter;?>").checked = true;
             @endif 
             @if($sibling[$counter-1]->studying == 1)
                 document.getElementById("studying<?php echo $counter;?>").checked = true;
             @endif                 
+            @if($sibling[$counter-1]->dbti == 1)
+                document.getElementById("dbti<?php echo $counter;?>").checked = true;
+            @endif                             
         <?php } ?>
     @endif
 /*

@@ -255,6 +255,7 @@ public function createSibling(array $request){
         
     $working = Input::has('working'.$counter) ? 1 : 0;
     $studying = Input::has('studying'.$counter) ? 1 : 0;
+    $dbti = Input::has('dbti'.$counter) ? 1 : 0;
     
     $sibling = new \App\Sibling();
     $sibling->idno = $request['idno'];
@@ -265,6 +266,7 @@ public function createSibling(array $request){
     $sibling->status = $request['siblingstatus'.$counter];
     $sibling->studying = $studying;
     $sibling->working = $working;
+    $sibling->dbti = $dbti;
     $sibling->where = $request['where'.$counter];
     $sibling->save();
     }
@@ -277,7 +279,7 @@ public function updateSibling(array $request,$idno){
     for($counter = 1;$counter<=$numberofrow;$counter++){
     $working = Input::has('working'.$counter) ? 1 : 0;
     $studying = Input::has('studying'.$counter) ? 1 : 0;
-
+    $dbti = Input::has('dbti'.$counter) ? 1 : 0;
         
         $matchfields=["idno"=>$idno,"sort"=>$counter];
    
@@ -289,6 +291,7 @@ public function updateSibling(array $request,$idno){
     $sibling->status = $request['siblingstatus'.$counter];
     $sibling->studying = $studying;
     $sibling->working = $working;
+    $sibling->dbti = $dbti;
     $sibling->where = $request['where'.$counter];
     $sibling->save();
     }

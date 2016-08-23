@@ -375,10 +375,27 @@
                         </tr>
                         @endif
                         @endforeach
+                        
                         <tr>
                             <td>
-                                II. Numbers and Number Sense
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A. Division
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B. Days and Months
+                            </td>
+                            <td></td>
+                        </tr>
+                        @foreach($info['comp'] as $key=>$comp)
+                        @if($comp->section == "1B")                        
+                        <tr>
+                            <td width="80%">{{$comp->description}}</td>
+                            <td>{{$comp->value}}</td>
+                        </tr>
+                        @endif
+                        @endforeach
+                        
+                        <tr>
+                            <td>
+                                II.Measurement<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A.Division
                             </td>
                             <td></td>
                         </tr>
@@ -393,19 +410,37 @@
                         
                         <tr>
                             <td>
-                                I.Measurement<br>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A.Time
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B.Fraction
                             </td>
                             <td></td>
                         </tr>
                         @foreach($info['comp'] as $key=>$comp)
-                        @if($comp->section == "1A")                        
+                        @if($comp->section == "2B")                        
                         <tr>
                             <td width="80%">{{$comp->description}}</td>
                             <td>{{$comp->value}}</td>
                         </tr>
                         @endif
-                        @endforeach                        
+                        @endforeach  
+                        
+                        <tr>
+                            <td>
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C. Statistics
+                            </td>
+                            <td></td>
+                        </tr>
+                        @foreach($info['comp'] as $key=>$comp)
+                        @if($comp->section == "2C")                        
+                        <tr>
+                            <td width="80%">{{$comp->description}}</td>
+                            <td>{{$comp->value}}</td>
+                        </tr>
+                        @endif
+                        @endforeach                
+                        
+                        
                     </table>
                         @else
                     <table border="1" width="100%" cellpadding="0" cellspacing="0">
@@ -505,7 +540,7 @@
                                 <span style="font-size: 10pt;">Chino Roces Ave., Brgy Pio del Pillar</span><br>
                                 <span style="font-size: 10pt;">Makati City</span>
                                 <div>
-                                <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:50px">
+                                <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:200px;padding-top: 100px;padding-bottom: 100px">
                                 </div>
                             </div>
                         </td>
@@ -531,6 +566,12 @@
             $("#chr_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
             $("#math_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
             $("#cert_{{$info['info']->idno}}").appendTo("#com4_{{$info['info']->idno}}");
+            @endif
+            @if($quarter == 4)
+               $("#art_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}"); 
+               
+               $("#chr_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}"); 
+               $("#fil_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}"); 
             @endif
         </script>
         <div class="page-break"></div>        
