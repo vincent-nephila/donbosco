@@ -435,8 +435,8 @@ class CashierController extends Controller
        $debit_reservation = \App\Dedit::where('refno',$refno)->where('paymenttype','5')->first();
        $debit_cash = \App\Dedit::where('refno',$refno)->where('paymenttype','1')->first();
        $debit_dm = \App\Dedit::where('refno',$refno)->where('paymenttype','3')->first();
-       $credits = DB::Select("select sum(amount) as amount, receipt_details, transactiondate from credits "
-               . "where refno = '$refno' group by receipt_details, transactiondate");
+       $credits = DB::Select("select sum(amount) as amount, receipt_details, transactiondate, sub_department from credits "
+               . "where refno = '$refno' group by receipt_details, transactiondate, sub_department");
        $tdate = \App\Dedit::where('refno',$refno)->first();
        $posted = \App\User::where('idno',$tdate->postedby)->first();
        return view("cashier.viewreceipt",compact('posted','tdate','student','debits','credits','status','debit_discount','debit_reservation','debit_cash','debit_dm'));
@@ -453,8 +453,8 @@ class CashierController extends Controller
        $debit_cash = \App\Dedit::where('refno',$refno)->where('paymenttype','1')->first();
        $debit_check = \App\Dedit::where('refno',$refno)->where('paymenttype','2')->first();
        $debit_dm = \App\Dedit::where('refno',$refno)->where('paymenttype','3')->first();
-       $credits = DB::Select("select sum(amount) as amount, receipt_details, transactiondate from credits "
-               . "where refno = '$refno' group by receipt_details, transactiondate");
+       $credits = DB::Select("select sum(amount) as amount, receipt_details, transactiondate, sub_department from credits "
+               . "where refno = '$refno' group by receipt_details, transactiondate, sub_department");
        $tdate = \App\Dedit::where('refno',$refno)->first();
        $posted = \App\User::where('idno',$tdate->postedby)->first();
        $pdf = \App::make('dompdf.wrapper');

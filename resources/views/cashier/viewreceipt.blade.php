@@ -17,7 +17,7 @@
            <tr><td colspan="2"   valign="top">
            <table width="100%">        
            @foreach($credits as $credit)
-           <tr><td>{{$credit->receipt_details}}</td><td align="right">{{number_format($credit->amount,2)}}</td></tr>
+           <tr><td>{{$credit->receipt_details}}-{{$credit->sub_department}}</td><td align="right">{{number_format($credit->amount,2)}}</td></tr>
            @endforeach
            @if(count($debit_discount)>0)
             <tr><td>Less Discount</td><td align="right">({{number_format($debit_discount->amount,2)}})</td></tr>
