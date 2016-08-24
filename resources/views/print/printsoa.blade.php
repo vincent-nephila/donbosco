@@ -110,7 +110,12 @@ th {
  <table style="font-size: 8pt;"><tr><td>For the month of</td><td align="center">Due Amount</td>
       @foreach($schedules as $schedule)
       @if($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment > 0)
-      <tr><td>{{date('M  Y',strtotime($schedule->duedate))}}</td><td align="right">{{number_format($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment,2)}}</td></tr>
+      <tr><td>@if(date('M',strtotime($schedule->duedate)=="Apr"))
+              Upon Enrollment
+              @else
+              {{date('M  Y',strtotime($schedule->duedate))}}
+              @endif
+          </td><td align="right">{{number_format($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment,2)}}</td></tr>
       @endif
       @endforeach
  </table>
