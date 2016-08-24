@@ -205,41 +205,51 @@
                         {{--*/$third=0/*--}}
                         {{--*/$fourth=0/*--}}
                         {{--*/$final=0/*--}}
+                        {{--*/$count=0/*--}}
 
                         @foreach($info['tech'] as $key=>$tech)
                         <?php $weight=$tech->weighted / 100;?>
                         <tr style="text-align: center;">
                             <td style="text-align: left" class="print-size">
-                                <div style="vertical-align: middle;width:85%;display:inline-block;" width="70%">{{ucwords(strtolower($tech->subjectname))}}</div><span>({{$tech->weighted}}%)</span>
+                                <div style="vertical-align: middle;width:85%;display:inline-block;" width="70%">{{ucwords(strtolower($tech->subjectname))}}</div>
                             </td>
                             <td class="print-size">
                                 {{round($tech->first_grading,2)}}
-                                {{--*/$first = $first + round($tech->first_grading,2)*$weight/*--}}
+                                {{--*/$first = $first + round($tech->first_grading,2)/*--}}
                             </td>
                             <td class="print-size">
                                 {{round($tech->second_grading,2)}}
-                                {{--*/$second = $second + round($tech->second_grading,2)*$weight/*--}}
+                                {{--*/$second = $second + round($tech->second_grading,2)/*--}}
                             </td>
                             <td class="print-size">
                                 {{round($tech->third_grading,2)}}
-                                {{--*/$third = $third + round($tech->third_grading,2)*$weight/*--}}
+                                {{--*/$third = $third + round($tech->third_grading,2)/*--}}
                             </td>
                             <td class="print-size">
                                 {{round($tech->fourth_grading,2)}}
-                                {{--*/$fourth = $fourth + round($tech->fourth_grading,2)*$weight/*--}}
+                                {{--*/$fourth = $fourth + round($tech->fourth_grading,2)/*--}}
                             </td>
                             <td class="print-size">
                                 {{round($tech->final_grade,2)}}
-                                {{--*/$final = $final + round($tech->final_grade,2)*$weight/*--}}
+                                {{--*/$final = $final + round($tech->final_grade,2)/*--}}
                             </td>
                             <td class="print-size">
                                 {{$tech->remarks}}
-                            </td>                         
+                            </td>
+                                {{--*/$count++/*--}}
                         </tr>
                         @endforeach
-                        <tr style="text-align: center"><td class="print-size" style="text-align: right"><b>TECHNICAL AVERAGE</b></td><td class="print-size">{{round($first,0)}}</td><td class="print-size">{{$second}}</td><td class="print-size">{{$third}}</td><td class="print-size">{{$fourth}}</td><td class="print-size">{{$final}}</td>
+                        <tr style="text-align: center">
+                            <td class="print-size" style="text-align: right"><b>TECHNICAL AVERAGE</b></td>
+                            <td class="print-size">{{round($first/$count,0)}}</td>
+                            <td class="print-size">{{round($second/$count,0)}}</td>
+                            <td class="print-size">{{round($third/$count,0)}}</td>
+                            <td class="print-size">{{round($fourth/$count,0)}}</td>
+                            <td class="print-size">{{round($final/$count,0)}}</td>
                             <td class="print-size">
+                            @if($final != 0)
                             {{round($final/$count,2) >= 75 ? "Passed":"Failed"}}    
+                            @endif
                             </td></tr>
                     </table>        
                     @endif                    
@@ -347,7 +357,7 @@
                             <td> {{$second}}</td>
                             <td>{{$third}}</td>
                             <td>{{$fourth}}</td>
-                            <td>{{round(($first+$second+$third+$fourth)/4,2)}}</td>
+                            <td>{{round(($first+$second+$third+$fourth)/4,0)}}</td>
                             
                         </tr>
                 </table>
@@ -410,7 +420,7 @@
                             {{round($attend->fourth_grading,0)}}
                         </td>
                         <td>
-                            {{round($attend->final_grade,0)}}
+                            {{round($attend->first_grading,0)+round($attend->second_grading,0)+round($attend->third_grading,0)+round($attend->fourth_grading,0)}}
                         </td>                                                    
                     </tr>
                     @endforeach
@@ -460,10 +470,11 @@
                         <td class="print-size" ><b>Class Adviser</b></td>
                         <td class="print-size" ><b>Grade School - Principal</b></td>
                     </tr>
-
+                    
                 </table>
             </td>
         </tr>
+        <tr><td style="text-align: right;padding-left: 0px">{{$info['info']->idno}}</td></tr>
     </table>
     <br>
 

@@ -139,69 +139,69 @@
                         </tr>
                     </table>
                     <br>
-                    <table class="padded" border="1" cellspacing="0" cellpading="0" style="font-size:12px;text-align: center;margin-top: auto;margin-bottom: auto;" width="100%">
-                        <tr>
-                            <td width="40%"><b>ATTENDANCE</b></td>
-                            <td width="10%"><b>1</b></td>
-                            <td width="10%"><b>2</b></td>
-                            <td width="10%"><b>3</b></td>
-                            <td width="10%"><b>4</b></td>
-                            <td width="20%"><b>TOTAL</b></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Days of School
-                            </td>
-                            {{--*/$first=0/*--}}
-                            {{--*/$second=0/*--}}
-                            {{--*/$third=0/*--}}
-                            {{--*/$fourth=0/*--}}
-                                @foreach($info['att'] as $key=>$attend)
-                                    {{--*/$first = $first + $attend->first_grading/*--}}
-                                    {{--*/$second = $second + $attend->second_grading/*--}}
-                                    {{--*/$third = $third + $attend->third_grading/*--}}
-                                    {{--*/$fourth = $fourth + $attend->fourth_grading/*--}}
-                                @endforeach
-                            <td>
+                    <table border="1" cellspacing="0" cellpading="0" style="font-size:12px;text-align: center" width="100%">
+                    <tr>
+                        <td width="40%"><b>ATTENDANCE</b></td>
+                        <td width="10%"><b>1</b></td>
+                        <td width="10%"><b>2</b></td>
+                        <td width="10%"><b>3</b></td>
+                        <td width="10%"><b>4</b></td>
+                        <td width="20%"><b>TOTAL</b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Days of School
+                        </td>
+                        {{--*/$first=0/*--}}
+                        {{--*/$second=0/*--}}
+                        {{--*/$third=0/*--}}
+                        {{--*/$fourth=0/*--}}
+                            @foreach($info['att'] as $key=>$attend)
+                                {{--*/$first = $first + $attend->first_grading/*--}}
+                                {{--*/$second = $second + $attend->second_grading/*--}}
+                                {{--*/$third = $third + $attend->third_grading/*--}}
+                                {{--*/$fourth = $fourth + $attend->fourth_grading/*--}}
+                            @endforeach
+                        <td>
 
-                                {{$first}}
-                            </td>
-                            <td>
-                                {{$second}}
-                            </td>
-                            <td>
-                                {{$third}}
-                            </td>                                                    
-                            <td>
-                                {{$fourth}}
-                            </td>
-                            <td>
-                                {{$first+$second+$third+$fourth}}
-                            </td>                                                   
-                        </tr>
-                        @foreach($info['att'] as $key=>$attend)
-                        <tr>
-                            <td>
-                                {{$attend->subjectname}}
-                            </td>
-                            <td>
-                                {{round($attend->first_grading,0)}}
-                            </td>
-                            <td>
-                                {{round($attend->second_grading,0)}}
-                            </td>
-                            <td>
-                                {{round($attend->third_grading,0)}}
-                            </td>
-                            <td>
-                                {{round($attend->fourth_grading,0)}}
-                            </td>
-                            <td>
-                                {{round($attend->final_grade,0)}}
-                            </td>                                                    
-                        </tr>
-                        @endforeach
-                    </table>
+                            {{$first}}
+                        </td>
+                        <td>
+                            {{$second}}
+                        </td>
+                        <td>
+                            {{$third}}
+                        </td>                                                    
+                        <td>
+                            {{$fourth}}
+                        </td>
+                        <td>
+                            {{$first+$second+$third+$fourth}}
+                        </td>                                                   
+                    </tr>
+                    @foreach($info['att'] as $key=>$attend)
+                    <tr>
+                        <td>
+                            {{$attend->subjectname}}
+                        </td>
+                        <td>
+                            {{round($attend->first_grading,0)}}
+                        </td>
+                        <td>
+                            {{round($attend->second_grading,0)}}
+                        </td>
+                        <td>
+                            {{round($attend->third_grading,0)}}
+                        </td>
+                        <td>
+                            {{round($attend->fourth_grading,0)}}
+                        </td>
+                        <td>
+                            {{round($attend->first_grading,0)+round($attend->second_grading,0)+round($attend->third_grading,0)+round($attend->fourth_grading,0)}}
+                        </td>                                                    
+                    </tr>
+                    @endforeach
+                </table>
                     <br>
                 </td>
                 <td style="width:1cm"></td>

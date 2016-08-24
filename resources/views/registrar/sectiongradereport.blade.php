@@ -390,7 +390,7 @@
                             {{round($attend->fourth_grading,0)}}
                         </td>
                         <td>
-                            {{round($attend->final_grade,0)}}
+                            {{round($attend->first_grading,0)+round($attend->second_grading,0)+round($attend->third_grading,0)+round($attend->fourth_grading,0)}}
                         </td>                                                    
                     </tr>
                     @endforeach
