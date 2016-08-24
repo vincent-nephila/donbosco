@@ -2,40 +2,45 @@
     <head>
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
         <style type='text/css'>
+            @if($quarter != 4)
            .padded tr td{
-               padding-top: 6.9px;
-               padding-bottom: 6.9px;
+               padding-top: 7px;
+               padding-bottom: 7px;
            }
-           table tr td{font-size:11pt;}
+           @endif
+            @if($quarter == 4)
+           .padded tr td{
+               padding-top: 2px;
+               padding-bottom: 2px;
+           }
+           @endif           
+
+           table tr td{font-size:10pt;}
            body{
                 font-family: calibri;
                 margin-left: auto;
-                
+                width:11in;
+                    margin:0px;
             }
-            .row_3{
-                -webkit-column-count: 3; /* Chrome, Safari, Opera */
-                -moz-column-count: 3; /* Firefox */
-                 column-count: 3;
-                 column-fill: auto;
-                
-            }
+
             td{vertical-align:top}
         </style>    
         <style type="text/css" media="print">
                        body{
                 font-family: calibri;
-                margin-left: auto;
+                margin-left: none;
                 margin-right: none;
+                
             }
         </style>
                 <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
                
     </head>
-    <body>
+    <body style="margin:0px;">
         @foreach($collection as $info)        
-        <table style="margin-top: 40px;margin-bottom:30px" align="center">
+        <table style="margin-top: 55px;margin-bottom:30px;margin-left: .5cm;margin-right:.5cm">
             <tr>
-                <td width="32.5%">
+                <td style="width:8.33cm" id="init_{{$info['info']->idno}}">
                     @if(sizeOf($info['aca'])!= 0)
                     <table class="padded" border = '1' cellspacing="0" cellpadding = "0" width="100%" class="reports" style="margin-top: auto;margin-bottom: auto;">
                         <tr><td colspan="6" align="center">QUARTERLY GRADES</td></tr>
@@ -197,9 +202,11 @@
                         </tr>
                         @endforeach
                     </table>
+                    <br>
                 </td>
-                <td width="1.5%"></td>
-                <td width="32.5%" id="com1_{{$info['info']->idno}}">
+                <td style="width:1cm"></td>
+                <td style="width:8.33cm" id="com1_{{$info['info']->idno}}">
+                    <div id="con_{{$info['info']->idno}}">        
                     <table class="padded" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;margin-top: auto;margin-bottom: auto;">
                         <tr>
                             <td width="30%">CONDUCT CRITERIA</td>
@@ -251,10 +258,12 @@
                                 <td colspan="5">{{round(($first+$second+$third+$fourth)/4,2)}}</td>
                             </tr>
                     </table>
-                    <br>
+                        <br>
+                    </div>
+                    
                     <table class="padded" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
                         <tr><td colspan="3"><b>CONDUCT DESCRIPTORS</b></td></tr>
-                            <tr style="font-weight:bold;">
+                            <tr style="font-weight:bold;@if($quarter == 4)height: 48px;@endif">
                                 <td width="36%" class="descriptors">
                                     DESCRIPTOR
                                 </td>
@@ -278,13 +287,15 @@
                                 <td>Fair</td><td>Fair</td><td>80 - 85</td>
                             </tr>
                             <tr>
-                                <td style="padding-top: 15px;padding-bottom: 15px">Failed</td><td>Failed</td><td>75 and Below</td>
+                                <td @if($quarter != 4)
+                                    style="padding-top: 15px;padding-bottom: 15px"
+                                    @endif>Failed</td><td>Failed</td><td>75 and Below</td>
                             </tr>
                         </table>
                     <br>
                 </td>
-                <td width="1.5%"></td>
-                <td width="32.5%" id="com2_{{$info['info']->idno}}">
+                <td style="width:1cm"></td>
+                <td style="width:8.33cm" id="com2_{{$info['info']->idno}}">
                     <div id="eng_{{$info['info']->idno}}">
                     <table border="1" width="100%" cellpadding="0" cellspacing="0">
                         <tr style="text-align: center"><td colspan="2" style="padding: 2px;"><b>ENGLISH</b></td></tr>
@@ -359,7 +370,7 @@
                     <div  id="math_{{$info['info']->idno}}">
                         @if($quarter == 4)
                     <table border="1" width="100%" cellpadding="0" cellspacing="0">
-                        <tr style=""><td colspan="2">MATHEMATICS</td></tr>
+                        <tr style="text-align:center"><td colspan="2"><b>MATHEMATICS</b></td></tr>
                         <tr>
                             <td>
                                 I.Measurement<br>
@@ -444,7 +455,7 @@
                     </table>
                         @else
                     <table border="1" width="100%" cellpadding="0" cellspacing="0">
-                        <tr style=""><td colspan="2">MATHEMATICS</td></tr>
+                        <tr style="text-align:center"><td colspan="2"><b>MATHEMATICS</b></td></tr>
                         @foreach($info['comp'] as $key=>$comp)
                         @if($comp->subject == "Mathematics")
                         <tr>
@@ -465,13 +476,13 @@
         @endforeach
         
         @foreach($collection as $info)
-        <table style="margin-top: 30px;margin-bottom:30px" align="center" width="100%" border="1">
+        <table style="margin-top: 55px;margin-bottom:30px;margin-left: .5cm;margin-right:.5cm" align="center">
                     <tr>
-                        <td width="32.5%" id="com3_{{$info['info']->idno}}">
+                        <td style="width:8.33cm" id="com3_{{$info['info']->idno}}">
                             <div id="cert_{{$info['info']->idno}}">
                                 <table width="100%">
                             <tr>
-                                <td class="print-size"  width="49%">
+                                <td class="print-size"  width="49%" style="font-size: 11pt">
                                     <b>Certificate of eligibility for promotion</b>
                                 </td>
                             </tr>
@@ -487,7 +498,7 @@
                                 <td class="print-size" ><b>Date of Issue:</b>__________________________</td>
                             </tr>
                             <tr>
-                                <td colspan="2"><br><br><br></td>                                                    
+                                <td colspan="2"><br><br></td>                                                    
                             </tr>
                             <tr style="text-align: center">
                                 <td class="print-size">________________________________</td>
@@ -506,7 +517,7 @@
                                 <br>
                                 <table width="100%">
                                     <tr>
-                                        <td class="print-size" >
+                                        <td class="print-size" style="font-size: 11pt">
                                             <b>Cancellation of Eligibility to Transfer</b>
                                         </td>  
                                     </tr>
@@ -518,7 +529,7 @@
                                     <tr>
                                         <td class="print-size" >Grade:_________   Date:__________________</td>
                                     </tr>
-                                    <tr><td><br><br><br></td></tr>
+                                    <tr><td><br><br></td></tr>
                                     <tr>
                                         <td class="print-size" style="text-align: center">________________________________</td>                                        
                                     </tr>
@@ -531,17 +542,43 @@
                                 </table>
                             </div>
                         </td>
-                        <td width="1.5%"></td>
-                        <td width="32.5%" id="com4_{{$info['info']->idno}}"></td>
-                        <td width="1.5%"></td>
-                        <td width="32.5%" id="front_{{$info['info']->idno}}">
+                        <td style="width:1cm"></td>
+                        <td style="width:8.33cm" id="com4_{{$info['info']->idno}}"></td>
+                        <td style="width:1cm"></td>
+                        <td style="width:8.33cm" id="front_{{$info['info']->idno}}" style="padding-left: 20px;padding-right: 20px">
                             <div style="text-align: center;">
-                                <span style="font-size: 11pt;"><b>DON BOSCO TECHNICAL INSTITUTE</b></span><br>
+                                <span style="font-size: 12pt;"><b>DON BOSCO TECHNICAL INSTITUTE</b></span><br>
                                 <span style="font-size: 10pt;">Chino Roces Ave., Brgy Pio del Pillar</span><br>
                                 <span style="font-size: 10pt;">Makati City</span>
                                 <div>
-                                <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:200px;padding-top: 100px;padding-bottom: 100px">
+                                <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:200px;padding-top: 70px;padding-bottom: 70px">
+                                <br>
+                                
+                                <br>
+                                <span style="font-size: 10pt;font-weight: bold;text-align: center">GRADE SCHOOL DEPARTMENT</span><br>
+                                <span style="font-size: 10pt;font-weight: bold;text-align: center">{{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</span>
+                                </div><br>
+                                <div style="font-size: 10pt;font-weight: bold">DEVELOPMENTAL CHECKLIST</div>
+                                <div style="font-size: 10pt;font-weight: bold">
+                                    @if($quarter == 1)
+                                    FIRST QUARTER
+                                    @elseif($quarter == 2)
+                                    SECOND QUARTER
+                                    @elseif($quarter == 3)
+                                    THIRD QUARTER
+                                    @else
+                                    FOURTH QUARTER
+                                    @endif
                                 </div>
+                                <br>
+                            </div>
+                            <div class="parent" style="border: 1px solid; padding: 20px 10px 50px;border-radius: 40px;">
+                                <div style="text-align:center;font-size: 12pt;"><b>KINDERGARTEN</b></div>
+                                <br>
+                            <div><span width="10%"><b>Name:</b></span>{{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}</div>
+                            <div><span width="10%"><b>Age:</b></span>{{$info['info']->age}}</div>
+                            <div><span width="10%"><b>Section:</b></span>{{$section}}</div>
+                            <div><span width="10%"><b>Adviser:</b></span>{{$teacher->adviser}}</div>
                             </div>
                         </td>
                     </tr>
@@ -550,28 +587,34 @@
         <script>
             @if($quarter == 1)
             $("#fil_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}");
-            $("#math_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}");
+            $("#eng_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}");
             $("#cert_{{$info['info']->idno}}").appendTo("#com4_{{$info['info']->idno}}");
             @endif
             @if($quarter == 2)
             $("#fil_{{$info['info']->idno}}").prependTo("#com2_{{$info['info']->idno}}");
             $("#chr_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
             $("#cert_{{$info['info']->idno}}").appendTo("#com4_{{$info['info']->idno}}");
-            $("#art_{{$info['info']->idno}}").prependTo("#com4_{{$info['info']->idno}}");
-            $("#math_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
+            //$("#art_{{$info['info']->idno}}").prependTo("#com4_{{$info['info']->idno}}");
+            $("#eng_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
             $("#phy_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}");
             @endif  
             @if($quarter == 3)
             $("#phy_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}");
             $("#chr_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
-            $("#math_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
+            $("#eng_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
             $("#cert_{{$info['info']->idno}}").appendTo("#com4_{{$info['info']->idno}}");
             @endif
             @if($quarter == 4)
-               $("#art_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}"); 
                
-               $("#chr_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}"); 
-               $("#fil_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}"); 
+               $("#math_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}"); 
+               $("#phy_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}"); 
+               //$("#fil_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}");
+               $("#eng_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}"); 
+               //$("#chr_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}"); 
+               $("#con_{{$info['info']->idno}}").appendTo("#init_{{$info['info']->idno}}"); 
+               $("#art_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}"); 
+               $("#cert_{{$info['info']->idno}}").appendTo("#com4_{{$info['info']->idno}}"); 
+               
             @endif
         </script>
         <div class="page-break"></div>        

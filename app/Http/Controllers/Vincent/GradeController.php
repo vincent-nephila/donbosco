@@ -12,6 +12,11 @@ use PDF;
 class GradeController extends Controller
 {
     //
+    
+    public function __construct()
+	{
+		$this->middleware('auth');
+	}
 
     
     public function viewGrades($idno){
@@ -81,7 +86,7 @@ class GradeController extends Controller
         $schoolyear = \App\CtrRefSchoolyear::first();
         $collection = array();
         //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
-        $students = DB::Select("SELECT department,gender,class_no,strand,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section' AND strand LIKE '$shop' AND statuses.idno=051250");
+        $students = DB::Select("SELECT statuses.department,gender,class_no,strand,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section' AND strand LIKE '$shop'");
         
         
         $matchfield = ["level"=>$level,"section"=>$section];
@@ -115,11 +120,11 @@ class GradeController extends Controller
                     $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical,'core'=>$core,'spec'=>$special);
                     //$collection[] = array('info'=>$student);
                 }
-                if($students[0]->department == "Senior High School"){
-                    return view('registrar.sectiongrade11',compact('collection','students','level','section','teacher'));
+                if($students[1]->department == "Senior High School"){
+                    return view('registrar.sectiongrade11',compact('collection','students','level','section','teacher','schoolyear'));
                 }
                 else{
-                    return view('registrar.sectiongrade9to10',compact('collection','students','level','section','teacher'));
+                    return view('registrar.sectiongrade9to10',compact('collection','students','level','section','teacher','schoolyear','shop'));
                 }
                 
                     
@@ -133,7 +138,7 @@ class GradeController extends Controller
         $collection = array();
         //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
         //$students = DB::Select("SELECT * from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where level LIKE '$level' AND section LIKE '$section'");
-        $students = DB::Select("SELECT department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section'");
+        $students = DB::Select("SELECT class_no,department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section'");
         $matchfield = ["level"=>$level,"section"=>$section];
         $teacher = \App\CtrSection::where($matchfield)->first();        
         
@@ -154,13 +159,14 @@ class GradeController extends Controller
                     $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical);
                 }           
                 
-                if($students[0]->department == "Elementary"){
+                if($students[0]->department =="Elementary"){
                     //return view('registrar.sectiongrade11',compact('collection','students','level','section','teacher'));
-                    return view('registrar.sectiongradereport',compact('collection','students','level','section','teacher'));
+                    return view('registrar.sectiongradereport',compact('collection','students','level','section','teacher','schoolyear'));
                 }
                 else{
-                    return view('registrar.sectiongradeKinder',compact('collection','students','level','section','teacher'));
-                } 
+                    return view('registrar.sectiongrade7to8',compact('collection','students','level','section','teacher','schoolyear'));
+                }
+                
     }    
     
     function viewSectionKinder($level,$section,$quarter){
@@ -168,7 +174,7 @@ class GradeController extends Controller
         $collection = array();
         //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
         //$students = DB::Select("SELECT * from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where level LIKE '$level' AND section LIKE '$section'");
-        $students = DB::Select("SELECT department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section' AND users.idno=1620070");
+        $students = DB::Select("SELECT department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section'");
         $matchfield = ["level"=>$level,"section"=>$section];
         $teacher = \App\CtrSection::where($matchfield)->first();        
         
@@ -197,7 +203,7 @@ class GradeController extends Controller
                     $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical,'comp'=>$competence);
                 }           
                 
-                    return view('registrar.sectiongradeKinder2',compact('collection','students','level','section','teacher','quarter'));
+                    return view('registrar.sectiongradeKinder2',compact('collection','students','level','section','teacher','quarter','schoolyear'));
                 
     }
     

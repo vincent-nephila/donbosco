@@ -4,7 +4,10 @@
 
         <style type='text/css'>
 
-           table tr td{font-size:11pt;}
+           table tr td{
+               font-size:11pt;
+               padding-left: 10px;
+           }
            body{
                 font-family: calibri;
                 margin-left: auto;
@@ -20,90 +23,91 @@
         </style>
                 <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
     </head>
-    <body style="width:15.5cm;">
+    <body style="width:16.6cm">
         @foreach($collection as $info)
-        <table width="95%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 20px;margin-bottom: 20px;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: .8cm;margin-bottom: .8cm;">
             <thead>
             <tr>
-                <td>
-                    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="right">
+                <td style="padding-left: 0px;">
+                    <table class="head" width="100%" border="0" cellpadding="0" cellspacing="0" align="right">
 
                     <tr>
-                        <td rowspan="4" style="text-align: right;" class="logo" width="55px">
-                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:50px">
+                        <td rowspan="4" style="text-align: right;padding-left: 0px;" class="logo" width="55px">
+                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
                         </td>
-                        <td>
-                            <span style="font-size:10pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span>
+                        <td style="padding-left: 0px;">
+                            <span style="font-size:11pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span>
                         </td>
                     </tr>
-                    <tr><td style="font-size:8pt;">Chino Roces Ave., Makati City </td></tr>
-                    <tr><td style="font-size:8pt;">PAASCU Accredited</td></tr>
-                    <tr><td style="font-size:8pt;">School Year 2015 - 2016</td></tr>
-                    <tr><td style="font-size:4pt;">&nbsp; </td></tr>
-                    <tr><td><span style="font-size"></td></tr>
+                    <tr><td style="font-size:9pt;padding-left: 0px;">Chino Roces Ave., Makati City </td></tr>
+                    <tr><td style="font-size:9pt;padding-left: 0px;">PAASCU Accredited</td></tr>
+                    <tr><td style="font-size:9pt;padding-left: 0px;">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
+                    <tr><td style="font-size:4pt;padding-left: 0px;">&nbsp; </td></tr>
+                    <tr><td><span style="font-size:5px;padding-left: 0px;"></td></tr>
                     <tr>
                         <td colspan="2">
-                    <div style="text-align: center;font-size:8pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:8pt;"><b>JUNIOR HIGH SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:9pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
+                    <div style="text-align: center;font-size:9pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
 
                         </td>
                     </tr>
-                    </table>                    
+                    <tr><td style="font-size:3px;padding-left: 0px;"><br></td></tr>
+                    </table>
                 </td>
             </tr>
             </thead>
             <tr>
-                <td>
-                    <table width="100%" border = '0' cellpacing="0" cellpadding = "0">
+                <td style="padding-left: 0px;">
+                    <table class="head" width="100%" border = '0' cellpacing="0" cellpadding = "0">
                         <tr>
-                            <td width="15%" style="font-size:8pt;">
+                            <td width="12%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Name:</b>
                             </td>
-                            <td width="45%" style="font-size:8pt;">
+                            <td width="53%" style="font-size:10pt;padding-left: 0px;">
                                 {{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}
                             </td>
-                            <td width="15%" style="font-size:8pt;">
-                                Student No:
+                            <td width="12%" style="font-size:10pt;padding-left: 0px;">
+                                <b>Student No:</b>
                             </td>
-                            <td width="25%" style="font-size:8pt;">
+                            <td width="23%" style="font-size:10pt;padding-left: 0px;">
                                 {{$info['info']->idno}}
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size:8pt;">
+                            <td style="font-size:10pt;padding-left: 0px;">
                                 <b>Gr. and Sec:</b>
                             </td>
-                            <td style="font-size:8pt;">
+                            <td style="font-size:10pt;padding-left: 0px;">
                                 {{$level}} - {{$section}}
                             </td>
-                            <td style="font-size:8pt;">
-                                Class No:
+                            <td style="font-size:10pt;padding-left: 0px;">
+                                <b>Class No:</b>
                             </td>
-                            <td style="font-size:8pt;">
-
+                            <td style="font-size:10pt;padding-left: 0px;">
+                                {{$info['info']->class_no}}
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size:8pt;">
+                            <td style="font-size:10pt;padding-left: 0px;">
                                 <b>Adviser:</b>
                             </td>
-                            <td style="font-size:8pt;">
+                            <td style="font-size:10pt;padding-left: 0px;">
                                 @if($teacher != null)
                                 {{$teacher->adviser}}
                                 @endif
                             </td>
-                            <td style="font-size:8pt;"  >
-                                LRN:
+                            <td style="font-size:10pt;padding-left: 0px;">
+                                <b>LRN:</b>
                             </td>
-                            <td style="font-size:8pt;">
+                            <td style="font-size:10pt;padding-left: 0px;">
                                 {{$info['info']->lrn}}
                             </td>
                         </tr>
-                    </table>                    
+                    </table>
                 </td>
             </tr>
             <tr>
-                <td>
+                <td style="padding-left: 0px;">
                 @if(sizeOf($info['aca'])!= 0)
                 <table border = '1' cellspacing="0" cellpadding = "0" width="100%" class="reports">
                     <tr style="font-weight: bold;text-align:center;">
@@ -182,13 +186,13 @@
                 @endif                    
                 </td>
             </tr>
-            <tr><td><span style="height:10pt"></td></tr>
+            <tr><td style="padding-left: 0px;"><span style="height:10pt"></td></tr>
             <tr>
-                <td>
+                <td style="padding-left: 0px;">
                     @if(count($info['tech']) != 0)
                     <table border = '1' cellspacing="0" cellpadding = "0" width="100%" class="reports" style="font-size:12px;">
                         <tr style="font-weight: bold;font-size: 10pt;text-align:center;">
-                            <td class="print-size" width="40%" style="padding: 2px 2px 2px 2px;">SUBJECTS</td>
+                            <td class="print-size" width="40%" style="padding: 2px 2px 2px 2px;">TECHNICAL SUBJECTS</td>
                             <td class="print-size" width="10%">1</td>
                             <td class="print-size" width="10%">2</td>
                             <td class="print-size" width="10%">3</td>
@@ -204,9 +208,9 @@
 
                         @foreach($info['tech'] as $key=>$tech)
                         <?php $weight=$tech->weighted / 100;?>
-                        <tr style="text-align: center">
+                        <tr style="text-align: center;">
                             <td style="text-align: left" class="print-size">
-                                <div style="width:70%;display:inline-block;" width="70%">{{ucwords(strtolower($tech->subjectname))}}</div><span>({{$tech->weighted}}%)</span>
+                                <div style="vertical-align: middle;width:85%;display:inline-block;" width="70%">{{ucwords(strtolower($tech->subjectname))}}</div><span>({{$tech->weighted}}%)</span>
                             </td>
                             <td class="print-size">
                                 {{round($tech->first_grading,2)}}
@@ -241,9 +245,9 @@
                     @endif                    
                 </td>
             </tr>
-            <tr><td><span style="height:10pt"></td></tr>
+            <tr><td style="padding-left: 0px;"><span style="height:10pt"></td></tr>
             <tr>
-                <td>
+                <td style="padding-left: 0px;">
                     <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
                         <tr style="font-weight:bold;">
                             <td width="36%" class="descriptors">
@@ -289,9 +293,9 @@
 
         @foreach($collection as $info)
         <h1>&nbsp;</h1>
-        <table width="95%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 20px;margin-bottom: 20px;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: .8cm;margin-bottom: .8cm;">
         <tr>
-            <td colspan="2">
+            <td colspan="2" style="padding-left: 0px;">
                 <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;">
                     <tr>
                         <td width="30%">CONDUCT CRITERIA</td>
