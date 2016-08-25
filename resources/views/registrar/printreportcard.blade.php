@@ -53,7 +53,15 @@ if($('#level').val() == "Grade 9" || $('#level').val() == "Grade 10" || $('#leve
 function displaycards(){
     var level = document.getElementById('level').value
     var section = document.getElementById('section').value
+    var strand
+    if(document.getElementById('strand')){
+    strand = document.getElementById('strand').value
+    }
+    if(level == "Grade 9" | level == "Grade 10" | level == "Grade 11"){
+     document.location = "/reportcards/" + level + "/" + strand + "/" + section   
+    }else{
     document.location = "/reportcards/" + level + "/" + section
+    }
 }
 function getstrandall(strand){
     //getstudentlist(strand);

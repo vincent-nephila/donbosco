@@ -40,10 +40,16 @@
 <body> 
 <div class= "container-fluid">
         <div class="col-md-12">
+          <div class="col-md-1"> 
          <img class ="img-responsive" style ="margin-top:10px;" src = "{{ asset('/images/logo.png') }}" alt="Don Bosco Technical School" />
-        </div>
+         </div>
+            <div class="col-md-11" style="padding-top: 20px"><span style="font-size: 14pt; font-weight: bold;">Don Bosco Technical Institute of Makati</span><br>Chino Roces Ave., Makati City<br>Tel No : 892-01-01
+         </div>   
+         
+            
 </div>
- 
+    </div>
+   
        <nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -87,7 +93,8 @@
                                         <span class="caret"></span></a>   
                                         <ul class="dropdown-menu">
                                             <li><a href="{{url('enrollmentstat')}}"><i class="fa fa-btn"></i>Enrollment Statistics</a></li>
-                                            <li><a href="{{url('studentlist')}}"><i class="fa fa-btn"></i>Student List</a></li>
+                                            <li><a href="{{url('studentlist')}}"><i class="fa fa-btn"></i>Student Contact</a></li>
+                                            <li><a href="{{url('importGrade')}}"><i class="fa fa-btn"></i>Import Grades</a></li>
                                             <li><a href="{{url('printreportcard')}}"><i class="fa fa-btn"></i>Report Card</a></li>
                                          </ul>   
                                         

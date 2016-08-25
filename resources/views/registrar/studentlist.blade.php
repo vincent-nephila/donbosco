@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-  <h2>STUDENT LIST</h2>
+  <h3>STUDENT CONTACT</h3>
  
   <div class="form-group">
   <label for="sel1">Select level:</label>

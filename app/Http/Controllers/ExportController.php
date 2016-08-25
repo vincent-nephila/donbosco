@@ -9,11 +9,11 @@ use App\Http\Requests;
 
 class ExportController extends Controller
 {
-    	public function importExport()
+    	public function importGrade()
 
 	{
 
-		return view('importExport');
+		return view('registrar.importgrade');
 
 	}
 
@@ -37,7 +37,7 @@ class ExportController extends Controller
 
 	}
 
-	public function importExcel()
+	public function importExcelGrade()
 
 	{
 
@@ -69,8 +69,82 @@ class ExportController extends Controller
 			}
 
 		}
+                //return $insert;
+		return redirect(url('/importGrade'));
 
-		return redirect(url('importExport'));
+	}
+        public function importExcelConduct()
+
+	{
+
+		if(Input::hasFile('import_file1')){
+                        
+			$path = Input::file('import_file1')->getRealPath();
+                        
+			$data = Excel::selectSheets('Sheet1')->load($path, function($reader) {
+			})->get();
+			if(!empty($data) && $data->count()){
+                           
+				foreach ($data as $key => $value) {
+                                   
+                                    $insert[] = ['idno'=>$value->idno, 'qtrperiod'=>$value->qtrperiod, 
+                                        'level'=>$value->level, 'section'=>$value->section, 'schoolyear'=>$value->schoolyear,
+                                        'GC'=>$value->gc, 'SR'=>$value->sr,'PE'=>$value->pe, 'SYN'=>$value->syn,
+                                        'JO'=>$value->jo,'TS'=>$value->ts,'OSR'=>$value->osr,'DPT'=>$value->dpt,'PTY'=>$value->pty,
+                                        'DI'=>$value->di,'PG'=>$value->pg,'SIS'=>$value->sis];
+                                   
+                                 
+				}
+
+				if(!empty($insert)){
+
+					DB::table('conduct_repos')->insert($insert);
+
+					
+
+				}
+
+			}
+
+		}
+                //return $insert;
+		return redirect(url('/importGrade'));
+
+	}
+        public function importExcelAttendance()
+
+	{
+
+		if(Input::hasFile('import_file2')){
+
+			$path = Input::file('import_file2')->getRealPath();
+                        
+			$data = Excel::selectSheets('Sheet1')->load($path, function($reader) {
+			})->get();
+			if(!empty($data) && $data->count()){
+                           
+				foreach ($data as $key => $value) {
+                                   
+                                    $insert[] = ['idno'=>$value->idno, 'qtrperiod'=>$value->qtrperiod, 
+                                        'level'=>$value->level, 'section'=>$value->section,'schoolyear'=>$value->schoolyear,
+                                        'DAYA'=>$value->daya, 'DAYP'=>$value->dayp,'DAYT'=>$value->dayt];
+                                   
+                                 
+				}
+
+				if(!empty($insert)){
+
+					DB::table('attendance_repos')->insert($insert);
+
+					
+
+				}
+
+			}
+
+		}
+
+		return redirect(url('/importGrade'));
 
 	}
 }

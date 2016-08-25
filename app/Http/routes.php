@@ -1,35 +1,5 @@
 <?php
-
-/*
-|--------------------------------------------------------------------------
-| Routes File
-|--------------------------------------------------------------------------
-|
-| Here is where you will register all of the routes in an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
-
-
-
-
-
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
-  
-
-
-Route::group(['middleware' => 'web'], function () {
+    Route::group(['middleware' => 'web'], function () {
     Route::auth();
     Route::get('/', 'MainController@index');
     //Registrar module
@@ -53,8 +23,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('studentinfokto12/{idno}/print','Registrar\Studentinfokto12Controller@printInfo');    
     Route::get('studentinfokto12','Registrar\Studentinfokto12Controller@studentinfokto12');
     Route::post('studentinfokto12','Registrar\Studentinfokto12Controller@saveInfo');
-    Route::get('importExport', 'ExportController@importExport');
-    Route::post('importExcel', 'ExportController@importExcel');
+    Route::get('importGrade', 'ExportController@importGrade');
+    Route::post('importConduct', 'ExportController@importExcelConduct');
+    Route::post('importAttendance', 'ExportController@importExcelAttendance');
+    Route::post('importGrade', 'ExportController@importExcelGrade');
     Route::get('updategrades','Registrar\AssessmentController@updategrades');
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
      Route::get('printreportcard','Registrar\GradeController@printreportcard');
