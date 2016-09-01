@@ -157,7 +157,7 @@
              <td width="90px"><label>Civil Status </label> </td>
              <td>
                  <select class="form-control" name="status" id="status">
-                    <option value="SINGLE" default>SINGLE</option>
+                    <option value="SINGLE" selected>SINGLE</option>
                     <option value="MARRIED">MARRIED</option>
                     <option value="DIVORCED">DIVORCED</option>
                     <option value="DECEASED">DECEASED</option>
@@ -463,7 +463,7 @@
                  <td colspan="3"><label>Are you a DBTI-Makati Alumnus?</label></td>
                  <td>
                      <select class="form-control" name="falumnus" id="falumnus">
-                      <option value="1">YES</option>
+                      <option value="1" selected>YES</option>
                       <option value="0">NO</option>
                      </select>
                  </td>
@@ -493,7 +493,7 @@
                  <td width="92px"><label>Civil Status:</label></td>
                  <td>
                     <select class="form-control" name="fstatus" id="fstatus">
-                      <option value="SINGLE">SINGLE</option>
+                      <option value="SINGLE" selected>SINGLE</option>
                       <option value="MARRIED">MARRIED</option>
                       <option value="DIVORCED">DIVORCED</option>
                       <option value="DECEASED">DECEASED</option>
@@ -514,7 +514,7 @@
                  <td width="92px"><label>Civil Status:</label></td>
                  <td>
                     <select class="form-control" name="mstatus" id="mstatus">
-                      <option value="SINGLE">SINGLE</option>
+                      <option value="SINGLE" selected>SINGLE</option>
                       <option value="MARRIED">MARRIED</option>
                       <option value="DIVORCED">DIVORCED</option>
                       <option value="DECEASED">DECEASED</option>
@@ -619,7 +619,7 @@
                  <td colspan="3"><label>Are you self-employed</label></td>
                  <td>
                      <select class="form-control" name="fselfemployed" id="fselfemployed">
-                      <option value="1">YES</option>
+                      <option value="1" selected>YES</option>
                       <option value="0">NO</option>
                      </select>
                  </td>
@@ -627,7 +627,7 @@
                  <td colspan="3"><label>Are you self-employed</label></td>
                  <td>
                      <select class="form-control" name="mselfemployed" id="mselfemployed">
-                        <option value="1">YES</option>
+                        <option value="1" selected>YES</option>
                         <option value="0">NO</option>
                      </select>
                  </td>
@@ -679,7 +679,7 @@
                  <td></td>
                  <td colspan="2">
                      <select class="form-control" name="fposition" id="fposition">
-                        <option value="TOP MANAGEMENT">TOP MANAGEMENT</option>
+                        <option value="TOP MANAGEMENT" selected>TOP MANAGEMENT</option>
                         <option value="MIDDLE MANAGEMENT">MIDDLE MANAGEMENT</option>
                         <option value="SUPERVISORY">SUPERVISORY</option>
                         <option value="RANK & FILE">RANK & FILE</option>
@@ -688,7 +688,7 @@
                  <td colspan="3"></td>
                  <td colspan="2">
                      <select class="form-control" name="mposition" id="mposition">
-                        <option value="TOP MANAGEMENT">TOP MANAGEMENT</option>
+                        <option value="TOP MANAGEMENT" selected>TOP MANAGEMENT</option>
                         <option value="MIDDLE MANAGEMENT">MIDDLE MANAGEMENT</option>
                         <option value="SUPERVISORY">SUPERVISORY</option>
                         <option value="RANK & FILE">RANK & FILE</option>
@@ -857,7 +857,7 @@
                  <td><label>Means of Transportation</label></td>
                  <td>
                      <select class="form-control" name="transportation" id="transportation">
-                        <option value="COMMUTE">COMMUTE</option>
+                        <option value="COMMUTE" selected>COMMUTE</option>
                         <option value="SCHOOL BUS">SCHOOL BUS</option>
                         <option value="OWN">OWN VEHICLE</option>
                      </select>
@@ -940,13 +940,13 @@ for($counter = 1;$counter<=$numberofrow;$counter++){ ?>
     </td>
     <td> 
       <select class="form-control" name="siblinggender<?php echo $counter;?>" id="siblinggender<?php echo $counter;?>">
-        <option>MALE</option>
+        <option selected>MALE</option>
         <option>FEMALE</option>
       </select>
     </td>
     <td>
       <select class="form-control" name="siblingstatus<?php echo $counter;?>" id="siblingstatus<?php echo $counter;?>">
-        <option value="SINGLE">SINGLE</option>
+        <option value="SINGLE" selected>SINGLE</option>
         <option value="MARRIED">MARRIED</option>
         <option value="DIVORCED">DIVORCED</option>
         <option value="DECEASED">DECEASED</option>
