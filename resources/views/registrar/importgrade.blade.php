@@ -128,10 +128,15 @@ return $data;
 
 function getCount($level, $subjectcode, $section,$subjecttype){
   if($subjecttype=='1'){  
-  $count = DB::Select("select idno from subject_repos where level = '$level' and subjectcode = '$subjectcode' and section = '$section'");  
+  $count = DB::Select("select subject_repos.idno from subject_repos,statuses  where  subject_repos.idno=statuses.idno and statuses.level = '$level' and subject_repos.subjectcode = '$subjectcode' and statuses.section = '$section'");  
   }
   elseif($subjecttype=='2'||$subjecttype=='3'){
-  $count = DB::Select("Select idno from conduct_repos where level = '$level' and section = '$section'");
+  if($subjecttype=='3'){    
+  $count = DB::Select("Select conduct_repos.idno from conduct_repos,statuses where conduct_repos.idno = statuses.idno and statuses.level = '$level' and statuses.section = '$section'");
+  } else{
+   $count = DB::Select("Select attendance_repos.idno from attendance_repos,statuses where attendance_repos.idno = statuses.idno and statuses.level = '$level' and statuses.section = '$section'");    
+  }
+  
   }
   return count($count);
 }

@@ -42,7 +42,7 @@ class MainController extends Controller
                case env('USER_ACCOUNTING_HEAD');  
                    $students = \App\User::where('accesslevel','0')->orderBy('lastname','firstname')->take(30)->get();
                    return view('accounting.index',compact('myid','myname','students')) ;                  
-                  break;    
+                  break; 
             }
             
         } else {    

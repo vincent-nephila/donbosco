@@ -343,7 +343,7 @@ function assess(Request $request){
                     $newgrade->subjecttype=$newsubject->subjecttype;
                     $newgrade->points=$newsubject->points;
                     $newgrade->weighted=$newsubject->weighted;
-                    $newgrade->sortto=$newsubject->sort;
+                    $newgrade->sortto=$newsubject->sortto;
                     $newgrade->save();
                 }
                 
@@ -362,7 +362,7 @@ function assess(Request $request){
                     $newgrade->subjecttype=$newsubject->subjecttype;
                     $newgrade->points=$newsubject->points;
                     $newgrade->weighted=$newsubject->weighted;
-                    $newgrade->sortto=$newsubject->sort;
+                    $newgrade->sortto=$newsubject->sortto;
                     $newgrade->save();
                 }
                 }   
