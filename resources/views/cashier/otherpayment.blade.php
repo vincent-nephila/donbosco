@@ -57,10 +57,12 @@
             </table>
         <hr />
        </div>
+        <div id="myForm" class="col-md-12">
+             <form class="form-horizontal" id = "assess" role="form" method="POST" action="{{ url('/othercollection') }}">
+                    {!! csrf_field() !!} 
         <div class="col-md-8" > 
             <div style="padding: 10px;">
-                <form class="form-horizontal" id = "assess" role="form" method="POST" action="{{ url('/othercollection') }}">
-                    {!! csrf_field() !!} 
+               
                     <input type="hidden" name="idno" value="{{$student->idno}}">
                     
                     <div class="form-group col-md-12">
@@ -245,9 +247,10 @@
                     <input type="submit" value="Process Payment" id="submit"  style="visibility:hidden" class="form-control btn-danger">
                     </div>
                     
-                </form>
             </div>
         </div>
+        </form>
+       <!-- end of form--></div>
     </div>
     <div class="col-md-3">
         <div class="btn btn-primary form form-control">Other Payment References</div>

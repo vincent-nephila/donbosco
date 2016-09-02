@@ -168,7 +168,9 @@ public function saveStudentInfo(array $request,$studentid){
     $studentInfo->birthPlace = $request['birthPlace'];
     $studentInfo->citizenship = $request['citizenship'];
     $studentInfo->religion = $request['religion'];
+    if(isset($request->status)){
     $studentInfo->status = $request['status'];
+    }
     $studentInfo->acr = $request['acr'];
     $studentInfo->visaType = $request['visaType'];
     $studentInfo->address1 = $request['address1'];
@@ -197,7 +199,9 @@ public function saveStudentInfo(array $request,$studentid){
     $studentInfo->falumnus = $request['falumnus'];
     //$studentInfo->fgraduated = $request['fgraduated'];
     $studentInfo->fyeargraduated = $request['fyeargraduated'];
+    if(isset($request->fstatus)){
     $studentInfo->fstatus = $request['fstatus'];
+    }
     $studentInfo->fcourse = $request['fcourse'];
     $studentInfo->fmobile = $request['fmobile'];
     $studentInfo->freligion = $request['freligion'];
@@ -205,7 +209,9 @@ public function saveStudentInfo(array $request,$studentid){
     $studentInfo->fselfemployed = $request['fselfemployed'];
     $studentInfo->fFulljob = $request['fFulljob'];
     $studentInfo->fPartjob = $request['fPartjob'];
+    if(isset($request->fposition)){
     $studentInfo->fposition = $request['fposition'];
+    }
     $studentInfo->fincome = $request['fincome'];
     $studentInfo->fcompany = $request['fcompany'];
     $studentInfo->fComAdd = $request['fComAdd'];
@@ -215,7 +221,9 @@ public function saveStudentInfo(array $request,$studentid){
     
     $studentInfo->mname = $request['mname'];
     $studentInfo->mbirthdate = $this->dateFormat($request['mbirthdate']);
+    if(isset($request->mstatus)){
     $studentInfo->mstatus = $request['mstatus'];
+    }
     $studentInfo->mcourse = $request['mcourse'];
     $studentInfo->mmobile = $request['mmobile'];
     $studentInfo->mreligion = $request['mreligion'];

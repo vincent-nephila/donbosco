@@ -1394,7 +1394,7 @@ function getAge(){
         document.getElementById("esc").checked = true;
     @endif    
     
-    @if($sibling != NULL)    
+    @if(count($sibling)>0)    
         <?php $rows = 10;
         for($counter = 1;$counter<=$numberofrow;$counter++){ ?>    
             document.getElementById("siblinggender<?php echo $counter;?>").value = "{{$sibling[$counter-1]->gender== NULL ? 'MALE' : $sibling[$counter-1]->gender}}";
@@ -1422,7 +1422,7 @@ function getAge(){
  */
     getAge();
     
-    document.getElementById("status").value = "{{ $studentInfo->status == NULL ? 'SINGLE' : $studentInfo->status }}"; 
+    document.getElementById("status").value = "{{$studentInfo->status == NULL ? 'SINGLE' : $studentInfo->status }}"; 
     
     document.getElementById("fselfemployed").value = "{{$studentInfo->fselfemployed== NULL ? '0' : $studentInfo->fselfemployed}}";
     document.getElementById("falumnus").value = "{{$studentInfo->falumnus== NULL ? '0' : $studentInfo->falumnus}}";    
