@@ -112,6 +112,11 @@
                                   <option value = "3">Cashier Head</option>
                                   <option value = "4">Accounting</option>
                                   <option value = "5">Accounting Head</option>
+                                  <option value = "6">High School Department Principal</option>
+                                  <option value = "7">Elementary Department  Principal</option>
+                                  <option value = "8">Assistant High School Department Principal</option>
+                                  <option value = "9">Assistant Elementary Department  Principal</option>
+                                  
                                     </select>    
 
                                 @if ($errors->has('accesslevel'))
