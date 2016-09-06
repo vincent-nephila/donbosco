@@ -56,7 +56,11 @@ class ExportController extends Controller
                                             'level'=> $value->level, 'section'=> $value->section, 'grade'=> $value->grade,
                                             'qtrperiod'=> $value->qtrperiod,'schoolyear'=> $value->schoolyear];
                                       */  
-                                        $insert[] = ['idno' => $value->idno, 'subjectcode' => $value->subjectcode,
+                                    $idnof = $value->idno;
+                                    if(strlen($idnof)==5){
+                                        $idnof = "0".$idnof;
+                                    }
+                                        $insert[] = ['idno' => $idnof, 'subjectcode' => $value->subjectcode,
                                             'grade'=> $value->grade,
                                             'qtrperiod'=> $value->qtrperiod,'schoolyear'=> $sy];
                                         
@@ -94,8 +98,12 @@ class ExportController extends Controller
 			if(!empty($data) && $data->count()){
                            
 				foreach ($data as $key => $value) {
-                                   
-                                    $insert[] = ['idno'=>$value->idno, 'qtrperiod'=>$value->qtrperiod, 
+                                    $idnof = $value->idno;
+                                    if(strlen($idnof)==5){
+                                        $idnof = "0".$idnof;
+                                    }
+                                    
+                                    $insert[] = ['idno'=>$idnof, 'qtrperiod'=>$value->qtrperiod, 
                                         'schoolyear'=>$value->schoolyear,
                                         'GC'=>$value->gc, 'SR'=>$value->sr,'PE'=>$value->pe, 'SYN'=>$value->syn,
                                         'JO'=>$value->jo,'TS'=>$value->ts,'OSR'=>$value->osr,'DPT'=>$value->dpt,'PTY'=>$value->pty,
@@ -132,6 +140,9 @@ class ExportController extends Controller
 	}
         
         public function upgradegrade($idno,$subjectcode,$qtrperiod,$grade,$sy){
+        if(strlen($idno)==5){
+            $idno = "0".$idno;
+        }     
         $qtrname = "";
         switch($qtrperiod){
             case 1:
@@ -153,6 +164,9 @@ class ExportController extends Controller
         }}
         
         public function updateattendance($idno,$daya,$dayp,$dayt,$qtrperiod,$sy){
+        if(strlen($idno)==5){
+            $idno = "0".$idno;
+        }    
         $qtrname = "";
         switch($qtrperiod){
             case 1:
@@ -186,6 +200,9 @@ class ExportController extends Controller
         }
         
         public function updateconduct($idno,$ctype,$cvalue,$qtrperiod,$schoolyear){
+          if(strlen($idno)==5){
+            $idno = "0".$idno;
+        }   
           if(!is_null($cvalue) || $cvalue!=""){  
             switch($qtrperiod){
             case 1:
@@ -223,12 +240,15 @@ class ExportController extends Controller
 			if(!empty($data) && $data->count()){
                            
 				foreach ($data as $key => $value) {
-                                   
+                                    $idnof = $value->idno;
+                                    if(strlen($idnof)==5){
+                                        $idnof = "0".$idnof;
+                                    }
                                    $dya=$this->noneNull($value->daya);
                                    $dyp=$this->noneNull($value->dayp);
                                    $dyt=$this->noneNull($value->dayt);
                                    
-                                    $insert[] = ['idno'=>$value->idno, 'qtrperiod'=>$value->qtrperiod, 
+                                    $insert[] = ['idno'=>$idnof, 'qtrperiod'=>$value->qtrperiod, 
                                         'schoolyear'=>$sy,
                                         'DAYA'=>$dya, 'DAYP'=>$dyp,'DAYT'=>$dyt];
                                    

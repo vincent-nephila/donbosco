@@ -27,10 +27,10 @@
     Route::post('importConduct', 'ExportController@importExcelConduct');
     Route::post('importAttendance', 'ExportController@importExcelAttendance');
     Route::post('importGrade', 'ExportController@importExcelGrade');
-    Route::get('updategrades','Registrar\AssessmentController@updategrades');
+    
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
      Route::get('printreportcard','Registrar\GradeController@printreportcard');
-     Route::get('updateelective','Registrar\AssessmentController@updateelective');
+     //
     
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
@@ -89,7 +89,12 @@
     Route::post('postpenalties','Accounting\AccountingController@postpenalties');
     Route::get('subsidiary','Accounting\AccountingController@subsidiary');
     Route::post('subsidiary','Accounting\AccountingController@postsubsidiary');
-    
+    //update module
+    //Elective submitted by registrar on STEM
+    //Route::get('updateelective','Registrar\AssessmentController@updateelective');
+    //Update grades of students
+    //Route::get('updategrades','Registrar\AssessmentController@updategrades');
+    Route::get('updatehsconduct','Update\UpdateController@updatehsconduct');
     //Registrar Vincent
     Route::get('/reportcards/{level}/{section}','Vincent\GradeController@viewSectionGrade');    
     Route::get('/reportcard/{level}/{section}/{quarter}','Vincent\GradeController@viewSectionKinder');    
