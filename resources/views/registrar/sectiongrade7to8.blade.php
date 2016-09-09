@@ -32,11 +32,11 @@
                     <table class="head" width="100%" border="0" cellpadding="0" cellspacing="0" align="right">
 
                     <tr>
-                        <td rowspan="4" style="text-align: right;padding-left: 0px;" class="logo" width="55px">
+                        <td rowspan="4" style="text-align: right;padding-left: 0px;width: 35%" class="logo" width="55px">
                             <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
                         </td>
                         <td style="padding-left: 0px;">
-                            <span style="font-size:11pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span>
+                            <span style="font-size:11pt; font-weight: bold">Don Bosco Technical Institute</span>
                         </td>
                     </tr>
                     <tr><td style="font-size:9pt;padding-left: 0px;">Chino Roces Ave., Makati City </td></tr>
@@ -60,13 +60,13 @@
                 <td style="padding-left: 0px;">
                     <table class="head" width="100%" border = '0' cellpacing="0" cellpadding = "0">
                         <tr>
-                            <td width="12%" style="font-size:10pt;padding-left: 0px;">
+                            <td width="13%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Name:</b>
                             </td>
                             <td width="53%" style="font-size:10pt;padding-left: 0px;">
                                 {{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}
                             </td>
-                            <td width="12%" style="font-size:10pt;padding-left: 0px;">
+                            <td width="13%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Student No:</b>
                             </td>
                             <td width="23%" style="font-size:10pt;padding-left: 0px;">
@@ -130,24 +130,50 @@
                         <td style="text-align: left">
                             {{ucwords(strtolower($academics->subjectname))}}
                         </td>
-                        <td>
+                        <td @if(round($academics->first_grading,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($academics->first_grading,2) == 0)
+                            @else
                             {{round($academics->first_grading,2)}}
+                            @endif
                             {{--*/$first = $first + round($academics->first_grading,2)/*--}}
                         </td>
-                        <td>
+                        <td @if(round($academics->second_grading,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($academics->second_grading,2) == 0)
+                            @else
                             {{round($academics->second_grading,2)}}
+                            @endif
                             {{--*/$second = $second + round($academics->second_grading,2)/*--}}
                         </td >
-                        <td>
+                        <td @if(round($academics->third_grading,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($academics->third_grading,2) == 0)
+                            @else
                             {{round($academics->third_grading,2)}}
+                            @endif
                             {{--*/$third = $third + round($academics->third_grading,2)/*--}}
                         </td>
-                        <td>
+                        <td @if(round($academics->fourth_grading,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($academics->fourth_grading,2) == 0)
+                            @else
                             {{round($academics->fourth_grading,2)}}
+                            @endif
                             {{--*/$fourth = $fourth + round($academics->fourth_grading,2)/*--}}
                         </td>
                         <td>
+                            @if(!round($academics->final_grade,2) == 0)
                             {{round($academics->final_grade,2)}}
+                            @endif
                             {{--*/$final = $final + round($academics->final_grade,2)/*--}}
                         </td>
                         <td>
@@ -160,19 +186,46 @@
                         <td style="text-align: right;">
                             <b>GENERAL AVERAGE</b>
                         </td>
-                        <td>
+                        <td @if(round($first/$count,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($first/$count,2) == 0)
+                            @else
                             {{round($first/$count,2)}}
+                            @endif
                         </td>
-                        <td>{{round($second/$count,2)}}
+                        <td @if(round($second/$count,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($second/$count,2) == 0)
+                            @else
+                            {{round($second/$count,2)}}
+                            @endif
                         </td>
-                        <td>
+                        <td @if(round($third/$count,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($third/$count,2) == 0)
+                            @else
                             {{round($third/$count,2)}}
+                            @endif
                         </td>
-                        <td>
+                        <td @if(round($fourth/$count,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($fourth/$count,2) == 0)
+                            @else
                             {{round($fourth/$count,2)}}
+                            @endif
                         </td>
                         <td>
+                            @if(!round($fourth/$count,2) == 0)
                             {{round($final/$count,2)}}
+                            @endif
                         </td>
 
                         <td>
@@ -213,24 +266,54 @@
                             <td style="text-align: left" class="print-size">
                                 <div style="vertical-align: middle;width:85%;display:inline-block;" width="70%">{{ucwords(strtolower($tech->subjectname))}}</div>
                             </td>
-                            <td class="print-size">
+                            <td class="print-size" @if(round($tech->first_grading,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($tech->first_grading,2) == 0)
+                            @else
                                 {{round($tech->first_grading,2)}}
+                            @endif
                                 {{--*/$first = $first + round($tech->first_grading,2)/*--}}
                             </td>
-                            <td class="print-size">
+                            <td class="print-size" @if(round($tech->second_grading,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($tech->second_grading,2) == 0)
+                            @else
                                 {{round($tech->second_grading,2)}}
+                            @endif
                                 {{--*/$second = $second + round($tech->second_grading,2)/*--}}
                             </td>
-                            <td class="print-size">
+                            <td class="print-size" @if(round($tech->third_grading,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($tech->third_grading,2) == 0)
+                            @else
                                 {{round($tech->third_grading,2)}}
-                                {{--*/$third = $third + round($tech->third_grading,2)/*--}}
+                            @endif
+                                {{--*/$third = $third + round($tech->fourth_grading,2)/*--}}
                             </td>
-                            <td class="print-size">
+                            <td class="print-size" @if(round($tech->fourth_grading,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($tech->first_grading,2) == 0)
+                            @else
                                 {{round($tech->fourth_grading,2)}}
+                            @endif
                                 {{--*/$fourth = $fourth + round($tech->fourth_grading,2)/*--}}
                             </td>
-                            <td class="print-size">
+                            <td class="print-size" @if(round($tech->first_grading,2) <= 74)
+                             style="color:red"
+                            @endif
+                            >
+                            @if(round($tech->final_grade,2) == 0)
+                            @else
                                 {{round($tech->final_grade,2)}}
+                                @endif
                                 {{--*/$final = $final + round($tech->final_grade,2)/*--}}
                             </td>
                             <td class="print-size">
@@ -241,11 +324,11 @@
                         @endforeach
                         <tr style="text-align: center">
                             <td class="print-size" style="text-align: right"><b>TECHNICAL AVERAGE</b></td>
-                            <td class="print-size">{{round($first/$count,0)}}</td>
-                            <td class="print-size">{{round($second/$count,0)}}</td>
-                            <td class="print-size">{{round($third/$count,0)}}</td>
-                            <td class="print-size">{{round($fourth/$count,0)}}</td>
-                            <td class="print-size">{{round($final/$count,0)}}</td>
+                            <td class="print-size">@if(!round($first/$count,2) == 0){{round($first/$count,0)}}@endif</td>
+                            <td class="print-size">@if(!round($second/$count,2) == 0){{round($second/$count,0)}}@endif</td>
+                            <td class="print-size">@if(!round($third/$count,2) == 0){{round($third/$count,0)}}@endif</td>
+                            <td class="print-size">@if(!round($fourth/$count,2) == 0){{round($fourth/$count,0)}}@endif</td>
+                            <td class="print-size">@if(!round($final/$count,2) == 0){{round($final/$count,0)}}@endif</td>
                             <td class="print-size">
                             @if($final != 0)
                             {{round($final/$count,2) >= 75 ? "Passed":"Failed"}}    
@@ -258,7 +341,7 @@
             <tr><td style="padding-left: 0px;"><span style="height:10pt"></td></tr>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
+                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
                         <tr style="font-weight:bold;">
                             <td width="36%" class="descriptors">
                                 DESCRIPTOR
@@ -328,19 +411,27 @@
                         <td style="text-align: left">{{$conducts->subjectname}}</td>
                         <td>{{$conducts->points}}</td>
                         <td>
+                            @if(!round($conducts->first_grading,2)==0)
                             {{round($conducts->first_grading,2)}}
+                            @endif
                             {{--*/$first = $first + round($conducts->first_grading,2)/*--}}
                         </td>
                         <td>
+                            @if(!round($conducts->second_grading,2)==0)
                             {{round($conducts->second_grading,2)}}
+                            @endif
                             {{--*/$second = $second + round($conducts->second_grading,2)/*--}}
                         </td>
                         <td>
+                            @if(!round($conducts->third_grading,2)==0)
                             {{round($conducts->third_grading,2)}}
+                            @endif
                             {{--*/$third = $third + round($conducts->third_grading,2)/*--}}
                         </td>
                         <td>
+                            @if(!round($conducts->fourth_grading,2)==0)
                             {{round($conducts->fourth_grading,2)}}
+                            @endif
                             {{--*/$fourth = $fourth + round($conducts->fourth_grading,2)/*--}}
                         </td>
                         @if($length == $counter)
@@ -353,11 +444,11 @@
                         <tr>
                             <td>CONDUCT GRADE</td>
                             <td>100</td>
-                            <td>{{$first}}</td>
-                            <td> {{$second}}</td>
-                            <td>{{$third}}</td>
-                            <td>{{$fourth}}</td>
-                            <td>{{round(($first+$second+$third+$fourth)/4,0)}}</td>
+                            <td>@if(!$first == 0){{$first}}@endif</td>
+                            <td>@if(!$second == 0){{$second}}@endif</td>
+                            <td>@if(!$third == 0){{$third}}@endif</td>
+                            <td>@if(!$fourth == 0){{$fourth}}@endif</td>
+                            <td>@if(!$fourth == 0){{round(($first+$second+$third+$fourth)/4,0)}}@endif</td>
                             
                         </tr>
                 </table>
@@ -380,23 +471,32 @@
                         {{--*/$third=0/*--}}
                         {{--*/$fourth=0/*--}}
                             @foreach($info['att'] as $key=>$attend)
+                            @if($attend->subjectcode != "DAYT")
                                 {{--*/$first = $first + $attend->first_grading/*--}}
                                 {{--*/$second = $second + $attend->second_grading/*--}}
                                 {{--*/$third = $third + $attend->third_grading/*--}}
                                 {{--*/$fourth = $fourth + $attend->fourth_grading/*--}}
+                                @endif
                             @endforeach
                         <td>
-
+                            @if($first != 0)
                             {{$first}}
+                            @endif
                         </td>
                         <td>
+                            @if($first != 0)
                             {{$second}}
+                            @endif
                         </td>
                         <td>
+                            @if($first != 0)
                             {{$third}}
+                            @endif
                         </td>                                                    
                         <td>
+                            @if($first != 0)
                             {{$fourth}}
+                            @endif
                         </td>
                         <td>
                             {{$first+$second+$third+$fourth}}
@@ -405,22 +505,30 @@
                     @foreach($info['att'] as $key=>$attend)
                     <tr>
                         <td>
-                            {{$attend->subjectname}}
+                            {{ucfirst(strtolower($attend->subjectname))}}
                         </td>
                         <td>
-                            {{round($attend->first_grading,0)}}
+                            @if($first != 0)
+                            {{round($attend->first_grading,1)}}
+                            @endif
                         </td>
                         <td>
-                            {{round($attend->second_grading,0)}}
+                            @if($second != 0)
+                            {{round($attend->second_grading,1)}}
+                            @endif
                         </td>
                         <td>
-                            {{round($attend->third_grading,0)}}
+                            @if($third != 0)
+                            {{round($attend->third_grading,1)}}
+                            @endif
                         </td>
                         <td>
-                            {{round($attend->fourth_grading,0)}}
+                            @if($fourth != 0)
+                            {{round($attend->fourth_grading,1)}}
+                            @endif
                         </td>
                         <td>
-                            {{round($attend->first_grading,0)+round($attend->second_grading,0)+round($attend->third_grading,0)+round($attend->fourth_grading,0)}}
+                            {{round($attend->first_grading,1)+round($attend->second_grading,1)+round($attend->third_grading,1)+round($attend->fourth_grading,1)}}
                         </td>                                                    
                     </tr>
                     @endforeach
@@ -464,7 +572,7 @@
                             {{$teacher->adviser}}
                            @endif
                         </td>
-                        <td class="print-size" >Principal Name</td>
+                        <td class="print-size" >Ms. Violeta F.Roxas</td>
                     </tr>
                     <tr style="text-align: center">
                         <td class="print-size" ><b>Class Adviser</b></td>

@@ -28,11 +28,11 @@
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: .8cm;margin-bottom: .8cm;">
             <thead>
             <tr>
-                <td style="padding-left: 0px;">
+                <td style="padding-left: 0px">
                     <table class="head" width="100%" border="0" cellpadding="0" cellspacing="0" align="right">
 
                     <tr>
-                        <td rowspan="4" style="text-align: right;padding-left: 0px;" class="logo" width="55px">
+                        <td rowspan="4" style="text-align: right;padding-left: 0px;width: 35%" class="logo" width="55px">
                             <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
                         </td>
                         <td style="padding-left: 0px;">
@@ -60,13 +60,13 @@
                 <td style="padding-left: 0px;">
                     <table class="head" width="100%" border = '0' cellpacing="0" cellpadding = "0">
                         <tr>
-                            <td width="12%" style="font-size:10pt;padding-left: 0px;">
+                            <td width="13%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Name:</b>
                             </td>
                             <td width="53%" style="font-size:10pt;padding-left: 0px;">
                                 {{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}
                             </td>
-                            <td width="12%" style="font-size:10pt;padding-left: 0px;">
+                            <td width="13%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Student No:</b>
                             </td>
                             <td width="23%" style="font-size:10pt;padding-left: 0px;">
@@ -520,7 +520,7 @@
                             {{$teacher->adviser}}
                            @endif
                         </td>
-                        <td class="print-size" >Principal Name</td>
+                        <td class="print-size" >Mrs. Ma.Dolores F. Bayocboc</td>
                     </tr>
                     <tr style="text-align: center">
                         <td class="print-size" ><b>Class Adviser</b></td>
