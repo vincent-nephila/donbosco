@@ -475,4 +475,30 @@ function updateelective(){
     }
 }
 
+
+function updatemapeh(){
+        
+        $students = \App\Status::where('status','2')->where('level','!=','Grade 11')->where('department','!=','TVET')->get();
+        foreach($students as $student ){
+            $subjects = DB::Select("select * from ctr_subjects where level = '" . $student->level ."' and isdisplaycard = '0'");
+                foreach($subjects as $newsubject){
+                    $newgrade = new \App\Grade;
+                    $newgrade->idno = $student->idno;
+                    //$newgrade->course = $student->course;
+                    //$newgrade->strand=$student->strand;
+                    $newgrade->department=$student->department;
+                    $newgrade->level=$student->level;
+                    $newgrade->subjectcode=$newsubject->subjectcode;
+                    $newgrade->subjectname=$newsubject->subjectname;
+                    $newgrade->schoolyear=$student->schoolyear;
+                    $newgrade->period=$student->period;
+                    $newgrade->subjecttype=$newsubject->subjecttype;
+                    //$newgrade->points=$newsubject->points;
+                    //$newgrade->weighted=$newsubject->weighted;
+                    $newgrade->isdisplaycard=$newsubject->isdisplaycard;
+                    $newgrade->sortto=$newsubject->sortto;
+                    $newgrade->save();
+}}}
+
+
 }

@@ -94,12 +94,15 @@
     //Route::get('updateelective','Registrar\AssessmentController@updateelective');
     //Update grades of students
     //Route::get('updategrades','Registrar\AssessmentController@updategrades');
-    Route::get('updatehsconduct','Update\UpdateController@updatehsconduct');
+    //Route::get('updatemapeh','Registrar\AssessmentController@updatemapeh');
+    //Route::get('updatehsconduct','Update\UpdateController@updatehsconduct');
+    Route::get('updatehsgrade','Update\UpdateController@updatehsgrade');
+    Route::get('checkno','Update\UpdateController@checkno');
     //Registrar Vincent
     Route::get('/reportcards/{level}/{section}','Vincent\GradeController@viewSectionGrade');    
     Route::get('/reportcard/{level}/{section}/{quarter}','Vincent\GradeController@viewSectionKinder');    
     Route::get('/reportcards/{level}/{shop}/{section}','Vincent\GradeController@viewSectionGrade9to10');    
-    Route::get('/resetgrades','Vincent\GradeController@reset');  
+    //Route::get('/resetgrades','Vincent\GradeController@reset');  
     Route::get('/studentgrade/{idno}','Vincent\GradeController@studentGrade');  
     
 });

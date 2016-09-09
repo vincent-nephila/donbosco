@@ -59,4 +59,45 @@ class UpdateController extends Controller
         }
           }
         }
+        
+        public function updatehsgrade(){
+            $grades = DB::Select("select * from grade2");
+            foreach($grades as $grade){
+             $this->updatehs($grade->SCODE, $grade->SUBJ_CODE, $grade->GRADE_PASS1, $grade->QTR);
+            }
+        }
+        
+        public function updatehs($idno, $subjectcode, $grade,$qtrperiod){
+            switch($qtrperiod){
+            case 1:
+                $qtrname = "first_grading";
+                break;
+            case 2:
+                $qtrname="second_grading";
+                break;
+            case 3:
+                $qtrname="third_grading";
+                break;
+            case 4:
+                $qtrname="fourth_grading";
+                
+        }
+        $newgrade = \App\Grade::where('idno',$idno)->where('subjectcode',$subjectcode)->first();
+        if(count($newgrade)>0){
+        $newgrade->$qtrname=$grade;
+        $newgrade->update();
+        }
+        $loadgrade = new \App\SubjectRepo;
+        $loadgrade->idno=$idno;
+        $loadgrade->subjectcode=$subjectcode;
+        $loadgrade->grade=$grade;
+        $loadgrade->qtrperiod=$qtrperiod;
+        $loadgrade->schoolyear='2016';
+        $loadgrade->save();
+        }
+        function checkno(){
+            $idnos=DB::Select("select * from grade2");
+            return view('checkno',compact('idnos'));
+        }
+        
 }
