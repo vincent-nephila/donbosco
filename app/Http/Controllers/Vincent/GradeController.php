@@ -93,7 +93,7 @@ class GradeController extends Controller
         $teacher = \App\CtrSection::where($matchfield)->first();        
         
                 foreach($students as $student){
-                    $match = ["idno"=>$student->idno,"subjecttype"=>0,"schoolyear"=>$schoolyear->schoolyear];
+                    $match = ["idno"=>$student->idno,"subjecttype"=>0,"schoolyear"=>$schoolyear->schoolyear,"isdisplaycard"=>1];
                     $academic = \App\Grade::where($match)->orderBy("sortto","ASC")->get();
 
                     $match2 = ["idno"=>$student->idno,"subjecttype"=>3,"schoolyear"=>$schoolyear->schoolyear];
@@ -143,7 +143,7 @@ class GradeController extends Controller
         $teacher = \App\CtrSection::where($matchfield)->first();        
         
                 foreach($students as $student){
-                    $match = ["idno"=>$student->idno,"subjecttype"=>0,"schoolyear"=>$schoolyear->schoolyear];
+                    $match = ["idno"=>$student->idno,"subjecttype"=>0,"schoolyear"=>$schoolyear->schoolyear,"isdisplaycard"=>1];
                     $academic = \App\Grade::where($match)->orderBy("sortto","ASC")->get();
 
 
@@ -179,7 +179,7 @@ class GradeController extends Controller
         $teacher = \App\CtrSection::where($matchfield)->first();        
         
                 foreach($students as $student){
-                    $match = ["idno"=>$student->idno,"subjecttype"=>0,"schoolyear"=>$schoolyear->schoolyear];
+                    $match = ["idno"=>$student->idno,"subjecttype"=>0,"schoolyear"=>$schoolyear->schoolyear,"isdisplaycard"=>1];
                     $academic = \App\Grade::where($match)->orderBy("sortto","ASC")->get();
 
 
