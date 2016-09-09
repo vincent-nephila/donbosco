@@ -18,6 +18,20 @@
                            ></td></tr>
        @endif
        @endforeach
+       <tr><td rowspan="t">Monthly 2</td></tr>
+       @foreach($soamonthly2 as $soa)
+       @if($soa->amount > 0)
+       <tr><td>{{$soa->idno}}</td><td>{{$soa->lastname}}, {{$soa->firstname}} {{$soa->middlename}}</td><td>{{$soa->level}}</td>
+           <td>{{$soa->section}}</td><td>{{$soa->strand}}</td><td align="right">{{number_format($soa->amount,2)}}</td><td align="right">
+               <?php if($soa->amount >= 1000){$penalty = $soa->amount * 0.05;
+               if($penalty < 250){$penalty=250;}}else{$penalty=0;} echo number_format($penalty,2);?>
+           </td><td><input type="checkbox" name="idnumber[]" value="{{$soa->idno}}" 
+                           @if($soa->amount>=1000)
+                           checked="checked"
+                           @endif
+                           ></td></tr>
+       @endif
+       @endforeach
  </table>       
     
         <div class="col-md-6"><input type="hidden" name="trandate" value="{{date('Y-m-d')}}"><input type="submit" name="submit" value="Post Penalties!" class="btn btn-warning form form-control"></div>

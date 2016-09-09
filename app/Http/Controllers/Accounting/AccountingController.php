@@ -789,13 +789,21 @@ foreach ($collections as $collection){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $sy=$schoolyear->schoolyear;
         $levels = \App\CtrLevel::all();
+        //non monthly 2
         $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
-                . " ledgers.duedate <= '$currentdate' and statuses.status='2' and ledgers.acctcode like 'Tuition %'"
+                . " ledgers.duedate <= '$currentdate' and statuses.status='2' and ledgers.acctcode like 'Tuition %' and statuses.plan != 'Monthly 2'"
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.level, statuses.section, statuses.strand, users.lastname, users.firstname");    
 
-        return view('accounting.penalties',compact('sy','levels','currentdate','postings','soasummary'));
+        $soamonthly2 = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
+                . " ledgers.duedate <= '$currentdate' and statuses.status='2' and statuses.plan = 'Monthly 2'"
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.level, statuses.section, statuses.strand, users.lastname, users.firstname");    
+
+        
+        return view('accounting.penalties',compact('sy','levels','currentdate','postings','soasummary','soamonthly2'));
         }
  
         function postpenalties(Request $request){
