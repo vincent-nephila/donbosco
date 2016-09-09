@@ -492,7 +492,7 @@
                             <p style="text-align: right;">__________________________<br>
                                                     
                            @if($teacher != null)
-                           <span style="padding-right: 30px">{{$teacher->adviser}}</span>
+                           <span style="padding-right: 5px">{{$teacher->adviser}}</span>
                            @endif
                                                     <br><span style="padding-right: 50px">Class Adviser</span></p>
                             <br>
@@ -530,7 +530,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><br><br></td>                                                    
+                        <td colspan="2"><br></td>
                     </tr>
                                                                     <tr style="text-align: center">
                         <td class="print-size"></td>
@@ -544,7 +544,6 @@
                         <td class="print-size" ></td>
                         <td class="print-size" ><b>Principal - High School Department</b></td>
                     </tr>
-
                 </table>
             </td>
         </tr>
@@ -557,11 +556,7 @@
                 
             </td>
         </tr>
-        <tr>
-            <td>
-                <br>
-            </td>
-</tr>            
+            
         </table>
     <div class="page-break"></div>
     @endforeach
