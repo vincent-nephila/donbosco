@@ -296,31 +296,39 @@
                         <tr>
                             <td style="text-align: left">{{$conducts->subjectname}}</td>
                             <td>{{$conducts->points}}</td>
-                            <td>
-                                {{round($conducts->first_grading,2)}}
-                                {{--*/$first = $first + round($conducts->first_grading,2)/*--}}
-                            </td>
-                            <td>
-                                {{round($conducts->second_grading,2)}}
-                                {{--*/$second = $second + round($conducts->second_grading,2)/*--}}
-                            </td>
-                            <td>
-                                {{round($conducts->third_grading,2)}}
-                                {{--*/$third = $third + round($conducts->third_grading,2)/*--}}
-                            </td>
-                            <td>
-                                {{round($conducts->fourth_grading,2)}}
-                                {{--*/$fourth = $fourth + round($conducts->fourth_grading,2)/*--}}
-                            </td>
+                        <td>
+                            @if(!round($conducts->first_grading,2)==0)
+                            {{round($conducts->first_grading,2)}}
+                            @endif
+                            {{--*/$first = $first + round($conducts->first_grading,2)/*--}}
+                        </td>
+                        <td>
+                            @if(!round($conducts->second_grading,2)==0)
+                            {{round($conducts->second_grading,2)}}
+                            @endif
+                            {{--*/$second = $second + round($conducts->second_grading,2)/*--}}
+                        </td>
+                        <td>
+                            @if(!round($conducts->third_grading,2)==0)
+                            {{round($conducts->third_grading,2)}}
+                            @endif
+                            {{--*/$third = $third + round($conducts->third_grading,2)/*--}}
+                        </td>
+                        <td>
+                            @if(!round($conducts->fourth_grading,2)==0)
+                            {{round($conducts->fourth_grading,2)}}
+                            @endif
+                            {{--*/$fourth = $fourth + round($conducts->fourth_grading,2)/*--}}
+                        </td>
                         </tr>
                             @endforeach                    
                             <tr>
                                 <td>CONDUCT GRADE</td>
                                 <td>100</td>
-                                <td>{{$first}}</td>
-                                <td> {{$second}}</td>
-                                <td>{{$third}}</td>
-                                <td>{{$fourth}}</td>
+                            <td>@if(!$first == 0){{$first}}@endif</td>
+                            <td>@if(!$second == 0){{$second}}@endif</td>
+                            <td>@if(!$third == 0){{$third}}@endif</td>
+                            <td>@if(!$fourth == 0){{$fourth}}@endif</td>
                             </tr>
                             <tr>
                                 <td>FINAL GRADE</td>
