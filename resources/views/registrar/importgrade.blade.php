@@ -43,6 +43,16 @@
 			<button class="btn btn-primary">Import Attendance</button>
                         </div>    
 		</form>
+    
+                <form action="{{ URL::to('importCompetence') }}" class="form-horizontal" method="post" enctype="multipart/form-data">
+                        {!! csrf_field() !!} 
+                        <div class="form form-group">
+			<input type="file" name="import_file3" class="form"/>
+                        </div>
+                        <div class="form form-group">
+			<button class="btn btn-primary">Import Competence</button>
+                        </div>    
+		</form>
 </div>
 
 <div class="col-md-3">
@@ -79,12 +89,33 @@
         echo "<li>" . $level->level . myFunction($level->level,3) ."</li>";
     }
     ?>
+</ul>
+    
+    <h5>Competencies</h5>
+     <ul>
+    <?php
+    
+        echo "<li> Kindergarten" . getCompetency() ."</li>";
+    
+    ?>
     </ul>
 </div>
 	</div>
 
 
 <?php
+function getCompetency(){
+$data = "<ul>"; 
+$sections=  DB::Select("select distinct section from statuses where level='Kindergarten' and status = '2' ");
+foreach($sections as $section){
+    if($section->section == ""){}else{
+    $data = $data. "<li>" . $section->section . getCompetencyValue($section->section)."</li>";
+}}
+
+$data = $data."</ul>";
+
+return $data; 
+}
 function myFunction($level,$subjecttype){
 $data = "<ul>"; 
 $sections=  DB::Select("select distinct section from statuses where level='$level' and status = '2' ");
@@ -98,6 +129,21 @@ $data = $data."</ul>";
 return $data;    
 }
 
+function getCompetencyValue($section){
+    $values = DB::Select("select distinct competencycode from ctr_competences");
+    $data = "<ul>";
+    foreach($values as $value){
+        $mycount=DB::Select("select a.idno from statuses as a, competency_repos as b where a.idno=b.idno "
+                . " and a.level='Kindergarten' and a.section='$section'");
+        $data=$data."<li";
+        if(count($mycount)>0){
+            $data = $data . " style='color:red'";    
+        }
+        $data = $data.">" .$value->competencycode . " - " . count($mycount);
+    }
+    $data=$data."</ul>";
+    return $data;
+}
 function getSubject($level,$section,$subjecttype){
   if($subjecttype=='1'){  
     if($level == 'Grade 11'){

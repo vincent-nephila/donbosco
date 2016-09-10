@@ -99,5 +99,15 @@ class UpdateController extends Controller
             $idnos=DB::Select("select * from grade2");
             return view('checkno',compact('idnos'));
         }
+        public function updatehsattendance(){
+            $dayahs = DB::Select("Select * from grade2 where SUBJ_CODE = 'DAYA'");
+            foreach($dayahs as $daya){
+                $updayp = \App\Grade::where('idno',$daya->SCODE)->where('subjectcode','DAYP')->first();
+               if(count($updayp)>0){
+                $updayp->first_grading = 48 - $daya->GRADE_PASS1;
+                $updayp->update();
+               }
+            }
+        }
         
 }

@@ -64,7 +64,7 @@ class GradeController extends Controller
         }*/
         $students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
         foreach($students as $student){
-            $subjects = \App\CtrCompetence::where('subject','Physical Education')->where('quarter',3)->get();
+            $subjects = \App\CtrCompetence::where('quarter',1)->get();
                     foreach($subjects as $subject){
                             $newgrade = new \App\Competency;
                             $newgrade->idno = $student->idno;
@@ -73,6 +73,7 @@ class GradeController extends Controller
                             $newgrade->description = $subject->description;
                             $newgrade->sortto = $subject->sortto;
                             $newgrade->quarter = $subject->quarter;
+                            $newgrade->competencycode=$subject->competencycode;
                             $newgrade->schoolyear = $student->schoolyear;
                             $newgrade->save();
                     }

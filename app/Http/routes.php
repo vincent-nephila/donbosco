@@ -27,6 +27,7 @@
     Route::post('importConduct', 'ExportController@importExcelConduct');
     Route::post('importAttendance', 'ExportController@importExcelAttendance');
     Route::post('importGrade', 'ExportController@importExcelGrade');
+    Route::post('importCompetence', 'ExportController@importExcelCompetence');
     
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
      Route::get('printreportcard','Registrar\GradeController@printreportcard');
@@ -96,13 +97,14 @@
     //Route::get('updategrades','Registrar\AssessmentController@updategrades');
     //Route::get('updatemapeh','Registrar\AssessmentController@updatemapeh');
     //Route::get('updatehsconduct','Update\UpdateController@updatehsconduct');
-    Route::get('updatehsgrade','Update\UpdateController@updatehsgrade');
-    Route::get('checkno','Update\UpdateController@checkno');
+    //Route::get('updatehsgrade','Update\UpdateController@updatehsgrade');
+    //Route::get('checkno','Update\UpdateController@checkno');
+    Route::get('updatehsattendance','Update\UpdateController@updatehsattendance');
     //Registrar Vincent
     Route::get('/reportcards/{level}/{section}','Vincent\GradeController@viewSectionGrade');    
     Route::get('/reportcard/{level}/{section}/{quarter}','Vincent\GradeController@viewSectionKinder');    
     Route::get('/reportcards/{level}/{shop}/{section}','Vincent\GradeController@viewSectionGrade9to10');    
-    //Route::get('/resetgrades','Vincent\GradeController@reset');  
+    Route::get('/resetgrades','Vincent\GradeController@reset');  
     Route::get('/studentgrade/{idno}','Vincent\GradeController@studentGrade');  
     
 });
