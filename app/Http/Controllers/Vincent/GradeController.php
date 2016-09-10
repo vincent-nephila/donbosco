@@ -198,7 +198,12 @@ class GradeController extends Controller
                     
                     $age_year = date_diff(date_create($student->birthDate), date_create('today'))->y;
                     $age_month = date_diff(date_create($student->birthDate), date_create('today'))->m;
+                    if($age_month == 1){
+                    $age= $age_year." years ".$age_month." month";
+                    }
+                    else{
                     $age= $age_year." years ".$age_month." months";
+                    }
                     $student->age = $age;
                     
                     $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical,'comp'=>$competence);
