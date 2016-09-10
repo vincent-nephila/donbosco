@@ -167,7 +167,7 @@
                         <tr><td colspan="3"><b>ACADEMIC DESCRIPTORS</b></td></tr>
                         <tr style="font-weight:bold;">
                             <td width="36%" class="descriptors">
-                                DESCRIPTOR
+                                DESCRIPTORS
                             </td>
                             <td width="32%" class="scale">
                                 GRADING SCALE
@@ -335,7 +335,7 @@
                         </tr>
                             <tr>
                                 <td><b>FINAL GRADE</b></td>
-                                <td colspan="5">{{round(($first+$second+$third+$fourth)/4,2)}}</td>
+                                <td colspan="5">@if($fourth != 0){{round(($first+$second+$third+$fourth)/4,2)}}@endif</td>
                             </tr>
                     </table>
                         <br>
@@ -568,7 +568,7 @@
                             </tr>
                             <tr>
                                 <td class="print-size" >
-                                    The student is eligible for transfer and
+                                    The student is eligible for transfer and admission to:
                                 </td>              
                             </tr>
                             <tr>
@@ -611,7 +611,7 @@
                                     </tr>
                                     <tr><td><br><br></td></tr>
                                     <tr>
-                                        <td class="print-size" style="text-align: center">________________________________</td>                                        
+                                        <td class="print-size" style="text-align: center"><div style="border-bottom: 1px solid;width: 80%;margin-left: auto;margin-right: auto"><img src="{{asset('images/elem_sig.png')}}"  style="display: inline-block;width:180px"></div></td>                                        
                                     </tr>
                                     <tr>
                                         <td class="print-size" style="text-align: center">Mrs. Ma. Dolores F. Bayocboc</td>
@@ -628,7 +628,7 @@
                         <td style="width:8.33cm" id="front_{{$info['info']->idno}}" style="padding-left: 20px;padding-right: 20px">
                             <div style="text-align: center;">
                                 <span style="font-size: 12pt;"><b>DON BOSCO TECHNICAL INSTITUTE</b></span><br>
-                                <span style="font-size: 10pt;">Chino Roces Ave., Brgy Pio del Pilar</span><br>
+                                <span style="font-size: 10pt;">Chino Roces Ave., Brgy. Pio del Pilar</span><br>
                                 <span style="font-size: 10pt;">Makati City</span>
                                 <div>
                                 <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:180px;padding-top: 70px;padding-bottom: 70px">
