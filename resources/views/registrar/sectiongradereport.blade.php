@@ -186,7 +186,7 @@
                     @endforeach
                     <tr style="text-align: center">
                         <td style="text-align: right;">
-                            <b>GENERAL AVERAGE</b>
+                            <b>GENERAL AVERAGE&nbsp;&nbsp;&nbsp;</b>
                         </td>
                         <td @if(round($first/$count,2) <= 74)
                              style="color:red"
