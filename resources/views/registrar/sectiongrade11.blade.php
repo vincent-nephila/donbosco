@@ -29,7 +29,7 @@
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:100px;">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:31px;">
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
