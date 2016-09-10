@@ -191,38 +191,38 @@
                         <td @if(round($first/$count,2) <= 74)
                              style="color:red"
                             @endif
-                            >
+                            ><b>
                             @if(round($first/$count,2) == 0)
                             @else
                             {{round($first/$count,2)}}
-                            @endif
+                            @endif</b>
                         </td>
                         <td @if(round($second/$count,2) <= 74)
                              style="color:red"
                             @endif
-                            >
+                            ><b>
                             @if(round($second/$count,2) == 0)
                             @else
                             {{round($second/$count,2)}}
-                            @endif
+                            @endif</b>
                         </td>
                         <td @if(round($third/$count,2) <= 74)
                              style="color:red"
                             @endif
-                            >
+                            ><b>
                             @if(round($third/$count,2) == 0)
                             @else
                             {{round($third/$count,2)}}
-                            @endif
+                            @endif</b>
                         </td>
                         <td @if(round($fourth/$count,2) <= 74)
                              style="color:red"
                             @endif
-                            >
+                            ><b>
                             @if(round($fourth/$count,2) == 0)
                             @else
                             {{round($fourth/$count,2)}}
-                            @endif
+                            @endif</b>
                         </td>
                         <td>
                             @if(!round($fourth/$count,2) == 0)
