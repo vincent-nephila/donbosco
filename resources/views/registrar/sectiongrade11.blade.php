@@ -29,29 +29,30 @@
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="right">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:100px;">
 
                     <tr>
-                        <td rowspan="4" style="text-align: right;padding-left: 0px;width: 33%" class="logo">
-                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:50px">
+                        <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
+                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
                         </td>
                         <td style="padding-left: 0px;">
-                            <span style="font-size:11pt; font-weight: bold">Don Bosco Technical Institute</span>
+                            <span style="font-size:11pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
                         </td>
                     </tr>
-                    <tr><td style="font-size:9pt;padding-left: 0px;">Chino Roces Ave., Makati City </td></tr>
-                    <tr><td style="font-size:9pt;padding-left: 0px;">PAASCU Accredited</td></tr>
-                    <tr><td style="font-size:9pt;padding-left: 0px;">School Year 2015 - 2016</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center">Chino Roces Ave., Makati City </td></tr>
+                    <tr><td style="font-size:9pt;text-align: center">PAASCU Accredited</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
                     <tr><td style="font-size:4pt;padding-left: 0px;">&nbsp; </td></tr>
-                    <tr><td><span style="font-size"></td></tr>
+                    <tr><td><span style="font-size:5px"></td></tr>
                     <tr>
                         <td colspan="2">
-                    <div style="text-align: center;font-size:9pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:9pt;"><b>JUNIOR HIGH SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:10pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
+                    <div style="text-align: center;font-size:10pt;"><b>SENIOR HIGH SCHOOL DEPARTMENT</b></div>
 
                         </td>
                     </tr>
-                    </table>                    
+                    <tr><td style="font-size:3px"><br></td></tr>
+                    </table>
                 </td>
             </tr>
             </thead>
@@ -63,13 +64,13 @@
                                 <b>Name:</b>
                             </td>
                             <td width="45%" style="font-size:10pt;padding-left: 0px;">
-                                {{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}
+                                <b>{{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}</b>
                             </td>
                             <td width="15%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Student No:</b>
                             </td>
                             <td width="25%" style="font-size:10pt;padding-left: 0px;">
-                                {{$info['info']->idno}}
+                                <b>{{$info['info']->idno}}</b>
                             </td>
                         </tr>
                         <tr>
@@ -124,7 +125,7 @@
                                 @endif
                             </td>
                         </tr>
-                        <tr><td colspan="4">1st Sem</td></tr>
+                        <tr><td colspan="4" style="padding-left: 0px"><b>First Semester</b></td></tr>
                         
                     </table>
                 </td>
@@ -153,7 +154,7 @@
                     @foreach($info['core'] as $key=>$core)
                     <tr style="text-align: center;font-size: 8pt;">
                         <td style="text-align: left">
-                            {{ucwords(strtolower($core->subjectname))}}
+                            {{$core->subjectname}}
                         </td>
                         <td @if(round($core->first_grading,2) <= 74)
                              style="color:red"
@@ -195,7 +196,7 @@
                     @foreach($info['spec'] as $key=>$spec)
                     <tr style="text-align: center;font-size: 8pt;">
                         <td style="text-align: left">
-                            {{ucwords(strtolower($spec->subjectname))}}
+                            {{$spec->subjectname}}
                         </td>
                         <td @if(round($spec->first_grading,2) <= 74)
                              style="color:red"
@@ -230,7 +231,7 @@
                     @endforeach
                     <tr style="text-align: center">
                         <td></td>
-                        <td colspan="2" style="text-align: right;">
+                        <td colspan="2" style="text-align: right;padding-right: 10px">
                             <b>GENERAL AVERAGE for the Semester</b>
                         </td>
                         <td>@if(round($final/$count,2) != 0)
@@ -266,7 +267,7 @@
                         <?php $weight=$tech->weighted / 100;?>
                         <tr style="text-align: center">
                             <td style="text-align: left" class="print-size">
-                                <div style="width:70%;display:inline-block;" width="70%">{{ucwords(strtolower($tech->subjectname))}}</div><span>({{$tech->weighted}}%)</span>
+                                <div style="width:70%;display:inline-block;" width="70%">{{$tech->subjectname}}</div><span>({{$tech->weighted}}%)</span>
                             </td>
                             <td class="print-size">
                                 {{round($tech->first_grading,2)}}
@@ -307,7 +308,7 @@
                     <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
                         <tr style="font-weight:bold;">
                             <td width="36%" class="descriptors">
-                                DESCRIPTOR
+                                DESCRIPTORS
                             </td>
                             <td width="32%" class="scale">
                                 GRADING SCALE
@@ -354,10 +355,10 @@
             <td style="padding-left: 0px;">
                 <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;">
                     <tr>
-                        <td width="30%">CONDUCT CRITERIA</td>
-                        <td width="10%">Points</td>
-                        <td width="10%">1</td>
-                        <td width="10%">2</td>
+                        <td width="30%"><b>CONDUCT CRITERIA</b></td>
+                        <td width="10%"><b>Points</b></td>
+                        <td width="10%"><b>1</b></td>
+                        <td width="10%"><b>2</b></td>
                         <td width="20%" rowspan="{{count($info['con'])}}"></td>
                     </tr>
                         {{--*/$first=0/*--}}
@@ -383,7 +384,7 @@
                         </td>
 
                         @if($length == $counter)
-                        <td>FINAL GRADE</td>
+                        <td><b>FINAL GRADE</b></td>
                         @endif
                         
 
@@ -391,10 +392,10 @@
                         @endforeach                    
                         <tr>
                             <td style="text-align:center"><b>CONDUCT GRADE</b></td>
-                            <td>100</td>
-                            <td>@if(!$first == 0){{$first}}@endif</td>
-                            <td>@if(!$second == 0){{$second}}@endif</td>
-                            <td>@if($second != 0){{round(($first+$second)/2,2)}}@endif</td>
+                            <td><b>100</b></td>
+                            <td><b>@if(!$first == 0){{$first}}@endif</b></td>
+                            <td><b>@if(!$second == 0){{$second}}@endif</b></td>
+                            <td><b>@if($second != 0){{round(($first+$second)/2,2)}}@endif</b></td>
                             
                         </tr>
                 </table>
@@ -451,7 +452,7 @@
                     @foreach($info['att'] as $key=>$attend)
                     <tr>
                         <td>
-                            {{ucfirst(strtolower($attend->subjectname))}}
+                            {{$attend->subjectname}}
                         </td>
                         <td>
                             @if($first != 0)
@@ -503,7 +504,7 @@
                  <table width="100%">
                     <tr>
                         <td class="print-size"  width="49%">
-                            <b>Certificate of eligibility for promotion</b>
+                            <b>Certificate of Eligibility for Promotion</b>
                         </td>
                         <td class="print-size" >
                             <b>Cancellation of Eligibility to Transfer</b>
@@ -518,7 +519,7 @@
                         </td>                                                    
                     </tr>
                     <tr>
-                        <td class="print-size" >Admission to:___________________</td>
+                        <td class="print-size" >admission to:___________________</td>
                         <td class="print-size" >Grade:__________________________</td>
                     </tr>
                     <tr>
@@ -547,8 +548,9 @@
                 </table>
             </td>
         </tr>
+        <tr><td style="text-align: right;padding-left: 0px"><b>{{$info['info']->idno}}</b></td></tr>
     </table>
-    <br>
+    
 
 </td>
 </tr>
