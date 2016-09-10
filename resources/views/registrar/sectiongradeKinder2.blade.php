@@ -611,7 +611,7 @@
                                     </tr>
                                     <tr><td><br><br></td></tr>
                                     <tr>
-                                        <td class="print-size" style="text-align: center;height: 30px;"><div style="border-bottom: 1px solid;width: 80%;margin-left: auto;margin-right: auto"><img src="{{asset('images/elem_sig.png')}}"  style="display: inline-block;width:180px"></div></td>                                        
+                                        <td class="print-size" style="text-align: center;"><div style="border-bottom: 1px solid;width: 80%;margin-left: auto;margin-right: auto;height: 30px;"><img src="{{asset('images/elem_sig.png')}}"  style="display: inline-block;width:180px"></div></td>                                        
                                     </tr>
                                     <tr>
                                         <td class="print-size" style="text-align: center">Mrs. Ma. Dolores F. Bayocboc</td>
