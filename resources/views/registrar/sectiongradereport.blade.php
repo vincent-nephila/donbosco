@@ -12,6 +12,10 @@
             font-family: calibri;
             margin-left: auto;    
             }
+            .greyed{
+                background-color: rgba(201, 201, 201, 0.79) !important;;
+                -webkit-print-color-adjust: exact; 
+            }            
         </style>    
         
         <style type="text/css" media="print">
@@ -19,6 +23,10 @@
                 font-family: calibri;
                 margin-left: auto;
                 margin-right: none;
+            }
+            .greyed{
+                background-color: rgba(201, 201, 201, 0.79) !important;;
+                -webkit-print-color-adjust: exact; 
             }
         </style>
         <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
@@ -29,25 +37,25 @@
             <thead>
             <tr>
                 <td style="padding-left: 0px">
-                    <table class="head" width="100%" border="0" cellpadding="0" cellspacing="0" align="right">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:100px;">
 
                     <tr>
-                        <td rowspan="4" style="text-align: right;padding-left: 0px;width: 35%" class="logo" width="55px">
+                        <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
                             <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
                         </td>
                         <td style="padding-left: 0px;">
                             <span style="font-size:11pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
                         </td>
                     </tr>
-                    <tr><td style="font-size:9pt;padding-left: 0px;">Chino Roces Ave., Makati City </td></tr>
-                    <tr><td style="font-size:9pt;padding-left: 0px;">PAASCU Accredited</td></tr>
-                    <tr><td style="font-size:9pt;padding-left: 0px;">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center">Chino Roces Ave., Makati City </td></tr>
+                    <tr><td style="font-size:9pt;text-align: center">PAASCU Accredited</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
                     <tr><td style="font-size:4pt;padding-left: 0px;">&nbsp; </td></tr>
                     <tr><td><span style="font-size:5px"></td></tr>
                     <tr>
                         <td colspan="2">
-                    <div style="text-align: center;font-size:9pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:9pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:10pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
+                    <div style="text-align: center;font-size:10pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
 
                         </td>
                     </tr>
@@ -244,7 +252,7 @@
             <tr><td style="padding-left: 0px;"><span style="height:10pt"></td></tr>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
+                    <table class="greyed" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
                         <tr style="font-weight:bold;">
                             <td width="36%" class="descriptors">
                                 DESCRIPTORS
@@ -276,7 +284,7 @@
             </tr>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
+                    <table class="greyed" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
                     <tr>
                         <td style="font-weight: bold">
                             CHRISTIAN LIVING DESCRIPTORS
