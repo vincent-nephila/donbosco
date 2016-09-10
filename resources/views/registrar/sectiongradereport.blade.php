@@ -36,7 +36,7 @@
                             <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
                         </td>
                         <td style="padding-left: 0px;">
-                            <span style="font-size:11pt; font-weight: bold">Don Bosco Technical Institute</span>
+                            <span style="font-size:11pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
                         </td>
                     </tr>
                     <tr><td style="font-size:9pt;padding-left: 0px;">Chino Roces Ave., Makati City </td></tr>
