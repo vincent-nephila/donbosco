@@ -486,7 +486,7 @@
             <td style="padding-left: 0px;">
                 Dear Parent:
                             <p style="text-indent: 20px">This report card shows the ability and progress your child has made in different learning areas as well as his/her core values.</p>
-                            <p style="text-indent: 20px">The school welcomes you should desire to know more about your child progress.</p>
+                            <p style="text-indent: 20px">The school welcomes you should you desire to know more about your child progress.</p>
                             
                             <p style="text-align: right;">__________________________<br>
                                                     
