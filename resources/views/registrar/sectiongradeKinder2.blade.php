@@ -43,7 +43,7 @@
                 <td style="width:8.33cm" id="init_{{$info['info']->idno}}">
                     @if(sizeOf($info['aca'])!= 0)
                     <table class="padded" border = '1' cellspacing="0" cellpadding = "0" width="100%" class="reports" style="margin-top: auto;margin-bottom: auto;">
-                        <tr><td colspan="6" align="center">QUARTERLY GRADES</td></tr>
+                        <tr><td colspan="6" align="center"><b>QUARTERLY GRADES</b></td></tr>
                         <tr style="font-weight: bold;text-align:center;">
                             <td width="35%" style="padding: 15px 0 15px 0;">LEARNING AREAS</td>
                             <td width="10%">1st</td>
@@ -60,8 +60,8 @@
                         {{--*/$count=0/*--}}
                         @foreach($info['aca'] as $key=>$academics)
                         <tr style="text-align: center;font-size: 8pt;">
-                        <td style="text-align: left">
-                            {{ucfirst(strtolower($academics->subjectname))}}
+                        <td style="text-align: left;padding-left:5px;">
+                            {{$academics->subjectname}}
                         </td>
                         <td @if(round($academics->first_grading,2) <= 74)
                              style="color:red"
@@ -115,7 +115,7 @@
                         </tr>
                         @endforeach
                         <tr style="text-align: center">
-                            <td style="text-align: right;">
+                            <td style="text-align: right;padding-right:10px">
                                 <b>ACADEMIC AVERAGE</b>
                             </td>
                         <td @if(round($first/$count,2) <= 74)
@@ -124,7 +124,7 @@
                             >
                             @if(round($first/$count,2) == 0)
                             @else
-                            {{round($first/$count,2)}}
+                            <b>{{round($first/$count,2)}}</b>
                             @endif
                         </td>
                         <td @if(round($second/$count,2) <= 74)
@@ -133,7 +133,7 @@
                             >
                             @if(round($second/$count,2) == 0)
                             @else
-                            {{round($second/$count,2)}}
+                            <b>{{round($second/$count,2)}}</b>
                             @endif
                         </td>
                         <td @if(round($third/$count,2) <= 74)
@@ -142,7 +142,7 @@
                             >
                             @if(round($third/$count,2) == 0)
                             @else
-                            {{round($third/$count,2)}}
+                            <b>{{round($third/$count,2)}}</b>
                             @endif
                         </td>
                         <td @if(round($fourth/$count,2) <= 74)
@@ -151,7 +151,7 @@
                             >
                             @if(round($fourth/$count,2) == 0)
                             @else
-                            {{round($fourth/$count,2)}}
+                            <b>{{round($fourth/$count,2)}}</b>
                             @endif
                         </td>
                         <td>
@@ -243,7 +243,7 @@
                     @foreach($info['att'] as $key=>$attend)
                     <tr>
                         <td>
-                            {{ucfirst(strtolower($attend->subjectname))}}
+                            {{$attend->subjectname}}
                         </td>
                         <td>
                             @if($first != 0)
@@ -278,12 +278,12 @@
                     <div id="con_{{$info['info']->idno}}">        
                     <table class="padded" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;margin-top: auto;margin-bottom: auto;">
                         <tr>
-                            <td width="30%">CONDUCT CRITERIA</td>
-                            <td width="9%">Points</td>
-                            <td width="9%">1</td>
-                            <td width="9%">2</td>
-                            <td width="9%">3</td>
-                            <td width="9%">4</td>
+                            <td width="30%"><b>CONDUCT CRITERIA</b></td>
+                            <td width="9%"><b>Points</b></td>
+                            <td width="9%"><b>1</b></td>
+                            <td width="9%"><b>2</b></td>
+                            <td width="9%"><b>3</b></td>
+                            <td width="9%"><b>4</b></td>
                         </tr>
                             {{--*/$first=0/*--}}
                             {{--*/$second=0/*--}}
@@ -323,15 +323,18 @@
                         </tr>
                             @endforeach                    
                             <tr>
-                                <td>CONDUCT GRADE</td>
-                                <td>100</td>
-                            <td>@if(!$first == 0){{$first}}@endif</td>
-                            <td>@if(!$second == 0){{$second}}@endif</td>
-                            <td>@if(!$third == 0){{$third}}@endif</td>
-                            <td>@if(!$fourth == 0){{$fourth}}@endif</td>
-                            </tr>
+                            <td><b>CONDUCT GRADE</b></td>
+                            <td><b>100</b></td>
+                            <td><b>@if(!$first == 0){{$first}}@endif</b></td>
+                            <td><b>@if(!$second == 0){{$second}}@endif</b></td>
+                            <td><b>@if(!$third == 0){{$third}}@endif</b></td>
+                            <td><b>@if(!$fourth == 0){{$fourth}}@endif</b></td>
+                            
+                            
+                            
+                        </tr>
                             <tr>
-                                <td>FINAL GRADE</td>
+                                <td><b>FINAL GRADE</b></td>
                                 <td colspan="5">{{round(($first+$second+$third+$fourth)/4,2)}}</td>
                             </tr>
                     </table>
@@ -342,7 +345,7 @@
                         <tr><td colspan="3"><b>CONDUCT DESCRIPTORS</b></td></tr>
                             <tr style="font-weight:bold;@if($quarter == 4)height: 48px;@endif">
                                 <td width="36%" class="descriptors">
-                                    DESCRIPTOR
+                                    DESCRIPTORS
                                 </td>
                                 <td width="32%" class="scale">
                                     GRADING SCALE
@@ -379,22 +382,22 @@
                         @foreach($info['comp'] as $key=>$comp)
                         @if($comp->subject == "English")
                         <tr>
-                            <td width="80%">{{$comp->description}}</td>
-                            <td>{{$comp->value}}</td>
+                            <td width="80%" style="padding-left: 15px;">{{$comp->description}}</td>
+                            <td style="text-align: center;vertical-align: middle;">{{$comp->value}}</td>
                         </tr>
                         @endif
                         @endforeach
                     </table>
                     <br>
                     </div>
-                    <div id="art_{{$info['info']->idno}}">
-                    <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                    <div id="art_{{$info['info']->idno}}" style="display:none">
+                    <table border="1" cellspacing="0" cellpadding="0" width="100%" >
                         <tr style="text-align: center"><td colspan="2"><b>ART EDUCATION</b></td></tr>
                         @foreach($info['comp'] as $key=>$comp)
                         @if($comp->subject == "Art Education")
                         <tr>
-                            <td width="80%">{{$comp->description}}</td>
-                            <td>{{$comp->value}}</td>
+                            <td width="80%" style="padding-left: 15px;">{{$comp->description}}</td>
+                            <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
                         </tr>
                         @endif
                         @endforeach
@@ -408,22 +411,22 @@
                         @foreach($info['comp'] as $key=>$comp)
                         @if($comp->subject == "Christian Living")
                         <tr>
-                            <td width="80%">{{$comp->description}}</td>
-                            <td>{{$comp->value}}</td>
+                            <td width="80%" style="padding-left: 15px;">{{$comp->description}}</td>
+                            <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
                         </tr>
                         @endif
                         @endforeach
                     </table>  
                     <br>
                     </div>                    
-                    <div id="phy_{{$info['info']->idno}}">
-                    <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                    <div id="phy_{{$info['info']->idno}}" style="display:none">
+                    <table border="1" cellspacing="0" cellpadding="0" width="100%" >
                         <tr style="text-align: center"><td colspan="2"><b>PHYSICAL EDUCATION</b></td></tr>
                             @foreach($info['comp'] as $key=>$comp)
                             @if($comp->subject == "Physical Education")
                             <tr>
                                 <td width="80%">{{$comp->description}}</td>
-                                <td>{{$comp->value}}</td>
+                                <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
                             </tr>
                             @endif
                             @endforeach
@@ -436,8 +439,8 @@
                         @foreach($info['comp'] as $key=>$comp)
                         @if($comp->subject == "Filipino")
                         <tr>
-                            <td width="80%">{!!nl2br($comp->description)!!}</td>
-                            <td>{{$comp->value}}</td>
+                            <td style="padding-left: 15px;" width="80%">{!!nl2br($comp->description)!!}</td>
+                            <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
                         </tr>
                         @endif
                         @endforeach
@@ -458,7 +461,7 @@
                         @foreach($info['comp'] as $key=>$comp)
                         @if($comp->section == "1A")                        
                         <tr>
-                            <td width="80%">{{$comp->description}}</td>
+                            <td width="80%" style="padding-left: 20px;">{{$comp->description}}</td>
                             <td>{{$comp->value}}</td>
                         </tr>
                         @endif
@@ -536,8 +539,8 @@
                         @foreach($info['comp'] as $key=>$comp)
                         @if($comp->subject == "Mathematics")
                         <tr>
-                            <td width="80%">{{$comp->description}}</td>
-                            <td>{{$comp->value}}</td>
+                            <td width="80%" style="padding-left: 20px;">{{$comp->description}}</td>
+                            <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
                         </tr>
                         @endif
                         @endforeach
@@ -560,7 +563,7 @@
                                 <table width="100%">
                             <tr>
                                 <td class="print-size"  width="49%" style="font-size: 11pt">
-                                    <b>Certificate of eligibility for promotion</b>
+                                    <b>Certificate of Eligibility for Promotion</b>
                                 </td>
                             </tr>
                             <tr>
@@ -600,11 +603,11 @@
                                     </tr>
                                     <tr>
                                         <td class="print-size" >
-                                            Admitted in:____________________________
+                                            <b>Admitted in:</b>____________________________
                                         </td> 
                                     </tr>
                                     <tr>
-                                        <td class="print-size" >Grade:_________   Date:__________________</td>
+                                        <td class="print-size" ><b>Grade:_________   Date:__________________</b></td>
                                     </tr>
                                     <tr><td><br><br></td></tr>
                                     <tr>
@@ -625,10 +628,10 @@
                         <td style="width:8.33cm" id="front_{{$info['info']->idno}}" style="padding-left: 20px;padding-right: 20px">
                             <div style="text-align: center;">
                                 <span style="font-size: 12pt;"><b>DON BOSCO TECHNICAL INSTITUTE</b></span><br>
-                                <span style="font-size: 10pt;">Chino Roces Ave., Brgy Pio del Pillar</span><br>
+                                <span style="font-size: 10pt;">Chino Roces Ave., Brgy Pio del Pilar</span><br>
                                 <span style="font-size: 10pt;">Makati City</span>
                                 <div>
-                                <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:200px;padding-top: 70px;padding-bottom: 70px">
+                                <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:180px;padding-top: 70px;padding-bottom: 70px">
                                 <br>
                                 
                                 <br>
@@ -652,10 +655,10 @@
                             <div class="parent" style="border: 1px solid; padding: 20px 10px 50px;border-radius: 40px;">
                                 <div style="text-align:center;font-size: 12pt;"><b>KINDERGARTEN</b></div>
                                 <br>
-                            <div><span width="10%"><b>Name:</b></span>{{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}</div>
-                            <div><span width="10%"><b>Age:</b></span>{{$info['info']->age}}</div>
-                            <div><span width="10%"><b>Section:</b></span>{{$section}}</div>
-                            <div><span width="10%"><b>Adviser:</b></span>{{$teacher->adviser}}</div>
+                            <div><div style="display:inline-block;width:50px;"><b>Name:</b></div>{{strtoupper($info['info']->lastname)}}, {{ucwords($info['info']->firstname)}} {{ucwords($info['info']->middlename)}} {{ucwords($info['info']->extensionname)}}</div>
+                            <div><div style="display:inline-block;width:50px;"><b>Age:</b></div>{{strtoupper($info['info']->age)}}</div>
+                            <div><div style="display:inline-block;width:50px;"><b>Section:</b></div>{{strtoupper($section)}}</div>
+                            <div><div style="display:inline-block;width:50px;"><b>Adviser:</b></div>{{strtoupper($teacher->adviser)}}</div>
                             </div>
                         </td>
                     </tr>
@@ -663,9 +666,10 @@
         </table>
         <script>
             @if($quarter == 1)
-            $("#fil_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}");
+            $("#fil_{{$info['info']->idno}}").appendTo("#com2_{{$info['info']->idno}}");
             $("#eng_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}");
             $("#cert_{{$info['info']->idno}}").appendTo("#com4_{{$info['info']->idno}}");
+            $("#chr_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}");
             @endif
             @if($quarter == 2)
             $("#fil_{{$info['info']->idno}}").prependTo("#com2_{{$info['info']->idno}}");
