@@ -59,6 +59,8 @@ function displaycards(){
     }
     if(level == "Grade 9" | level == "Grade 10" | level == "Grade 11"){
      document.location = "/reportcards/" + level + "/" + strand + "/" + section   
+    }else if(level == "Kindergarten"){
+        document.location = "/reportcard/" + level + "/" + section +"/1"
     }else{
     document.location = "/reportcards/" + level + "/" + section
     }
