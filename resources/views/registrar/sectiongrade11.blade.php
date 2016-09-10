@@ -47,7 +47,7 @@
                     <tr>
                         <td colspan="2">
                     <div style="text-align: center;font-size:10pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:10pt;"><b>SENIOR HIGH SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:10pt;"><b>SENIOR HIGH SCHOOL</b></div>
 
                         </td>
                     </tr>
@@ -108,12 +108,10 @@
                             <td style="font-size:10pt;padding-left: 0px;">
                                 {{$info['info']->gender}}
                             </td>
-                            <td style="font-size:10pt;padding-left: 0px;"  >
-                                <b>Adviser:</b>
+                            <td colspan="2" style="font-size:10pt;padding-left: 0px;"  >
+                                <b>Adviser:&nbsp;</b>{{$teacher->adviser}}
                             </td>
-                            <td style="font-size:10pt;padding-left: 0px;">
-                                {{$teacher->adviser}}
-                            </td>
+
                         </tr>
                         <tr><td style="font-size:5pt;">&nbsp;</td></tr>
                         <tr>
@@ -535,7 +533,7 @@
                     </tr>
                                                                     <tr style="text-align: center">
                         <td class="print-size"></td>
-                        <td class="print-size">________________________________</td>
+                        <td class="print-size"><div style="border-bottom: 1px solid;width: 80%;margin-left: auto;margin-right: auto"><img src="{{asset('images/HS_PRINCIPAL.png')}}"  style="display: inline-block;width:180px"></div></td> 
                     </tr>
                     <tr style="text-align: center;">
                         <td></td>
