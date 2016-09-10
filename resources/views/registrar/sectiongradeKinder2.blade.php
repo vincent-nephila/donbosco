@@ -294,7 +294,7 @@
                             @foreach($info['con'] as $key=>$conducts)
                             {{--*/$counter ++/*--}}                    
                         <tr>
-                            <td style="text-align: left">{{$conducts->subjectname}}</td>
+                            <td style="text-align: left;padding-left:10px">{{$conducts->subjectname}}</td>
                             <td>{{$conducts->points}}</td>
                         <td>
                             @if(!round($conducts->first_grading,2)==0)
