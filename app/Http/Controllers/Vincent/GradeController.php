@@ -42,7 +42,7 @@ class GradeController extends Controller
     
     function reset(){
         $no_student=0;
-                    $students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
+/*                    $students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
         foreach($students as $student){
             $subjects = \App\CtrSubjects::where('level',$student->level)->where('subjecttype',3)->get();
                     foreach($subjects as $subject){
@@ -61,8 +61,8 @@ class GradeController extends Controller
                     }
                     $no_student =$no_student +1;
                     echo "NO Of Student: ".$no_student;
-        }
-        /*$students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
+        }*/
+        $students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
         foreach($students as $student){
             $subjects = \App\CtrCompetence::where('subject','Physical Education')->where('quarter',3)->get();
                     foreach($subjects as $subject){
@@ -79,14 +79,14 @@ class GradeController extends Controller
                     
         }        
         
-        */
+        
     }
     
     function viewSectionGrade9to10($level,$shop,$section){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $collection = array();
         //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
-        $students = DB::Select("SELECT statuses.department,gender,class_no,strand,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section' AND strand LIKE '$shop'");
+        $students = DB::Select("SELECT statuses.department,gender,class_no,strand,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section' AND strand LIKE '$shop' ORDER BY statuses.class_no ASC");
         
         
         $matchfield = ["level"=>$level,"section"=>$section];
@@ -138,7 +138,7 @@ class GradeController extends Controller
         $collection = array();
         //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
         //$students = DB::Select("SELECT * from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where level LIKE '$level' AND section LIKE '$section'");
-        $students = DB::Select("SELECT class_no,department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section'");
+        $students = DB::Select("SELECT class_no,department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section' ORDER BY statuses.class_no ASC");
         $matchfield = ["level"=>$level,"section"=>$section];
         $teacher = \App\CtrSection::where($matchfield)->first();        
         
@@ -174,7 +174,7 @@ class GradeController extends Controller
         $collection = array();
         //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
         //$students = DB::Select("SELECT * from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where level LIKE '$level' AND section LIKE '$section'");
-        $students = DB::Select("SELECT department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section'");
+        $students = DB::Select("SELECT department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status = 2 AND level LIKE '$level' AND section LIKE '$section' ORDER BY statuses.class_no ASC");
         $matchfield = ["level"=>$level,"section"=>$section];
         $teacher = \App\CtrSection::where($matchfield)->first();        
         
