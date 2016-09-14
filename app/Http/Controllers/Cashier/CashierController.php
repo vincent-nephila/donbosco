@@ -1160,7 +1160,7 @@ function otherpayment($idno){
     }
     function addtoaccountdelete($id){
         $account = \App\Ledger::where('id',$id)->first();
-        if($account->postedby == \Auth::user()->idno && $account->payemnt+$account->debitmemo==0){
+        if($account->payment+$account->debitmemo==0){
         $account->delete();    
         }
         return redirect(url('addtoaccount',$account->idno));

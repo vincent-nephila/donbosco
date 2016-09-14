@@ -14,17 +14,17 @@
         <div class="form-group">
             <label>Account name</label>
             <input type="hidden" name='idno' value="{{$studentid}}">
-            <select name="accttype" class="form form-control">
+            <select name="accttype" class="form form-control" onkeypress="document.getElementById('amount').focus()">
                 @foreach($accounts as $account)
                 <option = "{{$account->accountname}}">{{$account->accountname}}</option>
                 @endforeach
             </select>    
         </div>
         <div class="form-group">
-            <input type="text" class="form form-control" name="amount" onkeypress ="validate(event)" style="text-align: right">
+            <input type="text" class="form form-control" id="amount" name="amount" onkeypress ="validate(event)" style="text-align: right">
         </div>    
          <div class="form-group">
-            <input type="submit" class="form form-control btn btn-primary" name="submit" value="Add to account">
+            <input type="submit" class="form form-control btn btn-primary" name="submit"  id="submit" value="Add to account">
         </div> 
     </form>    
         <div class="form-group">
@@ -45,4 +45,20 @@
 </div>
 @stop
 
-<script src="{{url('/js/nephilajs/cashier.js')}}"></script>  
+<script>
+function validate(evt) {
+  var theEvent = evt || window.event;
+  var key = theEvent.keyCode || theEvent.which;
+        if ((key < 48 || key > 57) && !(key == 8 || key == 9 || key == 13 || key == 37 || key == 39 || key == 46) ){ 
+            theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+        
+        if(key == 13){
+            document.getElementById("submit").focus()            
+            theEvent.preventDefault();
+            return false;
+            
+        }
+    }  
+</script>  

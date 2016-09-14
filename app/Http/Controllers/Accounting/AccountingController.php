@@ -730,9 +730,9 @@ foreach ($collections as $collection){
        $statuses = \App\Status::where('idno',$idno)->first();
        $users = \App\User::where('idno',$idno)->first();
        $balances = DB::Select("select sum(amount) as amount , sum(plandiscount) + sum(otherdiscount) as discount, "
-               . "sum(payment) as payment, sum(debitmemo) as debitmemo, receipt_details  from ledgers  where "
-               . " idno = '$idno'  group by "
-               . "receipt_details order by categoryswitch");
+               . "sum(payment) as payment, sum(debitmemo) as debitmemo, receipt_details, categoryswitch  from ledgers  where "
+               . " idno = '$idno'  and categoryswitch <= '6' group by "
+               . "receipt_details, categoryswitch order by categoryswitch");
        $schedules=DB::Select("select sum(amount) as amount , sum(plandiscount) + sum(otherdiscount) as discount, "
                . "sum(payment) as payment, sum(debitmemo) as debitmemo, duedate  from ledgers  where "
                . " idno = '$idno' and categoryswitch <= '6' and duedate <= '$trandate' group by "
@@ -763,25 +763,62 @@ foreach ($collections as $collection){
        return $pdf->stream();
  }
  
- function getsoasummary($level,$strand,$section,$trandate,$plan){
+ function getsoasummary($level,$strand,$section,$trandate,$plan,$amtover){
+     if($plan=="all"){
+     $planparam = "";    
+     }else{
+      $planparam = "AND statuses.plan = '$plan'";   
+     }
        if($strand=="none"){
-           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, "
+           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
-                . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' and statuses.plan = '$plan'"
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename order by users.lastname, users.firstname");    
+                . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
 
        }   else{  
-        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, "
+        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
-                . " statuses.level = '$level' and statuses.strand='$strand' and statuses.section='$section' and ledgers.duedate <= '$trandate' and statuses.plan = '$plan'"
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename order by users.lastname, users.firstname");    
+                . " statuses.level = '$level' and statuses.strand='$strand' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
        }
         
        
-            return view('accounting.showsoa',compact('soasummary','trandate','level','section','strand'));
+            return view('accounting.showsoa',compact('soasummary','trandate','level','section','strand','amtover','plan'));
         }
+        
+        
+        function printsoasummary($level,$strand,$section,$trandate,$plan,$amtover){
+     if($plan=="all"){
+     $planparam = "";    
+     }else{
+      $planparam = "AND statuses.plan = '$plan'";   
+     }
+       if($strand=="none"){
+           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
+
+       }   else{  
+        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level' and statuses.strand='$strand' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
+       }
+        
+       
+       
+        $pdf = \App::make('dompdf.wrapper');
+      // $pdf->setPaper([0, 0, 336, 440], 'portrait');
+        $pdf->loadview('print.printsoasummary',compact('soasummary','trandate','level','section','strand','amtover','plan'));
+        return $pdf->stream();
+         }
+        
+        
         
         function penalties(){    
         $currentdate= Carbon::now();  

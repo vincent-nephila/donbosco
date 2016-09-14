@@ -1,10 +1,11 @@
-@extends('appaccounting')
+@extends('appcashier')
 @section('content')
 <div class="container_fluid">
     <div class="col-md-6">
         <h5>Plan</h5>
         <div class="form form-group col-md-12">
             <select id="plan" name="plan" class="form form-control">
+                <option value="all">All</option>
                 @foreach($payscheds as $ps)
                 <option value="{{$ps->plan}}">{{$ps->plan}}</option>
                 @endforeach
@@ -64,6 +65,12 @@
             </div>    
         </div>  
         <div class="form form-group col-md-12">
+            <div id="overamount">
+                <label>Amount Over
+                    <input style="text-align: right" type="text" id="amtover" name = "amtover" value="1000" class="form-control">
+            </div>    
+        </div> 
+        <div class="form form-group col-md-12">
             <div id="mybutton">
                 <a href="#" onclick="showsoa()" class="btn btn-primary">Show SOA</a>
             </div>    
@@ -108,14 +115,17 @@
      var trandate = $("#year").val() + "-" + $("#month").val() + "-" + $("#day").val();
      var strand="none";
      var plan = $("#plan").val();
-     
+     var amtover = $("#amtover").val();
+     if(amtover == ""){
+         amtover = 0;
+     }
    
      if(document.getElementById('strand')){
       strand = $("#strand").val();
      }
      
      var section = $('#section').val();
-     document.location = "/getsoasummary/" + level + "/" + strand + "/" + section + "/" + trandate + "/" + plan;
+     document.location = "/getsoasummary/" + level + "/" + strand + "/" + section + "/" + trandate + "/" + plan + "/" + amtover;
        /* 
      $.ajax({
             type: "GET", 

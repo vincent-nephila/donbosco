@@ -62,7 +62,7 @@ class GradeController extends Controller
                     $no_student =$no_student +1;
                     echo "NO Of Student: ".$no_student;
         }*/
-        $students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
+        $students = \App\Status::where('idno','160105')->where('department','Kindergarten')->get();
         foreach($students as $student){
             $subjects = \App\CtrCompetence::where('quarter',1)->get();
                     foreach($subjects as $subject){
