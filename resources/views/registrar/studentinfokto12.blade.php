@@ -826,7 +826,7 @@
                  <td colspan="2"><label>Residence Type: </label> </td>
                  <td>
                      <select class="form-control" name="residence" id="residence">
-                        <option value="HOUSE">HOUSE</option>
+                        <option value="HOUSE" selected>HOUSE</option>
                         <option value="APARTMENT">APARTMENT</option>
                         <option value="CONDOMINIUM">CONDOMINIUM</option>
                         <option value="TOWNHOUSE">TOWNHOUSE</option>
@@ -837,7 +837,7 @@
                  <td colspan="2"><label>Ownership of Residence:</label></td>
                  <td >
                      <select class="form-control" name="ownership" id="ownership">
-                        <option value="OWN">OWN</option>
+                        <option value="OWN" selected>OWN</option>
                         <option value="RENTED">RENTED</option>
                         <option value="WITH PARENTS">LIVING WITH PARENTS</option>
                      </select>
@@ -875,7 +875,7 @@
                  <td colspan="2"><label>Do you have any computer at home?</label></td>
                  <td>
                      <select  class="form-control" name="haveComputer" id="haveComputer">
-                        <option value="1">YES</option>
+                        <option value="1" selected>YES</option>
                         <option value="0">NO</option>
                      </select>
                  </td>
@@ -884,7 +884,7 @@
                  <td colspan="2"><label>Do you have an internet connection at home?</label></td>
                  <td>
                      <select  class="form-control" name="haveInternet" id="haveInternet">
-                        <option value="1">YES</option>
+                        <option value="1" selected>YES</option>
                         <option value="0">NO</option>
                      </select>
                  </td>
@@ -893,7 +893,7 @@
                  <td colspan="2">If yes, what type of internet connection:</td>
                  <td>
                      <select  class="form-control" name="internetType" id="internetType">
-                        <option value="DSL">DSL</option>
+                        <option value="DSL" selected>DSL</option>
                         <option value="WIRELESS">WIRELESS</option>
                         <option value="DIAL-UP">DIAL-UP</option>
                         <option value="OTHERS">OTHERS</option>        
