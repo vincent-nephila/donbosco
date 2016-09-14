@@ -31,7 +31,11 @@ public function studentinfokto12edit($idno){
     $studentcount = \App\User::where('idno',$idno)->count();
     $studentInfo = \App\StudentInfo::where('idno',$idno)->first();
     $sibling = DB::Select("Select * from siblings where idno='$idno' order by sort asc");
-    
+    if(empty($studentInfo)){
+        $studentInfo =new \App\StudentInfo();
+        $studentInfo->idno = $idno;
+        $studentInfo->save();        
+    }
     if($studentcount == 0){
         return redirect ('studentinfokto12');
     }
