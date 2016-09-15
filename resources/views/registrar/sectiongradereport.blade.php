@@ -1,28 +1,34 @@
-
 <html>
     <head>
+        <script src="{{asset('/js/jquery.js')}}"></script>
         <style type='text/css'>
-            
+            .hide{
+                display:none;
+            }
            table tr td{
             font-size:11pt;
             padding-left: 10px;
            }
            
-           body{
+           .body{
             font-family: calibri;
-            margin-left: auto;    
+            margin-left: auto;
+            margin-right: auto;
             }
             .greyed{
                 background-color: rgba(201, 201, 201, 0.79) !important;;
                 -webkit-print-color-adjust: exact; 
             }            
         </style>    
-        
+       
         <style type="text/css" media="print">
-                       body{
+           .body{
+            font-family: calibri;
+            margin-left: auto;
+            margin-right: 0px;
+            }            
+            body{
                 font-family: calibri;
-                margin-left: auto;
-                margin-right: none;
             }
             .greyed{
                 background-color: rgba(201, 201, 201, 0.79) !important;;
@@ -30,14 +36,29 @@
             }
         </style>
         <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
+        <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     </head>
-    <body style="width:16.6cm">
+    <body>
+        <!--nav class="nav navbar-fixed-top hide-print">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="email">Display side:</label>
+                      <select class="form-control" id="display">
+                        <option value="front">Front</option>
+                        <option value="back"  selected>Back</option>
+                      </select>
+                </div>
+            </form>
+        </nav-->
+            
+        <div class="body" style="width:16.6cm;padding-left: .71cm;padding-right: .71cm">
         @foreach($collection as $info)
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: .8cm;margin-bottom: .8cm;">
+        <div class="front">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 1.5cm;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px">
-                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:100px;">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:71px;">
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
@@ -47,13 +68,13 @@
                             <span style="font-size:11pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
                         </td>
                     </tr>
-                    <tr><td style="font-size:9pt;text-align: center">Chino Roces Ave., Makati City </td></tr>
-                    <tr><td style="font-size:9pt;text-align: center">PAASCU Accredited</td></tr>
-                    <tr><td style="font-size:9pt;text-align: center">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">Chino Roces Ave., Makati City </td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">PAASCU Accredited</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
                     <tr><td style="font-size:4pt;padding-left: 0px;">&nbsp; </td></tr>
                     <tr><td><span style="font-size:5px"></td></tr>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:10pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
                     <div style="text-align: center;font-size:10pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
 
@@ -87,7 +108,7 @@
                                 <b>Gr. and Sec:</b>
                             </td>
                             <td style="font-size:10pt;padding-left: 0px;">
-                                {{$level}} - {{$section}}
+                                {{str_replace("Grade","",$level)}} - {{$section}}
                             </td>
                             <td style="font-size:10pt;padding-left: 0px;">
                                 <b>Class No:</b>
@@ -139,48 +160,32 @@
                         <td style="text-align: left">
                             {{$academics->subjectname}}
                         </td>
-                        <td @if(round($academics->first_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($academics->first_grading,2) == 0)
-                            @else
+                        <td>
+                            @if(round($academics->first_grading,2) != 0)
                                 {{round($academics->first_grading,2)}}
                             @endif
                             {{--*/$first = $first + round($academics->first_grading,2)/*--}}
                         </td>
-                        <td @if(round($academics->second_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($academics->second_grading,2) == 0)
-                            @else
+                        <td>
+                            @if(round($academics->second_grading,2) != 0)
                                 {{round($academics->second_grading,2)}}
                             @endif
                             {{--*/$second = $second + round($academics->second_grading,2)/*--}}
                         </td >
-                        <td @if(round($academics->third_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($academics->third_grading,2) == 0)
-                            @else
+                        <td>
+                            @if(round($academics->third_grading,2) != 0)
                                 {{round($academics->third_grading,2)}}
                             @endif
                             {{--*/$third = $third + round($academics->third_grading,2)/*--}}
                         </td>
-                        <td @if(round($academics->third_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($academics->third_grading,2) == 0)
-                            @else
+                        <td>
+                            @if(round($academics->third_grading,2) != 0)
                                 {{round($academics->fourth_grading,2)}}
                             @endif
                             {{--*/$fourth = $fourth + round($academics->fourth_grading,2)/*--}}
                         </td>
                         <td>
-                            @if(!round($academics->final_grade,2) == 0)
+                            @if(round($academics->final_grade,2) != 0)
                             
                             {{round($academics->final_grade,2)}}
                             @endif
@@ -196,45 +201,30 @@
                         <td style="text-align: right;">
                             <b>GENERAL AVERAGE&nbsp;&nbsp;&nbsp;</b>
                         </td>
-                        <td @if(round($first/$count,2) <= 74)
-                             style="color:red"
-                            @endif
-                            ><b>
-                            @if(round($first/$count,2) == 0)
-                            @else
-                            {{round($first/$count,2)}}
+                        <td><b>
+                            @if(round($first/$count,2) != 0)
+                                {{round($first/$count,2)}}
                             @endif</b>
                         </td>
-                        <td @if(round($second/$count,2) <= 74)
-                             style="color:red"
+                        <td><b>
+                            @if(round($second/$count,2) != 0)
+                                {{round($second/$count,2)}}
                             @endif
-                            ><b>
-                            @if(round($second/$count,2) == 0)
-                            @else
-                            {{round($second/$count,2)}}
-                            @endif</b>
+                            </b>
                         </td>
-                        <td @if(round($third/$count,2) <= 74)
-                             style="color:red"
-                            @endif
-                            ><b>
-                            @if(round($third/$count,2) == 0)
-                            @else
+                        <td><b>
+                            @if(round($third/$count,2) != 0)
                             {{round($third/$count,2)}}
                             @endif</b>
                         </td>
-                        <td @if(round($fourth/$count,2) <= 74)
-                             style="color:red"
-                            @endif
-                            ><b>
-                            @if(round($fourth/$count,2) == 0)
-                            @else
+                        <td><b>
+                            @if(round($fourth/$count,2) != 0)
                             {{round($fourth/$count,2)}}
                             @endif</b>
                         </td>
                         <td>
-                            @if(!round($fourth/$count,2) == 0)
-                            {{round($final/$count,2)}}
+                            @if(round($fourth/$count,2) != 0)
+                                {{round($final/$count,2)}}
                             @endif
                         </td>
 
@@ -249,7 +239,7 @@
                 @endif                    
                 </td>
             </tr>
-            <tr><td style="padding-left: 0px;"><span style="height:10pt"></td></tr>
+            <tr><td style="padding-left: 0px;"><br></td></tr>
             <tr>
                 <td style="padding-left: 0px;">
                     <table class="greyed" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
@@ -281,6 +271,9 @@
                         </tr>
                     </table>                    
                 </td>
+            </tr>
+            <tr>
+                <td><br></td>
             </tr>
             <tr>
                 <td style="padding-left: 0px;">
@@ -324,6 +317,7 @@
             </tr>
         </table>
         <div class="page-break"></div>
+        </div>
         @endforeach
         
         
@@ -335,6 +329,7 @@
 
 
         @foreach($collection as $info)
+        <div class=" back">
         <h1>&nbsp;</h1>
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: .8cm;margin-bottom: .8cm;">
         <tr>
@@ -463,26 +458,26 @@
                         </td>
                         <td>
                             @if($first != 0)
-                            {{round($attend->first_grading,1)}}
+                            {{number_format(round($attend->first_grading,1),1)}}
                             @endif
                         </td>
                         <td>
                             @if($second != 0)
-                            {{round($attend->second_grading,1)}}
+                            {{number_format(round($attend->second_grading,1),1)}}
                             @endif
                         </td>
                         <td>
                             @if($third != 0)
-                            {{round($attend->third_grading,1)}}
+                            {{number_format(round($attend->third_grading,1),1)}}
                             @endif
                         </td>
                         <td>
                             @if($fourth != 0)
-                            {{round($attend->fourth_grading,1)}}
+                            {{number_format(round($attend->fourth_grading,1),1)}}
                             @endif
                         </td>
                         <td>
-                            {{round($attend->first_grading,1)+round($attend->second_grading,1)+round($attend->third_grading,1)+round($attend->fourth_grading,1)}}
+                            {{number_format(round($attend->first_grading,1)+round($attend->second_grading,1)+round($attend->third_grading,1)+round($attend->fourth_grading,1),1)}}
                         </td>                                                    
                     </tr>
                     @endforeach
@@ -517,8 +512,8 @@
                         <td colspan="2"><br><br><br></td>                                                    
                     </tr>
                                                                     <tr style="text-align: center">
-                        <td class="print-size">________________________________</td>
-                        <td class="print-size">________________________________</td>
+                        <td class="print-size"><div style="border-bottom: 1px solid;width: 80%;margin-left: auto;margin-right: auto;height:36px"><br><br></div></td>
+                        <td class="print-size" ><div style="border-bottom: 1px solid;width: 80%;margin-left: auto;margin-right: auto;height:36px"><img src="{{asset('images/elem_sig.png')}}"  style="display: inline-block;width:180px;"></div></td>
                     </tr>
                     <tr style="text-align: center;">
                         <td class="print-size" >
@@ -552,8 +547,23 @@
 </tr>            
         </table>
     <div class="page-break"></div>
+    <div>
     @endforeach
         
-        
+     </div>
+
+        <script type="text/javascript">
+            var sides = "{{$side}}";
+            if(sides == "back"){
+                $( ".front" ).each(function() {
+                  $(this).addClass("hide");
+                });                
+            }else{
+                $( ".back" ).each(function() {
+                  $(this).addClass("hide");
+                });                  
+            }           
+
+        </script>
     </body>
 </html>

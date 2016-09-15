@@ -63,49 +63,32 @@
                         <td style="text-align: left;padding-left:5px;">
                             {{$academics->subjectname}}
                         </td>
-                        <td @if(round($academics->first_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($academics->first_grading,2) == 0)
-                            @else
+                        <td>
+                            @if(round($academics->first_grading,2) != 0)
                                 {{round($academics->first_grading,2)}}
                             @endif
                             {{--*/$first = $first + round($academics->first_grading,2)/*--}}
                         </td>
-                        <td @if(round($academics->second_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($academics->second_grading,2) == 0)
-                            @else
+                        <td>
+                            @if(round($academics->second_grading,2) != 0)
                                 {{round($academics->second_grading,2)}}
                             @endif
                             {{--*/$second = $second + round($academics->second_grading,2)/*--}}
                         </td >
-                        <td @if(round($academics->third_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($academics->third_grading,2) == 0)
-                            @else
+                        <td>
+                            @if(round($academics->third_grading,2) != 0)
                                 {{round($academics->third_grading,2)}}
                             @endif
                             {{--*/$third = $third + round($academics->third_grading,2)/*--}}
                         </td>
-                        <td @if(round($academics->third_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($academics->third_grading,2) == 0)
-                            @else
+                        <td>
+                            @if(round($academics->third_grading,2) != 0)
                                 {{round($academics->fourth_grading,2)}}
                             @endif
                             {{--*/$fourth = $fourth + round($academics->fourth_grading,2)/*--}}
                         </td>
                         <td>
-                            @if(!round($academics->final_grade,2) == 0)
-                            
+                            @if(round($academics->final_grade,2) != 0)
                             {{round($academics->final_grade,2)}}
                             @endif
                             {{--*/$final = $final + round($academics->final_grade,2)/*--}}
@@ -118,44 +101,28 @@
                             <td style="text-align: right;padding-right:10px">
                                 <b>ACADEMIC AVERAGE</b>
                             </td>
-                        <td @if(round($first/$count,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($first/$count,2) == 0)
-                            @else
+                        <td>
+                            @if(round($first/$count,2) != 0)
                             <b>{{round($first/$count,2)}}</b>
                             @endif
                         </td>
-                        <td @if(round($second/$count,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($second/$count,2) == 0)
-                            @else
+                        <td>
+                            @if(round($second/$count,2) != 0)
                             <b>{{round($second/$count,2)}}</b>
                             @endif
                         </td>
-                        <td @if(round($third/$count,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($third/$count,2) == 0)
-                            @else
+                        <td>
+                            @if(round($third/$count,2) != 0)
                             <b>{{round($third/$count,2)}}</b>
                             @endif
                         </td>
-                        <td @if(round($fourth/$count,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
-                            @if(round($fourth/$count,2) == 0)
-                            @else
+                        <td>
+                            @if(round($fourth/$count,2) != 0)
                             <b>{{round($fourth/$count,2)}}</b>
                             @endif
                         </td>
                         <td>
-                            @if(!round($fourth/$count,2) == 0)
+                            @if(round($fourth/$count,2) != 0)
                             {{round($final/$count,2)}}
                             @endif
                         </td>
@@ -247,22 +214,22 @@
                         </td>
                         <td>
                             @if($first != 0)
-                            {{round($attend->first_grading,1)}}
+                            {{number_format(round($attend->first_grading,1),1)}}
                             @endif
                         </td>
                         <td>
                             @if($second != 0)
-                            {{round($attend->second_grading,1)}}
+                            {{number_format(round($attend->second_grading,1),1)}}
                             @endif
                         </td>
                         <td>
                             @if($third != 0)
-                            {{round($attend->third_grading,1)}}
+                            {{number_format(round($attend->third_grading,1),1)}}
                             @endif
                         </td>
                         <td>
                             @if($fourth != 0)
-                            {{round($attend->fourth_grading,1)}}
+                            {{number_format(round($attend->fourth_grading,1),1)}}
                             @endif
                         </td>
                         <td>

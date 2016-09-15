@@ -62,7 +62,9 @@ function displaycards(){
     }else if(level == "Kindergarten"){
         document.location = "/reportcard/" + level + "/" + section +"/1"
     }else{
-    document.location = "/reportcards/" + level + "/" + section
+        window.open("/reportcards/" + level + "/" + section + "/back",'_blank');
+            document.location = "/reportcards/" + level + "/" + section +"/front"
+        
     }
 }
 function getstrandall(strand){

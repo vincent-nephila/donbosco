@@ -172,7 +172,7 @@ public function saveStudentInfo(array $request,$studentid){
     $studentInfo->birthPlace = $request['birthPlace'];
     $studentInfo->citizenship = $request['citizenship'];
     $studentInfo->religion = $request['religion'];
-    if(isset($request->status)){
+    if(isset($request['status'])){
     $studentInfo->status = $request['status'];
     }
     $studentInfo->acr = $request['acr'];
@@ -203,7 +203,7 @@ public function saveStudentInfo(array $request,$studentid){
     $studentInfo->falumnus = $request['falumnus'];
     //$studentInfo->fgraduated = $request['fgraduated'];
     $studentInfo->fyeargraduated = $request['fyeargraduated'];
-    if(isset($request->fstatus)){
+    if(isset($request['fstatus'])){
     $studentInfo->fstatus = $request['fstatus'];
     }
     $studentInfo->fcourse = $request['fcourse'];
@@ -213,7 +213,7 @@ public function saveStudentInfo(array $request,$studentid){
     $studentInfo->fselfemployed = $request['fselfemployed'];
     $studentInfo->fFulljob = $request['fFulljob'];
     $studentInfo->fPartjob = $request['fPartjob'];
-    if(isset($request->fposition)){
+    if(isset($request['fposition'])){
     $studentInfo->fposition = $request['fposition'];
     }
     $studentInfo->fincome = $request['fincome'];
@@ -225,7 +225,7 @@ public function saveStudentInfo(array $request,$studentid){
     
     $studentInfo->mname = $request['mname'];
     $studentInfo->mbirthdate = $this->dateFormat($request['mbirthdate']);
-    if(isset($request->mstatus)){
+    if(isset($request['mstatus'])){
     $studentInfo->mstatus = $request['mstatus'];
     }
     $studentInfo->mcourse = $request['mcourse'];
@@ -235,7 +235,9 @@ public function saveStudentInfo(array $request,$studentid){
     $studentInfo->mselfemployed = $request['mselfemployed'];
     $studentInfo->mFulljob = $request['mFulljob'];
     $studentInfo->mPartjob = $request['mPartjob'];
+    if(isset($request['mposition'])){
     $studentInfo->mposition = $request['mposition'];
+    }
     $studentInfo->mincome = $request['mincome'];
     $studentInfo->mcompany = $request['mcompany'];
     $studentInfo->mComAdd = $request['mComAdd'];
@@ -243,14 +245,26 @@ public function saveStudentInfo(array $request,$studentid){
     $studentInfo->mfax = $request['mfax'];
     $studentInfo->memail = $request['memail'];
     
+    if(isset($request['residence'])){
     $studentInfo->residence = $request['residence'];
+    }
+    if(isset($request['ownership'])){
     $studentInfo->ownership = $request['ownership'];
+    }
     $studentInfo->numHouseHelp = $request['numHouseHelp'];
+    if(isset($request['transportation'])){
     $studentInfo->transportation = $request['transportation'];
-    $studentInfo->carcount = $request['carcount'];    
+    }
+    $studentInfo->carcount = $request['carcount']; 
+    if(isset($request['haveComputer'])){
     $studentInfo->haveComputer = $request['haveComputer'];
+    }
+    if(isset($request['haveInternet'])){
     $studentInfo->haveInternet = $request['haveInternet'];
+    }
+    if(isset($request['haveComputer'])){
     $studentInfo->internetType = $request['internetType'];
+    }
     
     $studentInfo->guardianname = $request['guardianname'];
     $studentInfo->guardianmobile = $request['guardianmobile'];
@@ -274,8 +288,12 @@ public function createSibling(array $request){
     $sibling->sort = $counter;
     $sibling->name = $request['sibling'.$counter];
     $sibling->birthdate = $this->dateFormat($request['siblingbday'.$counter]);
+    if(isset($request['siblinggender'.$counter])){
     $sibling->gender = $request['siblinggender'.$counter];
+    }
+    if(isset($request['siblingstatus'.$counter])){
     $sibling->status = $request['siblingstatus'.$counter];
+    }
     $sibling->studying = $studying;
     $sibling->working = $working;
     $sibling->dbti = $dbti;
@@ -299,8 +317,12 @@ public function updateSibling(array $request,$idno){
     $sibling->sort = $counter;
     $sibling->name = $request['sibling'.$counter];
     $sibling->birthdate = $this->dateFormat($request['siblingbday'.$counter]);
+    if(isset($request['siblinggender'.$counter])){
     $sibling->gender = $request['siblinggender'.$counter];
+    }
+    if(isset($request['siblingstatus'.$counter])){
     $sibling->status = $request['siblingstatus'.$counter];
+    }
     $sibling->studying = $studying;
     $sibling->working = $working;
     $sibling->dbti = $dbti;

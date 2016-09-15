@@ -1,31 +1,61 @@
 <html>
     <head>
-
-
+        <script src="{{asset('/js/jquery.js')}}"></script>
         <style type='text/css'>
-
-           table tr td{
-               font-size:10.5pt;
-               padding-left: 10px;
-           }
-           body{
-                font-family: calibri;
-                margin-left: auto;
-                
+            .hide{
+                display:none;
             }
+           table tr td{
+            font-size:11pt;
+            padding-left: 10px;
+           }
+           
+           .body{
+            font-family: calibri;
+            margin-left: auto;
+            margin-right: auto;
+            }
+            .greyed{
+                background-color: rgba(201, 201, 201, 0.79) !important;;
+                -webkit-print-color-adjust: exact; 
+            }            
         </style>    
+       
         <style type="text/css" media="print">
-                       body{
+ 
+           .body{
+            font-family: calibri;
+            margin-left: auto;
+            margin-right: 0px;
+            }            
+            body{
                 font-family: calibri;
-                margin-left: auto;
-                margin-right: none;
+            }
+            .greyed{
+                background-color: rgba(201, 201, 201, 0.79) !important;;
+                -webkit-print-color-adjust: exact; 
             }
         </style>
-                <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
+        <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
+        <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     </head>
-    <body style="width:15.5cm;">
+    <body>
+        <nav class="nav navbar-fixed-top hide-print">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="email">Display side:</label>
+                      <select class="form-control" id="display">
+                        <option value="front">Front</option>
+                        <option value="back"  selected>Back</option>
+                      </select>
+                </div>
+            </form>
+        </nav>
+        
+        <div class="body" style="width:16.6cm;padding-left: .71cm;padding-right: .71cm">
         @foreach($collection as $info)
-        <table width="95%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 20px;margin-bottom: 20px;">
+        <div class="front">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 1.5cm;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
@@ -78,7 +108,7 @@
                                 <b>Gr. and Sec:</b>
                             </td>
                             <td style="font-size:10pt;padding-left: 0px;">
-                                {{$level}} - {{$section}}
+                                {{str_replace("Grade","",$level)}} - {{$section}}
                             </td>
                             <td style="font-size:10pt;padding-left: 0px;">
                                 <b>Class No:</b>
@@ -105,11 +135,11 @@
                             <td style="font-size:10pt;padding-left: 0px;">
                                 <b>Sex:</b>
                             </td>
-                            <td style="font-size:10pt;padding-left: 0px;">
+                            <td style="font-size:10pt;padding-left: 0px;vertical-align: top;">
                                 {{$info['info']->gender}}
                             </td>
                             <td colspan="2" style="font-size:10pt;padding-left: 0px;"  >
-                                <b>Adviser:&nbsp;</b>{{$teacher->adviser}}
+                                <b style="display: inline-block;vertical-align: top;">Adviser:&nbsp;</b><div style="display: inline-block;width: 153.6px;">{{$teacher->adviser}}</div>
                             </td>
 
                         </tr>
@@ -241,7 +271,7 @@
                                   
                 </td>
             </tr>
-            <tr><td><span style="height:10pt"></td></tr>
+            <tr><td><br></td></tr>
             <tr>
                 <td style="padding-left: 0px;">
                     @if(count($info['tech']) != 0)
@@ -336,19 +366,13 @@
             
         </table>
         <div class="page-break"></div>
+        </div>
         @endforeach
         
-        
-
-
-
-
-
-
 
         @foreach($collection as $info)
-        
-        <table width="95%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 20px;margin-bottom: 20px;">
+        <div class="back">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: .8cm;margin-bottom: .8cm;">
         <tr>
             <td style="padding-left: 0px;">
                 <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;">
@@ -488,12 +512,12 @@
                             <p style="text-indent: 20px">This report card shows the ability and progress your child has made in different learning areas as well as his/her core values.</p>
                             <p style="text-indent: 20px">The school welcomes you should you desire to know more about your child progress.</p>
                             
-                            <p style="text-align: right;">__________________________<br>
+                            <div style="width:200px;text-align: center;float:right;border-top: 1px solid">
                                                     
                            @if($teacher != null)
-                           <span style="padding-right: 5px">{{$teacher->adviser}}</span>
+                           <span>{{$teacher->adviser}}</span>
                            @endif
-                                                    <br><span style="padding-right: 50px">Class Adviser</span></p>
+                                                    <br><span>Class Adviser</span></div>
                             <br>
             </td>
         </tr>
@@ -559,8 +583,36 @@
             
         </table>
     <div class="page-break"></div>
+    </div>
     @endforeach
-        
-        
+        </div>
+        <script type="text/javascript">
+            
+            if($("#display").val() == "back"){
+                $( ".front" ).each(function() {
+                  $(this).addClass("hide");
+                });                
+            }
+            
+            
+            $("#display").change(function(){
+                if($("#display").val() == "back"){
+                    $( ".front" ).each(function() {
+                      $(this).addClass("hide");
+                    });  
+                    $( ".back" ).each(function() {
+                      $(this).removeClass("hide");
+                    });                     
+                }else{
+                    $( ".back" ).each(function() {
+                      $(this).addClass("hide");
+                    });
+                    $( ".front" ).each(function() {
+                      $(this).removeClass("hide");
+                    });                     
+                }
+            });            
+
+        </script>
     </body>
 </html>

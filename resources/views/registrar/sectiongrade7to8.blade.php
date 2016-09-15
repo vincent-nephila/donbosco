@@ -1,35 +1,64 @@
 <html>
     <head>
-
-
+        <script src="{{asset('/js/jquery.js')}}"></script>
         <style type='text/css'>
-
-           table tr td{
-               font-size:11pt;
-               padding-left: 10px;
-           }
-           body{
-                font-family: calibri;
-                margin-left: auto;
-                
+            .hide{
+                display:none;
             }
+           table tr td{
+            font-size:11pt;
+            padding-left: 10px;
+           }
+           
+           .body{
+            font-family: calibri;
+            margin-left: auto;
+            margin-right: auto;
+            }
+            .greyed{
+                background-color: rgba(201, 201, 201, 0.79) !important;;
+                -webkit-print-color-adjust: exact; 
+            }            
         </style>    
+       
         <style type="text/css" media="print">
-                       body{
+           .body{
+            font-family: calibri;
+            margin-left: auto;
+            margin-right: 0px;
+            }            
+            body{
                 font-family: calibri;
-                margin-left: auto;
-                margin-right: none;
+            }
+            .greyed{
+                background-color: rgba(201, 201, 201, 0.79) !important;;
+                -webkit-print-color-adjust: exact; 
             }
         </style>
-                <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
+        <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
+        <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     </head>
-    <body style="width:16.6cm">
+    <body>
+        <nav class="nav navbar-fixed-top hide-print">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="email">Display side:</label>
+                      <select class="form-control" id="display">
+                        <option value="front">Front</option>
+                        <option value="back"  selected>Back</option>
+                      </select>
+                </div>
+            </form>
+        </nav>
+            
+        <div class="body" style="width:16.6cm;padding-left: .71cm;padding-right: .71cm">
         @foreach($collection as $info)
+        <div class="front">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: .8cm;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:100px;">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:71px;">
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
@@ -39,15 +68,15 @@
                             <span style="font-size:11pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
                         </td>
                     </tr>
-                    <tr><td style="font-size:9pt;text-align: center">Chino Roces Ave., Makati City </td></tr>
-                    <tr><td style="font-size:9pt;text-align: center">PAASCU Accredited</td></tr>
-                    <tr><td style="font-size:9pt;text-align: center">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">Chino Roces Ave., Makati City </td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">PAASCU Accredited</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
                     <tr><td style="font-size:4pt;padding-left: 0px;">&nbsp; </td></tr>
                     <tr><td><span style="font-size:5px"></td></tr>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:10pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:10pt;"><b>JUNIOR HIGH SCHOOL</b></div>
+                    <div style="text-align: center;font-size:10pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
 
                         </td>
                     </tr>
@@ -239,7 +268,7 @@
                 @endif                    
                 </td>
             </tr>
-            <tr><td style="padding-left: 0px;"><span style="height:10pt"></td></tr>
+            <tr><td style="padding-left: 0px;"><br></td></tr>
             <tr>
                 <td style="padding-left: 0px;">
                     @if(count($info['tech']) != 0)
@@ -338,7 +367,7 @@
                     @endif                    
                 </td>
             </tr>
-            <tr><td style="padding-left: 0px;"><span style="height:10pt"></td></tr>
+            <tr><td style="padding-left: 0px;"><br></td></tr>
             <tr>
                 <td style="padding-left: 0px;">
                     <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
@@ -374,6 +403,7 @@
             
         </table>
         <div class="page-break"></div>
+        </div>
         @endforeach
         
         
@@ -385,6 +415,7 @@
 
 
         @foreach($collection as $info)
+        <div class="back">
         <h1>&nbsp;</h1>
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: .8cm;margin-bottom: .8cm;">
         <tr>
@@ -599,8 +630,37 @@
 </tr>            
         </table>
     <div class="page-break"></div>
+    </div>
     @endforeach
+    </div>    
         
-        
-    </body>
+        <script type="text/javascript">
+            
+            if($("#display").val() == "back"){
+                $( ".front" ).each(function() {
+                  $(this).addClass("hide");
+                });                
+            }
+            
+            
+            $("#display").change(function(){
+                if($("#display").val() == "back"){
+                    $( ".front" ).each(function() {
+                      $(this).addClass("hide");
+                    });  
+                    $( ".back" ).each(function() {
+                      $(this).removeClass("hide");
+                    });                     
+                }else{
+                    $( ".back" ).each(function() {
+                      $(this).addClass("hide");
+                    });
+                    $( ".front" ).each(function() {
+                      $(this).removeClass("hide");
+                    });                     
+                }
+            });            
+
+        </script>    
+        </body>
 </html>
