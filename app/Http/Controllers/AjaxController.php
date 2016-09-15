@@ -408,17 +408,22 @@ class AjaxController extends Controller
          $data = $data . "</select></div>"; 
           return $data;
          }  else{
-         
-        $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
-                 . "statuses.level, statuses.strand, student_infos.fname, student_infos.fmobile, student_infos.mname, student_infos.mmobile from users, statuses, student_infos  where users.idno = statuses.idno "
-                 . "and statuses.level = '". $level. "'  and statuses.status='2' and statuses.idno = student_infos.idno order by users.lastname, users.firstname");
-         $data = "<h3>$level</h3><table class=\"table table-stripped\"><tr><td>Id No</td><td>Name</td><td>Father</td><td>Contact No</td><td>Mother</td><td>Contact No.</td></tr>";
-         foreach($lists as $list){
-         $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td><td>".$list->fname."</td>"
-                 . "<td>".$list->fmobile."</td><td>".$list->mname."</td><td>".$list->mmobile."</td></tr>";
-         
-         }
-         $data = $data . "</table>"; 
+        $sections = DB::Select("Select distinct section as section from statuses where level = '$level'");
+        $data = "<h3>$level</h3>";
+        foreach($sections as $section){
+            $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
+                     . "statuses.level, statuses.strand, student_infos.fname, student_infos.fmobile, student_infos.mname, student_infos.mmobile from users, statuses, student_infos  where users.idno = statuses.idno "
+                     . "and statuses.level = '$level' and statuses.section = '$section->section'  and statuses.status='2' and statuses.idno = student_infos.idno order by users.lastname, users.firstname");            
+            $data = $data."<h4>".$section->section."</h4><table class=\"table table-stripped\"><tr><td>Id No</td><td>Name</td><td>Father</td><td>Contact No</td><td>Mother</td><td>Contact No.</td></tr>";
+            foreach($lists as $list){
+            $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td><td>".$list->fname."</td>"
+                    . "<td>".$list->fmobile."</td><td>".$list->mname."</td><td>".$list->mmobile."</td></tr>";
+
+            }
+            $data = $data . "</table>";             
+        
+            //$data = $data."<div>".$section->section."</div>";
+        }
            return $data;  
          }
           
@@ -428,15 +433,20 @@ class AjaxController extends Controller
     
     function strand($strand, $level){
         if(Request::ajax()){
-        
-        $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
-                 . "statuses.level, statuses.strand from users, statuses where users.idno = statuses.idno "
-                 . "and statuses.level = '". $level. "' and statuses.strand='". $strand ."' order by users.lastname, users.firstname");
-         $data = "<h3>$level</h3><table class=\"table table-stripped\"><tr><td>Student Id</td><td>Name</td></tr>";
-         foreach($lists as $list){
-         $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td></tr>";
-         
-         }
+            
+        $sections = DB::Select("Select distinct section as section  from statuses where strand = '$strand' and level = '$level'");
+        $data = "<h3>$level</h3>";
+        foreach($sections as $section){
+            $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
+                     . "statuses.level, statuses.strand from users, statuses where users.idno = statuses.idno "
+                     . "and statuses.level = '". $level. "' and statuses.strand='$strand' and section = '$section->section' order by users.lastname, users.firstname");
+             $data = $data."<h4>$section->section</h4><table class=\"table table-stripped\"><tr><td>Student Id</td><td>Name</td></tr>";
+             foreach($lists as $list){
+             $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td></tr>";
+
+             }        
+        }
+
          $data = $data . "</table>"; 
            return $data;  
          
