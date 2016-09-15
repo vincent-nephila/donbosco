@@ -17,8 +17,9 @@ public function studentinfokto12()
     $student = NULL;
     $studentInfo = NULL;
     $sibling = NULL;
+    $status = NULL;
     
-    return view('registrar.studentinfokto12',compact('student','studentInfo','sibling'));
+    return view('registrar.studentinfokto12',compact('student','studentInfo','sibling','status'));
     //return view('registrar.studentinfokto12');
     
    

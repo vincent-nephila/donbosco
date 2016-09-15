@@ -59,10 +59,10 @@
 <body> 
     <div class="container">
     <table border = '1' cellpacing="0" cellpadding = "0" width="100%" align="center">
-        <tr><td rowspan="4" width="65"><img src="{{asset('/images/logo.png')}}" width="60"></td><td><span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span></td><td>Gr/Yr</td><td>@if(count($status)>0){{$status->level}} @endif</td></tr>
-        <tr><td style="font-size:10pt;">Chino Roces Ave., Makati City </td><td>Section</td><td>@if(count($status)>0){{$status->section}} @endif</td></tr>
-        <tr><td style="font-size:10pt;">Tel No : 892-01-01</td><td>Shop</td><td>@if(count($status)>0){{$status->strand}} @endif</td></tr>
-        <tr><td></td><td>Student No</td><td>{{$studentInfo->idno}}</td></tr>
+        <tr><td rowspan="4" width="65"><img src="{{asset('/images/logo.png')}}" width="60"></td><td><span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span></td><td>Gr/Yr</td><td>@if($status != NULL){{$status->level}} @endif</td></tr>
+        <tr><td style="font-size:10pt;">Chino Roces Ave., Makati City </td><td>Section</td><td>@if($status!= NULL){{$status->section}} @endif</td></tr>
+        <tr><td style="font-size:10pt;">Tel No : 892-01-01</td><td>Shop</td><td>@if($status!= NULL){{$status->strand}} @endif</td></tr>
+        <tr><td></td><td>Student No</td><td>@if($student != NULL){{$student->idno}}@endif</td></tr>
     </table>
 
     @if(count($errors)>0)
@@ -1331,7 +1331,22 @@ for($counter = 1;$counter<=$numberofrow;$counter++){ ?>
     </form>
     
 <script>
-
+    @if($student == NULL)
+        @if(Auth::guest())
+            var varid = 4;
+        @else
+            var varid = {{Auth::User()->id}};
+        @endif
+        
+        $.ajax({
+         type: "GET", 
+         url: "/getid/" + varid , 
+         success:function(data){  
+             
+            document.getElementById('idno').value = data;
+         }       
+        });
+    @endif
 
     $( '#transportation' ).change(function() {
         if ($(this).val() == "OWN"){
@@ -1367,21 +1382,6 @@ function getAge(){
 
     document.getElementById("age").value = timeDiff + "." + month;    
 }
-@if($student == NULL)
-    @if(Auth::guest())
-        var varid = 4;
-    @else
-        var varid = (Auth::User()->id);
-    @endif
-    
-    $.ajax({
-     type: "GET", 
-     url: "/getid/" + varid , 
-     success:function(data){  
-        document.getElementById('idno').value = data
-     }       
-    });
-@endif
 
 @if($student != NULL )
     @if($studentInfo->transportation == "OWN")

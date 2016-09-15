@@ -22,6 +22,36 @@
 	<link href="{{ asset('/css/app_1.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/fileinput.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/datepicker.css') }}" rel="stylesheet">
+        
+        <style type="text/css">
+            .section {
+               cursor: pointer;
+           }
+           .quarter{
+               border-radius:0px;
+           }
+        </style>
+        <style type="text/css" media="print">
+            .no-print, #menu{
+                display: none;
+            }
+            #display{
+                padding-left: 0px;
+                padding-right:0px;
+            }
+            .btn{
+                border-color:#fff;
+            }
+            *{
+                font-size:12px;
+            }
+            span{
+                font-size: 16px;
+            }
+            .sy{
+                font-size: 16px;
+            }
+        </style>        
 	<!-- Fonts 
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
  -->
@@ -38,7 +68,7 @@
         <script src="{{asset('/js/bootstrap-datepicker.js')}}"></script>
         </head>
 <body> 
-<div class= "container-fluid">
+<div class= "container-fluid no-print" >
         <div class="col-md-12">
           <div class="col-md-1"> 
          <img class ="img-responsive" style ="margin-top:10px;" src = "{{ asset('/images/logo.png') }}" alt="Don Bosco Technical School" />
@@ -83,7 +113,8 @@
                                         <ul class="dropdown-menu" role="menu">
                            
                                         <li><a href="{{url('/')}}"><i class="fa fa-btn fa-sign-out"></i>Assessment</a></li>
-                                        <li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Register</a></li>
+                                        <li><a href="{{url('studentinfokto12')}}"><i class="fa fa-btn fa-sign-out"></i>Register</a></li>
+                                        <!--li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Register</a></li-->
                                         
                                         </ul>
                                         </li>
@@ -96,6 +127,11 @@
                                             <li><a href="{{url('studentlist')}}"><i class="fa fa-btn"></i>Student Contact</a></li>
                                             <li><a href="{{url('importGrade')}}"><i class="fa fa-btn"></i>Import Grades</a></li>
                                             <li><a href="{{url('printreportcard')}}"><i class="fa fa-btn"></i>Report Card</a></li>
+                                            <li><hr></li>
+                                            <li><a href="{{url('sheetb')}}"><i class="fa fa-btn"></i>Sheet B</a></li>
+                                            <li><a href="{{url('sheetA')}}"><i class="fa fa-btn"></i>Sheet A Subjects</a></li>
+                                            <li><a href="{{url('conduct')}}"><i class="fa fa-btn"></i>Sheet A Conducts</a></li>
+                                            <li><a href="{{url('attendance')}}"><i class="fa fa-btn"></i>Sheet A Attendance</a></li>
                                          </ul>   
                                         
                                         <li>    
@@ -143,7 +179,7 @@
 	<!-- Scripts -->
 	
 
-<div class="container_fluid">
+<div class="container_fluid no-print">
      <div class="col-md-12"> 
 <p class="text-muted"> Copyright 2016, Don Bosco Technical Institute of Makati, Inc.  All Rights Reserved.<br />
  <a href="http://www.nephilaweb.com.ph">Powered by: Nephila Web Technology, Inc.</a></p>

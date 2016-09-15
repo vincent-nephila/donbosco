@@ -31,7 +31,13 @@
     
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
      Route::get('printreportcard','Registrar\GradeController@printreportcard');
-     //
+     //Vincent Registrar
+     Route::get('/printsheetA/{level}/{section}/{subject}', 'Vincent\ReportController@printSheetAElem');
+     Route::get('conduct', 'Vincent\ReportController@conduct');
+     Route::get('sheetaconduct/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetAConduct');
+     Route::get('sheetaAttendance/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetaAttendance');
+     Route::get('attendance', 'Vincent\ReportController@attendance');
+     Route::get('/sheetb', 'Vincent\ReportController@sheetB');
     
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
@@ -106,7 +112,8 @@
     Route::get('/reportcard/{level}/{section}/{quarter}','Vincent\GradeController@viewSectionKinder');    
     Route::get('/reportcards/{level}/{shop}/{section}','Vincent\GradeController@viewSectionGrade9to10');    
     Route::get('/resetgrades','Vincent\GradeController@reset');  
-    Route::get('/studentgrade/{idno}','Vincent\GradeController@studentGrade');  
+    Route::get('/studentgrade/{idno}','Vincent\GradeController@studentGrade'); 
+    Route::get('sheetA','Vincent\ReportController@sheetA'); 
     
 });
 
@@ -142,5 +149,18 @@
    
     //Ajax Route Sheryl
    
-    
-    
+    //AJAX Vincent
+    Route::get('/showgrades', 'Vincent\AjaxController@showgrades');
+    Route::get('/showgradestvet', 'Vincent\AjaxController@showgradestvet');
+    Route::get('/setacadrank', 'Vincent\AjaxController@setRankingAcad');
+    Route::get('/settechrank', 'Vincent\AjaxController@setRankingTech');
+    Route::get('/getsection1/{level}','Vincent\AjaxController@getsection1');
+    Route::get('/getstrand/{level}','Vincent\AjaxController@getstrand');
+    Route::get('/getadviser','Vincent\AjaxController@getadviser');
+    Route::get('/getsection/{level}','Vincent\AjaxController@getsection');
+    Route::get('/getsubjects/{level}','Vincent\AjaxController@getsubjects');
+    Route::get('/getdays','Vincent\AjaxController@getdos');
+    Route::get('/getlist/{level}/{section}','AjaxController@studentContact');
+
+
+  

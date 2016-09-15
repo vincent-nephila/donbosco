@@ -393,14 +393,14 @@ class AjaxController extends Controller
                 }
             }
     
-
+//VINCENT 09/15/16
             function studentlist($level){
         if(Request::ajax()){
          if($level == "Grade 9" || $level=="Grade 10" || $level=="Grade 11" || $level=="Grade 12"){
          $strands = DB::Select("select distinct strand from ctr_payment_schedules where level = '$level'");
          $data = "<div class=\"form form-group\">";
         
-         $data=$data. "<Select name =\"strand\" id=\"strand\" class=\"form form-control\" onchange=\"strand(this.value)\" >";
+         $data=$data. "<Select name =\"strand\" id=\"strand\" class=\"form form-control\" onchange=\"getstrand(this.value)\" >";
           $data=$data. "<option>Select Strand/Shop</option>";
          foreach($strands as $strand){
           $data = $data . "<option value=\"". $strand->strand . "\">" . $strand->strand . "</option>";       
@@ -408,7 +408,51 @@ class AjaxController extends Controller
          $data = $data . "</select></div>"; 
           return $data;
          }  else{
-        $sections = DB::Select("Select distinct section as section from statuses where level = '$level'");
+            $sections = DB::Select("select distinct section from statuses where level = '$level' and section != '' ");
+            $data = "<div class=\"form form-group\">";
+
+            $data=$data. "<Select name =\"section\" id=\"section\" class=\"form form-control\" onchange=\"showstudents()\" >";
+             $data=$data. "<option>Select Section</option>";
+             $data = $data . "<option value= 'All'>All</option>";  
+            foreach($sections as $section){
+             $data = $data . "<option value=\"". $section->section . "\">" . $section->section . "</option>";       
+                  }
+            $data = $data . "</select></div>"; 
+            
+            return $data;
+         }
+          
+        }
+        
+    }
+//VINCENT 09/15/16
+    function strand($strand, $level){
+        if(Request::ajax()){
+            $sections = DB::Select("select distinct section from statuses where level = '$level' and strand = '$strand' and section !='' ");
+            $data = "<div class=\"form form-group\">";
+
+            $data=$data. "<Select name =\"section\" id=\"section\" class=\"form form-control\" onchange=\"showstudents()\" >";
+             $data=$data. "<option>Select Section</option>";
+             $data = $data . "<option value= 'All'>All</option>";  
+            foreach($sections as $section){
+             $data = $data . "<option value=\"". $section->section . "\">" . $section->section . "</option>";       
+                  }
+            $data = $data . "</select></div>"; 
+            
+            return $data;            
+        } 
+        
+    }
+//VINCENT 09/15/16
+    function studentContact($level,$section){
+        if(Request::ajax()){
+            $strand = Input::get("strand");
+        if ($section == "All"){    
+                $sections = DB::Select("Select distinct section as section from statuses where level = '$level'");
+        }
+        else{
+            $sections = DB::Select("Select distinct section as section from statuses where level = '$level' and section = '$section'");
+        }
         $data = "<h3>$level</h3>";
         foreach($sections as $section){
             $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
@@ -418,43 +462,16 @@ class AjaxController extends Controller
             foreach($lists as $list){
             $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td><td>".$list->fname."</td>"
                     . "<td>".$list->fmobile."</td><td>".$list->mname."</td><td>".$list->mmobile."</td></tr>";
-
             }
             $data = $data . "</table>";             
         
             //$data = $data."<div>".$section->section."</div>";
         }
-           return $data;  
-         }
-          
-        }
-        
-    }
-    
-    function strand($strand, $level){
-        if(Request::ajax()){
+           return $data; 
             
-        $sections = DB::Select("Select distinct section as section  from statuses where strand = '$strand' and level = '$level'");
-        $data = "<h3>$level</h3>";
-        foreach($sections as $section){
-            $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
-                     . "statuses.level, statuses.strand from users, statuses where users.idno = statuses.idno "
-                     . "and statuses.level = '". $level. "' and statuses.strand='$strand' and section = '$section->section' order by users.lastname, users.firstname");
-             $data = $data."<h4>$section->section</h4><table class=\"table table-stripped\"><tr><td>Student Id</td><td>Name</td></tr>";
-             foreach($lists as $list){
-             $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td></tr>";
-
-             }        
         }
-
-         $data = $data . "</table>"; 
-           return $data;  
-         
-         //return $strand; 
-        } 
         
     }
-
      function myDeposit(){
         if(Request::ajax()){  
             $idno = Input::get('idno');
