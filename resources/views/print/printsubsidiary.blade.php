@@ -39,17 +39,17 @@
         <tr><td colspan = "3">
         <table cellspacing="0" border="1" width="100%">
         <thead>
-        <tr><td>Tran Date</td><td>OR No</td><td>Name</td><td>Amount</td></tr>
+        <tr><td>Tran Date</td><td>OR No</td><td>Name</td><td>Particular</td><td>Amount</td></tr>
         </thead>
         <tbody>
             <?php $total=0;?>
         @foreach($dblist as $dbl)
         <tr><td>{{$dbl->transactiondate}}</td><td>{{$dbl->receiptno}}</td><td>
                                 {{$dbl->lastname}}, {{$dbl->firstname}} {{$dbl->middlename}}
-                                </td><td align="right">{{number_format($dbl->amount,2)}}</td></tr>
+                                </td><td>{{$dbl->receipt_details}}</td><td align="right">{{number_format($dbl->amount,2)}}</td></tr>
         <?php $total = $total + $dbl->amount;?>
         @endforeach
-        <tr><td colspan = "3">Total</td><td align="right">{{number_format($total,2)}}</td></tr>
+        <tr><td colspan = "4">Total</td><td align="right">{{number_format($total,2)}}</td></tr>
                             </tbody>
                         </table>                            
         

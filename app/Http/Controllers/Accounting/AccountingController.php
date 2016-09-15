@@ -894,7 +894,7 @@ foreach ($collections as $collection){
         
         function subsidiary(){
             if(\Auth::user()->accesslevel==env('USER_ACCOUNTING')|| \Auth::user()->accesslevel==env('USER_ACCOUNTING_HEAD')){
-            $acctcodes = DB::Select("select distinct receipt_details from credits order by receipt_details");
+            $acctcodes = DB::Select("select distinct acctcode from credits order by receipt_details");
                 
             return view('accounting.subsidiary',compact('acctcodes'));
                 
@@ -903,12 +903,12 @@ foreach ($collections as $collection){
          function postsubsidiary(Request $request){
                if(\Auth::user()->accesslevel==env('USER_ACCOUNTING')|| \Auth::user()->accesslevel==env('USER_ACCOUNTING_HEAD')){
          if($request->all=="1"){
-             $dblist = DB::Select("select users.idno, users.lastname, users.firstname, users.middlename, credits.transactiondate, credits.receiptno, credits.amount, credits.postedby "
-                     . "from users, credits where users.idno = credits.idno and credits.receipt_details = '".$request->accountname ."' and credits.isreverse='0' order by users.lastname, users.firstname");
+             $dblist = DB::Select("select users.idno, users.lastname, users.firstname, users.middlename, credits.transactiondate, credits.receiptno, credits.amount, credits.receipt_details, credits.postedby "
+                     . "from users, credits where users.idno = credits.idno and credits.acctcode = '".$request->accountname ."' and credits.isreverse='0' order by users.lastname, users.firstname");
              }
            else{
-             $dblist = DB::Select("select users.idno, users.lastname, users.firstname, users.middlename, credits.transactiondate, credits.receiptno, credits.amount, credits.postedby "
-                     . "from users, credits where users.idno = credits.idno and credits.isreverse = '0' and credits.receipt_details = '".$request->accountname ."' and credits.transactiondate between '".$request->from ."' AND '" . $request->to ."'"
+             $dblist = DB::Select("select users.idno, users.lastname, users.firstname, users.middlename, credits.transactiondate, credits.receiptno, credits.receipt_details, credits.amount, credits.postedby "
+                     . "from users, credits where users.idno = credits.idno and credits.isreverse = '0' and credits.acctcode = '".$request->accountname ."' and credits.transactiondate between '".$request->from ."' AND '" . $request->to ."'"
                      . "order by users.lastname, users.firstname");
            }
            $all = $request->all;

@@ -428,18 +428,32 @@ class AjaxController extends Controller
 //VINCENT 09/15/16
     function strand($strand, $level){
         if(Request::ajax()){
-            $sections = DB::Select("select distinct section from statuses where level = '$level' and strand = '$strand' and section !='' ");
-            $data = "<div class=\"form form-group\">";
-
-            $data=$data. "<Select name =\"section\" id=\"section\" class=\"form form-control\" onchange=\"showstudents()\" >";
-             $data=$data. "<option>Select Section</option>";
-             $data = $data . "<option value= 'All'>All</option>";  
-            foreach($sections as $section){
-             $data = $data . "<option value=\"". $section->section . "\">" . $section->section . "</option>";       
-                  }
-            $data = $data . "</select></div>"; 
-            
-            return $data;            
+       /* 
+        $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
+                 . "statuses.level, statuses.strand from users, statuses where users.idno = statuses.idno "
+                 . "and statuses.level = '". $level. "' and statuses.strand='". $strand ."' order by users.lastname, users.firstname");
+         $data = "<h3>$level</h3><table class=\"table table-stripped\"><tr><td>Student Id</td><td>Name</td></tr>";
+         foreach($lists as $list){
+         $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td></tr>";
+         
+         }
+         $data = $data . "</table>";
+        */
+        $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
+                 . "statuses.level, statuses.strand, student_infos.fname, student_infos.fmobile, student_infos.mname, student_infos.mmobile from users, statuses, student_infos  where users.idno = statuses.idno "
+                 . "and statuses.strand = '".$strand."' and statuses.level = '". $level. "'  and statuses.status='2' and statuses.idno = student_infos.idno order by users.lastname, users.firstname");
+         $data = "<h3>$level</h3><table class=\"table table-stripped\"><tr><td>Id No</td><td>Name</td><td>Father</td><td>Contact No</td><td>Mother</td><td>Contact No.</td></tr>";
+         foreach($lists as $list){
+         $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td><td>".$list->fname."</td>"
+                 . "<td>".$list->fmobile."</td><td>".$list->mname."</td><td>".$list->mmobile."</td></tr>";
+         
+         }
+         $data = $data . "</table>";
+        
+         
+           return $data;  
+         
+         //return $strand; 
         } 
         
     }

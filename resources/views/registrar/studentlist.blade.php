@@ -4,7 +4,7 @@
 
 <div class="container">
   <h3>STUDENT CONTACT</h3>
- 
+ <div class="col-md-6">
   <div class="form-group">
   <label for="sel1">Select level:</label>
   <select class="form-control" id="level" name="level" onchange = "level(this.value)">
@@ -12,11 +12,15 @@
     <option value="{{$list->level}}">{{$list->level}}</option>
   @endforeach  
   </select>
-</div>
+</div>   
+  <div id="forsection">
+  </div>   
   <div id="forstrand"> 
   </div>
-  <div id="forsection"> 
-  </div>  
+  </div>
+  <div class="col-md-6">
+  </div>
+  <div class="col-md-12">
   <div id = "fordisplay">
   </div>    
 </div>
