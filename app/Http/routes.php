@@ -102,7 +102,7 @@
     //Route::get('checkno','Update\UpdateController@checkno');
     Route::get('updatehsattendance','Update\UpdateController@updatehsattendance');
     //Registrar Vincent
-    Route::get('/reportcards/{level}/{section}','Vincent\GradeController@viewSectionGrade');    
+    Route::get('/reportcards/{level}/{section}/{side}','Vincent\GradeController@viewSectionGrade');    
     Route::get('/reportcard/{level}/{section}/{quarter}','Vincent\GradeController@viewSectionKinder');    
     Route::get('/reportcards/{level}/{shop}/{section}','Vincent\GradeController@viewSectionGrade9to10');    
     Route::get('/resetgrades','Vincent\GradeController@reset');  
