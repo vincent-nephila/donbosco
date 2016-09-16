@@ -95,6 +95,7 @@
     Route::get('/printsoasummary/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@printsoasummary');
     Route::get('penalties','Accounting\AccountingController@penalties');
     Route::post('postpenalties','Accounting\AccountingController@postpenalties');
+    Route::post('postviewpenalty','Accounting\AccountingController@postviewpenalty');
     Route::get('subsidiary','Accounting\AccountingController@subsidiary');
     Route::post('subsidiary','Accounting\AccountingController@postsubsidiary');
     //update module

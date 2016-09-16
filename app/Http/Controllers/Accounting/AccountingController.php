@@ -820,32 +820,45 @@ foreach ($collections as $collection){
         
         
         
-        function penalties(){    
-        $currentdate= Carbon::now();  
-        $postings = \App\penaltyPostings::all();
+        function penalties(){
+            $duemonths = DB::Select('select distinct plan from statuses');
+          return view('accounting.penaltydue',compact('duemonths'));  
+        }
+        
+        function postviewpenalty(Request $request){
+        $currentdate= Carbon::now(); 
+        $forthemonth = date('M Y',strtotime($currentdate));
+        $postings = \App\penaltyPostings::where('duemonth',$forthemonth)->where('plan',$request->plan)->get();
         $schoolyear = \App\CtrRefSchoolyear::first();
         $sy=$schoolyear->schoolyear;
         $levels = \App\CtrLevel::all();
+        $plan = $request->plan;
         //non monthly 2
+        if($plan=="Monthly 2"){
         $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
-                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
-                . " ledgers.duedate <= '$currentdate' and statuses.status='2' and ledgers.acctcode like 'Tuition %' and statuses.plan != 'Monthly 2'"
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.level, statuses.section, statuses.strand, users.lastname, users.firstname");    
-
-        $soamonthly2 = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
                 . " ledgers.duedate <= '$currentdate' and statuses.status='2' and statuses.plan = 'Monthly 2'"
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.level, statuses.section, statuses.strand, users.lastname, users.firstname");    
+        }else{
+        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
+                . " ledgers.duedate <= '$currentdate' and statuses.status='2' and ledgers.acctcode like 'Tuition %' and statuses.plan = '$plan'"
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.level, statuses.section, statuses.strand, users.lastname, users.firstname");    
 
+        }
         
-        return view('accounting.penalties',compact('sy','levels','currentdate','postings','soasummary','soamonthly2'));
+        return view('accounting.penalties',compact('sy','levels','currentdate','postings','soasummary','plan','forthemonth'));
         }
  
         function postpenalties(Request $request){
+            $findpost = \App\penaltyPostings::where('duemonth',$request->duemonth)->where('plan',$request->plan)->first();
+            if(count($findpost)==0){
             $idnumber = $request->idnumber;
             $schoolyear = \App\CtrRefSchoolyear::first();
+            $plan=$request->plan;
+            $duemonth=$request->duemonth;
             foreach($idnumber as $key=>$value){
                 $status=  \App\Status::where('idno',$value)->first();
                 $newpenalty = new \App\Ledger;
@@ -859,7 +872,7 @@ foreach ($collections as $collection){
                 $newpenalty->acctcode="Penalty";
                 $newpenalty->description="Penalty";
                 $newpenalty->receipt_details="Penalty(" . date('M Y') .")";
-                $newpenalty->amount=$this->addpenalties($value);
+                $newpenalty->amount=$this->addpenalties($value,$plan);
                 $newpenalty->schoolyear=$status->schoolyear;
                 $newpenalty->period=$status->period;
                 $newpenalty->duedate=Carbon::now();
@@ -869,17 +882,30 @@ foreach ($collections as $collection){
             }
             $addpost = new \App\penaltyPostings;
             $addpost->dateposted=Carbon::now();
+            $addpost->plan=$request->plan;
+            $addpost->duemonth=$request->duemonth;
             $addpost->postedby=\Auth::user()->idno;
             $addpost->save();
             return view('accounting.successfullyadded');
+            }else{
+            return "Already Posted";    
+            }
         }
  
-        function addpenalties($idnumber){
+        function addpenalties($idnumber,$plan){
+            
             $currentdate= Carbon::now();
+            if($plan !="Monthly 1"){
             $soasummary = DB::Select("select "
                 . " sum(amount) - sum(payment) - sum(debitmemo) - sum(plandiscount) - sum(otherdiscount) as amount from"
                 . " ledgers where idno = '$idnumber' and "
+                . " duedate <= '$currentdate'  and categoryswitch = '6'");
+            } else {
+                $soasummary = DB::Select("select "
+                . " sum(amount) - sum(payment) - sum(debitmemo) - sum(plandiscount) - sum(otherdiscount) as amount from"
+                . " ledgers where idno = '$idnumber' and "
                 . " duedate <= '$currentdate'  and categoryswitch <= '6'");
+            }
             foreach($soasummary as $soa){
                 $amount = $soa->amount;
             }
