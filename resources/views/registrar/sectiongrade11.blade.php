@@ -53,7 +53,7 @@
             </form>
         </nav>
         
-        <div class="body" style="width:16.5cm;padding-left: .8cm;padding-right: .8cm;border:1px solid;">
+        <div class="body" style="width:16.5cm;padding-left: .8cm;padding-right: .8cm;">
         @foreach($collection as $info)
         <div class="front">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;margin-top: 1.3cm;">
