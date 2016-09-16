@@ -7,7 +7,8 @@
             }
            table tr td{
             font-size:11pt;
-            padding-left: 10px;
+            padding-left: 5px;
+            padding-left: 5px;
            }
            
            .body{
@@ -52,32 +53,32 @@
             </form>
         </nav>
         
-        <div class="body" style="width:16.6cm;padding-left: .71cm;padding-right: .71cm">
+        <div class="body" style="width:16.5cm;padding-left: .8cm;padding-right: .8cm;border:1px solid;">
         @foreach($collection as $info)
         <div class="front">
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 1.5cm;margin-bottom: .8cm;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;margin-top: 1.3cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:31px;">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:43px;">
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
                             <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
                         </td>
                         <td style="padding-left: 0px;">
-                            <span style="font-size:11pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
+                            <span style="font-size:12pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
                         </td>
                     </tr>
-                    <tr><td style="font-size:9pt;text-align: center">Chino Roces Ave., Makati City </td></tr>
-                    <tr><td style="font-size:9pt;text-align: center">PAASCU Accredited</td></tr>
-                    <tr><td style="font-size:9pt;text-align: center">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
-                    <tr><td style="font-size:4pt;padding-left: 0px;">&nbsp; </td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">Chino Roces Ave., Makati City </td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">PAASCU Accredited</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
+                    <tr><td style="font-size:9pt;padding-left: 0px;">&nbsp; </td></tr>
                     <tr><td><span style="font-size:5px"></td></tr>
                     <tr>
-                        <td colspan="2">
-                    <div style="text-align: center;font-size:10pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:10pt;"><b>SENIOR HIGH SCHOOL</b></div>
+                        <td colspan="2" style="padding-left: 0px;">
+                    <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
+                    <div style="text-align: center;font-size:11pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
 
                         </td>
                     </tr>
@@ -163,13 +164,13 @@
                 
                 <table border = '1' cellspacing="0" cellpadding = "0" width="100%" class="reports">
                     <tr style="font-weight: bold;text-align:center;">
-                        <td width="35%" rowspan="2" style="padding: 15px 0 15px 0;">SUBJECTS</td>
-                        <td width="12%" colspan="2">QUARTER</td>
-                        <td width="12%" rowspan="2">FINAL GRADE</td>
+                        <td width="50%" rowspan="2" style="padding: 10px 0 10px 0;text-align: center">SUBJECTS</td>
+                        <td colspan="2" style="text-align: center">QUARTER</td>
+                        <td width="15%" rowspan="2" style="text-align: center">FINAL GRADE</td>
                     </tr>
                     <tr>
-                        <td style="text-align:center"><b>FIRST</b></td>
-                        <td style="text-align:center"><b>SECOND</b></td>
+                        <td width="15%" style="text-align:center"><b>FIRST</b></td>
+                        <td width="15%" style="text-align:center"><b>SECOND</b></td>
                     </tr>
                     <tr>
                         <td style="text-align:center"><b>Core Subjects</b></td>
@@ -181,31 +182,22 @@
                     {{--*/$count=0/*--}}
                     @foreach($info['core'] as $key=>$core)
                     <tr style="text-align: center;font-size: 8pt;">
-                        <td style="text-align: left">
+                        <td style="text-align: left;padding-left: 10px">
                             {{$core->subjectname}}
                         </td>
-                        <td @if(round($core->first_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
+                        <td>
                             @if(round($core->first_grading,2) != 0)
                             {{round($core->first_grading,2)}}
                             @endif
                             {{--*/$first = $first + round($core->first_grading,2)/*--}}
                         </td>
-                        <td @if(round($core->second_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
+                        <td>
                             @if(round($core->second_grading,2) != 0)
                             {{round($core->second_grading,2)}}
                             @endif
                             {{--*/$second = $second + round($core->second_grading,2)/*--}}
                         </td >
-                        <td @if(round($core->final_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
+                        <td>
                             @if(round($core->final_grading,2) != 0)
                             {{round($core->final_grade,2)}}
                             @endif
@@ -223,31 +215,22 @@
                     
                     @foreach($info['spec'] as $key=>$spec)
                     <tr style="text-align: center;font-size: 8pt;">
-                        <td style="text-align: left">
+                        <td style="text-align: left;padding-left: 10px">
                             {{$spec->subjectname}}
                         </td>
-                        <td @if(round($spec->first_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
+                        <td>
                             @if(round($spec->first_grading,2) != 0)
                             {{round($spec->first_grading,2)}}
                             @endif
                             {{--*/$first = $first + round($spec->first_grading,2)/*--}}
                         </td>
-                        <td @if(round($spec->second_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
+                        <td>
                             @if(round($spec->second_grading,2) != 0)
                             {{round($spec->second_grading,2)}}
                             @endif
                             {{--*/$second = $second + round($spec->second_grading,2)/*--}}
                         </td >
-                        <td @if(round($spec->final_grading,2) <= 74)
-                             style="color:red"
-                            @endif
-                            >
+                        <td>
                             @if(round($spec->final_grading,2) != 0)
                             {{round($spec->final_grade,2)}}
                             @endif
@@ -372,15 +355,15 @@
 
         @foreach($collection as $info)
         <div class="back">
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: .8cm;margin-bottom: .8cm;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 3cm;margin-bottom: .8cm;">
         <tr>
             <td style="padding-left: 0px;">
-                <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;">
+                <table border = '0' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;">
                     <tr>
-                        <td width="30%"><b>CONDUCT CRITERIA</b></td>
-                        <td width="10%"><b>Points</b></td>
-                        <td width="10%"><b>1</b></td>
-                        <td width="10%"><b>2</b></td>
+                        <td width="30%" style="padding-top: 15px;padding-bottom: 15px;border:1px solid"><b>CONDUCT CRITERIA</b></td>
+                        <td width="10%" style="border:1px solid"><b>Points</b></td>
+                        <td width="10%" style="border:1px solid"><b>1</b></td>
+                        <td width="10%" style="border:1px solid"><b>2</b></td>
                         <td width="20%" rowspan="{{count($info['con'])}}"></td>
                     </tr>
                         {{--*/$first=0/*--}}
@@ -390,15 +373,15 @@
                         @foreach($info['con'] as $key=>$conducts)
                         {{--*/$counter ++/*--}}                    
                     <tr>
-                        <td style="text-align: left">{{$conducts->subjectname}}</td>
-                        <td>{{$conducts->points}}</td>
-                        <td>
+                        <td style="text-align: left;padding-left: 10px;border: 1px solid">{{$conducts->subjectname}}</td>
+                        <td style="border:1px solid">{{$conducts->points}}</td>
+                        <td style="border:1px solid">
                             @if(!round($conducts->first_grading,2)==0)
                             {{round($conducts->first_grading,2)}}
                             @endif
                             {{--*/$first = $first + round($conducts->first_grading,2)/*--}}
                         </td>
-                        <td>
+                        <td style="border:1px solid">
                             @if(!round($conducts->second_grading,2)==0)
                             {{round($conducts->second_grading,2)}}
                             @endif
@@ -406,18 +389,18 @@
                         </td>
 
                         @if($length == $counter)
-                        <td><b>FINAL GRADE</b></td>
+                        <td style="border:1px solid"><b>FINAL GRADE</b></td>
                         @endif
                         
 
                     </tr>
                         @endforeach                    
                         <tr>
-                            <td style="text-align:center"><b>CONDUCT GRADE</b></td>
-                            <td><b>100</b></td>
-                            <td><b>@if(!$first == 0){{$first}}@endif</b></td>
-                            <td><b>@if(!$second == 0){{$second}}@endif</b></td>
-                            <td><b>@if($second != 0){{round(($first+$second)/2,2)}}@endif</b></td>
+                            <td style="text-align:center;border:1px solid"><b>CONDUCT GRADE</b></td>
+                            <td style="border:1px solid"><b>100</b></td>
+                            <td style="border:1px solid"><b>@if(!$first == 0){{$first}}@endif</b></td>
+                            <td style="border:1px solid"><b>@if(!$second == 0){{$second}}@endif</b></td>
+                            <td style="border:1px solid"><b>@if($second != 0){{round(($first+$second)/2,2)}}@endif</b></td>
                             
                         </tr>
                 </table>
@@ -587,31 +570,16 @@
     @endforeach
         </div>
         <script type="text/javascript">
-            
-            if($("#display").val() == "back"){
+            var sides = "{{$side}}";
+            if(sides == "back"){
                 $( ".front" ).each(function() {
                   $(this).addClass("hide");
                 });                
-            }
-            
-            
-            $("#display").change(function(){
-                if($("#display").val() == "back"){
-                    $( ".front" ).each(function() {
-                      $(this).addClass("hide");
-                    });  
-                    $( ".back" ).each(function() {
-                      $(this).removeClass("hide");
-                    });                     
-                }else{
-                    $( ".back" ).each(function() {
-                      $(this).addClass("hide");
-                    });
-                    $( ".front" ).each(function() {
-                      $(this).removeClass("hide");
-                    });                     
-                }
-            });            
+            }else{
+                $( ".back" ).each(function() {
+                  $(this).addClass("hide");
+                });                  
+            }           
 
         </script>
     </body>

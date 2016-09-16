@@ -83,7 +83,7 @@ class GradeController extends Controller
         
     }
     
-    function viewSectionGrade9to10($level,$shop,$section){
+    function viewSectionGrade9to10($level,$shop,$section,$side){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $collection = array();
         //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
@@ -122,10 +122,10 @@ class GradeController extends Controller
                     //$collection[] = array('info'=>$student);
                 }
                 if($students[1]->department == "Senior High School"){
-                    return view('registrar.sectiongrade11',compact('collection','students','level','section','teacher','schoolyear'));
+                    return view('registrar.sectiongrade11',compact('collection','students','level','section','teacher','schoolyear','side'));
                 }
                 else{
-                    return view('registrar.sectiongrade9to10',compact('collection','students','level','section','teacher','schoolyear','shop'));
+                    return view('registrar.sectiongrade9to10',compact('collection','students','level','section','teacher','schoolyear','shop','side'));
                 }
                 
                     

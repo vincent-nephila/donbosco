@@ -58,7 +58,9 @@ function displaycards(){
     strand = document.getElementById('strand').value
     }
     if(level == "Grade 9" | level == "Grade 10" | level == "Grade 11"){
-     document.location = "/reportcards/" + level + "/" + strand + "/" + section   
+     window.open("/reportcards/" + level + "/" + strand + "/" + section + "/back",'_blank'); 
+     document.location = "/reportcards/" + level + "/" + strand + "/" + section + "/front";
+     
     }else if(level == "Kindergarten"){
         document.location = "/reportcard/" + level + "/" + section +"/1"
     }else{
