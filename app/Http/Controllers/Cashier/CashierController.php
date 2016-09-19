@@ -1125,7 +1125,7 @@ function otherpayment($idno){
         
     }
     function addtoaccount($studentid){
-        $accounts = \App\CtrCrAccount::all();
+        $accounts = \App\CtrOtherPayment::orderBy('particular')->get();
         $studentdetails = \App\User::where('idno',$studentid)->first();
         $tatuses = \App\Status::where('idno',$studentid)->first();
         $ledgers = DB::Select("Select * from ledgers where idno='$studentid' AND categoryswitch = '7' and amount > payment ");
@@ -1137,6 +1137,8 @@ function otherpayment($idno){
         $idno = $request->studentid;
         $status = \App\Status::where('idno',$request->idno)->first();
         $newledger = new \App\Ledger;
+        $acctcode = \App\CtrOtherPayment::where('particular',$request->accttype)->first();
+        $myacct=$acctcode->accounttype;
         if(count($status)>0){
         $newledger->level=$status->level;
         $newledger->course=$status->course;
@@ -1148,7 +1150,7 @@ function otherpayment($idno){
         $newledger->idno = $request->idno;
         $newledger->categoryswitch = '7';
         $newledger->transactiondate = Carbon::now();       
-        $newledger->acctcode=$request->accttype;
+        $newledger->acctcode=$myacct;
         $newledger->description=$request->accttype;
         $newledger->postedby=\Auth::user()->idno;
         $newledger->receipt_details=$request->accttype;

@@ -110,4 +110,15 @@ class UpdateController extends Controller
             }
         }
         
+        function updateacctcode(){
+            $updatedbs = DB::Select("select * from crsmodification");
+            foreach($updatedbs as $updatedb){
+                $updatecrs = \App\Credit::whete('receipt_details',$updatedb->receipt_details)->get();
+                foreach($updatecrs as $updatecr){
+                    $crs = \App\Credit::find($updatecr->id);
+                    $crs->acctcode = $updatedb->acctcode;
+                    $crs->update();
+                }
+            }
+        }
 }

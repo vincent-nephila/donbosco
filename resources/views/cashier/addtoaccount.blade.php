@@ -16,11 +16,12 @@
             <input type="hidden" name='idno' value="{{$studentid}}">
             <select name="accttype" class="form form-control" onkeypress="document.getElementById('amount').focus()">
                 @foreach($accounts as $account)
-                <option = "{{$account->accountname}}">{{$account->accountname}}</option>
+                <option = "{{$account->particular}}">{{$account->particular}}</option>
                 @endforeach
             </select>    
         </div>
         <div class="form-group">
+            <label>Amount</label>
             <input type="text" class="form form-control" id="amount" name="amount" onkeypress ="validate(event)" style="text-align: right">
         </div>    
          <div class="form-group">
