@@ -50,10 +50,10 @@
                 </div>
             </form>
         </nav-->
-        <div class="body" style="width:16.5cm;padding-left: .8cm;padding-right: .8cm;">
+        <div class="body" style="width:16.5cm;padding-left: .9cm;padding-right: .9cm;">
         @foreach($collection as $info)
-        <div class="front">
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;margin-top: 2cm;">
+        <div class="front" style="padding-top: 50px;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
@@ -61,7 +61,7 @@
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
-                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
+                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:90px">
                         </td>
                         <td style="padding-left: 0px;">
                             <span style="font-size:12pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
@@ -75,8 +75,8 @@
                     <tr>
                         <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:11pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
-
+                    <div style="text-align: center;font-size:11pt;"><b>HIGH SCHOOL DEPARTMENT</b></div>
+                    <br>
                         </td>
                     </tr>
                     <tr><td style="font-size:3px"><br></td></tr>
@@ -143,6 +143,7 @@
                             </td>
                         </tr>
                     </table>
+                    <div style="height:.3cm;"></div>
                 </td>
             </tr>
             <tr>
@@ -371,8 +372,8 @@
 
 
         @foreach($collection as $info)
-        <div class="back">
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 3cm;margin-bottom: .8cm;">
+        <div class="back" style="padding-top: 100px;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
         <tr>
             <td colspan="2" style="padding-left: 0px;">
                 <table cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;">
@@ -552,8 +553,8 @@
                         <td colspan="2"><br><br><br></td>                                                    
                     </tr>
                                                                     <tr style="text-align: center">
-                        <td class="print-size"><div style="border-bottom: 1px solid;width: 70%;margin-left: auto;margin-right: auto;height:36px"><br><br></div></td>
-                        <td class="print-size" ><div style="border-bottom: 1px solid;width: 80%;margin-left: auto;margin-right: auto;height:36px"><img src="{{asset('images/elem_sig.png')}}"  style="display: inline-block;width:180px;"></div></td>
+                        <td class="print-size"><div style="border-bottom: 1px solid;width: 70%;margin-left: auto;margin-right: auto;height:25px"><br><br></div></td>
+                        <td class="print-size"><div style="border-bottom: 1px solid;width: 80%;margin-left: auto;margin-right: auto;height:25px"><img src="{{asset('images/HS_PRINCIPAL.png')}}"  style="display: inline-block;width:180px"></div></td>
                     </tr>
                     <tr style="text-align: center;">
                         <td class="print-size" >
@@ -561,7 +562,7 @@
                             {{$teacher->adviser}}
                            @endif
                         </td>
-                        <td class="print-size" >Mrs. Ma.Dolores F. Bayocboc</td>
+                        <td class="print-size" >Ms. Violeta F. Roxas</td>
                     </tr>
                     <tr style="text-align: center">
                         <td class="print-size" ><b>Class Adviser</b></td>

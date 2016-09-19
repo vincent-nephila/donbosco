@@ -37,7 +37,7 @@
 </div>
 
 <script>
- var strn = "";
+ var strn;
     
 $('#level').change(function(){
 if($('#level').val() == "Grade 9" || $('#level').val() == "Grade 10" || $('#level').val() == "Grade 11" ){
@@ -84,7 +84,6 @@ function getstrandall(strand){
     //getstudentlist(strand);
     getsection(strand);
     strn = strand;
-    alert(strn);
 }
 
 

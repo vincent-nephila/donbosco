@@ -169,7 +169,7 @@ class GradeController extends Controller
                 
     }    
     
-    function viewSectionKinder($level,$section,$quarter){
+    function viewSectionKinder($level,$section,$quarter,$side){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $collection = array();
         //$student = \App\Status::where('level',$level)->where('section',$section)->where('status',2)->get();
@@ -208,7 +208,7 @@ class GradeController extends Controller
                     $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical,'comp'=>$competence);
                 }           
                 
-                    return view('registrar.sectiongradeKinder2',compact('collection','students','level','section','teacher','quarter','schoolyear'));
+                    return view('registrar.sectiongradeKinder2',compact('collection','students','level','section','teacher','quarter','schoolyear','side'));
                 
     }
     

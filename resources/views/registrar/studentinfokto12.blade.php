@@ -770,7 +770,7 @@
                  <td colspan="3">
                      <input type="text" class="form-control" name="mOfficePhone" id="mOfficePhone" placeholder="Enter office tel. no."
                      @if($studentInfo != NULL)
-                     value="{{$studentInfo->mOfficePhone}}"
+                     value="{{$studentInfo->mofficePhone}}"
                      @endif                                             
                      >
                  </td>

@@ -451,7 +451,7 @@ class AjaxController extends Controller
         return $level;
     }
     
-        function setRankingTech(){
+    function setRankingTech(){
         $section = Input::get('section');
         $level = Input::get('level');
         $quarter = Input::get('quarter');
@@ -569,7 +569,7 @@ class AjaxController extends Controller
     function getsection($level){
         if(Request::ajax()){
             $strand = Input::get("strand");
-                $sections = DB::Select("select  distinct section from statuses where level = '$level' and strand = '$strand'");
+                $sections = DB::Select("select  distinct section from statuses where level = '$level' and section != '' and strand = '$strand'");
 
                $data = "";
                $data = $data . "<div class=\"col-md-6\"><label for=\"section\">Select Section</label><select id=\"section\" onchange=\"genSubj()\" class=\"form form-control\">";
@@ -582,11 +582,15 @@ class AjaxController extends Controller
             //return $level;
         }
     }  
+
     function getsubjects($level){
         if(Request::ajax()){
             $strand = Input::get("strand");
-
-                $subjects = DB::Select("select  distinct subjectname as subject,subjectcode from grades where level = '$level' and strand = '$strand' and section != ''  and subjecttype IN (0,1,5,6) ORDER BY subjecttype asc, sortto asc");
+            if(empty($strand)){
+                $subjects = DB::Select("select  distinct subjectname as subject,subjectcode from grades where level = '$level' and strand = '$strand' and subjecttype IN (0,1,5,6) ORDER BY subjecttype asc, sortto asc");
+            }else{
+                $subjects = DB::Select("select  distinct subjectname as subject,subjectcode from grades where level = '$level' and subjecttype IN (0,1,5,6) ORDER BY subjecttype asc, sortto asc");
+            }
 
             
                $data = "";

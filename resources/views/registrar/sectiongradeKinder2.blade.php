@@ -1,7 +1,10 @@
 <html>
     <head>
-        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="{{asset('/js/jquery.js')}}"></script>        
         <style type='text/css'>
+            .hide{
+                display:none;
+            }            
             @if($quarter != 4)
            .padded tr td{
                padding-top: 7px;
@@ -34,9 +37,11 @@
             }
         </style>
                 <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
+
                
     </head>
     <body style="margin:0px;">
+        <div class="back">
         @foreach($collection as $info)        
         <table style="margin-top: 55px;margin-bottom:30px;margin-left: .5cm;margin-right:.5cm">
             <tr>
@@ -520,9 +525,11 @@
         </table>
 
         <div class="page-break"></div>
+        </div>
         @endforeach
         
         @foreach($collection as $info)
+        <div class="front">
         <table style="margin-top: 55px;margin-bottom:30px;margin-left: .5cm;margin-right:.5cm" align="center">
                     <tr>
                         <td style="width:8.33cm" id="com3_{{$info['info']->idno}}">
@@ -631,7 +638,8 @@
                     </tr>
 
         </table>
-        <script>
+        </div>
+            <script>
             @if($quarter == 1)
             $("#fil_{{$info['info']->idno}}").appendTo("#com2_{{$info['info']->idno}}");
             $("#eng_{{$info['info']->idno}}").appendTo("#com3_{{$info['info']->idno}}");
@@ -667,5 +675,18 @@
         </script>
         <div class="page-break"></div>        
         @endforeach
+        
+        <script type="text/javascript">
+            var sides = "{{$side}}";
+            if(sides == "back"){
+                $( ".front" ).each(function() {
+                  $(this).addClass("hide");
+                });                
+            }else{
+                $( ".back" ).each(function() {
+                  $(this).addClass("hide");
+                });                  
+            }           
+        </script>        
     </body>
 </html>

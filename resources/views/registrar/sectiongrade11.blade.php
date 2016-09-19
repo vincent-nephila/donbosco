@@ -41,7 +41,7 @@
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     </head>
     <body>
-        <nav class="nav navbar-fixed-top hide-print">
+        <!--nav class="nav navbar-fixed-top hide-print">
             <form class="form-inline">
                 <div class="form-group">
                     <label for="email">Display side:</label>
@@ -51,12 +51,12 @@
                       </select>
                 </div>
             </form>
-        </nav>
+        </nav-->
         
         <div class="body" style="width:16.5cm;padding-left: .8cm;padding-right: .8cm;">
         @foreach($collection as $info)
-        <div class="front">
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;margin-top: 1.3cm;">
+        <div class="front" style="padding-top: 50px;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
@@ -64,7 +64,7 @@
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
-                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
+                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:90px">
                         </td>
                         <td style="padding-left: 0px;">
                             <span style="font-size:12pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
@@ -78,8 +78,8 @@
                     <tr>
                         <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:11pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
-
+                    <div style="text-align: center;font-size:11pt;"><b>HIGH SCHOOL DEPARTMENT</b></div>
+                    <br>
                         </td>
                     </tr>
                     <tr><td style="font-size:3px"><br></td></tr>
@@ -157,6 +157,7 @@
                         <tr><td colspan="4" style="padding-left: 0px"><b>First Semester</b></td></tr>
                         
                     </table>
+                    <div style="height:.3cm;"></div>
                 </td>
             </tr>
             <tr>
@@ -354,8 +355,8 @@
         
 
         @foreach($collection as $info)
-        <div class="back">
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 3cm;margin-bottom: .8cm;">
+        <div class="back" style="padding-top: 50px;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
         <tr>
             <td style="padding-left: 0px;">
                 <table border = '0' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;">
@@ -506,6 +507,7 @@
         </tr>
         <tr>
             <td style="padding-left: 0px;">
+                <br>
                  <table width="100%">
                     <tr>
                         <td class="print-size"  width="49%">

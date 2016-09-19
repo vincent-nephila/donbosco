@@ -90,9 +90,6 @@ public function saveInfo(Request $request){
          $this->validate($request, [
             'firstname' => 'required|max:255',
             'lastname' => 'required|max:255',
-            'birthDate'=> 'required|date',
-            'gender'=> 'required|max:255',
-            
         ]);
     
     $student = new \App\User();
@@ -116,8 +113,7 @@ public function updateInfo(Request $request,$idno){
             $this->validate($request, [
             'firstname' => 'required|max:255',
             'lastname' => 'required|max:255',
-            'birthDate'=> 'required|date',
-            'gender'=> 'required|max:255',
+
             
         ]);
     
@@ -242,7 +238,7 @@ public function saveStudentInfo(array $request,$studentid){
     $studentInfo->mincome = $request['mincome'];
     $studentInfo->mcompany = $request['mcompany'];
     $studentInfo->mComAdd = $request['mComAdd'];
-    $studentInfo->mOfficePhone = $request['mOfficePhone'];
+    $studentInfo->mofficePhone = $request['mOfficePhone'];
     $studentInfo->mfax = $request['mfax'];
     $studentInfo->memail = $request['memail'];
     

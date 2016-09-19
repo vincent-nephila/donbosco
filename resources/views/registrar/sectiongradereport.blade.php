@@ -29,8 +29,7 @@
         <style type="text/css" media="print">
            .body{
             font-family: calibri;
-            margin-left: auto;
-            margin-right: 0px;
+
             }            
             body{
                 font-family: calibri;
@@ -58,8 +57,8 @@
             
         <div class="body" style="width:16.5cm;padding-left: .8cm;padding-right: .8cm;">
         @foreach($collection as $info)
-        <div class="front">
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;margin-top: 2cm;">
+        <div class="front"  style="padding-top: 40px;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px">
@@ -67,7 +66,7 @@
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
-                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:70px">
+                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:90px">
                         </td>
                         <td style="padding-left: 0px;">
                             <span style="font-size:12pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
@@ -82,7 +81,7 @@
                         <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
                     <div style="text-align: center;font-size:11pt;"><b>GRADE SCHOOL DEPARTMENT</b></div>
-
+                    <br>
                         </td>
                     </tr>
                     <tr><td style="font-size:3px"><br></td></tr>
@@ -139,6 +138,7 @@
                             </td>
                         </tr>
                     </table>
+                    <div style="height:.3cm;"></div>
                 </td>
             </tr>
             <tr>
@@ -324,13 +324,11 @@
         <div class="page-break"></div>
         </div>
         @endforeach
-        
-        
 
         @foreach($collection as $info)
-        <div class=" back">
+        <div class=" back" style="padding-top: 100px;">
         
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-top: 3cm;margin-bottom: .8cm;">
+        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
         <tr>
             <td colspan="2" style="padding-left: 0px;">
                 <table cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 11pt;">
@@ -499,7 +497,7 @@
                             The student is eligible for transfer and
                         </td>
                         <td class="print-size" >
-                            Admitted in:_____________________
+                            Admitted in:____________________
                         </td>                                                    
                     </tr>
                     <tr>
