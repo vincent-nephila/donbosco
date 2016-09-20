@@ -56,7 +56,7 @@
     Route::get('viewencashmentdetail/{refno}', 'Cashier\CashierController@viewencashmentdetail');
     Route::get('reverseencashment/{refno}', 'Cashier\CashierController@reverseencashment');
     Route::get('printregistration/{idno}','Registrar\AssessmentController@printregistration');
-    Route::get('/printreceipt/{refno}/{idno}','Cashier\CashierController@printreceipt');
+    Route::get('printreceipt/{refno}/{idno}','Cashier\CashierController@printreceipt');
     Route::get('previous/{idno}','Cashier\CashierController@previous');
     Route::get('actualcashcheck/{batch}/{transactiondate}','Cashier\CashierController@actualcashcheck');
     Route::get('printencashment/{idno}','Cashier\CashierController@printencashment');
@@ -83,7 +83,7 @@
     Route::get('collectionreport/{datefrom}/{dateto}','Accounting\AccountingController@collectionreport');
     Route::get('printdmcmreport/{idno}/{transactiondate}','Accounting\AccountingController@printdmcmreport');
     Route::get('summarymain','Accounting\AccountingController@summarymain');
-    Route::get('maincollection/{transactiondate}','Accounting\AccountingController@maincollection');
+    Route::get('maincollection/{fromtran}/{totran}','Accounting\AccountingController@maincollection');
     Route::get('studentledger/{level}','Accounting\AccountingController@studentledger');
     Route::get('cashcollection/{transactiondate}','Accounting\AccountingController@cashcollection');
     Route::get('overallcollection/{transactiondate}','Accounting\AccountingController@overallcollection');
