@@ -131,7 +131,7 @@
                 <?php
                 $totalsummary = $totalsummary + $othersummary->amount;
                 ?>
-                <tr><td>{{$othersummary->receipt_details}}</td><td align="right">{{number_format($othersummary->amount,2)}}</td></tr>
+                <tr><td>{{$othersummary->acctcode}}</td><td align="right">{{number_format($othersummary->amount,2)}}</td></tr>
                 @endforeach
                 <tr><td>Total</td><td align="right">{{number_format($totalsummary,2)}}</td></tr>
                 @endif

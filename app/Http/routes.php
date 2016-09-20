@@ -45,8 +45,8 @@
     Route::get('/setreceipt/{id}','Cashier\CashierController@setreceipt');
     Route::post('/setreceipt','Cashier\CashierController@setOR');
     Route::get('/viewreceipt/{refno}/{idno}','Cashier\CashierController@viewreceipt');
-    Route::get('/otherpayment/{idno}','Cashier\CashierController@otherpayment');
-    Route::post('/othercollection','Cashier\CashierController@othercollection');
+    Route::get('otherpayment/{idno}','Cashier\CashierController@otherpayment');
+    Route::post('othercollection','Cashier\CashierController@othercollection');
     Route::get('collectionreport/{transactiondate}','Cashier\CashierController@collectionreport');
     Route::get('cancell/{refno}/{idno}','Cashier\CashierController@cancell');
     Route::get('restore/{refno}/{idno}','Cashier\CashierController@restore');
@@ -107,7 +107,8 @@
     //Route::get('updatehsconduct','Update\UpdateController@updatehsconduct');
     //Route::get('updatehsgrade','Update\UpdateController@updatehsgrade');
     //Route::get('checkno','Update\UpdateController@checkno');
-    Route::get('updatehsattendance','Update\UpdateController@updatehsattendance');
+    //Route::get('updatehsattendance','Update\UpdateController@updatehsattendance');
+    Route::get('updateacctcode','Update\UpdateController@updateacctcode');
     //Registrar Vincent
     Route::get('/reportcards/{level}/{section}/{side}','Vincent\GradeController@viewSectionGrade');    
     Route::get('/reportcard/{level}/{section}/{quarter}/{side}','Vincent\GradeController@viewSectionKinder');    

@@ -637,11 +637,11 @@ function cashreceipts($transactiondate){
                 . $transactiondate . "' and credits.refno=dedits.refno and credits.categoryswitch >= '9'  and credits.receipt_details != 'Reservation' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, dedits.postedby, users.lastname, "
                 . " users.firstname, credits.receipt_details, dedits.isreverse,dedits.receiptno,dedits.refno order by dedits.refno" );
     
-     $othersummaries = DB::Select("select sum(credits.amount) as amount, credits.receipt_details, "
+     $othersummaries = DB::Select("select sum(credits.amount) as amount, credits.acctcode, "
                 . " dedits.transactiondate from users, dedits, credits where users.idno = dedits.idno and"
                 . " dedits.transactiondate = '" 
-                . $transactiondate . "' and credits.refno=dedits.refno and credits.categoryswitch >= '9'  and credits.receipt_details != 'Reservation' and dedits.paymenttype = '1' and dedits.isreverse = '0' group by  dedits.transactiondate, "
-                . " credits.receipt_details order by credits.receipt_details" );
+                . $transactiondate . "' and credits.refno=dedits.refno and credits.categoryswitch >= '9'  and credits.acctcode != 'Reservation' and dedits.paymenttype = '1' and dedits.isreverse = '0' group by  dedits.transactiondate, "
+                . " credits.acctcode order by credits.acctcode" );
       
      
     $allcollections = array();
@@ -920,7 +920,7 @@ foreach ($collections as $collection){
         
         function subsidiary(){
             if(\Auth::user()->accesslevel==env('USER_ACCOUNTING')|| \Auth::user()->accesslevel==env('USER_ACCOUNTING_HEAD')){
-            $acctcodes = DB::Select("select distinct acctcode from credits order by receipt_details");
+            $acctcodes = DB::Select("select distinct receipt_details from credits order by receipt_details");
                 
             return view('accounting.subsidiary',compact('acctcodes'));
                 
