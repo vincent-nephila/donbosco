@@ -14,7 +14,7 @@ class StudentlistController extends Controller
     
 public function studentlist()
 { 
-$lists=DB::Select("SELECT DISTINCT level from statuses ORDER BY level");
+$lists=DB::Select("SELECT level from ctr_levels ORDER BY id");
         
     return view('registrar/studentlist', compact('lists'));
   

@@ -679,7 +679,8 @@
                  <td></td>
                  <td colspan="2">
                      <select class="form-control" name="fposition" id="fposition">
-                        <option value="TOP MANAGEMENT" selected>TOP MANAGEMENT</option>
+                        <option value="NONE">--NONE--</option> 
+                        <option value="TOP MANAGEMENT">TOP MANAGEMENT</option>
                         <option value="MIDDLE MANAGEMENT">MIDDLE MANAGEMENT</option>
                         <option value="SUPERVISORY">SUPERVISORY</option>
                         <option value="RANK & FILE">RANK & FILE</option>
@@ -688,7 +689,8 @@
                  <td colspan="3"></td>
                  <td colspan="2">
                      <select class="form-control" name="mposition" id="mposition">
-                        <option value="TOP MANAGEMENT" selected>TOP MANAGEMENT</option>
+                        <option value="NONE">--NONE--</option>
+                        <option value="TOP MANAGEMENT">TOP MANAGEMENT</option>
                         <option value="MIDDLE MANAGEMENT">MIDDLE MANAGEMENT</option>
                         <option value="SUPERVISORY">SUPERVISORY</option>
                         <option value="RANK & FILE">RANK & FILE</option>

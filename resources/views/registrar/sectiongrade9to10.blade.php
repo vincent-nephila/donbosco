@@ -52,7 +52,7 @@
         </nav-->
         <div class="body" style="width:16.5cm;padding-left: .9cm;padding-right: .9cm;">
         @foreach($collection as $info)
-        <div class="front" style="padding-top: 50px;">
+        <div class="front" style="padding-top: 50px;height:21.6cm;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
@@ -372,7 +372,7 @@
 
 
         @foreach($collection as $info)
-        <div class="back" style="padding-top: 100px;">
+        <div class="back" style="padding-top: 50px;height:18.5cm">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
         <tr>
             <td colspan="2" style="padding-left: 0px;">
@@ -521,6 +521,21 @@
                     @endforeach
                 </table>
                 <br>
+<tr>
+            <td style="padding-left: 0px;">
+                Dear Parent:
+                            <p style="text-indent: 20px">This report card shows the ability and progress your child has made in different learning areas as well as his/her core values.</p>
+                            <p style="text-indent: 20px">The school welcomes you should you desire to know more about your child progress.</p>
+                            <br>
+                            <div style="width:200px;text-align: center;float:right;border-top: 1px solid">
+                                                    
+                           @if($teacher != null)
+                           <span>{{$teacher->adviser}}</span>
+                           @endif
+                                                    <br><span>Class Adviser</span></div>
+                            <br>
+            </td>
+        </tr>                
                 <table width="100%" class="cert" >
                     <tr>
                         <td class="print-size"  width="50%">

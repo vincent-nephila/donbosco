@@ -61,7 +61,7 @@ class GradeController extends Controller
                     }
                     $no_student =$no_student +1;
                     echo "NO Of Student: ".$no_student;
-        }*/
+        }
         $students = \App\Status::where('idno','160105')->where('department','Kindergarten')->get();
         foreach($students as $student){
             $subjects = \App\CtrCompetence::where('quarter',1)->get();
@@ -79,8 +79,20 @@ class GradeController extends Controller
                     }
                     
         }        
-        
-        
+        */
+        $students = \App\Grade::distinct()->select('idno')->get();
+        foreach($students as $student){
+            $subjects = \App\CtrSubjects::where('subjecttype',2)->where('level','Grade 11')->where('strand','ABM')->get();
+                    foreach($subjects as $subject){
+                            $newgrade = new \App\Attendance;
+                            $newgrade->idno = $student->idno;
+                            $newgrade->attendancetype = $subject->subjectcode;
+                            $newgrade->sortto = $subject->sortto;
+                            $newgrade->schoolyear = 2016;
+                            $newgrade->save();
+                    }
+                    
+        }        
     }
     
     function viewSectionGrade9to10($level,$shop,$section,$side){
@@ -100,8 +112,13 @@ class GradeController extends Controller
                     $match2 = ["idno"=>$student->idno,"subjecttype"=>3,"schoolyear"=>$schoolyear->schoolyear];
                     $conduct = \App\Grade::where($match2)->orderBy("sortto","ASC")->get();
 
+                    if($student->department == "Senior High School"){
+                    $match3 = ["idno"=>$student->idno,"schoolyear"=>$schoolyear->schoolyear];
+                    $attendance = \App\Attendance::where($match3)->orderBy("sortto","ASC")->get();
+                    }else{
                     $match3 = ["idno"=>$student->idno,"subjecttype"=>2,"schoolyear"=>$schoolyear->schoolyear];
                     $attendance = \App\Grade::where($match3)->orderBy("sortto","ASC")->get();
+                    }
                     
                     $match4 = ["idno"=>$student->idno,"subjecttype"=>1,"schoolyear"=>$schoolyear->schoolyear];
                     $technical = \App\Grade::where($match4)->orderBy("sortto","ASC")->get();
@@ -111,8 +128,6 @@ class GradeController extends Controller
                     
                     $match6 = ["idno"=>$student->idno,"subjecttype"=>6,"schoolyear"=>$schoolyear->schoolyear];
                     $special = \App\Grade::where($match6)->orderBy("sortto","ASC")->get();
-                    
-                    
                     
                     $age_year = date_diff(date_create($student->birthDate), date_create('today'))->y;
                     $age_month = date_diff(date_create($student->birthDate), date_create('today'))->m;

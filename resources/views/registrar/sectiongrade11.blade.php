@@ -55,7 +55,7 @@
         
         <div class="body" style="width:16.5cm;padding-left: .8cm;padding-right: .8cm;">
         @foreach($collection as $info)
-        <div class="front" style="padding-top: 50px;">
+        <div class="front" style="padding-top: 50px;height:21.6cm;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
@@ -79,6 +79,7 @@
                         <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
                     <div style="text-align: center;font-size:11pt;"><b>HIGH SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:11pt;"><b>FIRST SEMESTER</b></div>
                     <br>
                         </td>
                     </tr>
@@ -154,7 +155,7 @@
                                 @endif
                             </td>
                         </tr>
-                        <tr><td colspan="4" style="padding-left: 0px"><b>First Semester</b></td></tr>
+                        
                         
                     </table>
                     <div style="height:.3cm;"></div>
@@ -355,7 +356,7 @@
         
 
         @foreach($collection as $info)
-        <div class="back" style="padding-top: 50px;">
+        <div class="back" style="padding-top: 30px;height:18.5cm">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
         <tr>
             <td style="padding-left: 0px;">
@@ -406,7 +407,7 @@
                         </tr>
                 </table>
                 <br>
-                <table border="1" cellspacing="0" cellpading="0" style="font-size:12px;text-align: center" width="100%">
+                <!--table border="1" cellspacing="0" cellpading="0" style="font-size:12px;text-align: center" width="100%">
                     <tr>
                         <td width="40%"><b>ATTENDANCE</b></td>
                         <td width="10%"><b>1</b></td>
@@ -485,6 +486,37 @@
                         </td>                                                    
                     </tr>
                     @endforeach
+                </table-->
+                
+                <table border='1' cellpadding='0' cellspacing='0' width="100%" style="text-align: center;font-size:11px;">
+                    <tr style="font-size:12px;">
+                        <td style="padding-bottom:5px;padding-top:5px">
+                            <b>ATTENDANCE</b>
+                        </td>
+                        <td>Jun</td><td>Jul</td><td>Aug</td><td>Sept</td><td>Oct</td><td>Nov</td><td>Dec</td><td>Jan</td><td>Feb</td><td>Mar</td><td>TOTAL</td>
+                    </tr>
+                    <tr style="font-size:11px;">
+                        <td>Days of School</td>
+                        <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    </tr>                    
+                    @foreach($info['att'] as $key=>$attend)
+                    <tr>
+                        <td>
+                            {{$attend->attendanceName}}
+                        </td>
+                        <td>@if($attend->Jun != 0){{$attend->Jun}}@endif</td>
+                        <td>@if($attend->Jul != 0){{$attend->Jul}}@endif</td>
+                        <td>@if($attend->Aug != 0){{$attend->Aug}}@endif</td>
+                        <td>@if($attend->Sept != 0){{$attend->Sept}}@endif</td>
+                        <td>@if($attend->Oct != 0){{$attend->Oct}}@endif</td>
+                        <td>@if($attend->Nov != 0){{$attend->Nov}}@endif</td>
+                        <td>@if($attend->Dece != 0){{$attend->Dece}}@endif</td>
+                        <td>@if($attend->Jan != 0){{$attend->Jan}}@endif</td>
+                        <td>@if($attend->Feb != 0){{$attend->Feb}}@endif</td>
+                        <td>@if($attend->Mar != 0){{$attend->Mar}}@endif</td>
+                        <td>{{$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct+$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar}}</td>
+                    </tr>
+                    @endforeach
                 </table>
                 <br>
                
@@ -495,7 +527,7 @@
                 Dear Parent:
                             <p style="text-indent: 20px">This report card shows the ability and progress your child has made in different learning areas as well as his/her core values.</p>
                             <p style="text-indent: 20px">The school welcomes you should you desire to know more about your child progress.</p>
-                            
+                            <br>
                             <div style="width:200px;text-align: center;float:right;border-top: 1px solid">
                                                     
                            @if($teacher != null)

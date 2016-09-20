@@ -339,9 +339,11 @@
                                 <td>Fair</td><td>Fair</td><td>80 - 85</td>
                             </tr>
                             <tr>
-                                <td @if($quarter != 4)
+                                <td 
+                                    @if ($quarter != 4)
                                     style="padding-top: 15px;padding-bottom: 15px"
-                                    @endif>Failed</td><td>Failed</td><td>75 and Below</td>
+                                    @endif
+                                    >Failed</td><td>Failed</td><td>75 and Below</td>
                             </tr>
                         </table>
                     <br>
@@ -677,6 +679,7 @@
         @endforeach
         
         <script type="text/javascript">
+            alert("this sucks");
             var sides = "{{$side}}";
             if(sides == "back"){
                 $( ".front" ).each(function() {

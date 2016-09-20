@@ -30,8 +30,15 @@
            .quarter{
                border-radius:0px;
            }
+           
+           .headers{
+               display:none;
+           }
         </style>
         <style type="text/css" media="print">
+           .headers{
+               display: initial;
+           }            
             .no-print, #menu{
                 display: none;
             }
