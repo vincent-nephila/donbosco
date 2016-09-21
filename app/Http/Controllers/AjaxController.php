@@ -478,17 +478,20 @@ class AjaxController extends Controller
             $sections = DB::Select("Select distinct section as section from statuses where level = '$level' and section = '$section'");
         }
         $data = "";
+        $data = $data."<h3 class='no-print'>".$level."</h3>";
         foreach($sections as $section){
             $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
                      . "statuses.level, statuses.strand, student_infos.fname, student_infos.fmobile, student_infos.mname, student_infos.mmobile from users, statuses, student_infos  where users.idno = statuses.idno "
                      . "and statuses.level = '$level' and statuses.section = '$section->section'  and statuses.status='2' and statuses.idno = student_infos.idno order by users.lastname, users.firstname");            
-            $data = $data."<table><thead><td>";
-            $data = $data."<table class='headers'  border='0' cellpadding='0' cellspacing='0' style='text-align:center;'>";
+            $data = $data."<h3 class='no-print'>".$section->section."</h3>";
+            $data = $data."<table style='width:100%'><thead class='headers'><td style='text-align:center;'>";
+            $data = $data."<div style='text-align: right;padding-left: 0px;vertical-align: top;position: relative;width: 0px;right: 80px;display:inline-block' width='55px'>";
+            $data = $data."<img src='".asset('images/logo.png')."'  style='display: inline-block;width:90px'>";
+            $data = $data."</div>";            
+            $data = $data."<table border='0' cellpadding='0' cellspacing='0' style='text-align:center;margin-left: auto;margin-right: auto;display:inline-block'>";
 
             $data = $data."<tr>";
-            $data = $data."<td rowspan='7' style='text-align: right;padding-left: 0px;width: 35%;vertical-align: top' class='logo' width='55px'>";
-            $data = $data."<img src='".asset('images/logo.png')."'  style='display: inline-block;width:90px'>";
-            $data = $data."</td>";
+
             $data = $data."<td style='padding-left: 0px;'>";
             $data = $data."<span style='font-size:12pt; font-weight: bold'>DON BOSCO TECHNICAL INSTITUTE</span>";
             $data = $data."</td>";
@@ -498,16 +501,24 @@ class AjaxController extends Controller
             $data = $data."<tr><td style='font-size:9pt;text-align: center;padding-left: 0px;'>School Year ".$schoolyear->schoolyear." - ".(intval($schoolyear->schoolyear)+1)."</td></tr>";
             $data = $data."<tr><td style='font-size:9pt;padding-left: 0px;'>&nbsp; </td></tr>";
             $data = $data."<tr><td><span style='font-size:5px'></td></tr>";
-            $data = $data."<tr>";
+            
             $data = $data."</table>";
+            $data = $data."<div>STUDENT CONTACT</div>";
             $data = $data."</td></thead><tr><td>";
-            $data = $data."<h4>".$section->section."</h4><table class=\"table table-stripped\"><thead><td>Id No</td><td>Name</td><td>Father</td><td>Contact No</td><td>Mother</td><td>Contact No.</td></thead>";
+            $data = $data."<table width='100%' class='headers'><tr><td>";
+            $data = $data."<div>Level: ".$level."</div>";
+            $data = $data."<div>Section: ".$section->section."</div>";
+            $data = $data."</td></tr></table>";
+            $data = $data."</td></tr><tr><td>";
+            
+            $data = $data."<table class=\"table table-stripped\"><thead><td>Id No</td><td>Name</td><td>Father</td><td>Contact No</td><td>Mother</td><td>Contact No.</td></thead>";
             foreach($lists as $list){
             $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td><td>".$list->fname."</td>"
                     . "<td>".$list->fmobile."</td><td>".$list->mname."</td><td>".$list->mmobile."</td></tr>";
             }
             $data = $data . "</table>";             
             $data = $data."<td><tr></table>";
+            $data = $data."<div style='page-break-after: auto'>";
             //$data = $data."<div>".$section->section."</div>";
         }
            return $data; 

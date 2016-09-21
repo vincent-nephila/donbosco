@@ -52,7 +52,7 @@
         </nav-->
         <div class="body" style="width:16.5cm;padding-left: .9cm;padding-right: .9cm;">
         @foreach($collection as $info)
-        <div class="front" style="padding-top: 50px;height:21.6cm;">
+        <div class="front" style="padding-top: 50px;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
@@ -362,17 +362,9 @@
         <div class="page-break"></div>
         </div>
         @endforeach
-        
-        
-
-
-
-
-
-
 
         @foreach($collection as $info)
-        <div class="back" style="padding-top: 50px;height:18.5cm">
+        <div class="back" style="padding-top: 50px;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
         <tr>
             <td colspan="2" style="padding-left: 0px;">

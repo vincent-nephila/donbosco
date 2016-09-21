@@ -32,12 +32,12 @@
            }
            
            .headers{
-               display:none;
+               visibility:collapse;
            }
         </style>
         <style type="text/css" media="print">
            .headers{
-               display: initial;
+               visibility: visible;
            }            
             .no-print, #menu{
                 display: none;

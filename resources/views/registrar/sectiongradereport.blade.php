@@ -57,7 +57,7 @@
             
         <div class="body" style="width:16.5cm;padding-left: .8cm;padding-right: .8cm;">
         @foreach($collection as $info)
-        <div class="front"  style="padding-top: 40px;height:18.5cm">
+        <div class="front"  style="padding-top: 40px;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
@@ -326,7 +326,7 @@
         @endforeach
 
         @foreach($collection as $info)
-        <div class="back" style="padding-top: 50px;height:18.5cm" >
+        <div class="back" style="padding-top: 50px;" >
         
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
         <tr>
