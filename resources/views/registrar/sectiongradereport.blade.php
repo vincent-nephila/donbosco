@@ -399,6 +399,7 @@
                         </tr>
                 </table>
                 <br>
+                <!--
                 <table width="100%" border="1" cellspacing="0" cellpading="0" style="font-size:12px;text-align: center">
                     <tr>
                         <td width="43%"><b>ATTENDANCE</b></td>
@@ -478,13 +479,50 @@
                         </td>                                                    
                     </tr>
                     @endforeach
-                </table>
+                </table>-->
+                <table border='1' cellpadding='0' cellspacing='0' width="100%" style="text-align: center;font-size:11px;">
+                    <tr style="font-size:12px;">
+                        <td style="padding-bottom:5px;padding-top:5px">
+                            <b>ATTENDANCE</b>
+                        </td>
+
+                        <td>Jun</td><td>Jul</td><td>Aug</td><td>Sept</td><td>Oct</td><td>Nov</td><td>Dec</td><td>Jan</td><td>Feb</td><td>Mar</td>
+                        
+                        <td>TOTAL</td>
+                    </tr>
+                    <tr style="font-size:11px;">
+                        <td style="text-align: left">Days of School</td>
+                        <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    </tr>      
+                    <?php $curr_month = \App\Attendance::Select(DB::raw('max(Jun) as jun,max(Jul) as jul,max(Aug) as aug,max(Sept) as sept,max(Oct) as oct,max(Nov) as nov,max(Dece) as dece,max(Jan) as jan,max(Feb) as feb,max(Mar) as mar'))->first(); ?>
+                    @foreach($info['att'] as $key=>$attend)
+                    <tr>
+                        <td style="text-align: left">
+                            {{$attend->attendanceName}}
+                        </td>                    
+                        <td>@if($curr_month->jun != 0){{$attend->Jun}}@endif</td>
+                        <td>@if($curr_month->jul != 0){{$attend->Jul}}@endif</td>
+                        <td>@if($curr_month->aug != 0){{$attend->Aug}}@endif</td>
+                        <td>@if($curr_month->sept != 0){{$attend->Sept}}@endif</td>
+                        <td>@if($curr_month->oct != 0){{$attend->Oct}}@endif</td>
+                        <td>@if($curr_month->nov != 0){{$attend->Nov}}@endif</td>
+                        <td>@if($curr_month->dece != 0){{$attend->Dece}}@endif</td>
+                        <td>@if($curr_month->jan != 0){{$attend->Jan}}@endif</td>
+                        <td>@if($curr_month->feb != 0){{$attend->Feb}}@endif</td>
+                        <td>@if($curr_month->mar != 0){{$attend->Mar}}@endif</td>                        
+                        <td>{{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar+$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}</td>
+                        
+                        
+                        
+                    </tr>
+                    @endforeach
+                </table>                
                 <br>
 <tr>
             <td style="padding-left: 0px;">
                 Dear Parent:
                             <p style="text-indent: 20px">This report card shows the ability and progress your child has made in different learning areas as well as his/her core values.</p>
-                            <p style="text-indent: 20px">The school welcomes you should you desire to know more about your child progress.</p>
+                            <p style="text-indent: 20px">The school welcomes you should you desire to know more about your child's progress.</p>
                             <br>
                             <div style="width:200px;text-align: center;float:right;border-top: 1px solid">
                                                     
@@ -528,25 +566,23 @@
                         <td colspan="2"><br><br><br></td>                                                    
                     </tr>
                                                                     <tr style="text-align: center">
-                        <td class="print-size"><div style="border-bottom: 1px solid;width: 70%;margin-left: auto;margin-right: auto;height:36px"><br><br></div></td>
+                        <td class="print-size"></td>
                         <td class="print-size" ><div style="border-bottom: 1px solid;width: 80%;margin-left: auto;margin-right: auto;height:36px"><img src="{{asset('images/elem_sig.png')}}"  style="display: inline-block;width:180px;"></div></td>
                     </tr>
                     <tr style="text-align: center;">
                         <td class="print-size" >
-                           @if($teacher != null)
-                            {{$teacher->adviser}}
-                           @endif
+
                         </td>
                         <td class="print-size" >Mrs. Ma.Dolores F. Bayocboc</td>
                     </tr>
                     <tr style="text-align: center">
-                        <td class="print-size" ><b>Class Adviser</b></td>
+                        <td class="print-size" ></td>
                         <td class="print-size" ><b>Grade School - Principal</b></td>
                     </tr>
                 </table>
             </td>
         </tr>
-        <tr><td style="text-align: right;padding-left: 0px"><b>{{$info['info']->idno}}</b></td></tr>
+        
     </table>
     <br>
 
@@ -562,6 +598,10 @@
             </td>
 </tr>            
         </table>
+        <br>
+        <br>
+        <br>
+        <div style="text-align: right;padding-left: 0px"><b>{{$info['info']->idno}}</b></div>
     <div class="page-break"></div>
     <div>
     @endforeach

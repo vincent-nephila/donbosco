@@ -94,7 +94,7 @@ function getsection(strand){
        $.ajax({
             type: "GET",
             data: array,
-            url: "/getsection/" + $('#level').val() , 
+            url: "/getsectioncon/" + $('#level').val() , 
             success:function(data){
                 $("#sectioncontrol").html(data);
             }

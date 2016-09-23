@@ -21,7 +21,27 @@
       </div>    
       <div id="studentlist">
       </div>    
-           
+        <div id="quarters" class="form form-group" style="display:none">
+            <label for ="quarter">Select Quarter</label>
+            <select name="quarter" id="quarter" class="form form-control" onchange="kbutton()">
+                <option>--Select--</option>
+                <option value="1">1st Quarter</option>
+                <option value="2">2nd Quarter</option>
+                <option value="3">3rd Quarter</option>
+                <option value="4">4th Quarter</option>
+            </select>
+         </div>
+        
+        <div id="semester" class="form form-group" style="visibility:hidden">
+            <label for ="sem">Select Semester</label>
+            <select name="sem" id="sem" class="form form-control" onchange="kbutton()">
+                <option>--Select--</option>
+                <option value="1">1st Semester</option>
+                <option value="2">2nd Semester</option>
+
+            </select>
+         </div>         
+
     </div> 
     <div class="col-md-6">
         <div class="form form-group">
@@ -31,14 +51,18 @@
                 
             </div>
             <div class="col-md-3">
-                <a href="#" onclick = "displaycards()" id="btncard" class="btn btn-warning" style="visibility:hidden">Display Cards</a>
+                <a href="#" onclick = "displaycards()" id="btncard" class="btn btn-warning" style="display:none">Display Cards</a>
             </div>    
         </div>    
     </div>    
 </div>
 
 <script>
+    
 $('#level').change(function(){
+        document.getElementById('quarters').style.display='none'
+        document.getElementById('semester').style.visibility='hidden'
+    
 if($('#level').val() == "Grade 9" || $('#level').val() == "Grade 10" || $('#level').val() == "Grade 11" ){
      $("#studentlist").html("");
      $("#sectioncontrol").html("");
@@ -53,16 +77,22 @@ if($('#level').val() == "Grade 9" || $('#level').val() == "Grade 10" || $('#leve
 function displaycards(){
     var level = document.getElementById('level').value
     var section = document.getElementById('section').value
+    var quarter = document.getElementById('quarter').value    
+    var sem = document.getElementById('sem').value    
     var strand
     if(document.getElementById('strand')){
     strand = document.getElementById('strand').value
     }
-    if(level == "Grade 9" | level == "Grade 10" | level == "Grade 11"){
-     window.open("/reportcards/" + level + "/" + strand + "/" + section + "/back",'_blank'); 
-     document.location = "/reportcards/" + level + "/" + strand + "/" + section + "/front";
+    if(level == "Grade 9" | level == "Grade 10"){
+     window.open("/reportcards/" + level + "/" + strand + "/" + section +"/back",'_blank'); 
+     document.location = "/reportcards/" + level + "/" + strand + "/" + section +"/front";
      
+    }else if(level == "Grade 11" | level == "Grade 12"){
+        window.open("/reportcards/" + level + "/" + strand + "/" + section +"/"+sem+"/back",'_blank'); 
+        document.location = "/reportcards/" + level + "/" + strand + "/" + section +"/"+sem+"/front";        
     }else if(level == "Kindergarten"){
-        document.location = "/reportcard/" + level + "/" + section +"/1"
+        window.open("/reportcard/" + level + "/"+ section +"/"+quarter+"/back",'_blank');
+        document.location = "/reportcard/" + level + "/" + section +"/"+quarter+"/front"
     }else{
         window.open("/reportcards/" + level + "/" + section + "/back",'_blank');
             document.location = "/reportcards/" + level + "/" + section +"/front"
@@ -71,6 +101,9 @@ function displaycards(){
 }
 function getstrandall(strand){
     //getstudentlist(strand);
+
+        
+
     getsection(strand);
 }
 
@@ -83,7 +116,9 @@ function getstrand(){
             }
 });
 }
-
+function kbutton(){
+    document.getElementById('btncard').style.display='block'
+}
 function callsection(){
     getsectionlist()
 }
@@ -109,7 +144,7 @@ function getsection(strand){
        $.ajax({
             type: "GET",
             data: array,
-            url: "/getsection/" + $('#level').val() , 
+            url: "/getsectioncon/" + $('#level').val() , 
             success:function(data){
                 $("#sectioncontrol").html(data);
                 getsectionlist();
@@ -134,7 +169,18 @@ function getsectionlist(){
                 $("#sectionlist").html(data);
             }
 });*/
-        document.getElementById('btncard').style.visibility='visible'
+        var level = document.getElementById('level').value
+
+        if(level == "Grade 11" || level == "Grade 12"){
+            document.getElementById('semester').style.visibility='visible'
+        }    
+        
+        if(level == "Kindergarten"){
+            document.getElementById('quarters').style.display='block'
+        }
+        else{
+        document.getElementById('btncard').style.display='block'
+    }
 }
 /*
 function setsection(id){

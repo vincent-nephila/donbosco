@@ -675,5 +675,37 @@ class AjaxController extends Controller
         
         return $data;
     }
+    
+    function viewallrank($level){
+        if(Request::ajax()){
+            $quarter = 1;
+            $data = "";
+            $sortby = "";
+          //  if($level == "Grade 11" | "Grade 12"){
+                
+          //  }else{
+                $student = DB::Select("select lastname,firstname,middlename,extensionname,section from users join statuses on users.idno = statuses.idno join rankings on rankings.idno =users.idno  where level = '$level'");
+                $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->get();
+          /*  }
+
+            
+            $data = $data."<table><>thead><td>".strrchr($student->section," ")."</td>"
+                    . "<td>".$student->lastname.", ".$student->firstname." ".$student->middlename." ".$student->extensionname."</td>"
+                    . "<thead></table>";
+            */
+            $data = $data."<table border='1' cellspacing='0' cellpadding='0'><thead><td>Section</td>"
+                    . "<td>Name</td>";
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 0){
+                $data = $data."<td>".$subject->subjectname."</td>";
+                }
+            }
+            if(isset($subject->subjecttype))
+            $data = $data."<td>General Average</td><td>Final Ranking</td><thead></table>";
+            
+            
+            return $data;
+        }
+    }
         
 }

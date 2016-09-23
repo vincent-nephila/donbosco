@@ -526,6 +526,7 @@ class AjaxController extends Controller
         }
         
     }
+    
      function myDeposit(){
         if(Request::ajax()){  
             $idno = Input::get('idno');

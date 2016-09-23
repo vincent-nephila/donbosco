@@ -78,6 +78,7 @@ function getstudentlist(strand){
 }
 
 function getsection(strand){
+    
     var array = {};
     array['strand'] = strand;
        $.ajax({
@@ -94,6 +95,7 @@ function getsection(strand){
 
 
 function getsectionlist(){
+    
         strand= "";
         if($("#strand").length){
             strand = $("#strand").val();
@@ -111,6 +113,7 @@ function getsectionlist(){
 }
 
 function setsection(id){
+    alert("here");
     strand="";
     if($("#strand").length>0){
         strand=$("#strand").val();

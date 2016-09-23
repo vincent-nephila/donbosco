@@ -41,8 +41,9 @@
                
     </head>
     <body style="margin:0px;">
+        
+        @foreach($collection as $info)       
         <div class="back">
-        @foreach($collection as $info)        
         <table style="margin-top: 55px;margin-bottom:30px;margin-left: .5cm;margin-right:.5cm">
             <tr>
                 <td style="width:8.33cm" id="init_{{$info['info']->idno}}">
@@ -365,47 +366,46 @@
                     <br>
                     </div>
                     <div id="art_{{$info['info']->idno}}" style="display:none">
-                    <table border="1" cellspacing="0" cellpadding="0" width="100%" >
-                        <tr style="text-align: center"><td colspan="2"><b>ART EDUCATION</b></td></tr>
-                        @foreach($info['comp'] as $key=>$comp)
-                        @if($comp->subject == "Art Education")
-                        <tr>
-                            <td width="80%" style="padding-left: 15px;">{{$comp->description}}</td>
-                            <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
-                        </tr>
-                        @endif
-                        @endforeach
-                    </table>
-                        
-                    <br>
-                    </div>
-                    <div  id="chr_{{$info['info']->idno}}">
-                    <table border="1" width="100%" cellpadding="0" cellspacing="0">
-                        <tr style="text-align: center"><td colspan="2"><b>CHRISTIAN LIVING</b></td></tr>
-                        @foreach($info['comp'] as $key=>$comp)
-                        @if($comp->subject == "Christian Living")
-                        <tr>
-                            <td width="80%" style="padding-left: 15px;">{{$comp->description}}</td>
-                            <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
-                        </tr>
-                        @endif
-                        @endforeach
-                    </table>  
-                    <br>
-                    </div>                    
-                    <div id="phy_{{$info['info']->idno}}" style="display:none">
-                    <table border="1" cellspacing="0" cellpadding="0" width="100%" >
-                        <tr style="text-align: center"><td colspan="2"><b>PHYSICAL EDUCATION</b></td></tr>
+                        <table border="1" cellspacing="0" cellpadding="0" width="100%" >
+                            <tr style="text-align: center"><td colspan="2"><b>ART EDUCATION</b></td></tr>
                             @foreach($info['comp'] as $key=>$comp)
-                            @if($comp->subject == "Physical Education")
+                            @if($comp->subject == "Art Education")
                             <tr>
-                                <td width="80%">{{$comp->description}}</td>
+                                <td width="80%" style="padding-left: 15px;">{{$comp->description}}</td>
                                 <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
                             </tr>
                             @endif
                             @endforeach
-                    </table>
-                    <br>
+                        </table>
+                        <br>
+                    </div>
+                    <div  id="chr_{{$info['info']->idno}}">
+                        <table border="1" width="100%" cellpadding="0" cellspacing="0">
+                            <tr style="text-align: center"><td colspan="2"><b>CHRISTIAN LIVING</b></td></tr>
+                            @foreach($info['comp'] as $key=>$comp)
+                            @if($comp->subject == "Christian Living")
+                            <tr>
+                                <td width="80%" style="padding-left: 15px;">{{$comp->description}}</td>
+                                <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
+                            </tr>
+                            @endif
+                            @endforeach
+                        </table>  
+                        <br>
+                    </div>                    
+                    <div id="phy_{{$info['info']->idno}}" style="display:none">
+                        <table border="1" cellspacing="0" cellpadding="0" width="100%" >
+                            <tr style="text-align: center"><td colspan="2"><b>PHYSICAL EDUCATION</b></td></tr>
+                                @foreach($info['comp'] as $key=>$comp)
+                                @if($comp->subject == "Physical Education")
+                                <tr>
+                                    <td width="80%">{{$comp->description}}</td>
+                                    <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
+                                </tr>
+                                @endif
+                                @endforeach
+                        </table>
+                        <br>
                     </div>
                     <div id="fil_{{$info['info']->idno}}">
                     <table border="1" width="100%" cellpadding="0" cellspacing="0">
@@ -631,10 +631,10 @@
                             <div class="parent" style="border: 1px solid; padding: 20px 10px 50px;border-radius: 40px;">
                                 <div style="text-align:center;font-size: 12pt;"><b>KINDERGARTEN</b></div>
                                 <br>
-                            <div><div style="display:inline-block;width:50px;"><b>Name:</b></div>{{strtoupper($info['info']->lastname)}}, {{ucwords($info['info']->firstname)}} {{ucwords($info['info']->middlename)}} {{ucwords($info['info']->extensionname)}}</div>
-                            <div><div style="display:inline-block;width:50px;"><b>Age:</b></div>{{strtoupper($info['info']->age)}}</div>
-                            <div><div style="display:inline-block;width:50px;"><b>Section:</b></div>{{strtoupper($section)}}</div>
-                            <div><div style="display:inline-block;width:50px;"><b>Adviser:</b></div>{{strtoupper($teacher->adviser)}}</div>
+                            <div><div style="display:inline-block;width:55px;vertical-align: top"><b>Name: </b></div><div style="display:inline-block;width:230px">{{strtoupper($info['info']->lastname)}}, {{ucwords($info['info']->firstname)}} {{ucwords($info['info']->middlename)}} {{ucwords($info['info']->extensionname)}}</div></div>
+                            <div><div style="display:inline-block;width:55px;"><b>Age: </b></div>{{strtoupper($info['info']->age)}}</div>
+                            <div><div style="display:inline-block;width:55px;"><b>Section: </b></div>{{strtoupper($section)}}</div>
+                            <div><div style="display:inline-block;width:55px;"><b>Adviser: </b></div>{{strtoupper($teacher->adviser)}}</div>
                             </div>
                         </td>
                     </tr>
@@ -679,7 +679,7 @@
         @endforeach
         
         <script type="text/javascript">
-            alert("this sucks");
+            
             var sides = "{{$side}}";
             if(sides == "back"){
                 $( ".front" ).each(function() {

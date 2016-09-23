@@ -79,7 +79,13 @@
                         <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
                     <div style="text-align: center;font-size:11pt;"><b>HIGH SCHOOL DEPARTMENT</b></div>
-                    <div style="text-align: center;font-size:11pt;"><b>FIRST SEMESTER</b></div>
+                    <div style="text-align: center;font-size:11pt;"><b>
+                            @if($sem ==1)
+                            FIRST SEMESTER
+                            @else
+                            SECOND SEMESTER
+                            @endif
+                        </b></div>
                     <br>
                         </td>
                     </tr>
@@ -493,28 +499,40 @@
                         <td style="padding-bottom:5px;padding-top:5px">
                             <b>ATTENDANCE</b>
                         </td>
-                        <td>Jun</td><td>Jul</td><td>Aug</td><td>Sept</td><td>Oct</td><td>Nov</td><td>Dec</td><td>Jan</td><td>Feb</td><td>Mar</td><td>TOTAL</td>
+                        @if($sem == 2)
+                        <td>Nov</td><td>Dec</td><td>Jan</td><td>Feb</td><td>Mar</td>
+                        @else
+                        <td>Jun</td><td>Jul</td><td>Aug</td><td>Sept</td><td>Oct</td>
+                        @endif
+                        <td>TOTAL</td>
                     </tr>
                     <tr style="font-size:11px;">
-                        <td>Days of School</td>
-                        <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-                    </tr>                    
+                        <td style="text-align: left">Days of School</td>
+                        <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    </tr>     
+                    <?php $curr_month = \App\Attendance::Select(DB::raw('max(Jun) as jun,max(Jul) as jul,max(Aug) as aug,max(Sept) as sept,max(Oct) as oct,max(Nov) as nov,max(Dece) as dece,max(Jan) as jan,max(Feb) as feb,max(Mar) as mar'))->first(); ?>
                     @foreach($info['att'] as $key=>$attend)
                     <tr>
-                        <td>
+                        <td style="text-align: left">
                             {{$attend->attendanceName}}
                         </td>
-                        <td>@if($attend->Jun != 0){{$attend->Jun}}@endif</td>
-                        <td>@if($attend->Jul != 0){{$attend->Jul}}@endif</td>
-                        <td>@if($attend->Aug != 0){{$attend->Aug}}@endif</td>
-                        <td>@if($attend->Sept != 0){{$attend->Sept}}@endif</td>
-                        <td>@if($attend->Oct != 0){{$attend->Oct}}@endif</td>
-                        <td>@if($attend->Nov != 0){{$attend->Nov}}@endif</td>
-                        <td>@if($attend->Dece != 0){{$attend->Dece}}@endif</td>
-                        <td>@if($attend->Jan != 0){{$attend->Jan}}@endif</td>
-                        <td>@if($attend->Feb != 0){{$attend->Feb}}@endif</td>
-                        <td>@if($attend->Mar != 0){{$attend->Mar}}@endif</td>
-                        <td>{{$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct+$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar}}</td>
+                        @if($sem == 2)
+                        <td>@if($curr_month->nov != 0){{$attend->Nov}}@endif</td>
+                        <td>@if($curr_month->dece != 0){{$attend->Dece}}@endif</td>
+                        <td>@if($curr_month->jan != 0){{$attend->Jan}}@endif</td>
+                        <td>@if($curr_month->feb != 0){{$attend->Feb}}@endif</td>
+                        <td>@if($curr_month->mar != 0){{$attend->Mar}}@endif</td>                        
+                        <td>{{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar}}</td>
+                        @else
+                        <td>@if($curr_month->jun != 0){{$attend->Jun}}@endif</td>
+                        <td>@if($curr_month->jul != 0){{$attend->Jul}}@endif</td>
+                        <td>@if($curr_month->aug != 0){{$attend->Aug}}@endif</td>
+                        <td>@if($curr_month->sept != 0){{$attend->Sept}}@endif</td>
+                        <td>@if($curr_month->oct != 0){{$attend->Oct}}@endif</td>
+                        <td>{{$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}</td>
+                        @endif
+                        
+                        
                     </tr>
                     @endforeach
                 </table>
@@ -526,7 +544,7 @@
             <td style="padding-left: 0px;">
                 Dear Parent:
                             <p style="text-indent: 20px">This report card shows the ability and progress your child has made in different learning areas as well as his/her core values.</p>
-                            <p style="text-indent: 20px">The school welcomes you should you desire to know more about your child progress.</p>
+                            <p style="text-indent: 20px">The school welcomes you should you desire to know more about your child's progress.</p>
                             <br>
                             <div style="width:200px;text-align: center;float:right;border-top: 1px solid">
                                                     
@@ -587,7 +605,7 @@
                 </table>
             </td>
         </tr>
-        <tr><td style="text-align: right;padding-left: 0px"><b>{{$info['info']->idno}}</b></td></tr>
+        
     </table>
     
 
@@ -599,6 +617,7 @@
         </tr>
             
         </table>
+        <div style="text-align: right;padding-left: 0px"><b>{{$info['info']->idno}}</b></div>
     <div class="page-break"></div>
     </div>
     @endforeach
