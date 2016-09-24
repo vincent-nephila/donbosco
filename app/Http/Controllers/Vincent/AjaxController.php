@@ -131,7 +131,7 @@ class AjaxController extends Controller
                     }
                 }
                 if($subjects[0]->subjecttype == 0){
-                    if(Input::get('level') == 'Grade 11' || Input::get('department') == 'Junior High School'){
+                    if(Input::get('department') == 'Junior High School'){
                         $data = $data."<td style='text-align:center;font-weight: bold;'>".round($this->calcGrade(0,(int)Input::get('quarter'),$student->idno,$sy),0)."</td>";
                     }else{
                         $data = $data."<td style='text-align:center;font-weight: bold;'>".number_format(round($this->calcGrade(0,(int)Input::get('quarter'),$student->idno,$sy),2),2)."</td>";
@@ -371,6 +371,194 @@ class AjaxController extends Controller
         
     }
     
+    function setOARank(){
+        $level = Input::get('level');
+        $quarter = Input::get('quarter');
+        $strand = Input::get('strand');
+        
+        $this->setOARankingAcad($level,$quarter,$strand);
+        if($level == "Grade 7" | $level == "Grade 8" |$level == "Grade 9" | $level == "Grade 10"){
+            $this->setOARankingTech($level,$quarter);
+        }
+        
+        return "go";
+    }
+    
+    function setOARankingAcad($level,$quarter,$strand){
+        switch ($quarter){
+            case 1;
+                $qrt = "first_grading";
+            break;
+            case 2;
+                $qrt = "second_grading";
+            break;                
+           case 3;
+                $qrt = "third_grading";
+            break;
+            case 4;
+                $qrt = "fourth_grading";
+           break; 
+        }        
+
+        $schoolyear = \App\CtrRefSchoolyear::first();
+        if($level == "Grade 7" || $level == "Grade 8" || $level == "Grade 9" || $level == "Grade 10" || $level == "Grade 11" || $level == "Grade 12"){
+            if($level == "Grade 11" || $level == "Grade 12"){
+                $averages = DB::Select("SELECT grades.idno,ROUND( SUM( $qrt ) / count( grades.idno ) ,0) AS average FROM `grades` left join statuses on statuses.idno = grades.idno WHERE subjecttype IN (0,5,6) AND grades.level = '$level' AND grades.schoolyear = '$schoolyear->schoolyear' AND statuses.strand = '$strand' AND isdisplaycard = 1 GROUP BY idno ORDER BY `average` DESC");                
+            }else{
+                
+            }
+        }else{
+                $averages = DB::Select("SELECT grades.idno,ROUND( SUM( $qrt ) / count( grades.idno ) ,2) AS average FROM `grades` left join statuses on statuses.idno = grades.idno WHERE subjecttype IN (0,5,6) AND grades.level = '$level' AND grades.schoolyear = '$schoolyear->schoolyear' AND isdisplaycard = 1 GROUP BY idno ORDER BY `average` DESC");
+        }
+        $ranking = 0;
+        $comparison = 0;
+        
+        $nextrank = 1;
+        foreach($averages as $average){
+            
+            
+            $check = \App\Ranking::where('idno',$average->idno)->where('schoolyear',$schoolyear->schoolyear)->get();
+            
+            if($comparison != $average->average){
+                $ranking = $nextrank;
+                
+                $comparison = $average->average;
+            }
+            elseif($average->average == 0){
+                $ranking = 0;
+            } 
+            
+            
+            
+            if ($check->isEmpty()) { 
+                $rank = new \App\Ranking();
+            }else{
+                $rank = \App\Ranking::where('idno',$average->idno)->where('schoolyear',$schoolyear->schoolyear)->first();
+            }
+            
+            if($check->isEmpty()){
+                $rank->idno = $average->idno;
+            }
+                switch ($quarter){
+                  case 1;
+                        $rank->oa_acad_1 = $ranking;
+                break;
+                    case 2;
+                        $rank->oa_acad_2 = $ranking;
+                    break;                
+                   case 3;
+                        $rank->oa_acad_3 = $ranking;
+                    break;
+                    case 4;
+                        $rank->oa_acad_4 = $ranking;
+                   break;            
+               
+                }
+            $rank->schoolyear =   $schoolyear->schoolyear;  
+            $rank->save();
+            $nextrank++;
+        }
+        
+        return $level;
+    }
+    
+    function setOARankingTech($level,$quarter){
+
+        $schoolyear = \App\CtrRefSchoolyear::first();
+        
+        switch ($quarter){
+            case 1;
+                $averages = DB::Select("SELECT grades.idno,weighted, ROUND( SUM( first_grading ) / count( grades.idno ) , 2 ) AS average FROM `grades` left join statuses on statuses.idno = grades.idno WHERE subjecttype =1 AND grades.level = '$level' AND grades.schoolyear = '$schoolyear->schoolyear' GROUP BY idno ORDER BY `average` DESC");
+            break;
+            case 2;
+                $averages = DB::Select("SELECT grades.idno,weighted, ROUND( SUM( second_grading ) / count( grades.idno ) , 2 ) AS average FROM `grades` left join statuses on statuses.idno = grades.idno WHERE subjecttype =1 AND grades.level = '$level' AND grades.schoolyear = '$schoolyear->schoolyear' GROUP BY idno ORDER BY `average` DESC");
+            break;                
+           case 3;
+                $averages = DB::Select("SELECT grades.idno,weighted, ROUND( SUM( third_grading ) / count( grades.idno ) , 2 ) AS average FROM `grades` left join statuses on statuses.idno = grades.idno WHERE subjecttype =1 AND grades.level = '$level' AND grades.schoolyear = '$schoolyear->schoolyear' GROUP BY idno ORDER BY `average` DESC");
+            break;
+            case 4;
+                $averages = DB::Select("SELECT grades.idno,weighted, ROUND( SUM( fourth_grading ) / count( grades.idno ) , 2 ) AS average FROM `grades` left join statuses on statuses.idno = grades.idno WHERE subjecttype =1 AND grades.level = '$level' AND grades.schoolyear = '$schoolyear->schoolyear' GROUP BY idno ORDER BY `average` DESC");
+           break;                
+        }
+                if($averages[0]->weighted != 0){
+                    $averages = $this->weightedOARank($quarter,$schoolyear->schoolyear,$level);
+                }
+                
+        $ranking = 0;
+        $comparison = 0;
+        $nextrank = 1;
+        foreach($averages as $average){
+            $check = \App\Ranking::where('idno',$average->idno)->where('schoolyear',$schoolyear->schoolyear)->get();
+                
+            if($comparison != $average->average){
+                $ranking=$nextrank;
+                //$ranking++;
+                $comparison = $average->average;
+            }
+            elseif($average->average == 0){
+                $ranking = 0;
+            } 
+            
+            
+            
+            if ($check->isEmpty()) { 
+                $rank = new \App\Ranking();
+            }else{
+                $rank = \App\Ranking::where('idno',$average->idno)->where('schoolyear',$schoolyear->schoolyear)->first();
+            }
+            
+            if($check->isEmpty()){
+                $rank->idno = $average->idno;
+            }
+                switch ($quarter){
+                  case 1;
+                        $rank->oa_tech_1 = $ranking;
+                break;
+                    case 2;
+                        $rank->oa_tech_2 = $ranking;
+                    break;                
+                   case 3;
+                        $rank->oa_tech_3 = $ranking;
+                    break;
+                    case 4;
+                        $rank->oa_tech_4 = $ranking;
+                   break;            
+                   
+                }
+            $rank->schoolyear =$schoolyear->schoolyear;  
+            $rank->save();
+            $nextrank++;
+        }
+        
+        return $level;
+    }
+    
+    function weightedOARank($quarter,$schoolyear,$level){
+            switch ($quarter){
+                    case 1;
+                        $averages = DB::Select("SELECT grades.idno,weighted,ROUND( SUM( first_grading *(weighted/100))  , 0 ) AS average FROM `grades` join statuses on statuses.idno = grades.idno WHERE  subjecttype =1 AND grades.level = '$level' AND grades.schoolyear = '$schoolyear' AND statuses.status = 2 GROUP BY idno ORDER BY `average` DESC");
+                    break;
+                    case 2;
+                        $averages = DB::Select("SELECT grades.idno,weighted,ROUND( SUM( second_grading *(weighted/100))  , 0 ) AS average FROM `grades` join statuses on statuses.idno = grades.idno WHERE subjecttype =1 AND grades.level = '$level' AND grades.schoolyear = '$schoolyear' AND statuses.status = 2 GROUP BY idno ORDER BY `average` DESC");
+                    break;                
+                    case 3;
+                        $averages = DB::Select("SELECT grades.idno,weighted,ROUND( SUM( third_grading *(weighted/100))  , 0 ) AS average FROM `grades` join statuses on statuses.idno = grades.idno WHERE subjecttype =1 AND grades.level = '$level' AND grades.schoolyear = '$schoolyear' AND statuses.status = 2 GROUP BY idno ORDER BY `average` DESC");
+                    break;
+                    case 4;
+                        $averages = DB::Select("SELECT grades.idno,weighted,ROUND( SUM( fourth_grading *(weighted/100))  , 0 ) AS average FROM `grades` join statuses on statuses.idno = grades.idno WHERE subjecttype =1 AND grades.level = '$level' AND grades.schoolyear = '$schoolyear' AND statuses.status = 2 GROUP BY idno ORDER BY `average` DESC");
+                    break;                
+                }    
+
+
+        return $averages;
+        
+    }        
+    
+    
+    
+    
+    
+    
     function setRankingAcad(){
         $section = Input::get('section');
         $level = Input::get('level');
@@ -538,7 +726,7 @@ class AjaxController extends Controller
         return $level;
     }
     
-        public function weightedRank($quarter,$schoolyear,$strand,$level,$section){
+    function weightedRank($quarter,$schoolyear,$strand,$level,$section){
             switch ($quarter){
                     case 1;
                         $averages = DB::Select("SELECT grades.idno,weighted,ROUND( SUM( first_grading *(weighted/100))  , 0 ) AS average FROM `grades` join statuses on statuses.idno = grades.idno WHERE  subjecttype =1 AND grades.level = '$level' AND statuses.section LIKE '$section' AND grades.schoolyear = '$schoolyear' AND statuses.strand = '$strand' GROUP BY idno ORDER BY `average` DESC");
@@ -615,6 +803,7 @@ class AjaxController extends Controller
             //return $level;
         }
     }      
+    
     function getsection1($level){
         if(Request::ajax()){  
           $sections = DB::Select("select  distinct section from ctr_sections where level = '$level'");
@@ -678,30 +867,91 @@ class AjaxController extends Controller
     
     function viewallrank($level){
         if(Request::ajax()){
-            $quarter = 1;
+            $quarter = Input::get('quarter');
             $data = "";
-            $sortby = "";
-          //  if($level == "Grade 11" | "Grade 12"){
-                
-          //  }else{
-                $student = DB::Select("select lastname,firstname,middlename,extensionname,section from users join statuses on users.idno = statuses.idno join rankings on rankings.idno =users.idno  where level = '$level'");
-                $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->get();
-          /*  }
-
+            $sortby = "oa_acad_1";
+            $sy = '2016';
             
-            $data = $data."<table><>thead><td>".strrchr($student->section," ")."</td>"
-                    . "<td>".$student->lastname.", ".$student->firstname." ".$student->middlename." ".$student->extensionname."</td>"
-                    . "<thead></table>";
-            */
-            $data = $data."<table border='1' cellspacing='0' cellpadding='0'><thead><td>Section</td>"
+            if($level == "Grade 11" |$level == "Grade 12"){
+                $strand = Input::get('strand');
+                $students = DB::Select("select statuses.department as department,lastname,firstname,middlename,extensionname,section, users.idno as idno,oa_acad_$quarter as acad_rank,oa_tech_$quarter  as tech_rank from users join statuses on users.idno = statuses.idno join rankings on rankings.idno =users.idno  where level = '$level' and rankings.schoolyear = '2016' and statuses.schoolyear = '2016' and strand ='$strand' and statuses.status IN (2,3) order by $sortby ASC");
+                $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->where('strand',$strand)->orderBy('sortto','ASC')->get();                
+            }else{
+                $students = DB::Select("select statuses.department as department,lastname,firstname,middlename,extensionname,section, users.idno as idno,oa_acad_$quarter as acad_rank,oa_tech_$quarter  as tech_rank from users join statuses on users.idno = statuses.idno join rankings on rankings.idno =users.idno  where level = '$level' and rankings.schoolyear = '2016' and statuses.schoolyear = '2016' and statuses.status IN (2,3) order by $sortby ASC");
+                $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->orderBy('sortto','ASC')->get();
+            }
+
+            $data = $data."<table class='overall' style='text-align:center' border='1' cellspacing='0' cellpadding='1' width='100%'><thead><td>Section</td>"
                     . "<td>Name</td>";
             foreach($subjects as $subject){
                 if($subject->subjecttype == 0){
                 $data = $data."<td>".$subject->subjectname."</td>";
                 }
+                if($subject->subjecttype == 5 |$subject->subjecttype == 6){
+                $data = $data."<td>".$subject->subjectname."</td>";
+                }                
             }
-            if(isset($subject->subjecttype))
-            $data = $data."<td>General Average</td><td>Final Ranking</td><thead></table>";
+            $data = $data."<td>General Average</td><td>Overall Ranking</td>";
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 1){
+                $data = $data."<td>".$subject->subjectname."</td>";
+                }
+            }  
+            if($level == "Grade 7" | $level == "Grade 8" | $level == "Grade 9" | $level == "Grade 10"){
+            $data = $data."<td>General Average</td><td>Overall Ranking</td>";
+            }
+            $data = $data."<thead>";
+            foreach($students as $student){
+                $data = $data."<tr>";
+                $data = $data."<td style='text-align:left'>".strrchr($student->section," ")."</td>"
+                        . "<td style='text-align:left'>".$student->lastname.", ".$student->firstname." ".$student->middlename." ".$student->extensionname."</td>";
+                switch ($quarter){
+                        case 1;
+                            $grades = \App\Grade::select('subjecttype','first_grading as grade') ->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+                        break;
+                        case 2;
+                            $grades = \App\Grade::select('subjecttype','second_grading as grade')->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+                        break;                
+                        case 3;
+                            $grades = \App\Grade::select('subjecttype','third_grading as grade') ->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+                        break;
+                        case 4;
+                            $grades = \App\Grade::select('subjecttype','fourth_grading as grade')->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+                        break;                
+                    }
+                    
+                    foreach($grades as $grade){
+                        if($grade->subjecttype == 0){
+                                $data = $data."<td>".round($grade->grade,0)."</td>";
+                        }
+                        if($grade->subjecttype == 5 | $grade->subjecttype == 6){
+                                $data = $data."<td>".round($grade->grade,0)."</td>";
+                        }                        
+                    }
+                    if($student->department == "Elementary" |$student->department == "Kindergarten"){
+                        $data = $data."<td>".number_format(round($this->calcGrade(0,$quarter,$student->idno,$sy),2),2)."</td>";
+                    }
+                    if($student->department == "Junior High School"){
+                        $data = $data."<td>".round($this->calcGrade(0,$quarter,$student->idno,$sy),0)."</td>";
+                    }
+                    if($student->department == "Senior High School"){
+                        $data = $data."<td>".round($this->calcSeniorGrade($quarter,$student->idno,$sy),0)."</td>";
+                    }
+                    $data = $data."<td>".$student->acad_rank."</td>";
+                    
+                    foreach($grades as $grade){
+                        if($grade->subjecttype == 1){
+                                $data = $data."<td>".round($grade->grade,0)."</td>";
+                        }
+                    }
+                    if($student->department == "Junior High School"){
+                        $data = $data."<td>".round($this->calcGrade(1,$quarter,$student->idno,$sy),0)."</td>";
+                        $data = $data."<td>".$student->tech_rank."</td>";   
+                    }  
+                    
+                $data = $data."</tr>";
+            }            
+            $data = $data."</table>";
             
             
             return $data;

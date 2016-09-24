@@ -24,6 +24,10 @@
 	<link href="{{ asset('/css/datepicker.css') }}" rel="stylesheet">
         
         <style type="text/css">
+            .overall tr td,.overall thead td {
+               padding-left: 5px;
+               padding-right: 5px;
+           }
             .section {
                cursor: pointer;
            }

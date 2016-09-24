@@ -166,6 +166,7 @@
     Route::get('/getdays','Vincent\AjaxController@getdos');
     Route::get('/getlist/{level}/{section}','AjaxController@studentContact');
     Route::get('showallrank/{level}','Vincent\AjaxController@viewallrank');
+    Route::get('setallrank','Vincent\AjaxController@setOARank');
 
 
   
