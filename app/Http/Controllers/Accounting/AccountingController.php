@@ -767,6 +767,9 @@ foreach ($collections as $collection){
  function getsoasummary($level,$strand,$section,$trandate,$plan,$amtover){
      if($plan=="all"){
      $planparam = "";    
+     }
+     elseif($plan=="monthly1monthly2"){
+     $planparam="AND (statuses.plan = 'Monthly 1' OR statuses.plan = 'Monthly 2') ";    
      }else{
       $planparam = "AND statuses.plan = '$plan'";   
      }
@@ -790,10 +793,46 @@ foreach ($collections as $collection){
         }
         
         
+        
+     function printallsoa($level,$strand,$section,$trandate,$plan,$amtover){
+     if($plan=="all"){
+     $planparam = "";    
+     }
+     elseif($plan=="monthly1monthly2"){
+     $planparam="AND (statuses.plan = 'Monthly 1' OR statuses.plan = 'Monthly 2') ";    
+     }
+     else{
+      $planparam = "AND statuses.plan = '$plan'";   
+     }
+       if($strand=="none"){
+       $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
+
+       }   else{  
+        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level' and statuses.strand='$strand' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
+       }
+        
+       
+       return view('print.printallsoa',compact('soasummary','trandate','level','section','strand','amtover','plan'));
+       
+         }
+        
+        
         function printsoasummary($level,$strand,$section,$trandate,$plan,$amtover){
      if($plan=="all"){
      $planparam = "";    
-     }else{
+     }
+     elseif($plan=="monthly1monthly2"){
+     $planparam="AND (statuses.plan = 'Monthly 1' OR statuses.plan = 'Monthly 2') ";    
+     }
+     else{
       $planparam = "AND statuses.plan = '$plan'";   
      }
        if($strand=="none"){

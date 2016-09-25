@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -26,21 +26,28 @@ class MainController extends Controller
         if($mystatus == env('STATUS_OK')){
             switch ($myaccess){
                case env('USER_REGISTRAR');
-                   $students = \App\User::where('accesslevel','0')->orderBy('lastname','firstname')->take(30)->get();
+                     $students=DB::Select("select a.idno, a.lastname, a.firstname, a.middlename, a.extensionname, a.gender from users as a, statuses as b where "
+                           . "b.idno = a.idno and b.status='2' order by a.lastname, a.firstname");
+                 
+                  // $students = \App\User::where('accesslevel','0')->orderBy('lastname','firstname')->take(30)->get();
                    return view('registrar.index',compact('myid','myname','students'));
                    break;
            
                case env('USER_CASHIER');
-               case env('USER_CASHIER_HEAD');    
-                   $students = \App\User::where('accesslevel','0')->orderBy('lastname','firstname')->take(30)->get();
+               case env('USER_CASHIER_HEAD');  
+                   $students=DB::Select("select a.idno, a.lastname, a.firstname, a.middlename, a.extensionname, a.gender from users as a, statuses as b where "
+                           . "b.idno = a.idno and b.status='2' order by a.lastname, a.firstname");
+                   //$students = \App\User::where('accesslevel','0')->orderBy('lastname','firstname')->take(30)->get();
                    return view('cashier.index',compact('myid','myname','students'));
                    break;
                    
                    
                  
                case env('USER_ACCOUNTING');
-               case env('USER_ACCOUNTING_HEAD');  
-                   $students = \App\User::where('accesslevel','0')->orderBy('lastname','firstname')->take(30)->get();
+               case env('USER_ACCOUNTING_HEAD');
+                   $students=DB::Select("select a.idno, a.lastname, a.firstname, a.middlename, a.extensionname, a.gender from users as a, statuses as b where "
+                           . "b.idno = a.idno and b.status='2' order by a.lastname, a.firstname");
+                   //$students = \App\User::where('accesslevel','0')->orderBy('lastname','firstname')->take(30)->get();
                    return view('accounting.index',compact('myid','myname','students')) ;                  
                   break; 
             }

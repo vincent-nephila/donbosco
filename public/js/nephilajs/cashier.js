@@ -36,7 +36,7 @@ function duenosubmit(event){
            
         }else{
             
-             document.getElementById('receivecash').focus(); 
+             document.getElementById('bank_branch').focus(); 
              computetotal();
         }
       event.preventDefault();

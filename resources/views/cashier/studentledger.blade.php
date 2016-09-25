@@ -159,11 +159,10 @@
                </h5>
                
              <table class="table table-striped"><tr><td>Due Date</td><td align="right">Amount</td></tr>
-                 <?php $totaldue = 0;?>
-                 @if(count($dues) > 0)
+             <?php $totaldue = 0;?>
+             @if(count($dues) > 0)
                  @foreach($dues as $due)
-                
-                 <tr><td>
+                   <tr><td>
                      @if($due->duetype == '0')
                      <?php $totaldue = $totaldue + $due->balance; ?>
                      Upon Enrollment
@@ -228,9 +227,7 @@
              <input type="hidden" id="penalty" name="penalty" value="{{$penalty}}">
             
              <table class="table table-responsive table-bordered">
-               
                 <tr><td>Main Account</td><td align="right"><input onkeypress = "validate(event)"  onkeydown = "duenosubmit(event)"   type="text" name="totaldue" id="totaldue" style="text-align:right" class="form-control" value="<?php echo number_format($totaldue,2,'.','');?>"></td></tr>
-           
                 @if(count($previousbalances)> 0 )
                 
                     
@@ -282,7 +279,7 @@
                                             <input type="radio" name="depositto" value="BPI 2"> BPI 2
                                             
                         </td></tr> 
-                <tr><td colspan="2"><label>Description :</label><input type="text" name="remarks" id="remarks" class="form-control" onkeydown = "nosubmit(event,'submit')"></td></tr>
+                <tr><td colspan="2"><label>Description :</label><input type="text" name="remarks" id="remarks" class="form-control" onkeypres = "validate(event)"></td></tr>
                 <tr><td colspan="2"><input  style="visibility: hidden; font-weight: bold" type="submit" name="submit" id="submit" value ="Process Payment" class="btn btn-danger form form-control"> </td></tr>
                
              </table>    

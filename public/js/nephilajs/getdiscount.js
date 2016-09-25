@@ -1,11 +1,24 @@
 function getdiscount(){
-   
+   var department = document.getElementById('department').value;
+   var myarray= {};
+   myarray['department']=department;
+   if(department=="TVET"){
+   var plan = document.getElementById('plan').value;    
+   var course = document.getElementById('course').value;    
+   myarray['plan']=plan;
+   myarray['course']=course
+   }
       $.ajax({
             type: "GET", 
             url: "/getdiscount" , 
+            data: myarray,
             success:function(data){
+                if(department=="TVET"){
+                  $('#screendisplay').html(data);  
+                }else{   
                 $('#screendisplay').html("");
                 $('#discountcontainer').html(data); 
+            }
                 }
             }); 
    

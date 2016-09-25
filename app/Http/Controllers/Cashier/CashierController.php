@@ -437,9 +437,11 @@ class CashierController extends Controller
        $debit_dm = \App\Dedit::where('refno',$refno)->where('paymenttype','3')->first();
        $credits = DB::Select("select sum(amount) as amount, receipt_details, transactiondate, sub_department from credits "
                . "where refno = '$refno' group by receipt_details, transactiondate, sub_department");
+       $timeissued =  \App\Credit::where('refno',$refno)->first();
+       $timeis=date('h:i:s A',strtotime($timeissued->created_at));
        $tdate = \App\Dedit::where('refno',$refno)->first();
        $posted = \App\User::where('idno',$tdate->postedby)->first();
-       return view("cashier.viewreceipt",compact('posted','tdate','student','debits','credits','status','debit_discount','debit_reservation','debit_cash','debit_dm'));
+       return view("cashier.viewreceipt",compact('posted','timeis','tdate','student','debits','credits','status','debit_discount','debit_reservation','debit_cash','debit_dm'));
        
    }
    
@@ -455,11 +457,13 @@ class CashierController extends Controller
        $debit_dm = \App\Dedit::where('refno',$refno)->where('paymenttype','3')->first();
        $credits = DB::Select("select sum(amount) as amount, receipt_details, transactiondate, sub_department from credits "
                . "where refno = '$refno' group by receipt_details, transactiondate, sub_department");
+       $timeissued =  \App\Credit::where('refno',$refno)->first();
+       $timeis=date('h:i:s A',strtotime($timeissued->created_at));
        $tdate = \App\Dedit::where('refno',$refno)->first();
        $posted = \App\User::where('idno',$tdate->postedby)->first();
        $pdf = \App::make('dompdf.wrapper');
        $pdf->setPaper([0, 0, 336, 440], 'portrait');
-       $pdf->loadView("cashier.printreceipt",compact('posted','tdate','student','debits','credits','status','debit_discount','debit_reservation','debit_cash','debit_dm'));
+       $pdf->loadView("cashier.printreceipt",compact('posted','timeis','tdate','student','debits','credits','status','debit_discount','debit_reservation','debit_cash','debit_dm'));
        return $pdf->stream();
         
     
@@ -896,10 +900,10 @@ function otherpayment($idno){
         $debit->save();
         
     }
-    function checklist(){
+    function checklist($trandate){
         $checklists = DB::Select("select bank_branch, check_number, sum(checkamount) as checkamount, receiptno, receivefrom  from dedits "
                 . "where paymenttype = '1' and isreverse = '0' and postedby = '" . \Auth::user()->idno . "'"
-                . " and transactiondate = '" . date('Y-m-d') . "' group by bank_branch, check_number, receiptno, receivefrom order by transactiondate, refno");
+                . " and transactiondate = '" .$trandate . "' group by bank_branch, check_number, receiptno, receivefrom order by transactiondate, refno");
       //$checklist = DB::Select("select * from dedits");
         
         return view('cashier.checklist', compact('checklists')); 

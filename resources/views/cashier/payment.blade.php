@@ -5,8 +5,7 @@
     <div class="col-md-3">
         <a href="{{url('/cashier',$idno)}}" class="btn btn-primary form-control">Back</a>
     </div>
-    <div class="col-md-6" style="background-color: #C6C6FF">
-        
+    <div class="col-md-6" style="background-color: #C6C6FF">    
         <table class="table table-responsive">
         </tr><td colspan="3"><h5>Main Account</h5></td></tr>
         <tr align="center"><td>Total Balance</td><td>Due Today</td><td>Amount To Be Paid</td></tr>
@@ -23,9 +22,7 @@
         <tr align=><td>Add</td><td>Penalty</td><td align="right"><span class="form-control">{{number_format($totalpenalty,2)}}</span></td></tr>
         <tr align=><td>Less</td><td>Reservation</td><td align="right"><span class="form-control">{{number_format($reservation,2)}}</span></td></tr>
         <tr align=><td></td><td>Discount</td><td>Amount To Be Paid</td></tr>
-        
         </table>
-       
     </div>
     <div class="col-md-3">
     </div>    

@@ -58,7 +58,7 @@
         <hr />
        </div>
         <div id="myForm" class="col-md-12">
-             <form class="form-horizontal" id = "assess" role="form" method="POST" action="{{ url('/othercollection') }}">
+            <form class="form-horizontal" id = "assess" role="form" method="POST" action="{{ url('othercollection') }}" onsubmit="return confirm('Continue to process payment?')">
                     {!! csrf_field() !!} 
         <div class="col-md-8" > 
             <div style="padding: 10px;">
@@ -241,7 +241,7 @@
                     </div>   
                     <div class="form-group">
                         <label>Description</label>
-                        <input type="text" name="remarks" id="remarks" class="form-control" onkeydown = "nosubmit(event,'submit')">
+                        <input type="text" name="remarks" id="remarks" class="form-control" >
                     </div>    
                     <div class="form-group">
                     <input type="submit" value="Process Payment" id="submit"  style="visibility:hidden" class="form-control btn-danger">
@@ -344,8 +344,8 @@
                      if(totalcash >= totalcredit){
                          total=totalcash-totalcredit;
                          document.getElementById('change').innerHTML = total.toFixed(2)
-                         document.getElementById('submit').style.visibility="visible";
-                         document.getElementById('remarks').focus();
+                        // document.getElementById('submit').style.visibility="visible";
+                         document.getElementById('bank_branch').focus();
                      }
                      else{
                          document.getElementById('bank_branch').focus();
@@ -353,7 +353,19 @@
                     }}
                 } else if(varcontrol == "check"){
                     if(document.getElementById("check").value==""){
-                        alert("No amount entered!!")
+                      totalcredit = eval(document.getElementById('totalcredit').value);
+                      totalcash = document.getElementById('cash').value != "" ? eval(document.getElementById('cash').value):0;
+                      totalcheck = 0;
+                     if(totalcredit <= totalcheck + totalcash){
+                         total = totalcheck+totalcash-totalcredit
+                         document.getElementById('change').innerHTML = total.toFixed(2)
+                         //document.getElementById('submit').style.visibility="visible";
+                         document.getElementById('remarks').focus();
+           
+                        } else {
+                            alert("Invalid Amount")
+                        }
+                        //alert("No amount entered!!")
                     }else{
                      if(eval(document.getElementById('check').value) > eval(document.getElementById("totalcredit").value)){
                          alert("Invalid amount")
@@ -365,11 +377,11 @@
                      if(totalcredit <= totalcheck + totalcash){
                          total = totalcheck+totalcash-totalcredit
                          document.getElementById('change').innerHTML = total.toFixed(2)
-                         document.getElementById('submit').style.visibility="visible";
+                         //document.getElementById('submit').style.visibility="visible";
                          document.getElementById('remarks').focus();
            
                         } else {
-                            alert("error")
+                            alert("Invalid Amount")
                         }
                      }
                     }

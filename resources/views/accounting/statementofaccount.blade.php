@@ -6,6 +6,7 @@
         <div class="form form-group col-md-12">
             <select id="plan" name="plan" class="form form-control">
                 <option value="all">All</option>
+                <option value="monthly1monthly2">Monthly 1 / Monthly 2 </option>
                 @foreach($payscheds as $ps)
                 <option value="{{$ps->plan}}">{{$ps->plan}}</option>
                 @endforeach

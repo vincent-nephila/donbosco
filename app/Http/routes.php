@@ -63,7 +63,7 @@
     Route::get('printcollection/{idno}/{transactiondate}','Cashier\CashierController@printcollection');
     Route::get('nonstudent','Cashier\CashierController@nonstudent');
     Route::post('nonstudent','Cashier\CashierController@postnonstudent');
-    Route::get('checklist','Cashier\CashierController@checklist');
+    Route::get('checklist/{trandate}','Cashier\CashierController@checklist');
     Route::post('postactual','Cashier\CashierController@postactual');
     Route::get('printactualcash/{transactiondate}','Cashier\CashierController@printactualcash');
     Route::get('actualdeposit/{trasactiondate}', 'Cashier\CashierController@actualdeposit');
@@ -91,6 +91,7 @@
     Route::get('cashreceipts/{transactiondate}','Accounting\AccountingController@cashreceipts');
     Route::get('statementofaccount','Accounting\AccountingController@statementofaccount');
     Route::get('printsoa/{idno}/{tradate}','Accounting\AccountingController@printsoa');
+     Route::get('/printallsoa/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@printallsoa');
     Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@getsoasummary');
     Route::get('/printsoasummary/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@printsoasummary');
     Route::get('penalties','Accounting\AccountingController@penalties');

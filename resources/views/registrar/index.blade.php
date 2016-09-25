@@ -37,7 +37,7 @@
             <tbody>
                
             @foreach($students as $student)
-            <tr><td>{{$student->idno}}</td><td>{{$student->lastname}}, {{$student->firstname}} {{$student->middlenamename}}
+            <tr><td>{{$student->idno}}</td><td>{{$student->lastname}}, {{$student->firstname}} {{$student->middlename}}
                     {{$student->extensionname}}</td><td>{{$student->gender}}</td><td><a href = "{{url('/registrar/evaluate',$student->idno)}}">Assess</a></td><td><a href = "{{url('/studentinfokto12',$student->idno)}}" target="_blank">View Info</a></td><td><a href="{{url('seegrade',$student->idno)}}">View Grade</a></td></tr>
             @endforeach
             </tbody>
