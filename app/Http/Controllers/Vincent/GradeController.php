@@ -241,8 +241,12 @@ class GradeController extends Controller
                     $match2 = ["idno"=>$student->idno,"subjecttype"=>3,"schoolyear"=>$schoolyear->schoolyear];
                     $conduct = \App\Grade::where($match2)->orderBy("sortto","ASC")->get();
 
-                    $match3 = ["idno"=>$student->idno,"subjecttype"=>2,"schoolyear"=>$schoolyear->schoolyear];
-                    $attendance = \App\Grade::where($match3)->orderBy("sortto","ASC")->get();
+                    
+                    $match3 = ["idno"=>$student->idno,"schoolyear"=>$schoolyear->schoolyear];
+                    $attendance = \App\Attendance::where($match3)->orderBy("sortto","ASC")->get();
+                    
+//                    $match3 = ["idno"=>$student->idno,"subjecttype"=>2,"schoolyear"=>$schoolyear->schoolyear];
+//                    $attendance = \App\Grade::where($match3)->orderBy("sortto","ASC")->get();
                     
                                         $match4 = ["idno"=>$student->idno,"subjecttype"=>1,"schoolyear"=>$schoolyear->schoolyear];
                     $technical = \App\Grade::where($match4)->orderBy("sortto","ASC")->get();

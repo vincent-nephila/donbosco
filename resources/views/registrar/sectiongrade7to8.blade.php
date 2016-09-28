@@ -535,8 +535,19 @@
                     </tr>
                     <tr style="font-size:11px;">
                         <td style="text-align: left">Days of School</td>
-                        <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-                    </tr>              
+                        <?php $tsd  = \App\CtrAttendance::Select(DB::raw('*,Jun+Jul+Aug+Sept+Oct+Nov+Dece+Jan+Feb+Mar as total'))->where('schoolyear',$schoolyear->schoolyear)->where('level',$level)->first();?>
+                        <td>@if($tsd->Jun != 0){{$tsd->Jun}}@endif</td>
+                        <td>@if($tsd->Jul != 0){{$tsd->Jul}}@endif</td>
+                        <td>@if($tsd->Aug != 0){{$tsd->Aug}}@endif</td>
+                        <td>@if($tsd->Sept != 0){{$tsd->Sept}}@endif</td>
+                        <td>@if($tsd->Oct != 0){{$tsd->Oct}}@endif</td>
+                        <td>@if($tsd->Nov != 0){{$tsd->Nov}}@endif</td>
+                        <td>@if($tsd->Dece != 0){{$tsd->Dece}}@endif</td>
+                        <td>@if($tsd->Jan != 0){{$tsd->Jan}}@endif</td>
+                        <td>@if($tsd->Feb != 0){{$tsd->Feb}}@endif</td>
+                        <td>@if($tsd->Mar != 0){{$tsd->Mar}}@endif</td>
+                        <td>{{$tsd->total}}</td>
+                    </tr>      
                     <?php $curr_month = \App\Attendance::Select(DB::raw('max(Jun) as jun,max(Jul) as jul,max(Aug) as aug,max(Sept) as sept,max(Oct) as oct,max(Nov) as nov,max(Dece) as dece,max(Jan) as jan,max(Feb) as feb,max(Mar) as mar'))->first(); ?>
                     @foreach($info['att'] as $key=>$attend)
                     <tr>
@@ -553,13 +564,13 @@
                         <td>@if($curr_month->jan != 0){{$attend->Jan}}@endif</td>
                         <td>@if($curr_month->feb != 0){{$attend->Feb}}@endif</td>
                         <td>@if($curr_month->mar != 0){{$attend->Mar}}@endif</td>                        
-                        <td>{{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar+$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}</td>
+                        <td>{{number_format($attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar+$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct,1)}}</td>
                         
                         
                         
                     </tr>
                     @endforeach
-                </table>
+                </table>                
                 <br>
                 <tr>
             <td style="padding-left: 0px;">

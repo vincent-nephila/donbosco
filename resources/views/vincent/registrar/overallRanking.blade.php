@@ -22,6 +22,9 @@
     <div class="col-md-12" id="main_content">
         
     </div>
+    <div id="blocker" style="position:fixed;top:0px;left:0px;width:100%;height:100%;background-color: rgba(181, 181, 181, 0.46);vertical-align: middle;text-align:center;line-height: 100%;display: none">
+        
+    </div>
 
 </div>
 <script>
@@ -34,14 +37,14 @@
         document.getElementById('strands').style.visibility='hidden';
         level = lvl
         
-        if(lvl != "null"){
-             document.getElementById('rerank').style.visibility='visible'    
-         }
+
          
         if(lvl == "Grade 11" | lvl == "Grade 12"){
             document.getElementById('strands').style.visibility='visible';
         }else{
-            
+            if(lvl != "null"){
+                 document.getElementById('rerank').style.visibility='visible'    
+             }            
             viewranking(lvl);
         }
     }
@@ -75,7 +78,7 @@
     }
     
     function setRank(){
-
+        document.getElementById('blocker').style.display='block';
         var arrays ={} ;
         arrays['level'] = level;
         arrays['quarter'] = 1;
@@ -87,7 +90,7 @@
                 url: "/setallrank",
                 data : arrays,
                 success:function(data){
-                    alert(data)
+                    document.getElementById('blocker').style.display='none';
                     viewranking(level)
                     }
                 }); 

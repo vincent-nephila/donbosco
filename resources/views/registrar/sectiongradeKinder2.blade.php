@@ -166,84 +166,52 @@
                         </tr>
                     </table>
                     <br>
-                    <table border="1" cellspacing="0" cellpading="0" style="font-size:12px;text-align: center" width="100%">
-                    <tr>
-                        <td width="40%"><b>ATTENDANCE</b></td>
-                        <td width="10%"><b>1</b></td>
-                        <td width="10%"><b>2</b></td>
-                        <td width="10%"><b>3</b></td>
-                        <td width="10%"><b>4</b></td>
-                        <td width="20%"><b>TOTAL</b></td>
+                    <table border='1' cellpadding='0' cellspacing='0' width="100%" style="text-align: center;font-size:11px;">
+                    <tr style="font-size:12px;">
+                        <td style="padding-bottom:5px;padding-top:5px">
+                            <b>ATTENDANCE</b>
+                        </td>
+
+                        <td>Jun</td><td>Jul</td><td>Aug</td><td>Sept</td><td>Oct</td><td>Nov</td><td>Dec</td><td>Jan</td><td>Feb</td><td>Mar</td>
+                        
+                        <td>TOTAL</td>
                     </tr>
-                    <tr>
-                        <td>
-                            Days of School
-                        </td>
-                        {{--*/$first=0/*--}}
-                        {{--*/$second=0/*--}}
-                        {{--*/$third=0/*--}}
-                        {{--*/$fourth=0/*--}}
-                            @foreach($info['att'] as $key=>$attend)
-                                {{--*/$first = $first + $attend->first_grading/*--}}
-                                {{--*/$second = $second + $attend->second_grading/*--}}
-                                {{--*/$third = $third + $attend->third_grading/*--}}
-                                {{--*/$fourth = $fourth + $attend->fourth_grading/*--}}
-                            @endforeach
-                        <td>
-                            @if($first != 0)
-                            {{$first}}
-                            @endif
-                        </td>
-                        <td>
-                            @if($second != 0)                            
-                            {{$second}}
-                            @endif
-                        </td>
-                        <td>
-                            @if($third != 0)                            
-                            {{$third}}
-                            @endif
-                        </td>                                                    
-                        <td>
-                            @if($fourth != 0)                            
-                            {{$fourth}}
-                            @endif
-                        </td>
-                        <td>
-                            {{$first+$second+$third+$fourth}}
-                        </td>                                                   
-                    </tr>
+                    <tr style="font-size:11px;">
+                        <td style="text-align: left">Days of School</td>
+                        <?php $tsd  = \App\CtrAttendance::Select(DB::raw('*,Jun+Jul+Aug+Sept+Oct+Nov+Dece+Jan+Feb+Mar as total'))->where('schoolyear',$schoolyear->schoolyear)->where('level',$level)->first();?>
+                        <td>@if($tsd->Jun != 0){{$tsd->Jun}}@endif</td>
+                        <td>@if($tsd->Jul != 0){{$tsd->Jul}}@endif</td>
+                        <td>@if($tsd->Aug != 0){{$tsd->Aug}}@endif</td>
+                        <td>@if($tsd->Sept != 0){{$tsd->Sept}}@endif</td>
+                        <td>@if($tsd->Oct != 0){{$tsd->Oct}}@endif</td>
+                        <td>@if($tsd->Nov != 0){{$tsd->Nov}}@endif</td>
+                        <td>@if($tsd->Dece != 0){{$tsd->Dece}}@endif</td>
+                        <td>@if($tsd->Jan != 0){{$tsd->Jan}}@endif</td>
+                        <td>@if($tsd->Feb != 0){{$tsd->Feb}}@endif</td>
+                        <td>@if($tsd->Mar != 0){{$tsd->Mar}}@endif</td>
+                        <td>{{$tsd->total}}</td>
+                    </tr>      
+                    <?php $curr_month = \App\Attendance::Select(DB::raw('max(Jun) as jun,max(Jul) as jul,max(Aug) as aug,max(Sept) as sept,max(Oct) as oct,max(Nov) as nov,max(Dece) as dece,max(Jan) as jan,max(Feb) as feb,max(Mar) as mar'))->first(); ?>
                     @foreach($info['att'] as $key=>$attend)
                     <tr>
-                        <td>
-                            {{$attend->subjectname}}
-                        </td>
-                        <td>
-                            @if($first != 0)
-                            {{number_format(round($attend->first_grading,1),1)}}
-                            @endif
-                        </td>
-                        <td>
-                            @if($second != 0)
-                            {{number_format(round($attend->second_grading,1),1)}}
-                            @endif
-                        </td>
-                        <td>
-                            @if($third != 0)
-                            {{number_format(round($attend->third_grading,1),1)}}
-                            @endif
-                        </td>
-                        <td>
-                            @if($fourth != 0)
-                            {{number_format(round($attend->fourth_grading,1),1)}}
-                            @endif
-                        </td>
-                        <td>
-                            {{round($attend->first_grading,1)+round($attend->second_grading,1)+round($attend->third_grading,1)+round($attend->fourth_grading,1)}}
-                        </td>                                                    
+                        <td style="text-align: left">
+                            {{$attend->attendanceName}}
+                        </td>                    
+                        <td>@if($curr_month->jun != 0){{$attend->Jun}}@endif</td>
+                        <td>@if($curr_month->jul != 0){{$attend->Jul}}@endif</td>
+                        <td>@if($curr_month->aug != 0){{$attend->Aug}}@endif</td>
+                        <td>@if($curr_month->sept != 0){{$attend->Sept}}@endif</td>
+                        <td>@if($curr_month->oct != 0){{$attend->Oct}}@endif</td>
+                        <td>@if($curr_month->nov != 0){{$attend->Nov}}@endif</td>
+                        <td>@if($curr_month->dece != 0){{$attend->Dece}}@endif</td>
+                        <td>@if($curr_month->jan != 0){{$attend->Jan}}@endif</td>
+                        <td>@if($curr_month->feb != 0){{$attend->Feb}}@endif</td>
+                        <td>@if($curr_month->mar != 0){{$attend->Mar}}@endif</td>                        
+                        <td>{{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar+$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}</td>
+                        
                     </tr>
                     @endforeach
-                </table>
+                </table>                
                     <br>
                 </td>
                 <td style="width:1cm"></td>
