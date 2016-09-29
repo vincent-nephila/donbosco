@@ -290,8 +290,8 @@ class CashierController extends Controller
             
             $this->reset_or();
           
-          
-           return redirect(url('/viewreceipt',array($refno,$request->idno)));
+          return $this->viewreceipt($refno, $request->idno);
+           //return redirect(url('/viewreceipt',array($refno,$request->idno)));
           
            
             
@@ -604,8 +604,9 @@ function otherpayment($idno){
         $debit->save();
         
         $this->reset_or();
+        return $this->viewreceipt($refno, $request->idno);
         
-        return redirect(url('/viewreceipt',array($refno,$request->idno)));
+        //return redirect(url('/viewreceipt',array($refno,$request->idno)));
     }
     
     function collectionreport($transactiondate){
@@ -667,7 +668,8 @@ function otherpayment($idno){
         \App\Credit::where('refno',$refno)->update(['isreverse'=>'1','reversedate'=>  Carbon::now(), 'reverseby'=> \Auth::user()->idno]);
         \App\Dedit::where('refno',$refno)->update(['isreverse'=>'1']);
         
-        return redirect(url('cashier',$idno));
+        return $this->view($idno);
+        //return redirect(url('cashier',$idno));
     
     }
     
@@ -706,7 +708,8 @@ function otherpayment($idno){
         \App\Credit::where('refno',$refno)->update(['isreverse'=>'0','reversedate'=>  '0000-00-00', 'reverseby'=> '']);
         \App\Dedit::where('refno',$refno)->update(['isreverse'=>'0']);
        // \App\AdvancePayment::where('refno',$refno)->where('idno',$idno)->update(['status' => '0']);
-        return redirect(url('cashier',$idno));
+        return $this->view($idno);
+        //return redirect(url('cashier',$idno));
     }
     
     function postencashment(Request $request){
@@ -727,8 +730,8 @@ function otherpayment($idno){
         $resetor = \App\User::where('idno', \Auth::user()->idno)->first();
         $resetor->reference_number = $resetor->reference_number + 1;
         $resetor->save();
-        
-        return redirect(url('viewencashmentdetail',$encashment->refno));
+        return $this->viewencashmentdetail($encashment->refno);
+        //return redirect(url('viewencashmentdetail',$encashment->refno));
         
         //return view('cashier.viewencashment',compact('encashment'));
         
@@ -770,7 +773,9 @@ function otherpayment($idno){
             $encashment->isreverse = '0';
         }
         $encashment->save();
-        return redirect(url('encashmentreport'));
+        return $this->encashmentreport();
+        
+        //return redirect(url('encashmentreport'));
     }
     
     function previous($idno){
@@ -948,8 +953,8 @@ function otherpayment($idno){
             $request->actualbpi2cash + $request->actualbpi2check - $request->totalissued;
                $postactual->update();
         }
-        
-        return redirect(url('actualcashcheck',array($request->batch,$request->transactiondate)));
+        return $this->actualcashcheck($request->batch, $request->transactiondate);
+        //return redirect(url('actualcashcheck',array($request->batch,$request->transactiondate)));
     }
     
     function printactualcash($transactiondate){
@@ -1125,7 +1130,8 @@ function otherpayment($idno){
         $newactual->postedby=\Auth::user()->idno;
         $newactual->save();
         
-        return redirect(url('actualdeposit',$transactiondate));
+        return $this->actualdeposit($transactiondate);
+        //return redirect(url('actualdeposit',$transactiondate));
         
     }
     function addtoaccount($studentid){
@@ -1162,14 +1168,16 @@ function otherpayment($idno){
         $newledger->duedate=Carbon::now();
         $newledger->amount=$request->amount;
         $newledger->save();
-        return redirect(url('addtoaccount',$request->idno));
+        return $this->addtoaccount($request->idno);
+        //return redirect(url('addtoaccount',$request->idno));
     }
     function addtoaccountdelete($id){
         $account = \App\Ledger::where('id',$id)->first();
         if($account->payment+$account->debitmemo==0){
         $account->delete();    
         }
-        return redirect(url('addtoaccount',$account->idno));
+        return $this->addtoaccount($account->idno);
+        //return redirect(url('addtoaccount',$account->idno));
     }
     
     }

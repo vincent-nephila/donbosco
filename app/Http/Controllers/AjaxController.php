@@ -135,7 +135,7 @@ class AjaxController extends Controller
             function getdiscount(){
                 if(Request::ajax()){
                  $department = Input::get('department');
-                 if($department=="TVET"){
+                 /*if($department=="TVET"){
                  
                  $plan = Input::get('plan');
                  $course=Input::get('course');
@@ -186,7 +186,7 @@ class AjaxController extends Controller
                  $value=$value."<td colspan=\"2\"><input type=\"text\" style=\"text-align:right\" placeholder=\"0.00\" name=\"contribution\" class=\"form form-control\"></td></tr>";
                  $value=$value."<tr><td rowspan=\"2\" colspan=\"5\"><br><input type=\"submit\" value=\"Process TVET Assessment\" class=\"btn btn-primary form form-control\"></td></tr></table>";
                  
-                     }else{
+                     }else{*/
                  $discounts = \App\CtrDiscount::orderby('discountcode')->get();
                     $value = "<div class=\"col-md-12\">Discount</div><div class=\"col-md-12\"><select name = \"discount\" id=\"discount\" class=\"form-control\" onchange = \"compute()\">"
                             . "<option value=\"\">Select Discount</option> <option value=\"none\">None</option>";
@@ -197,7 +197,7 @@ class AjaxController extends Controller
                  }  
                      return $value;
                     
-                }
+              //  }
             }
                 function getsearch($varsearch){
                     if(Request::ajax()){
