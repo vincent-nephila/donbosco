@@ -13,12 +13,12 @@ function getdiscount(){
             url: "/getdiscount" , 
             data: myarray,
             success:function(data){
-               // if(department=="TVET"){
-               //   $('#screendisplay').html(data);  
-               // }else{   
+                if(department=="TVET"){
+                  $('#screendisplay').html(data);  
+                }else{   
                 $('#screendisplay').html("");
                 $('#discountcontainer').html(data); 
-            //}
+            }
                 }
             }); 
    
