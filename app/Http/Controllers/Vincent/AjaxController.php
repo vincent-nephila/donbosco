@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Input;
 use DB;
 class AjaxController extends Controller
 {
-    //
-        public function getid($varid){
+    public function getid($varid){
         if(Request::ajax()){
         $user = \App\User::find($varid);
         $refno = $user->reference_number;
@@ -40,14 +39,18 @@ class AjaxController extends Controller
         }
     }
     
-    
     function showgrades(){
         
         $section = Input::get('section');
         $level = Input::get('level');
         $strand = Input::get('strand');
+        $department = Input::get('department');
+        $quarters = Input::get('quarter');
 
-        
+        $this->acadRank($section,$level,$quarters);
+        if(Input::get('department') == 'Junior High School'){
+        $this->techRank($section,$level,$quarters,$strand);
+        }
         
         $students = DB::Select("Select statuses.idno,class_no,gender,lastname,firstname,middlename,extensionname from users left join statuses on users.idno = statuses.idno where statuses.status IN (2,3) and statuses.level = '$level' and statuses.section = '$section' AND statuses.strand = '$strand' order by class_no ASC");
         //$students = DB::Select("Select statuses.idno,gender,lastname,firstname,middlename,extensionname from users left join statuses on users.idno = statuses.idno where statuses.status= 2 and statuses.level = 'Grade 10' and statuses.section = 'Saint Callisto Caravario' AND statuses.strand = 'Industrial Drafting Technology' order by gender DESC,lastname ASC,firstname ASC");
@@ -554,15 +557,16 @@ class AjaxController extends Controller
         
     }        
     
-    
-    
-    
-    
-    
+
     function setRankingAcad(){
         $section = Input::get('section');
         $level = Input::get('level');
         $quarter = Input::get('quarter');
+        
+        $this->acadRank($section,$level,$quarter);
+    }
+    
+    function acadRank($section,$level,$quarter){
         
         $schoolyear = \App\CtrRefSchoolyear::first();
         if($level == "Grade 7" || $level == "Grade 8" || $level == "Grade 9" || $level == "Grade 10" || $level == "Grade 11" || $level == "Grade 12"){
@@ -645,7 +649,7 @@ class AjaxController extends Controller
             $nextrank++;
         }
         
-        return $level;
+        return $level;        
     }
     
     function setRankingTech(){
@@ -654,7 +658,10 @@ class AjaxController extends Controller
         $quarter = Input::get('quarter');
         $strand = Input::get('strand');
         
-        
+        $this->techRank($section,$level,$quarter,$strand);
+    }
+    
+    function techRank($section,$level,$quarter,$strand){
         
         $schoolyear = \App\CtrRefSchoolyear::first();
         
@@ -723,7 +730,7 @@ class AjaxController extends Controller
             $nextrank++;
         }
         
-        return $level;
+        return $level;        
     }
     
     function weightedRank($quarter,$schoolyear,$strand,$level,$section){
