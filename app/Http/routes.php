@@ -168,6 +168,7 @@
     Route::get('/getlist/{level}/{section}','AjaxController@studentContact');
     Route::get('showallrank/{level}','Vincent\AjaxController@viewallrank');
     Route::get('setallrank','Vincent\AjaxController@setOARank');
+    Route::get('/getpreregid/{varid}','Vincent\AjaxController@getid');
 
 
   

@@ -112,26 +112,22 @@ class ReportController extends Controller
     }    
     
     function attendance(){
-     if(\Auth::user()->accesslevel==env('USER_HS_PRINCIPAL')|| \Auth::user()->accesslevel==env('USER_HS_ASST_PRINCIPAL')){
-       $levels = DB::Select("Select level from ctr_levels where department = 'Junior High School' OR department='Senior High School'");  
-     }else{
-       $levels = DB::Select("Select level from ctr_levels where department = 'Elementary' OR department='Kindergarten'");
-     }
      
-     return view('vincent.registrar.attendance',compact('levels'));
+        $levels = DB::Select("Select level from ctr_levels");  
+
+        return view('vincent.registrar.attendance',compact('levels'));
  }    
  
     function sheetB(){
         $today = date("F d, Y");
         
         $print =      $this->printDate();  
-
         
         $schoolyear = \App\CtrRefSchoolyear::first();
 
-       $levels = DB::Select("Select distinct level,department from ctr_levels order by id asc");
-       $tvet = DB::Select("SELECT distinct course as courses FROM `ctr_subjects` WHERE `department` LIKE 'TVET'");
-       return view('vincent.registrar.sheetB',compact('levels','tvet','today','print','schoolyear')) ;
+        $levels = DB::Select("Select distinct level,department from ctr_levels order by id asc");
+        $tvet = DB::Select("SELECT distinct course as courses FROM `ctr_subjects` WHERE `department` LIKE 'TVET'");
+        return view('vincent.registrar.sheetB',compact('levels','tvet','today','print','schoolyear')) ;
             
     }
  
