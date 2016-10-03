@@ -85,7 +85,7 @@
                      <option value="TVET">TVET</option>
                     </select>    
                   </div>   
-                 <script src = "{{asset('/js/nephilajs/getlevel.js')}}"></script>
+                 <script src = "{{url('/js/nephilajs/getlevel.js')}}"></script>
                 </div> 
              <!-- last--></div>
                

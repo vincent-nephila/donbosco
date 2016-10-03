@@ -9,7 +9,7 @@ function getid(varid){
             document.getElementById('password').value = data
             document.getElementById('password_confirmation').value = data 
            
-            //alert(data);
+            //alert('hello');
             }       
             }); 
         }

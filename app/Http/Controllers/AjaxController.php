@@ -39,7 +39,8 @@ class AjaxController extends Controller
          // return $user->idref;  
         return $varrefno;
         }else{
-        return "Invalid Request";    
+        return "Invalid Request";   
+           
         }
     }
     
@@ -80,7 +81,21 @@ class AjaxController extends Controller
                             }
                             $value = $value . "</select></div>";
                     return $value;
-                }else{
+                }
+                elseif($vardepartment == "TVET"){
+                    $currentbatch = \App\ctrSchoolYear::where('department','TVET')->get();
+                    //$batch=$currentbarch->period;
+                    $value = "<div class=\"col-md-12\"><label>Select Batch</label>";
+                    $value = $value . "<select name=\"batch\" id=\"batch\" class=\"form form-control\" onchange =\"gettvetplan(this.value)\">";
+                    $value = $value . "<option value = \"none\">--Select Batch--</option>";
+                    foreach($currentbatch as $cb){
+                    $value = $value . "<option value = \"" . $cb->period . "\">". $cb->period . "</option>";
+                    }
+                   // $value = $value . "<option value =\"". ($batch-1) ."\">" . ($batch-1) . "</option>";
+                    $value = $value . "</select></div>";  
+                    return $value;
+                }
+                else{
                     if($varlevelcourse == "Grade 9" || $varlevelcourse == "Grade 10"){
                         //$strands = \App\CtrTrack::where('level',$varlevelcourse)->get();
                         $strands = DB::Select("select distinct strand from ctr_payment_schedules where level ='$varlevelcourse'");
@@ -116,6 +131,18 @@ class AjaxController extends Controller
                 
                 }
            }
+           
+           
+           function gettvetplan($batch,$course){
+                $plans = DB::Select("select distinct plan from ctr_payment_schedules where department = 'TVET' AND course ='$course' AND period ='$batch'");
+                     $value = "<div class=\"col-md-12\">Plan</div><div class=\"col-md-12\"><select name = \"plan\" id=\"plan\" class=\"form-control\" onchange = \"getdiscount()\"><option>Select Plan</option>";
+                         foreach($plans as $plan){
+                            $value = $value . "<option value=\"" . $plan->plan ."\">" .$plan->plan . "</option>"; 
+                            }
+                            $value = $value . "</select></div>";
+                    return $value;
+               
+           }
          
             function gettrackplan(){
                   if(Request::ajax()){
@@ -136,12 +163,22 @@ class AjaxController extends Controller
                 if(Request::ajax()){
                  $department = Input::get('department');
                  if($department=="TVET"){
+                     /*
+                    $currentbarch = \App\ctrSchoolYear::where('department','TVET')->first();
+                    $batch=$currentbarch->period;
+                    $value = "<div class=\"col-md-6\"><label>Select Batch</label>";
+                    $value = $value . "<select name=\"abtch\" class=\"form form-control\">";
+                    $value = $value . "<option value = \"$batch\" selected> $batch</option>";
+                    $value = $value . "<option value =\"". ($batch-1) ."\">" . ($batch-1) . "</option>";
+                    $value = $value . "</select></div>"; */       
                  $misc="";
                  $grad="";
                  $tf="";
+                 $totalfee;
                  $plan = Input::get('plan');
                  $course=Input::get('course');
-                 $scheds = \App\CtrPaymentSchedule::where('department','TVET')->where('plan',$plan)->where('course',$course)->get();
+                 $batch=Input::get('batch');
+                 $scheds = \App\CtrPaymentSchedule::where('department','TVET')->where('plan',$plan)->where('course',$course)->where('period',$batch)->get();
                  foreach($scheds as $sched){
                      if($sched->description=="Tuition Fee"){
                          $tf = $sched->amount;
@@ -154,6 +191,8 @@ class AjaxController extends Controller
                          $tf=$sched->amount;
                      }
                  }
+                 $totalfee=$tf+$grad+$misc;
+                 
                  $value="<table border = \"0\"  ><tr><td>Particular</td>";
                  $value=$value."<td> Amount </td>";
                  $value=$value."<td>Discount </td>";
@@ -161,31 +200,31 @@ class AjaxController extends Controller
                  $value=$value."<td>Trainee </td></tr>";
                  $value=$value."<tr><td>Tution Fee</td>";
                  $value=$value."<td> <input style=\"text-align:right\" id=\"tuitionfee\"  value=\"$tf\"name = \"tuitionfee\" type=\"text\" readonly class=\"form form-control\"></td>";
-                 $value=$value."<td><select id=\"discount\" name=\"discount\" class=\"form form-control\"> ";
+                 $value=$value."<td><select id=\"discount\" name=\"discount\" class=\"form form-control\" onchange=\"computetvet()\"> ";
                  $value=$value."<option value=\"0\">None</option>";
                  $value=$value."<option value=\"10\">10 Percent</option>";
                  $value=$value."<option value=\"30\">30 Percent</option>";
                  $value=$value."<option value=\"50\">50 Percent</option>";
                  $value=$value."<option value=\"70\">70 Percent</option>";
                  $value=$value."<option value=\"100\">100 Percent</option></select></td>";
-                 $value=$value."<td align=\"center\"><input name=\"paidby\" value=\"sponsor\" type=\"radio\"></td>";
-                 $value=$value."<td align=\"center\"><input name=\"paidby\" checked value=\"trainee\" type=\"radio\"></td></tr>";
+                 $value=$value."<td align=\"center\"><input name=\"paidby_tuitionfee\"  id =\"tuitionfee_sponsor\" value=\"sponsor\" type=\"radio\" onclick=\"computetvet()\"></td>";
+                 $value=$value."<td align=\"center\"><input name=\"paidby_tuitionfee\" id =\"tuitionfee_trainee\" checked value=\"trainee\" type=\"radio\" onclick=\"computetvet()\"></td></tr>";
                  
                  $value=$value."<tr><td>Miscellaneous</td>";
-                 $value=$value."<td> <input style=\"text-align:right\" id=\"miscellaneous\"  value=\"$misc\"name = \"tuitionfee\" type=\"text\" readonly class=\"form form-control\"></td>";
+                 $value=$value."<td> <input style=\"text-align:right\" id=\"misc\"  value=\"$misc\" name = \"misc\" type=\"text\" readonly class=\"form form-control\"></td>";
                  $value=$value."<td> ";
                  $value=$value."</td>";
-                 $value=$value."<td align=\"center\"><input name=\"paidby1\" value=\"sponsor\" type=\"radio\"></td>";
-                 $value=$value."<td align=\"center\"><input name=\"paidby1\" checked value=\"trainee\" type=\"radio\"></td></tr>";
+                 $value=$value."<td align=\"center\"><input id=\"misc_sponsor\"  name=\"paidby_misc\" value=\"sponsor\" type=\"radio\" onclick=\"computetvet()\"></td>";
+                 $value=$value."<td align=\"center\"><input id=\"misc_trainee\" name=\"paidby_misc\" checked value=\"trainee\" type=\"radio\" onclick=\"computetvet()\"></td></tr>";
                  
                  $value=$value."<tr><td>Graduation Fee</td>";
-                 $value=$value."<td> <input style=\"text-align:right\" id=\"grad\"  value=\"$grad\"name = \"tuitionfee\" type=\"text\" readonly class=\"form form-control\"></td>";
+                 $value=$value."<td> <input style=\"text-align:right\" id=\"gradfee\"  value=\"$grad\"name = \"gradfee\" type=\"text\" readonly class=\"form form-control\"></td>";
                  $value=$value."<td> ";
                  $value=$value."</td>";
-                 $value=$value."<td align=\"center\"><input name=\"paidby2\" value=\"sponsor\" type=\"radio\"></td>";
-                 $value=$value."<td align=\"center\"><input name=\"paidby2\" checked value=\"trainee\" type=\"radio\"></td></tr>";
+                 $value=$value."<td align=\"center\"><input name=\"paidby_gradfee\" id=\"gradfee_sponsor\" value=\"sponsor\" type=\"radio\" onclick=\"computetvet()\"></td>";
+                 $value=$value."<td align=\"center\"><input name=\"paidby_gradfee\" id=\"gradfee_trainee\" checked value=\"trainee\" type=\"radio\" onclick=\"computetvet()\"></td></tr>";
                  $value=$value."<tr><td colspan=\"3\">Total Trainee's Contribution</td>";
-                 $value=$value."<td colspan=\"2\"><input type=\"text\" style=\"text-align:right\" placeholder=\"0.00\" name=\"contribution\" class=\"form form-control\"></td></tr>";
+                 $value=$value."<td colspan=\"2\"><input type=\"text\" style=\"text-align:right\" placeholder=\"0.00\" value=\"$totalfee\" name=\"contribution\" id=\"contribution\" class=\"form form-control\"></td></tr>";
                  $value=$value."<tr><td rowspan=\"2\" colspan=\"5\"><br><input type=\"submit\" value=\"Process TVET Assessment\" class=\"btn btn-primary form form-control\"></td></tr></table>";
                  
                      }else{

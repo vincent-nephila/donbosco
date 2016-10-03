@@ -29,28 +29,20 @@ class AssessmentController extends Controller
         $currentschoolyear = "";
         $mydiscount="";
         $ledgers="";
+        
+        
         $student = \App\User::where('idno',$id)->first();
         $status = \App\Status::where('idno',$id)->first();
-       // $schoolyear = \App\CtrRefSchoolyear::first()->schoolyear;
-        //$balance = "";
-        //$reservation = 0;
-        //$currentschoolyear = "";
-        //$mydiscount="";
-        //$ledgers="";
-        //$student = \App\User::where('idno',$id)->first();
-        //$status1 = \App\Status::where('schoolyear',$schoolyear)->first();
-        //if(count($status1)> 0 ){
-        //$department = \App\ctrSchoolYear::where('department',$status1->department)->first();
-        //$deptperiod=$department->period;
-        //}else{
-        //$deptperiod="";    
-        //}
-        //$status = \App\Status::where('schoolyear',$schoolyear)->where('period',$deptperiod)->first();
+       
         if(count($status) > 0){
-        $currentschoolyear = \App\ctrSchoolYear::where('department', $status->department)->first();
-        $matchfields=["idno"=>$id, "schoolyear" =>$currentschoolyear->schoolyear, "period" => $currentschoolyear->period ];
-        $mydiscount=  \App\Discount::where($matchfields)->first();
-        $ledgers =  DB::Select("select sum(amount) as amount, sum(plandiscount) as plandiscount,  sum(otherdiscount) as otherdiscount,receipt_details  from ledgers
+            if($status->department=="TVET"){
+            $currentschoolyear= \App\ctrSchoolYear::where('department',$status->department)->where('period',$status->period)->first();    
+            }else{
+            $currentschoolyear = \App\ctrSchoolYear::where('department', $status->department)->first();
+            }
+            $matchfields=["idno"=>$id, "schoolyear" =>$currentschoolyear->schoolyear, "period" => $currentschoolyear->period ];
+            $mydiscount=  \App\Discount::where($matchfields)->first();
+            $ledgers =  DB::Select("select sum(amount) as amount, sum(plandiscount) as plandiscount,  sum(otherdiscount) as otherdiscount,receipt_details  from ledgers
                              where idno = '$id' and schoolyear = '".$currentschoolyear->schoolyear."'  and period = '". $currentschoolyear->period."' Group by receipt_details ");
               }
         
@@ -83,7 +75,60 @@ class AssessmentController extends Controller
     }
     
 function assess(Request $request){
+    $contribution="0";
+    $batch="0";
+    if($request->department=="TVET"){
+    $schoolperiod = \App\ctrSchoolYear::where('period', $request->batch)->first();    
+    }else{
     $schoolperiod = \App\ctrSchoolYear::where("department",$request->department)->first();
+    }
+    
+    if($request->department == "TVET"){
+        $tf = $request->tuitionfee;
+        $misc = $request->misc;
+        $gradfee = $request->gradfee;
+        $discount = $request->discount;
+        $paidby_tuitionfee = $request->paidby_tuitionfee;
+        $paidby_misc=$request->paidby_misc;
+        $paidby_gradfee=$request->paidby_gradfee;
+        $contribution = $request->contribution;
+        $batch=$request->batch;
+        if($request->action != "reassessed"){
+        $findtvet=  \App\TvetSubsidy::where('idno',$request->idno)->first();
+        if(count($findtvet)==0){
+            $sponsor=0;
+            $subsidy =0;
+            
+            if($paidby_tuitionfee=="sponsor"){
+                $sponsor=$sponsor + ($tf - ($discount/100) * $tf); 
+            } else {
+                $subsidy=$subsidy + ($tf - ($discount/100) * $tf);
+            }
+            
+            if($paidby_misc=="sponsor"){
+                $sponsor=$sponsor + $misc; 
+            } else {
+                $subsidy=$subsidy + $misc;
+            }
+            
+            if($paidby_gradfee=="sponsor"){
+                $sponsor=$sponsor + $gradfee; 
+            } else {
+                $subsidy=$subsidy + $gradfee;
+            }
+            
+            $addtvet = new \App\TvetSubsidy;
+            $addtvet->idno=$request->idno;
+            $addtvet->sponsor=$sponsor;
+            $addtvet->subsidy=$subsidy-$contribution;
+            $addtvet->discount=$tf*$discount/100;
+            $addtvet->batch=$batch;
+            $addtvet->save();      
+            }
+            }
+    
+            }
+    
     if(isset($request->strand)){
         $strand = $request->strand;
     } else{
@@ -105,29 +150,38 @@ function assess(Request $request){
     $action = $request->action;
     
     switch($action){
+    
     case "add":
-       
-              if($this->addLedger($request->id,$level,$request->plan,$request->discount,$request->department,$strand,$course)){  
+        
+              if($this->addLedger($request->id,$level,$request->plan,$request->discount,$request->department,$strand,$course,$contribution,$batch)){  
                 $status = new \App\Status;
                 $status->idno=$request->id;
                 $status->date_registered=Carbon::now();
+                if($request->department == "TVET" && $contribution == "0"){
+                $status->status = "2";    
+                }else{
                 $status->status = "1";
+                }
                 $status->department = $request->department;
-                if($request->level == 'Grade 9' || $request->level == 'Grade 10' || $request->level == 'Grade 11' || $request->level == 'Grade 12'){
-                $status->strand = $request->strand;
-                 }
-                 if($request->department == "TVET"){
-                 $status->course = $course;
-                 }
-                 else{  
-                  $status->level = $request->level;
-                 }                 
+                    if($request->level == 'Grade 9' || $request->level == 'Grade 10' || $request->level == 'Grade 11' || $request->level == 'Grade 12'){
+                        $status->strand = $request->strand;
+                    }
+                 
+                    if($request->department == "TVET"){
+                        $status->course = $course;
+                    }
+                        else{  
+                        $status->level = $request->level;
+                    }
+                    
                 $status->plan=$request->plan;
                 $status->schoolyear= $schoolperiod->schoolyear;
                 $status->period=$schoolperiod->period;
                 $status->save();
               }   
-        return redirect('registrar/evaluate/'. $request->id);
+                 
+        //return redirect('registrar/evaluate/'. $request->id);
+              return $this->evaluate($request->id);
         break;
         
         case "addnew":
@@ -141,11 +195,15 @@ function assess(Request $request){
         $newstudent->password = bcrypt($request->idno);
         $newstudent->save();
         
-        if($this->addLedger($request->idno,$level,$request->plan,$request->discount,$request->department, $strand,$course)){  
+        if($this->addLedger($request->idno,$level,$request->plan,$request->discount,$request->department, $strand,$course,$contribution,$batch)){  
                 $status = new \App\Status;
                 $status->idno=$request->idno;
                 $status->date_registered=Carbon::now();
+                if($request->department == "TVET" && $contribution == "0"){
+                $status->status = "2";    
+                }else{
                 $status->status = "1";
+                }
                 $status->department = $request->department;
                     if($request->level == 'Grade 9' || $request->level == 'Grade 10' || $request->level == 'Grade 11' || $request->level == 'Grade 12'){
                         $status->strand = $request->strand;
@@ -164,12 +222,16 @@ function assess(Request $request){
                 $status->period=$schoolperiod->period;
                 $status->save();
               }
-        return redirect('registrar/evaluate/'. $request->idno);
+        //return redirect('registrar/evaluate/'. $request->idno);
+              return $this->evaluate($request->idno);
         break;
     
     case "reassessed";
        
-      
+        $deletesubsidy= \App\TvetSubsidy::where('idno',$request->id)->first();
+        if(count($deletesubsidy)>0){
+            $deletesubsidy->delete();
+        }
         $matchfields=["idno"=>$request->id, "schoolyear"=>$schoolperiod->schoolyear, "period" => $schoolperiod->period];
         $deletestudents = \App\Ledger::where($matchfields)->get();
         foreach($deletestudents as $deletestudent){
@@ -191,7 +253,7 @@ function assess(Request $request){
         $changestatus->course="";
         $changestatus->track="";
         $changestatus->level="";
-        $changestatus->period="";
+        //$changestatus->period="";
         $changestatus->update();
         
         $ress=  \App\AdvancePayment::where('idno',$request->id)->where('status','0')->get();
@@ -201,17 +263,22 @@ function assess(Request $request){
             }
         }
         
-        return redirect('registrar/evaluate/'. $request->id);
+        //return redirect('registrar/evaluate/'. $request->id);
+        return $this->evaluate($request->id);
         
         
         //return $request->department;
         break;
         case "update";
             if($request->department == "Kindergarten" || $request->department =="Elementary" || $request->department == "Junior High School" || $request->department == "Senior High School" ||$request->department == "TVET" ){
-              if($this->addLedger($request->id,$request->level,$request->plan,$request->discount,$request->department,$strand,$course)){  
+              if($this->addLedger($request->id,$request->level,$request->plan,$request->discount,$request->department,$strand,$course,$contribution,$batch)){  
                 $status = \App\Status::where('idno',$request->id)->first();
                 $status->date_registered=Carbon::now();
+                if($request->department == "TVET" && $contribution == "0"){
+                $status->status = "2";    
+                }else{
                 $status->status = "1";
+                }
                 $status->department = $request->department;
                
                  if($request->level == 'Grade 9' || $request->level == 'Grade 10' || $request->level == 'Grade 11' || $request->level == 'Grade 12'){
@@ -230,7 +297,8 @@ function assess(Request $request){
                 $status->update();
               }   
             }
-            return redirect('registrar/evaluate/'. $request->id);
+            //return redirect('registrar/evaluate/'. $request->id);
+            return $this->evaluate($request->id);
         break;    
     
     }
@@ -242,12 +310,16 @@ function assess(Request $request){
       
     
 
-    function addLedger($id, $level, $plan, $discount,$department,$strand, $course){
+    function addLedger($id, $level, $plan, $discount,$department,$strand, $course,$contribution,$batch){
+                if($department=="TVET"){
+                $schoolperiod =  \App\ctrSchoolYear::where('department','TVET')->where('period',$batch)->first();    
+                }else{
                 $schoolperiod = \App\ctrSchoolYear::where("department",$department)->first();
+                }
                 $discounts = \App\CtrDiscount::where('discountcode',$discount)->first();   
                 
                  if($department == "TVET"){
-                   $matchfields = ["department"=>"TVET", "course"=> $course];  
+                   $matchfields = ["department"=>"TVET", 'plan'=>$plan,"course"=> $course,"period"=>$batch];  
                  } else{ 
                     if($level == "Grade 9" || $level == "Grade 10" || $level == "Grade 11" || $level == "Grade 12"){
                     $matchfields=['level'=>$level, 'plan' =>$plan, 'strand'=>$strand];
@@ -255,6 +327,28 @@ function assess(Request $request){
                             $matchfields=['level'=>$level, 'plan' =>$plan];
                  }}
                 
+                    if($department=="TVET"){
+                        $newledger = new \App\Ledger;
+                        $newledger->idno = $id;
+                        $newledger->transactiondate = Carbon::now();
+                        $newledger->department = $department;
+                       // $newledger->level = $ledger->level;
+                        $newledger->course = $course;
+                       // $newledger->track = $ledger->track;
+                       // $newledger->strand= $ledger->strand;
+                        $newledger->categoryswitch = "7";
+                        $newledger->acctcode = "Trainee Contribution";
+                        $newledger->description = "Trainee Contribution";
+                        $newledger->receipt_details = "Trainee Contribution";
+                        $newledger->amount = $contribution;
+                        //$newledger->plandiscount = $ledger->discount;
+                        $newledger->schoolyear = $schoolperiod->schoolyear;
+                        $newledger->duetype = "1";
+                        $newledger->period = $batch;
+                        $newledger->duedate = Carbon::now();
+                        $newledger->postedby = \Auth::user()->id;
+                        $newledger->save();
+                    }else{
                     $ledgers = \App\CtrPaymentSchedule::where($matchfields)->get();
                     foreach($ledgers as $ledger){
                         $newledger = new \App\Ledger;
@@ -311,6 +405,7 @@ function assess(Request $request){
                     
                         }
                     }
+                    }  
                 if($department == "Kindergarten" || $department == "Elementary" || $department == "Junior High School"){ 
                 $newsubjects = \App\CtrSubjects::where('level',$level)->get();
                 foreach($newsubjects as $newsubject){
@@ -378,7 +473,12 @@ function assess(Request $request){
     function printregistration($idno){
         $status = \App\Status::where('idno',$idno)->first();
         $user = \App\User::where('idno',$idno)->first();
+        if($status->department=="TVET"){
+         $matchfiels=['idno'=>$idno, 'schoolyear'=>$status->schoolyear, 'period'=>$status->period];
+     
+        }else{
         $matchfiels=['idno'=>$idno, 'schoolyear'=>$status->schoolyear, 'period'=>$status->period,'categoryswitch'=>'1'];
+    }
         $ledger = \App\Ledger::where($matchfiels)->first();
         $postedby = \App\User::where('id',$ledger->postedby)->first();
         $breakdownfees = DB::Select("select idno, sum(amount) as amount, sum(plandiscount) as plandiscount, sum(otherdiscount) as otherdiscount,categoryswitch, receipt_details,postedby from ledgers
@@ -391,7 +491,11 @@ function assess(Request $request){
         $reservation = \App\AdvancePayment::where($matchfields)->first();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->setPaper("Folio", "portrait");
+        if($status->department=="TVET"){
+        $pdf->loadView('print.registrationtvet',compact('ledger','postedby','dues','status','user','ledgers','breakdownfees','reservation'));    
+        }else{
         $pdf->loadView('print.registration',compact('ledger','postedby','dues','status','user','ledgers','breakdownfees','reservation'));
+        }
         return $pdf->stream();
        
     }
@@ -412,8 +516,8 @@ function assess(Request $request){
         $updatename->gender=$request->gender;
         $updatename->update();
         
-        return redirect(url('/registrar/evaluate',$request->idno));
-        
+       // return redirect(url('/registrar/evaluate',$request->idno));
+        return $this->evaluate($request->idno);
     }
    
     function updategrades(){

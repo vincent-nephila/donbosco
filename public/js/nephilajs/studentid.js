@@ -1,6 +1,6 @@
 function getid(varid){
-   
-          $.ajax({
+  
+           $.ajax({
             type: "GET", 
             url: "/getid/" + varid , 
             success:function(data){

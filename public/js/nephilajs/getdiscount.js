@@ -4,9 +4,11 @@ function getdiscount(){
    myarray['department']=department;
    if(department=="TVET"){
    var plan = document.getElementById('plan').value;    
-   var course = document.getElementById('course').value;    
+   var course = document.getElementById('course').value;  
+   var batch = document.getElementById('batch').value;
    myarray['plan']=plan;
    myarray['course']=course
+   myarray['batch']=batch;
    }
       $.ajax({
             type: "GET", 
@@ -14,7 +16,9 @@ function getdiscount(){
             data: myarray,
             success:function(data){
                 if(department=="TVET"){
-                  $('#screendisplay').html(data);  
+                  $('#screendisplay').html(data);
+                 // $('#discountcontainer').html(data);
+                 // $('#trackcontainer').html(data);
                 }else{   
                 $('#screendisplay').html("");
                 $('#discountcontainer').html(data); 
@@ -54,3 +58,27 @@ function compute(){
     
 }
 
+function computetvet(){
+    
+    var discount = document.getElementById('discount').value;
+    var tf = document.getElementById('tuitionfee').value
+    var mc = document.getElementById('misc').value
+    var gr = document.getElementById('gradfee').value
+    var tuitionfee = 0;
+    var misc = 0;
+    var gradfee = 0;
+    
+   if(document.getElementById('tuitionfee_trainee').checked){
+     tuitionfee = eval(tf-(tf*(discount/100)));   
+    }
+    if(document.getElementById('misc_trainee').checked){
+       misc = eval(mc)
+    }
+    if(document.getElementById('gradfee_trainee').checked){
+       gradfee = eval(gr)
+    } 
+    
+    document.getElementById('contribution').value = eval(tuitionfee+misc+gradfee)
+    
+   //alert()
+}

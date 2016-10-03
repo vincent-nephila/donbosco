@@ -150,7 +150,8 @@
     Route::get('/updateadviser/{id}/{value}','AjaxController@updateadviser');
     Route::get('/getsectionstrand/{level}/{strand}','AjaxController@getsectionstrand');
     Route::get('/displaygrade','AjaxController@displaygrade');
-   // Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}','AjaxController@getsoasummary');
+    Route::get('/gettvetplan/{batch}/{course}','AjaxController@gettvetplan');
+    // Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}','AjaxController@getsoasummary');
    
     //Ajax Route Sheryl
    

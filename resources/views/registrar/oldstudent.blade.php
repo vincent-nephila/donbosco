@@ -4,6 +4,7 @@
 <form onsubmit="return confirm('Continue to assess this student ?');" class="form-horizontal" id = "assess" role="form" method="POST" action="{{ url('/registrar/assessment') }}">
   {!! csrf_field() !!}  
 <input type="hidden" name="id" id="id" value="{{ $student->idno }}">
+<input type="hidden" name="idno" id="idno" value="{{ $student->idno }}">
 <div class="container_fuid clearfix">
     <div class="col-md-6">
         <div class="col-md-12 panel-body">
@@ -108,8 +109,14 @@
                                 <div class="col-md-12">
                                      <span class="form-control">{{$status->strand}}</span>
                                 </div>
-                        
+                             @elseif($status->department == "TVET")       
+                            <div class="col-md-12">Batch</div>
+                                <div class="col-md-12">
+                                     <span class="form-control">{{$currentschoolyear->period}}</span>
+                                     <input type="hidden" name="batch" value="{{$currentschoolyear->period}}">
+                                </div>
                             @endif 
+                            
                         </div>
                     </div>
                 

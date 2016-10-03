@@ -25,4 +25,17 @@ function getplan(varlevel){
     
 }
 
-
+function gettvetplan(batch){
+    var course = document.getElementById('course').value;
+    $.ajax({
+            type: "GET", 
+            url: "/gettvetplan/" + batch + "/" + course, 
+            success:function(data){
+                $('#discountcontainer').html(data);
+                $('#screendisplay').html("");
+                $('#trackcontainer').html("");
+                //$('#plancontainer').html(data);
+                }
+            }); 
+    
+}
