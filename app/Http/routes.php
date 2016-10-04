@@ -119,6 +119,8 @@
     Route::get('/studentgrade/{idno}','Vincent\GradeController@studentGrade'); 
     Route::get('sheetA','Vincent\ReportController@sheetA'); 
     Route::get('overallrank', 'Vincent\GradeController@overallRank');
+    Route::post('test', 'Vincent\AttendanceController@importMonthlyAttendance');
+    Route::get('test', 'Vincent\AttendanceController@index');
     
 });
 
