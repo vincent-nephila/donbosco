@@ -116,6 +116,7 @@
                                   <option value = "7">Elementary Department  Principal</option>
                                   <option value = "8">Assistant High School Department Principal</option>
                                   <option value = "9">Assistant Elementary Department  Principal</option>
+                                  <option value = "15">TVET Coordinator</option>
                                   
                                     </select>    
 

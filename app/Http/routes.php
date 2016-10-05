@@ -38,6 +38,7 @@
      Route::get('sheetaAttendance/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetaAttendance');
      Route::get('attendance', 'Vincent\ReportController@attendance');
      Route::get('/sheetb', 'Vincent\ReportController@sheetB');
+     Route::get('planset/{idno}','Vincent\TvetController@adjustLedger');
     
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
@@ -172,6 +173,12 @@
     Route::get('showallrank/{level}','Vincent\AjaxController@viewallrank');
     Route::get('setallrank','Vincent\AjaxController@setOARank');
     Route::get('/getpreregid/{varid}','Vincent\AjaxController@getid');
+    //10-5-2016
+    Route::get('getsearchtvet/{search}','Vincent\AjaxController@searchStudtvet');
+    Route::get('/changeTotal/{total}','Vincent\AjaxController@changeTotal');
+    Route::get('/changeSponsor/{total}','Vincent\AjaxController@changeSponsor');
+    Route::get('/changeSubsidy/{total}','Vincent\AjaxController@changeSubsidy');
+    Route::get('/saveLog','Vincent\AjaxController@saveLog');    
 
 
   

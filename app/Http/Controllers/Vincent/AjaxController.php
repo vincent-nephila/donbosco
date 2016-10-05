@@ -964,5 +964,84 @@ class AjaxController extends Controller
             return $data;
         }
     }
-        
+ function searchStudtvet($search){
+     $students = DB::Select("select lastname,firstname,middlename,extensionname,gender,users.idno,statuses.status from users join statuses on statuses.idno = users.idno "
+                            . "where statuses.department = 'TVET' "
+                            . "AND (lastname LIKE '$search%' OR firstname LIKE '$search%' OR users.idno LIKE '$search%')");
+     $data = "";
+     $data = $data."<table class='table table-striped'><thead>";
+     $data = $data."<tr><th>Student Number</th><th>Student Name</th><th>Gender</th><th>Plan</th></tr>";
+     $data = $data."</thead>";
+     $data = $data."<tbody>";
+               
+    foreach($students as $student){
+        $data =$data."<tr><td>".$student->idno."</td><td>".$student->lastname.", ".$student->firstname." ".$student->middlename." ".$student->extensionname.
+               "</td><td>".$student->gender."</td><td>";
+        if($student->status == 2){
+            $data =$data."<a href='/planset/".$student->idno."'>view</a>";
+        }else{
+            $data =$data."Currently not Enrolled";   
+        }
+        $data =$data."</td></tr>";
+    }
+    $data =$data."</tbody>";
+    $data =$data."</table>";
+
+    return $data;
+ }
+ 
+ function changeTotal($total){
+     $student = Input::get('students');
+     $batch = Input::get('batch');
+     $schoolyear = \App\CtrSchoolYear::first();
+     $change = \App\TvetSubsidy::where('idno',$student)->where('batch',$batch)->first();
+     $change->amount = $total;
+     $change->save();
+     
+     return $change->idno;
+ }
+ 
+ function changeSubsidy($total){
+     $student = Input::get('students');
+     $batch = Input::get('batch');
+    
+     $change = \App\TvetSubsidy::where('idno',$student)->where('batch',$batch)->first();
+     $change->subsidy = $total;
+     $change->save();
+     
+     return $change->idno;
+ }
+ 
+ function changeSponsor($total){
+     $student = Input::get('students');
+     $batch = Input::get('batch');
+     $schoolyear = \App\CtrSchoolYear::first();
+     $change = \App\TvetSubsidy::where('idno',$student)->where('batch',$batch)->first();
+     $change->sponsor = $total;
+     $change->save();
+     
+     return $change->idno;
+ }
+ 
+ function saveLog(){
+     $student = Input::get('students');
+     $subsidy = Input::get('subsidy');
+     $sponsor = Input::get('sponsor');
+     $trainee = Input::get('trainee');
+     $date = date("Y-m-d");
+     $batch = Input::get('batch');
+     
+     //$schoolyear = \App\CtrSchoolYear::first();
+
+     $log = new \App\TvetRecordChange;
+     $log->idno = $student;
+     $log->subsidy = $subsidy;
+     $log->sponsor = $sponsor;
+     $log->trainees = $trainee;
+     $log->batch = $batch;
+     $log->logdate = $date;
+     $log->save();
+     
+     return null;
+ }        
 }

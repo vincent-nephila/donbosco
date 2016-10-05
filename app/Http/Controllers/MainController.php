@@ -49,7 +49,13 @@ class MainController extends Controller
                            . "b.idno = a.idno and b.status='2' order by a.lastname, a.firstname");
                    //$students = \App\User::where('accesslevel','0')->orderBy('lastname','firstname')->take(30)->get();
                    return view('accounting.index',compact('myid','myname','students')) ;                  
-                  break; 
+                  break;
+               
+              
+               case env('USER_TVET_COOR');
+                     $students = DB::Select("select lastname,firstname,middlename,extensionname,gender,users.idno,statuses.status as stat from users join statuses on statuses.idno = users.idno where statuses.department = 'TVET'");
+                        return view('vincent.tvet.index',compact('students'));
+                  break;              
             }
             
         } else {    
