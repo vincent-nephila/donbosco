@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Excel;
+use DB;
 class AttendanceController extends Controller
 {
 
@@ -36,12 +37,21 @@ class AttendanceController extends Controller
                     }elseif(strlen($idnof)==4){
                         $idnof = "00".$idnof;
                     }
+                    
                     $this->updateMonthlyAttd($idnof,3,'DAYT',$value->dayt,$sheet,$sy);
                     $this->updateMonthlyAttd($idnof,1,'DAYP',$value->dayp,$sheet,$sy);
                     $this->updateMonthlyAttd($idnof,2,'DAYA',$value->daya,$sheet,$sy);
+                    
+                    $quarter = \App\CtrQuarter::first();
+        
+                    $insert[] = ['idno'=>$idnof, 'qtrperiod'=>$quarter->qtrperiod,'schoolyear'=>$sy,'month'=>$sheet,
+                        'DAYA'=>$value->daya, 'DAYP'=>$value->dayp,'DAYT'=>$value->dayt];                    
                 } 
 
             }
+            if(!empty($insert)){
+                DB::table('attendance_repos')->insert($insert);
+            }            
         }
         return redirect(url('/importGrade'));
     }
@@ -49,7 +59,7 @@ class AttendanceController extends Controller
     function updateMonthlyAttd($idno,$sort,$type,$value,$month,$sy){
         $check  = \App\Attendance::where('idno',$idno)->where('attendancetype',$type)->where('schoolyear',$sy)->get();
         $months=ucfirst(strtolower($month));
-        
+
         
         if($months == "Sep"){
             $months = "Sept";
