@@ -25,7 +25,9 @@
     Route::post('studentinfokto12','Registrar\Studentinfokto12Controller@saveInfo');
     Route::get('importGrade', 'ExportController@importGrade');
     Route::post('importConduct', 'ExportController@importExcelConduct');
-    Route::post('importAttendance', 'ExportController@importExcelAttendance');
+    //VINCENT 10-8-2016
+    //Route::post('importAttendance', 'ExportController@importExcelAttendance');
+    Route::post('importAttendance', 'Vincent\AttendanceController@importMonthlyAttendance');
     Route::post('importGrade', 'ExportController@importExcelGrade');
     Route::post('importCompetence', 'ExportController@importExcelCompetence');
     
@@ -39,6 +41,7 @@
      Route::get('attendance', 'Vincent\ReportController@attendance');
      Route::get('/sheetb', 'Vincent\ReportController@sheetB');
      Route::get('planset/{idno}','Vincent\TvetController@adjustLedger');
+     Route::get('/sectiontvet','Vincent\SectionController@sectiontvet');
     
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');

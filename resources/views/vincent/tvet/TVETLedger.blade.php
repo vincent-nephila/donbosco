@@ -37,10 +37,9 @@
         @endforeach
         </table>
         <hr>
-        <div>Change Logs</div>
-        
+        <div><h4>Monthly Adjustments</h4></div>
         <table width="100%" border="1" style='text-align: center'>
-            <thead style='text-align: center'><td>Log Date</td><td>Total</td><td>Sponsor's Contribution</td><td>Subsidized</td><td>Trainee Contribution</td></thead>
+            <thead style='text-align: center'><td>Month</td><td>Total</td><td>Sponsor's Contribution</td><td>Subsidized</td><td>Trainee Contribution</td></thead>
             @foreach($records as $record)
             <tr>
                 <td>{{$record->logdate}}</td><td>{{number_format($record->trainees+$record->sponsor+$record->subsidy,2)}}</td><td>{{$record->sponsor}}</td><td>{{$record->subsidy}}</td><td>{{$record->trainees}}</td>
@@ -75,6 +74,7 @@
         });    
     }
     
+    window.setTimeout(null,1000000);
     });   
     
     function compute(){

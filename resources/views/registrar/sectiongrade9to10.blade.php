@@ -122,8 +122,11 @@
                             <td style="font-size:10pt;padding-left: 0px;">
                                 <b>{{$shop}}</b>
                             </td>
-                            <td style="font-size:10pt;"  colspan="2">
-                                
+                            <td style="font-size:10pt;padding-left: 0px;">
+                                <b>Age:</b>
+                            </td>
+                            <td style="font-size:10pt;padding-left: 0px;">
+                                {{$info['info']->age}}
                             </td>
                         </tr>                        
                         <tr>

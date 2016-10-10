@@ -16,10 +16,10 @@ class AttendanceController extends Controller
     }
     
     function importMonthlyAttendance(){
-        if(Input::hasFile('import_file')){
+        if(Input::hasFile('import_file2')){
             $schoolyear = \App\ctrSchoolYear::first();
             $sy = $schoolyear->schoolyear;
-            $path = Input::file('import_file')->getRealPath();
+            $path = Input::file('import_file2')->getRealPath();
             $data = Excel::load($path, function($reader) {
             })->get();
 
@@ -28,19 +28,28 @@ class AttendanceController extends Controller
                 $sheets = Excel::selectSheets($book->getTitle())->load($path,null)->get();
 
                 foreach($sheets as $key=>$value){
-                    $this->updateMonthlyAttd($value->idno,3,'DAYT',$value->dayt,$sheet,$sy);
-                    $this->updateMonthlyAttd($value->idno,1,'DAYP',$value->dayp,$sheet,$sy);
-                    $this->updateMonthlyAttd($value->idno,2,'DAYA',$value->daya,$sheet,$sy);
+                    
+                    $idnof = $value->idno;
+                    
+                    if(strlen($idnof)==5){
+                        $idnof = "0".$idnof;
+                    }elseif(strlen($idnof)==4){
+                        $idnof = "00".$idnof;
+                    }
+                    $this->updateMonthlyAttd($idnof,3,'DAYT',$value->dayt,$sheet,$sy);
+                    $this->updateMonthlyAttd($idnof,1,'DAYP',$value->dayp,$sheet,$sy);
+                    $this->updateMonthlyAttd($idnof,2,'DAYA',$value->daya,$sheet,$sy);
                 } 
 
             }
         }
-            return view('vincent.test');
+        return redirect(url('/importGrade'));
     }
     
     function updateMonthlyAttd($idno,$sort,$type,$value,$month,$sy){
         $check  = \App\Attendance::where('idno',$idno)->where('attendancetype',$type)->where('schoolyear',$sy)->get();
         $months=ucfirst(strtolower($month));
+        
         
         if($months == "Sep"){
             $months = "Sept";

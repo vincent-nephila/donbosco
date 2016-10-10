@@ -993,7 +993,7 @@ class AjaxController extends Controller
  function changeTotal($total){
      $student = Input::get('students');
      $batch = Input::get('batch');
-     $schoolyear = \App\CtrSchoolYear::first();
+     
      $change = \App\TvetSubsidy::where('idno',$student)->where('batch',$batch)->first();
      $change->amount = $total;
      $change->save();
@@ -1015,7 +1015,7 @@ class AjaxController extends Controller
  function changeSponsor($total){
      $student = Input::get('students');
      $batch = Input::get('batch');
-     $schoolyear = \App\CtrSchoolYear::first();
+     
      $change = \App\TvetSubsidy::where('idno',$student)->where('batch',$batch)->first();
      $change->sponsor = $total;
      $change->save();
@@ -1028,20 +1028,40 @@ class AjaxController extends Controller
      $subsidy = Input::get('subsidy');
      $sponsor = Input::get('sponsor');
      $trainee = Input::get('trainee');
-     $date = date("Y-m-d");
+     $date = date("F",strtotime("-1 months"));
+     $curr_date = date("F");
      $batch = Input::get('batch');
      
-     //$schoolyear = \App\CtrSchoolYear::first();
-
-     $log = new \App\TvetRecordChange;
-     $log->idno = $student;
-     $log->subsidy = $subsidy;
-     $log->sponsor = $sponsor;
-     $log->trainees = $trainee;
-     $log->batch = $batch;
-     $log->logdate = $date;
-     $log->save();
      
-     return null;
+     $check1 = \App\TvetRecordChange::where('idno',$student)->where('batch',$batch)->get();
+     if($check1->isEmpty()){
+        $log = new \App\TvetRecordChange;
+        $log->idno = $student;
+        $log->subsidy = $subsidy;
+        $log->sponsor = $sponsor;
+        $log->trainees = $trainee;
+        $log->batch = $batch;
+        $log->logdate = "ORIGINAL";
+        $log->save();         
+     }
+     
+     $check2 = \App\TvetRecordChange::where('idno',$student)->where('batch',$batch)->where('logdate',$date)->get();
+     $enrollment = \App\Status::where('idno',$student)->where('period',$batch)->first();
+     $enrollment_date = date("F",strtotime($enrollment->date_enrolled));
+     if(date("F") != $enrollment_date){
+         if($check2->isEmpty()){
+            $log = new \App\TvetRecordChange;
+            $log->idno = $student;
+            $log->subsidy = $subsidy;
+            $log->sponsor = $sponsor;
+            $log->trainees = $trainee;
+            $log->batch = $batch;
+            $log->logdate = strtoupper($date);
+            $log->save();              
+         }
+     }
+     return $enrollment_date;
  }        
+ 
+ 
 }

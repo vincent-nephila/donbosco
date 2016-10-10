@@ -137,6 +137,18 @@
                                 {{$info['info']->lrn}}
                             </td>
                         </tr>
+                        <tr>
+                            <td style="font-size:10pt;padding-left: 0px;">
+                                <b>Age:</b>
+                            </td>
+                            <td style="font-size:10pt;padding-left: 0px;">
+                                {{$info['info']->age}}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>                        
                     </table>
                     <div style="height:.3cm;"></div>
                 </td>

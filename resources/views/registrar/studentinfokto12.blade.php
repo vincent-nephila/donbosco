@@ -59,10 +59,28 @@
 <body> 
     <div class="container">
     <table border = '1' cellpacing="0" cellpadding = "0" width="100%" align="center">
-        <tr><td rowspan="4" width="65"><img src="{{asset('/images/logo.png')}}" width="60"></td><td><span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span></td><td>Gr/Yr</td><td>@if($status != NULL){{$status->level}} @endif</td></tr>
+        <tr><td rowspan="5" width="65" style="vertical-align: top"><img src="{{asset('/images/logo.png')}}" width="60"></td><td><span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span></td><td>Gr/Yr</td><td>@if($status != NULL){{$status->level}} @endif</td></tr>
         <tr><td style="font-size:10pt;">Chino Roces Ave., Makati City </td><td>Section</td><td>@if($status!= NULL){{$status->section}} @endif</td></tr>
         <tr><td style="font-size:10pt;">Tel No : 892-01-01</td><td>Shop</td><td>@if($status!= NULL){{$status->strand}} @endif</td></tr>
         <tr><td></td><td>Student No</td><td id="studno">@if($student != NULL){{$student->idno}}@endif</td></tr>
+        @if($student != NULL)
+            <tr>
+                <td></td><td>Status</td>
+                @if($status!= NULL)
+                    @if($status->status == 0)
+                        <td id="status">Registered</td>
+                    @elseif($status->status == 1)
+                        <td id="status">Assessed</td>
+                    @elseif($status->status == 2)
+                    <td id="status">Enrolled</td>
+                    @elseif($status->status == 3)
+                        <td id="status">Dropped</td>
+                    @endif
+                @else
+                    <td id="status">Not Registered</td>
+                @endif
+            </tr>
+        @endif
     </table>
 
     @if(count($errors)>0)
