@@ -10,7 +10,8 @@
 -->
 
 <?php
-
+$qtr = \App\CtrQuarter::first();
+$qtrperiod = $qtr->qtrperiod;
 
 ?>
 <div class="col-md-3">
@@ -60,9 +61,8 @@
      <ul>
     <?php
     $levels = \App\CtrLevel::orderBy('id')->get();
-   
     foreach($levels as $level){
-        echo "<li>" . $level->level . myFunction($level->level,1) ."</li>";
+        echo "<li>" . $level->level . myFunction($level->level,1,$qtrperiod) ."</li>";
     }
     ?>
     </ul>
@@ -74,7 +74,7 @@
     $levels = \App\CtrLevel::orderBy('id')->get();
    
     foreach($levels as $level){
-        echo "<li>" . $level->level . myFunction($level->level,2) ."</li>";
+        echo "<li>" . $level->level . myFunction($level->level,2,$qtrperiod) ."</li>";
     }
     ?>
     </ul>
@@ -86,7 +86,7 @@
     $levels = \App\CtrLevel::orderBy('id')->get();
    
     foreach($levels as $level){
-        echo "<li>" . $level->level . myFunction($level->level,3) ."</li>";
+        echo "<li>" . $level->level . myFunction($level->level,3,$qtrperiod) ."</li>";
     }
     ?>
 </ul>
@@ -95,7 +95,7 @@
      <ul>
     <?php
     
-        echo "<li> Kindergarten" . getCompetency() ."</li>";
+        echo "<li> Kindergarten" . getCompetency($qtrperiod) ."</li>";
     
     ?>
     </ul>
@@ -104,24 +104,24 @@
 
 
 <?php
-function getCompetency(){
+function getCompetency($qtrperiod){
 $data = "<ul>"; 
 $sections=  DB::Select("select distinct section from statuses where level='Kindergarten' and status = '2' ");
 foreach($sections as $section){
     if($section->section == ""){}else{
-    $data = $data. "<li>" . $section->section . getCompetencyValue($section->section)."</li>";
+    $data = $data. "<li>" . $section->section . getCompetencyValue($section->section,$qtrperiod)."</li>";
 }}
 
 $data = $data."</ul>";
 
 return $data; 
 }
-function myFunction($level,$subjecttype){
+function myFunction($level,$subjecttype,$qtrperiod){
 $data = "<ul>"; 
 $sections=  DB::Select("select distinct section from statuses where level='$level' and status = '2' ");
 foreach($sections as $section){
     if($section->section == ""){}else{
-    $data = $data. "<li>" . $section->section . getSubject($level,$section->section,$subjecttype)."</li>";
+    $data = $data. "<li>" . $section->section . getSubject($level,$section->section,$subjecttype,$qtrperiod)."</li>";
 }}
 
 $data = $data."</ul>";
@@ -129,12 +129,12 @@ $data = $data."</ul>";
 return $data;    
 }
 
-function getCompetencyValue($section){
+function getCompetencyValue($section,$qtrperiod){
     $values = DB::Select("select distinct competencycode from ctr_competences");
     $data = "<ul>";
     foreach($values as $value){
         $mycount=DB::Select("select a.idno from statuses as a, competency_repos as b where a.idno=b.idno "
-                . " and a.level='Kindergarten' and a.section='$section'");
+                . " and a.level='Kindergarten' and a.section='$section' and b.qtrperiod='$qtrperiod'");
         $data=$data."<li";
         if(count($mycount)>0){
             $data = $data . " style='color:red'";    
@@ -144,7 +144,7 @@ function getCompetencyValue($section){
     $data=$data."</ul>";
     return $data;
 }
-function getSubject($level,$section,$subjecttype){
+function getSubject($level,$section,$subjecttype,$qtrperiod){
   if($subjecttype=='1'){  
     if($level == 'Grade 11'){
      $subjects = DB::Select("select distinct subjectcode, subjectname from ctr_subjects where level='$level' and subjecttype <= '6' and subjecttype > 4  order by subjecttype, sortto");
@@ -160,7 +160,7 @@ function getSubject($level,$section,$subjecttype){
   }
     $data = "<ul>";
 foreach($subjects as $subject){
-    $mycount = getCount($level, $subject->subjectcode, $section,$subjecttype);
+    $mycount = getCount($level, $subject->subjectcode, $section,$subjecttype, $qtrperiod);
     $data = $data. "<li";
     if($mycount > 0 ){
         $data=$data . " style=\"color:red\" ";
@@ -172,15 +172,15 @@ $data = $data."</ul>";
 return $data; 
 }
 
-function getCount($level, $subjectcode, $section,$subjecttype){
+function getCount($level, $subjectcode, $section,$subjecttype,$qtrperiod){
   if($subjecttype=='1'){  
-  $count = DB::Select("select subject_repos.idno from subject_repos,statuses  where  subject_repos.idno=statuses.idno and statuses.level = '$level' and subject_repos.subjectcode = '$subjectcode' and statuses.section = '$section'");  
+  $count = DB::Select("select subject_repos.idno from subject_repos,statuses  where  subject_repos.idno=statuses.idno and statuses.level = '$level' and subject_repos.subjectcode = '$subjectcode' and statuses.section = '$section' and subject_repos.qtrperiod = '$qtrperiod'");  
   }
   elseif($subjecttype=='2'||$subjecttype=='3'){
   if($subjecttype=='2'){    
-  $count = DB::Select("Select conduct_repos.idno from conduct_repos,statuses where conduct_repos.idno = statuses.idno and statuses.level = '$level' and statuses.section = '$section'");
+  $count = DB::Select("Select conduct_repos.idno from conduct_repos,statuses where conduct_repos.idno = statuses.idno and statuses.level = '$level' and statuses.section = '$section' and conduct_repos.qtrperiod='$qtrperiod'");
   } else{
-   $count = DB::Select("Select attendance_repos.idno from attendance_repos,statuses where attendance_repos.idno = statuses.idno and statuses.level = '$level' and statuses.section = '$section'");    
+   $count = DB::Select("Select attendance_repos.idno from attendance_repos,statuses where attendance_repos.idno = statuses.idno and statuses.level = '$level' and statuses.section = '$section' and attendance_repos.qtrperiod = '$qtrperiod'");    
   }
   
   }

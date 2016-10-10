@@ -39,6 +39,7 @@ class ExportController extends Controller
 
 	public function importExcelGrade(){
 		if(Input::hasFile('import_file')){
+                        $qtrperiod = \App\CtrQuarter::first()->qtrperiod;
                         $schoolyear = \App\ctrSchoolYear::first();
                         $sy = $schoolyear->schoolyear;
 			$path = Input::file('import_file')->getRealPath();
@@ -57,9 +58,9 @@ class ExportController extends Controller
                                     }
                                         $insert[] = ['idno' => $idnof, 'subjectcode' => $value->subjectcode,
                                             'grade'=> $value->grade,
-                                            'qtrperiod'=> $value->qtrperiod,'schoolyear'=> $sy];
+                                            'qtrperiod'=> $qtrperiod,'schoolyear'=> $sy];
                                         
-                                 $this->upgradegrade($value->idno, $value->subjectcode, $value->qtrperiod,$value->grade,$sy);     
+                                 $this->upgradegrade($value->idno, $value->subjectcode, $qtrperiod,$value->grade,$sy);     
 				
                                  
                                 }
@@ -84,6 +85,7 @@ class ExportController extends Controller
 
 	{
             if(Input::hasFile('import_file1')){
+                        $qtrperiod = \App\CtrQuarter::first()->qtrperiod;
                         $schoolyear = \App\ctrSchoolYear::first();
                         $sy = $schoolyear->schoolyear;
 			$path = Input::file('import_file1')->getRealPath();
@@ -98,24 +100,24 @@ class ExportController extends Controller
                                         $idnof = "0".$idnof;
                                     }
                                     
-                                    $insert[] = ['idno'=>$idnof, 'qtrperiod'=>$value->qtrperiod, 
+                                    $insert[] = ['idno'=>$idnof, 'qtrperiod'=>$qtrperiod, 
                                         'schoolyear'=>$value->schoolyear,
                                         'GC'=>$value->gc, 'SR'=>$value->sr,'PE'=>$value->pe, 'SYN'=>$value->syn,
                                         'JO'=>$value->jo,'TS'=>$value->ts,'OSR'=>$value->osr,'DPT'=>$value->dpt,'PTY'=>$value->pty,
                                         'DI'=>$value->di,'PG'=>$value->pg,'SIS'=>$value->sis];
                                     
-                                   $this->updateconduct($value->idno, 'GC', $value->gc, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'SR', $value->sr, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'PE', $value->pe, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'SYN', $value->syn, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'JO', $value->jo, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'TS', $value->ts, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'OSR', $value->osr, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'DPT', $value->dpt, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'PTY', $value->pty, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'DI', $value->di, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'PG', $value->pg, $value->qtrperiod, $sy);
-                                   $this->updateconduct($value->idno, 'SIS', $value->sis, $value->qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'GC', $value->gc, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'SR', $value->sr, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'PE', $value->pe, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'SYN', $value->syn, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'JO', $value->jo, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'TS', $value->ts, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'OSR', $value->osr, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'DPT', $value->dpt, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'PTY', $value->pty, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'DI', $value->di, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'PG', $value->pg, $qtrperiod, $sy);
+                                   $this->updateconduct($value->idno, 'SIS', $value->sis, $qtrperiod, $sy);
 				}
 
 				if(!empty($insert)){
@@ -140,6 +142,7 @@ class ExportController extends Controller
 	{
 
 		if(Input::hasFile('import_file3')){
+                        $qtrperiod = \App\CtrQuarter::first()->qtrperiod;
                         $schoolyear = \App\ctrSchoolYear::first();
                         $sy = $schoolyear->schoolyear;
 			$path = Input::file('import_file3')->getRealPath();

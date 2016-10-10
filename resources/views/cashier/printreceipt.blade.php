@@ -6,6 +6,7 @@
 body { margin: 0px; }
 @media print {
     table {page-break-after: avoid;}
+    
 }
 </style>
 </head> 
@@ -17,7 +18,7 @@ body { margin: 0px; }
  </table>
  <table width="311" celpadding ="0" celspacing = "0">
      @if(isset($status->level))
-     <tr><td><div style="margin-left: 100px">{{$status->level}} {{$status->strand}} {{$status->section}}</div></td><td>{{$tdate->transactiondate}}</td></tr>
+     <tr><td><div style="margin-left: 100px">{{$status->level}} {{$status->strand}} {{$status->section}}</div></td><td><div style="font-size:9pt">{{$tdate->transactiondate}} <br >{{$timeis}}</div></td></tr>
      @else
      <tr><td><div style="margin-left: 100px"></div></td><td>{{$tdate->transactiondate}}</td></tr>
      @endif
@@ -63,7 +64,8 @@ body { margin: 0px; }
  </table>
  <table width="100%" border = "0">
    <tr><td width="30%"></td><td>OR : <span style = "font-size:10pt; font-weight:bold">{{$tdate->receiptno}}</span></td></tr>
-   <tr><td></td><td>Ref No : <span style = "font-size:10pt; font-weight:bold">{{$tdate->refno}}<br>{{$timeis}}</span></td></tr>
+   <tr><td></td><td>Ref No : <span style = "font-size:10pt; font-weight:bold">{{$tdate->refno}}</span></td></tr>
+   
  </table>
 </div>    
 </body>
