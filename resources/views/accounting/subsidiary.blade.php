@@ -22,7 +22,16 @@
             <option value="{{$acctcode->receipt_details}}">{{$acctcode->receipt_details}}</option>
             @endforeach
         </select>    
-    </div>    
+    </div>  
+          <div class="form-group">
+        <h5>Department :</h5>
+        <select name="deptname" id="deptname" class="form-control">
+            <option value="none">None</option>
+            @foreach($depts as $dept)
+            <option value="{{$dept->sub_department}}">{{$dept->sub_department}}</option>
+            @endforeach
+        </select>    
+    </div>  
      <div class="form-group">
          <input type="submit" name="submit" id="submit" class="btn btn-primary">    
      </div>   

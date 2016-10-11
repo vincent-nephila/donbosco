@@ -49,7 +49,7 @@
                                 </td><td align="right">{{number_format($dbl->amount,2)}}</td></tr>
         <?php $total = $total + $dbl->amount;?>
         @endforeach
-        <tr><td colspan = "4">Total</td><td align="right">{{number_format($total,2)}}</td></tr>
+        <tr><td colspan = "3">Total</td><td align="right">{{number_format($total,2)}}</td></tr>
                             </tbody>
                         </table>                            
         

@@ -89,6 +89,7 @@
                                         <li><a href="{{url('encashment')}}">Encashment</a></li>
                                         <!--<li><a href="{{url('nonstudent')}}">Other Payment</a></li>-->
                                         <li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Register</a></li>
+                                        <li><a href="{{url('searchor')}}"><i class="fa fa-btn fa-sign-out"></i>Search OR</a></li>
                                     @endif
                                  @endif
                                  

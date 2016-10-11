@@ -49,7 +49,7 @@
             <tr><td></td><td>&nbsp;&nbsp;&nbsp;Cashier</td></tr>
        </table>
              <a href="{{url('/cashier',$student->idno)}}" class="btn btn-primary">See Ledger</a>
-             <a href="{{url('/printreceipt',array($tdate->refno,$student->idno))}}" class="btn btn-primary">Print Receipt</a>
+             <a href="{{url('/printreceipt',array($tdate->refno,$student->idno))}}" id="printreceipt" class="btn btn-primary">Print Receipt</a>
              @if($tdate->transactiondate == date('Y-m-d') && Auth::user()->idno == $posted->idno)
                 @if($tdate->isreverse == '0')
                 <a href="{{url('/cancell',array($tdate->refno,$student->idno))}}" class="btn btn-danger pull-right" onclick="return confirm('Are you sure?')">Cancel</a>
@@ -59,6 +59,9 @@
               @endif
     </div>    
     </div>
-
-</div>
+<script>
+    $(document).ready(function(){
+        $('#printreceipt').focus();
+    })
+</script>    
 @stop
