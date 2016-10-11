@@ -899,7 +899,7 @@ foreach ($collections as $collection){
             $schoolyear = \App\CtrRefSchoolyear::first();
             $plan=$request->plan;
             $duemonth=$request->duemonth;
-            foreach($idnumber as $key=>$value){
+            foreach($idnumber as $value){
                 $status=  \App\Status::where('idno',$value)->first();
                 $newpenalty = new \App\Ledger;
                 $newpenalty->idno = $value;
@@ -935,7 +935,7 @@ foreach ($collections as $collection){
         function addpenalties($idnumber,$plan){
             
             $currentdate= Carbon::now();
-            if($plan !="Monthly 1"){
+            if($plan != "Monthly 2"){
             $soasummary = DB::Select("select "
                 . " sum(amount) - sum(payment) - sum(debitmemo) - sum(plandiscount) - sum(otherdiscount) as amount from"
                 . " ledgers where idno = '$idnumber' and "

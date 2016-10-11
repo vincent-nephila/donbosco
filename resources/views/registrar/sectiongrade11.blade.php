@@ -515,14 +515,14 @@
                                 <td>@if($tsd->Jan != 0){{$tsd->Jan}}@endif</td>
                                 <td>@if($tsd->Feb != 0){{$tsd->Feb}}@endif</td>
                                 <td>@if($tsd->Mar != 0){{$tsd->Mar}}@endif</td>
-                                <td>{{$tsd->sem2}}</td>                            
+                                <td>@if($tsd->Mar != 0){{$tsd->sem2}}@endif</td>
                             @else
                                 <td>@if($tsd->Jun != 0){{$tsd->Jun}}@endif</td>
                                 <td>@if($tsd->Jul != 0){{$tsd->Jul}}@endif</td>
                                 <td>@if($tsd->Aug != 0){{$tsd->Aug}}@endif</td>
                                 <td>@if($tsd->Sept != 0){{$tsd->Sept}}@endif</td>
                                 <td>@if($tsd->Oct != 0){{$tsd->Oct}}@endif</td>
-                                <td>{{$tsd->sem1}}</td>
+                                <td>@if($tsd->Oct != 0){{$tsd->sem1}}@endif</td>
                             @endif
                             
                             
@@ -539,14 +539,14 @@
                         <td>@if($curr_month->jan != 0){{$attend->Jan}}@endif</td>
                         <td>@if($curr_month->feb != 0){{$attend->Feb}}@endif</td>
                         <td>@if($curr_month->mar != 0){{$attend->Mar}}@endif</td>                        
-                        <td>{{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar}}</td>
+                        <td>@if($curr_month->mar != 0){{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar}}@endif</td>
                         @else
                         <td>@if($curr_month->jun != 0){{$attend->Jun}}@endif</td>
                         <td>@if($curr_month->jul != 0){{$attend->Jul}}@endif</td>
                         <td>@if($curr_month->aug != 0){{$attend->Aug}}@endif</td>
                         <td>@if($curr_month->sept != 0){{$attend->Sept}}@endif</td>
                         <td>@if($curr_month->oct != 0){{$attend->Oct}}@endif</td>
-                        <td>{{$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}</td>
+                        <td>@if($curr_month->oct != 0){{$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}@endif</td>
                         @endif
                         
                         

@@ -337,6 +337,7 @@ class ExportController extends Controller
 			$path = Input::file('import_file2')->getRealPath();
                         
 			$data = Excel::selectSheets('Sheet1')->load($path, function($reader) {
+                            $reader->skip(11);
 			})->get();
 			if(!empty($data) && $data->count()){
                            

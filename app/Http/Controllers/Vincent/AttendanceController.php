@@ -50,8 +50,8 @@ class AttendanceController extends Controller
 
             }
             if(!empty($insert)){
-                DB::table('attendance_repos')->insert($insert);
-            }            
+                        DB::table('attendance_repos')->insert($insert);
+                    }            
         }
         return redirect(url('/importGrade'));
     }

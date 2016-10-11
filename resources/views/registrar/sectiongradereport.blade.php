@@ -516,7 +516,7 @@
                         <td>@if($tsd->Jan != 0){{$tsd->Jan}}@endif</td>
                         <td>@if($tsd->Feb != 0){{$tsd->Feb}}@endif</td>
                         <td>@if($tsd->Mar != 0){{$tsd->Mar}}@endif</td>
-                        <td>{{$tsd->total}}</td>
+                        <td>@if($tsd->Mar != 0){{$tsd->total}}@endif</td>
                     </tr>      
                     <?php $curr_month = \App\Attendance::Select(DB::raw('max(Jun) as jun,max(Jul) as jul,max(Aug) as aug,max(Sept) as sept,max(Oct) as oct,max(Nov) as nov,max(Dece) as dece,max(Jan) as jan,max(Feb) as feb,max(Mar) as mar'))->first(); ?>
                     @foreach($info['att'] as $key=>$attend)
@@ -534,9 +534,7 @@
                         <td>@if($curr_month->jan != 0){{$attend->Jan}}@endif</td>
                         <td>@if($curr_month->feb != 0){{$attend->Feb}}@endif</td>
                         <td>@if($curr_month->mar != 0){{$attend->Mar}}@endif</td>                        
-                        <td>{{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar+$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}</td>
-                        
-                        
+                        <td>@if($curr_month->mar != 0){{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar+$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}@endif</td>
                         
                     </tr>
                     @endforeach
