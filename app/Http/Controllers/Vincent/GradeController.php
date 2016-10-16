@@ -95,7 +95,7 @@ class GradeController extends Controller
         }        
     }
     
-    function viewSectionGrade9to10($level,$shop,$section,$side){
+    function viewSectionGrade9to10($level,$shop,$section){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $collection = array();        
         $students = DB::Select("SELECT statuses.department,gender,class_no,strand,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status IN (2,3) AND level LIKE '$level' AND section LIKE '$section' AND strand LIKE '$shop' ORDER BY statuses.class_no ASC");
@@ -129,10 +129,10 @@ class GradeController extends Controller
                 $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical,'core'=>$core,'spec'=>$special);
             }
 
-        return view('registrar.sectiongrade9to10',compact('collection','students','level','section','teacher','schoolyear','shop','side'));
+        return view('registrar.sectiongrade9to10',compact('collection','students','level','section','teacher','schoolyear','shop'));
     }
     
-    function viewSectionGrade11to12($level,$shop,$section,$sem,$side){
+    function viewSectionGrade11to12($level,$shop,$section,$sem){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $collection = array();        
         $students = DB::Select("SELECT statuses.department,gender,class_no,strand,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status IN (2,3) AND level LIKE '$level' AND section LIKE '$section' AND strand LIKE '$shop' ORDER BY statuses.class_no ASC");
@@ -172,10 +172,10 @@ class GradeController extends Controller
                     //$collection[] = array('info'=>$student);
                 }
             
-        return view('registrar.sectiongrade11',compact('collection','students','level','section','teacher','schoolyear','side','sem'));
+        return view('registrar.sectiongrade11',compact('collection','students','level','section','teacher','schoolyear','sem'));
     }    
     
-    function viewSectionGrade($level,$section,$side){
+    function viewSectionGrade($level,$section){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $collection = array();
         $students = DB::Select("SELECT birthDate,class_no,department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status IN (2,3) AND level LIKE '$level' AND section LIKE '$section' ORDER BY statuses.class_no ASC");
@@ -206,14 +206,14 @@ class GradeController extends Controller
                 }           
                 
         if($students[0]->department =="Elementary"){            
-            return view('registrar.sectiongradereport',compact('collection','students','level','section','teacher','schoolyear','side'));
+            return view('registrar.sectiongradereport',compact('collection','students','level','section','teacher','schoolyear'));
         }else{
-            return view('registrar.sectiongrade7to8',compact('collection','students','level','section','teacher','schoolyear','side'));
+            return view('registrar.sectiongrade7to8',compact('collection','students','level','section','teacher','schoolyear'));
         }
                 
     }    
     
-    function viewSectionKinder($level,$section,$quarter,$side){
+    function viewSectionKinder($level,$section,$quarter){
         $schoolyear = \App\CtrRefSchoolyear::first();
         $collection = array();
         $students = DB::Select("SELECT department,users.idno,users.lastname, users.firstname,users.middlename,users.extensionname,student_infos.lrn,gender,birthDate from users left join statuses on users.idno = statuses.idno left join student_infos on users.idno=student_infos.idno where statuses.status IN (2,3) AND level LIKE '$level' AND section LIKE '$section' ORDER BY statuses.class_no ASC");
@@ -255,7 +255,7 @@ class GradeController extends Controller
                     $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical,'comp'=>$competence);
                 }           
                 
-        return view('registrar.sectiongradeKinder2',compact('collection','students','level','section','teacher','quarter','schoolyear','side'));
+        return view('registrar.sectiongradeKinder2',compact('collection','students','level','section','teacher','quarter','schoolyear'));
                 
     }
     

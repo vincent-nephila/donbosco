@@ -575,7 +575,7 @@ class AjaxController extends Controller
         $data = $data."<h3 class='no-print'>".$level."</h3>";
         foreach($sections as $section){
             $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
-                     . "statuses.level, statuses.strand, student_infos.fname, student_infos.fmobile, student_infos.mname, student_infos.mmobile from users, statuses, student_infos  where users.idno = statuses.idno "
+                     . "statuses.level, statuses.strand, student_infos.fname, student_infos.fmobile,student_infos.flandline,student_infos.mlandline, student_infos.mname, student_infos.mmobile from users, statuses, student_infos  where users.idno = statuses.idno "
                      . "and statuses.level = '$level' and statuses.section = '$section->section'  and statuses.status='2' and statuses.idno = student_infos.idno order by users.lastname, users.firstname");            
             $data = $data."<h3 class='no-print'>".$section->section."</h3>";
             $data = $data."<table style='width:100%'><thead class='headers'><td style='text-align:center;'>";
@@ -608,7 +608,20 @@ class AjaxController extends Controller
             $data = $data."<table class=\"table table-stripped\"><thead><td>Id No</td><td>Name</td><td>Father</td><td>Contact No</td><td>Mother</td><td>Contact No.</td></thead>";
             foreach($lists as $list){
             $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td><td>".$list->fname."</td>"
-                    . "<td>".$list->fmobile."</td><td>".$list->mname."</td><td>".$list->mmobile."</td></tr>";
+                    . "<td>";
+            $data = $data.$list->fmobile;
+            if($list->fmobile != "" && $list->flandline != ""){
+                $data = $data ." / ";
+            }
+            $data = $data .$list->flandline."</td>";
+                        
+            $data = $data ."<td>".$list->mname."</td><td>";
+            
+            $data = $data .$list->mmobile;
+            if($list->mmobile != "" && $list->mlandline != ""){
+                $data = $data ." / ";
+            }
+            $data = $data .$list->mlandline."</td></tr>";
             }
             $data = $data . "</table>";             
             $data = $data."<td><tr></table>";

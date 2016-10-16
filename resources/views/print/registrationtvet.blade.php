@@ -51,7 +51,7 @@ th {
 <body> 
     <table border = '0'celpacing="0" cellpadding = "0" width="550px" align="center"><tr><td width="10px">
         <img src = "{{ asset('/images/logo.png') }}" alt="DBTI" align="middle"  width="70px"/></td>
-            <td width="530px"><p align="center"><span style="font-size:20pt;">Don Bosco Technical Institute of Makati, Inc. </span><br>
+            <td width="530px"><p align="center"><span style="font-size:20pt;">Don Bosco Technical Institute</span><br>
         Chino Roces Ave., Makati City <br>
         Tel No : 892-01-01
         </p>
@@ -122,12 +122,11 @@ th {
 </div>
     
  <div class="notice">
-    In accordance with the financial policies of the school as set out in the Student Diary, the failure to meet the financial
-    obligation to the school within the specified period may result in the withholding of transfer credentials, deprivation of any quarterly or final
-    examinations, refusal of re-admission, dropping from the rolls and availment of other applicable remedies.
+    In accordance with the financial policies of the school as set out in the Students' Handbook, failure to meet the financial
+    obligation to the school within the specified period may result in the withholding of transfer credentials.
     <br><br>
     <i style="font-weight: bold">*If check payment, write name of student and contact no at the back of the check.</i><br>
-    <i style="font-weight: bold">*Failure to pay the remaining trainee contribution on the last day of the class may result to revoke the school subsidy/sponsor and student may require to shoulder the entire training fee.</i>
+    <i style="font-weight: bold">*Failure to pay the remaining Trainee's Contribution before graduation may result the revocation of the school subsidy and the student pays the full training cost.</i>
 </div>
 
 <div class="notice">

@@ -84,18 +84,18 @@ function displaycards(){
     strand = document.getElementById('strand').value
     }
     if(level == "Grade 9" | level == "Grade 10"){
-     window.open("/reportcards/" + level + "/" + strand + "/" + section +"/back",'_blank'); 
-     document.location = "/reportcards/" + level + "/" + strand + "/" + section +"/front";
+     
+     document.location = "/reportcards/" + level + "/" + strand + "/" + section;
      
     }else if(level == "Grade 11" | level == "Grade 12"){
-        window.open("/reportcards/" + level + "/" + strand + "/" + section +"/"+sem+"/back",'_blank'); 
-        document.location = "/reportcards/" + level + "/" + strand + "/" + section +"/"+sem+"/front";        
+        
+        document.location = "/reportcards/" + level + "/" + strand + "/" + section +"/"+sem;  
     }else if(level == "Kindergarten"){
-        window.open("/reportcard/" + level + "/"+ section +"/"+quarter+"/back",'_blank');
-        document.location = "/reportcard/" + level + "/" + section +"/"+quarter+"/front"
+        
+        document.location = "/reportcard/" + level + "/" + section +"/"+quarter;
     }else{
-        window.open("/reportcards/" + level + "/" + section + "/back",'_blank');
-            document.location = "/reportcards/" + level + "/" + section +"/front"
+        
+            document.location = "/reportcards/" + level + "/" + section;
         
     }
 }

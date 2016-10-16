@@ -496,9 +496,7 @@
 
         <div class="page-break"></div>
         </div>
-        @endforeach
-        
-        @foreach($collection as $info)
+
         <div class="front">
         <table style="margin-top: 55px;margin-bottom:30px;margin-left: .5cm;margin-right:.5cm" align="center">
                     <tr>
@@ -646,9 +644,9 @@
         <div class="page-break"></div>        
         @endforeach
         
-        <script type="text/javascript">
+        <!--script type="text/javascript">
             
-            var sides = "{{$side}}";
+            var sides = "side";
             if(sides == "back"){
                 $( ".front" ).each(function() {
                   $(this).addClass("hide");
@@ -658,6 +656,6 @@
                   $(this).addClass("hide");
                 });                  
             }           
-        </script>        
+        </script-->        
     </body>
 </html>

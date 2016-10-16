@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use DB;
 
 class SectionController extends Controller
 {
@@ -14,7 +15,9 @@ class SectionController extends Controller
     }
     
     function sectionTvet(){
-        $levels = \App\CtrSchoolYear::where('department','TVET');
-        return view('registrar.sectionkpage',compact('levels'));        
+        //$levels = \App\CtrSchoolYear::where('department','TVET');
+        $courses = DB::Select("select distinct course from ctr_subjects where department = 'TVET'");
+        $levels = \App\ctrSchoolYear::where('department','TVET')->get();
+        return view('vincent.registrar.sectiontvetpage',compact('levels','courses'));        
     }
 }

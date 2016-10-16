@@ -1,145 +1,178 @@
 @extends('app')
 @section('content') 
-<style type='text/css'>
-    .form-control{
-     text-align: center;
-     border:none;
-    }
-</style>
-<div class='container' onunload="save()">
-    <div class='col-md-3'>
-        
-        <div><b><h4>{{$ledgers[0]->lastname}}, {{$ledgers[0]->firstname}} {{$ledgers[0]->middlename}} {{$ledgers[0]->extensionname}}</h4></b></div>
-        <div>Course : {{$ledgers[0]->course}}</div>
-        <div>Batch  : {{$ledgers[0]->batch}}</div>
-        
-    </div>
-    <div class='col-md-9'>
-        <table width='100%' cellpadding='10' cellspacing='10' border='1' style='text-align: center'>
-            <thead style='text-align: center'><td>Total</td><td>Sponsor's Contribution</td><td>Subsidized</td><td>Trainee Contribution</td></thead>
-        @foreach($ledgers as $ledger)
+<div class="col-md-4">
+    <div class="form form-group">
+        <label for ="batch">Select Batch</label>
+        <select name="batch" id="batch" class="form form-control">
+            <option hidden>--Select--</option>
+            @foreach($batches as $level)
+                <option value="{{$level->period}}">Batch {{$level->period}}</option>
+            @endforeach
+        </select>           
+     </div>     
+</div>
+<div class="col-md-4">
+    <div class="form form-group">
+        <label for ="course">Select Course</label>
+        <select name="course" id="course" class="form form-control">
+            <option hidden>--Select--</option>
+            @foreach($courses as $course)
+                <option value="{{$course->course}}">{{$course->course}}</option>
+            @endforeach            
+
+        </select>           
+     </div>     
+</div>
+<div class="col-md-4">
+    <div class="form form-group">
+        <label for ="section">Select Section</label>
+        <select name="section" id="section" class="form form-control" onchange="getstudents(this.value)">
+            <option hidden>--Select--</option>
+        </select>           
+     </div>     
+</div>
+<div class="col-md-12" id="list">
+    @if(isset($students))
+    <table class="table table-stripped">
+        <thead>
+        <td>Class No.</td>
+        <td>Name</td>
+        <td>Total Training Fee</td>
+        <td>Sponsor's Contribution</td>
+        <td>TVET Subsidy</td>
+        <td>Trainees Contribution</td>
+        <td>Remarks</td>
+        </thead>
+        <tbody>
+        @foreach($students as $student)
         <tr>
-            <td>
-            <div id="full">{{number_format($ledger->amount+$ledger->sponsor+$ledger->subsidy,2)}}</div>    
-            </td>
-            <td>
-                <input class='form-control' type='text' onkeyup="changeSponsor(this.value,{{$idno}},{{$ledger->batch}})" id="sponsor" value ="{{$ledger->sponsor}}">
-            </td>            
-            <td>
-                <input class='form-control' type='text' onkeyup="changeSubsidy(this.value,{{$idno}},{{$ledger->batch}})" id ="subsidy" value ="{{$ledger->subsidy}}">
-                
-            </td>
-            <td style='text-align: center'>
-                <input class='form-control' type='text' onkeyup="changeTotal(this.value,{{$idno}},{{$ledger->batch}})" id="total" value ="{{$ledger->amount}}">
-            </td>            
-       
+            <td>{{$student->class_no}}</td>
+            <td>{{$student->lastname}}, {{$student->firstname}} {{$student->middlename}} {{$student->extensionname}}</td>
+            <td>{{$student->sponsor+$student->subsidy+$student->amount}}</td>
+            <td>{{$student->sponsor}}</td>
+            <td>{{$student->subsidy}}</td>
+            <td>{{$student->amount}}</td>
+            <td>{{$student->remarks}}</td>
         </tr>
         @endforeach
-        </table>
-        <hr>
-        <div><h4>Monthly Adjustments</h4></div>
-        <table width="100%" border="1" style='text-align: center'>
-            <thead style='text-align: center'><td>Month</td><td>Total</td><td>Sponsor's Contribution</td><td>Subsidized</td><td>Trainee Contribution</td></thead>
-            @foreach($records as $record)
-            <tr>
-                <td>{{$record->logdate}}</td><td>{{number_format($record->trainees+$record->sponsor+$record->subsidy,2)}}</td><td>{{$record->sponsor}}</td><td>{{$record->subsidy}}</td><td>{{$record->trainees}}</td>
-            </tr>
-            @endforeach
-        </table>
-    </div>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" href='{{$section}}/edit'>Edit</a>
+    @endif
+    
+    @if(isset($studentledgers))
+    <style type='text/css'>
+        .no-edit{
+         background: none;
+         border: none;
+         
+        }
+    </style>    
+    <form method="POST" action="{{url('/studentsledger/'.$batch.'/'.$cours.'/'.$section.'/edit')}}">
+        {!! csrf_field() !!}
+    <table class="table table-stripped">
+        <thead>
+        <td>Class No.</td>
+        <td>Name</td>
+        <td>Total Training Fee</td>
+        <td>Sponsor's Contribution</td>
+        <td>TVET Subsidy</td>
+        <td>Trainees Contribution</td>
+        <td>Remarks</td>
+        </thead>
+        <tbody>
+            <?php $count = 1;?>
+        @foreach($studentledgers as $student)
+        <tr>
+            <td>{{$student->class_no}}<input type="hidden" name="idno{{$count}}" value="{{$student->idno}}"></td>
+            <td>{{$student->lastname}}, {{$student->firstname}} {{$student->middlename}} {{$student->extensionname}}</td>
+            <td class="total">{{$student->sponsor+$student->subsidy+$student->amount}}</td>
+            <td><input type="text" class="sponsors" name="sponsor{{$count}}" id="sponsor{{$count}}" value="{{$student->sponsor}}"></td>
+            <td><input type="text" class="no-edit subsidy" name="subsidy{{$count}}" id="subsidy{{$count}}" value="{{$student->subsidy}}" readonly="true"></td>
+            <td><input type="text" class="amount" name="trainees{{$count}}" id="trainees{{$count}}" value="{{$student->amount}}"></td>
+            <td><input type="text" class="desc" name="desc{{$count}}" id="desc{{$count}}" value="{{$student->remarks}}" >
+
+            </td>
+            <?php $count++;?>
+        </tr>
+        @endforeach
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-default" style="float: right">Save</button>
+    </form>
+    @endif    
 </div>
-<script type='text/javascript'>
-    var total = 0;
+<script type="text/javascript">
+$('.sponsors').keyup(function(){
+    var trainees = $(this).closest("td").siblings().find('.amount').attr('id');
+    var subsidy = $(this).closest("td").siblings().find('.subsidy').attr('id');
+    var total = $(this).closest("td").siblings('.total').html();
+    var newcontribution = parseInt(total)-(parseFloat($(this).val()) + parseFloat($('#'+subsidy).val()));
     
-    $(window).on('beforeunload', function(){
-        var trainee = $("#total").val();
-        var subsidy = $("#subsidy").val();
-        var sponsor = $("#sponsor").val();
-        
-        if(trainee != parseInt({{$ledger->amount}}) | subsidy != parseInt({{$ledger->subsidy}}) | sponsor != parseInt({{$ledger->sponsor}})){
-        var arrays ={};
-        arrays['students'] = {{$idno}};
-        arrays['batch'] = {{$ledger->batch}};
-        arrays['trainee'] = trainee;
-        arrays['sponsor'] = sponsor;
-        arrays['subsidy'] = subsidy;
-        
-        $.ajax({
+    $('#'+trainees).val(newcontribution.toFixed(2))
+    $(this).val().toFixed(2);
+});
+
+$('.amount').keyup(function(){
+    var sponsor = $(this).closest("td").siblings().find('.sponsors').attr('id');
+    var subsidy = $(this).closest("td").siblings().find('.subsidy').attr('id');
+    var total = $(this).closest("td").siblings('.total').html();
+    var newcontribution = parseInt(total)-(parseFloat($(this).val()) + parseFloat($('#'+sponsor).val()));
+    
+    $('#'+subsidy).val(newcontribution.toFixed(2))
+    $(this).val().toFixed(2);
+});
+    
+$('#course').change(function(){
+   getsection()
+});
+$('#batch').change(function(){
+   getsection()
+});
+
+
+@if(isset($batch))
+    $('#batch').val('{{$batch}}')
+@endif
+@if(isset($cours))
+    $('#course').val('{{$cours}}')
+    getsection()
+    setTimeout(function () {
+                     @if(isset($section))
+                        $('#section').val('{{$section}}')
+                    @endif
+    }, 600);    
+    
+@endif
+
+function getsection(){
+    var batch = $('#batch').val();
+    var course = $('#course').val();
+
+    $.ajax({
             type: "GET", 
-            url: "/saveLog",
-            data:arrays,
+            url: "/gettvetledgersection/" + batch +"/"+ course,
             success:function(data){
-                return data;
+                    $('#section').html(data);
+
             }
-        });    
-    }
-    
-    window.setTimeout(null,1000000);
     });   
-    
-    function compute(){
-        
-        
-        var amount  = parseFloat($("#total").val());
-        var sponsor  = parseFloat($("#sponsor").val());
-        var subsidy  = parseFloat($("#subsidy").val());
-        
-        
-        total = amount+sponsor+subsidy;
-        
-        $('#full').html(total.toFixed(2));  
-    } 
-
-    function changeTotal(total,idno,batch){
-        compute();
-        var arrays ={};
-        arrays['students'] = idno;
-        arrays['batch'] = batch;
-        
-        $.ajax({
-            type: "GET", 
-            url: "/changeTotal/" +  total,
-            data:arrays,
-            success:function(data){}            
-        });
-        
-    }
-    
 
     
-    function changeSponsor(total,idno,batch){
-        compute();
-        var arrays ={};
-        arrays['students'] = idno;
-        arrays['batch'] = batch;
-        
-        $.ajax({
-            type: "GET", 
-            url: "/changeSponsor/" +  total,
-            data:arrays,
-            success:function(data){}            
-        });
-        
-        
-    } 
+}
+function loadsec(){
+@if(isset($section))
+    $('#section').val('{{$section}}')
+@endif    
+}
 
-    function changeSubsidy(total,idno,batch){
-        
-        var arrays ={};
-        arrays['students'] = idno;
-        arrays['batch'] = batch;
-        
-        $.ajax({
-            type: "GET", 
-            url: "/changeSubsidy/" +  total,
-            data:arrays,
-            success:function(data){}            
-        });
-        
-        compute();
-    }
+function getstudents(section){
+    var batch = $('#batch').val();
+    var course = $('#course').val();   
+    
+    document.location = "/studentsledger/" + batch + "/" + course + "/" + section;
     
     
+}
 </script>
-
 @stop

@@ -66,19 +66,22 @@
         @if($student != NULL)
             <tr>
                 <td></td><td>Status</td>
+                <td id="status">
                 @if($status!= NULL)
                     @if($status->status == 0)
-                        <td id="status">Registered</td>
+                        Registered
                     @elseif($status->status == 1)
-                        <td id="status">Assessed</td>
+                   Assessed
                     @elseif($status->status == 2)
-                    <td id="status">Enrolled</td>
+                    Enrolled <button class='btn btn-primary' onclick="drop()">Drop Student</button>
                     @elseif($status->status == 3)
-                        <td id="status">Dropped</td>
+                        Dropped
                     @endif
                 @else
-                    <td id="status">Not Registered</td>
+                    Not Registered
                 @endif
+            
+            </td>
             </tr>
         @endif
     </table>
@@ -579,22 +582,39 @@
              </tr>
              <tr>
                  <td><label>Mobile No.:</label></td>
-                 <td colspan="3">
+                 <td>
                      <input type="text" class="form-control" name="fmobile" id="fmobile" placeholder="Enter Mobile No"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->fmobile}}"
                          @endif
                        >
                  </td>
+                 <td><label>Landline:</label></td>
+                 <td>
+                     <input type="text" class="form-control" name="flandline" id="flandline" placeholder="Enter Landline No"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->flandline}}"
+                         @endif
+                       >
+                 </td>                 
                  <td></td>
                  <td><label>Mobile No.:</label></td>
-                 <td colspan="3">
+                 <td>
                      <input type="text" class="form-control" name="mmobile" id="mmobile" placeholder="Enter Mobile No"
                          @if($studentInfo != NULL)
                          value="{{$studentInfo->mmobile}}"
                          @endif
                        >
                  </td>
+                 <td><label>Landline:</label></td>
+                 <td>
+                     <input type="text" class="form-control" name="mlandline" id="mlandline" placeholder="Enter Landline No"
+                         @if($studentInfo != NULL)
+                         value="{{$studentInfo->mlandline}}"
+                         @endif
+                       >
+                 </td>                 
+                 
              </tr>
              <tr>
                  <td colspan="4"><label>What course did you take up in college?</label></td>
@@ -1385,7 +1405,24 @@ for($counter = 1;$counter<=$numberofrow;$counter++){ ?>
     });    
     $( "#age" ).focus(function() {
         getAge();
-    });    
+    });  
+    
+    
+        function drop(){
+            var drop = confirm("Do you really want to drop this student?\n\
+        \n\
+        Please ask help from administrator if needed to be changed back.");
+            if(drop == true){
+                $.ajax({
+                    type: "GET", 
+                    url: "/dropStudent/" + {{$student->idno}}, 
+                    success:function(data){
+                        $("#status").html(data);
+                    }
+                });    
+            }
+        }
+    
 
 function getAge(){
     var bdate = document.getElementById("birthDate").value;

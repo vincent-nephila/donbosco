@@ -205,6 +205,7 @@ public function saveStudentInfo(array $request,$studentid){
     }
     $studentInfo->fcourse = $request['fcourse'];
     $studentInfo->fmobile = $request['fmobile'];
+    $studentInfo->flandline = $request['flandline'];
     $studentInfo->freligion = $request['freligion'];
     $studentInfo->fnationality = $request['fnationality'];
     $studentInfo->fselfemployed = $request['fselfemployed'];
@@ -227,6 +228,7 @@ public function saveStudentInfo(array $request,$studentid){
     }
     $studentInfo->mcourse = $request['mcourse'];
     $studentInfo->mmobile = $request['mmobile'];
+    $studentInfo->mlandline = $request['mlandline'];
     $studentInfo->mreligion = $request['mreligion'];
     $studentInfo->mnationality = $request['mnationality'];
     $studentInfo->mselfemployed = $request['mselfemployed'];

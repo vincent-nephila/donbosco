@@ -54,6 +54,7 @@ class AttendanceController extends Controller
                     }            
         }
         return redirect(url('/importGrade'));
+        
     }
     
     function updateMonthlyAttd($idno,$sort,$type,$value,$month,$sy){
@@ -76,9 +77,22 @@ class AttendanceController extends Controller
         }else{
             $attendace  = \App\Attendance::where('idno',$idno)->where('attendancetype',$type)->where('schoolyear',$sy)->first();
         }
-        $attendace->$months = $value;
+        $quarter = \App\CtrQuarter::first();
+        
+        if((!$check->isEmpty()) && $quarter->qtrperiod == 2 && $months == "Aug"){
+                $attendace->$months = $attendace->$months + $value;
+        }
+        elseif((!$check->isEmpty()) && $quarter->qtrperiod == 3 && $months == "Oct"){
+                $attendace->$months = $attendace->$months+$value;
+        }
+        elseif((!$check->isEmpty()) && $quarter->qtrperiod == 4 && $months == "Dec"){
+            $attendace->$months = $attendace->$months+$value;
+        }else{
+            $attendace->$months = $value;
+        }
         $attendace->save();
         
         return null;
     }    
 }
+

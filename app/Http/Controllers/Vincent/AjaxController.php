@@ -557,7 +557,6 @@ class AjaxController extends Controller
         
     }        
     
-
     function setRankingAcad(){
         $section = Input::get('section');
         $level = Input::get('level');
@@ -964,7 +963,8 @@ class AjaxController extends Controller
             return $data;
         }
     }
- function searchStudtvet($search){
+    
+    function searchStudtvet($search){
      $students = DB::Select("select lastname,firstname,middlename,extensionname,gender,users.idno,statuses.status from users join statuses on statuses.idno = users.idno "
                             . "where statuses.department = 'TVET' "
                             . "AND (lastname LIKE '$search%' OR firstname LIKE '$search%' OR users.idno LIKE '$search%')");
@@ -990,7 +990,7 @@ class AjaxController extends Controller
     return $data;
  }
  
- function changeTotal($total){
+    function changeTotal($total){
      $student = Input::get('students');
      $batch = Input::get('batch');
      
@@ -1001,7 +1001,7 @@ class AjaxController extends Controller
      return $change->idno;
  }
  
- function changeSubsidy($total){
+    function changeSubsidy($total){
      $student = Input::get('students');
      $batch = Input::get('batch');
     
@@ -1012,7 +1012,7 @@ class AjaxController extends Controller
      return $change->idno;
  }
  
- function changeSponsor($total){
+    function changeSponsor($total){
      $student = Input::get('students');
      $batch = Input::get('batch');
      
@@ -1023,45 +1023,92 @@ class AjaxController extends Controller
      return $change->idno;
  }
  
- function saveLog(){
-     $student = Input::get('students');
-     $subsidy = Input::get('subsidy');
-     $sponsor = Input::get('sponsor');
-     $trainee = Input::get('trainee');
-     $date = date("F",strtotime("-1 months"));
-     $curr_date = date("F");
-     $batch = Input::get('batch');
-     
-     
-     $check1 = \App\TvetRecordChange::where('idno',$student)->where('batch',$batch)->get();
-     if($check1->isEmpty()){
-        $log = new \App\TvetRecordChange;
-        $log->idno = $student;
-        $log->subsidy = $subsidy;
-        $log->sponsor = $sponsor;
-        $log->trainees = $trainee;
-        $log->batch = $batch;
-        $log->logdate = "ORIGINAL";
-        $log->save();         
-     }
-     
-     $check2 = \App\TvetRecordChange::where('idno',$student)->where('batch',$batch)->where('logdate',$date)->get();
-     $enrollment = \App\Status::where('idno',$student)->where('period',$batch)->first();
-     $enrollment_date = date("F",strtotime($enrollment->date_enrolled));
-     if(date("F") != $enrollment_date){
-         if($check2->isEmpty()){
-            $log = new \App\TvetRecordChange;
-            $log->idno = $student;
-            $log->subsidy = $subsidy;
-            $log->sponsor = $sponsor;
-            $log->trainees = $trainee;
-            $log->batch = $batch;
-            $log->logdate = strtoupper($date);
-            $log->save();              
-         }
-     }
-     return $enrollment_date;
- }        
- 
- 
+    function gettvetstudentlist($batch,$strand){
+        if(Request::ajax()){
+
+
+                $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
+                    . "users.firstname, users.middlename, statuses.section  from statuses, users where statuses.idno = "
+                    . "users.idno and statuses.period = '$batch' and statuses.course = '" .$strand."'  and statuses.status = '2' order by users.lastname, users.firstname, users.middlename");
+
+
+            $data = "";
+            $data = $data . "<table class=\"table table-stripped\"><tr><td>ID No</td><td>Name</td><td>Section</td></tr>";
+                foreach($studentnames as $studentname){
+                    $data = $data . "<tr><td>".$studentname->idno."</td><td><span style=\"cursor:pointer\"onclick=\"setsection('" . $studentname->id . "')\">".$studentname->lastname . ", " . $studentname->firstname . " " .$studentname->middlename . "</span></td><td>" . $studentname->section . "</td></tr>"; 
+                }
+            $data = $data."</table>";
+
+            return $data;
+        }        
+    }
+    
+    function gettvetsection($batch){
+            if(Request::ajax()){
+                $course = Input::get("course");
+                $sections = DB::Select("select  * from ctr_sections where level = '$batch' and course = '$course'");
+                   $data = "";
+                   $data = $data . "<div class=\"col-md-6\"><label for=\"section\">Select Section</label><select id=\"section\" onchange=\"callsection()\" class=\"form form-control\">";
+                 $data = $data . "<option hidden>--Select--</option>";
+                   foreach($sections as $section){
+                      $data = $data . "<option value= '". $section->section ."'>" .$section->section . "</option>";  
+                    }
+                   $data = $data."</select></div>";
+                return $data;   
+                //return "roy";
+            }
+        }
+        
+    function gettvetsectionlist($batch,$section){
+            if(Request::ajax()){
+                 $ad = \App\CtrSection::where('level',$batch)->where('section',$section)->where('course',Input::get("course"))->first();
+                 $adviser = $ad->adviser;
+                     if ($batch === "87"){
+                        $studbatch = "1st Batch";
+                    }else{
+                        $studbatch = $batch;
+                    }
+                $studentnames = DB::Select("select statuses.id, statuses.idno, users.lastname, "
+                        . "users.firstname, users.middlename, statuses.section from statuses, users where statuses.idno = "
+                        . "users.idno and statuses.period = '".$studbatch."'  AND statuses.section = '$section' and course = '" . Input::get("course") . "' "
+                        . "order by users.gender, users.lastname, users.firstname, users.middlename");
+                $cn=1;
+                $data = "<div class=\"col-md-6\"><label for=\"adviser\">Adviser</label><input type=\"text\" id=\"adviser\" class=\"form form-control\" value=\"" . $adviser . "\" onkeyup = \"updateadviser(this.value,'" . $ad->id . "')\"></div>";
+                $data = $data . "<table class=\"table table-stripped\"><tr><td>ID No</td><td>CN</td><td>Name</td><td>Section</td></tr>";
+                    foreach($studentnames as $studentname){
+                        $data = $data . "<tr><td>".$studentname->idno."</td><td>" . $cn++ . "</td><td><span style=\"cursor:pointer\" onclick=\"rmsection('" . $studentname->id . "')\">".$studentname->lastname . ", " . $studentname->firstname . " " .$studentname->middlename . "</span></td><td>" . $studentname->section . "</td></tr>"; 
+                    }
+                $data = $data."</table>";
+                $data = $data . "<a href = \"". url('/printsection', array($batch,$section,Input::get('course')))."\" class =\"btn btn-primary\"> Print Section</a>";
+                return $data;
+                
+            }
+        }
+
+
+    function gettvetledgersection($batch,$course){
+            if(Request::ajax()){
+                
+                $sections = DB::Select("select  * from ctr_sections where level = '$batch' and course = '$course'");
+                $data = "";
+                $data = $data . "<option hidden>--Select--</option>";
+                foreach($sections as $section){
+                    $data = $data . "<option value= '". $section->section ."'>" .$section->section . "</option>";  
+
+                }
+                return $data;   
+                
+            }
+    }
+    
+    function dropStudent($idno){
+        $sy = \App\CtrRefSchoolyear::first(); 
+        
+        $status = \App\Status::where('idno',$idno)->where('schoolyear',$sy->schoolyear)->first();
+        $status->status = 3;
+        $status->dropdate = date("Y-m-d");
+        $status->save();
+        
+        return "Dropped";
+    }
 }

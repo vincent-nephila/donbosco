@@ -160,8 +160,8 @@
                                     <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button"> Sectioning
                                     <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="sectionk"><i class="fa fa-btn"></i>K-12</a></li>
-                                        <li><a href="sectiontvet"><i class="fa fa-btn"></i>TVET</a></li>
+                                        <li><a href="/sectionk"><i class="fa fa-btn"></i>K-12</a></li>
+                                        <li><a href="/sectiontvet"><i class="fa fa-btn"></i>TVET</a></li>
                                      </ul>   
                                 
                                 </li>

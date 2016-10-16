@@ -13,7 +13,7 @@
     Route::post('registrar/assessment','Registrar\AssessmentController@assess');
     Route::get('studentregister', 'MainController@getid');
     Route::post('studentregister', 'MainController@addstudent');
-    Route::get('sectionk','Registrar\SectionController@sectionk');
+    Route::get('/sectionk','Registrar\SectionController@sectionk');
     Route::get('printsection/{level}/{section}/{strand}', 'Registrar\SectionController@printsection1');
     Route::get('printsection/{level}/{section}', 'Registrar\SectionController@printsection');
     Route::get('printinfo','Registrar\StudentlistController@printinfo');
@@ -40,7 +40,6 @@
      Route::get('sheetaAttendance/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetaAttendance');
      Route::get('attendance', 'Vincent\ReportController@attendance');
      Route::get('/sheetb', 'Vincent\ReportController@sheetB');
-     Route::get('planset/{idno}','Vincent\TvetController@adjustLedger');
      Route::get('/sectiontvet','Vincent\SectionController@sectiontvet');
     
 //cashier module
@@ -115,17 +114,25 @@
     //Route::get('checkno','Update\UpdateController@checkno');
     //Route::get('updatehsattendance','Update\UpdateController@updatehsattendance');
     Route::get('updateacctcode','Update\UpdateController@updateacctcode');
+    
     //Registrar Vincent
-    Route::get('/reportcards/{level}/{section}/{side}','Vincent\GradeController@viewSectionGrade');    
-    Route::get('/reportcard/{level}/{section}/{quarter}/{side}','Vincent\GradeController@viewSectionKinder');    
-    Route::get('/reportcards/{level}/{shop}/{section}/{side}','Vincent\GradeController@viewSectionGrade9to10');    
-    Route::get('/reportcards/{level}/{shop}/{section}/{sem}/{side}','Vincent\GradeController@viewSectionGrade11to12');
+    Route::get('/reportcards/{level}/{section}','Vincent\GradeController@viewSectionGrade');    
+    Route::get('/reportcard/{level}/{section}/{quarter}','Vincent\GradeController@viewSectionKinder');    
+    Route::get('/reportcards/{level}/{shop}/{section}','Vincent\GradeController@viewSectionGrade9to10');    
+    Route::get('/reportcards/{level}/{shop}/{section}/{sem}','Vincent\GradeController@viewSectionGrade11to12');
     Route::get('/resetgrades','Vincent\GradeController@reset');  
     Route::get('/studentgrade/{idno}','Vincent\GradeController@studentGrade'); 
     Route::get('sheetA','Vincent\ReportController@sheetA'); 
     Route::get('overallrank', 'Vincent\GradeController@overallRank');
     Route::post('test', 'Vincent\AttendanceController@importMonthlyAttendance');
     Route::get('test', 'Vincent\AttendanceController@index');
+    
+    //Accounting VINCENT (10-13-2016)
+    Route::get('/tvetledger','Vincent\TvetController@tvetledger');
+    Route::get('/studentsledger/{batch}/{cours}/{section}','Vincent\TvetController@getsectionstudent');
+    Route::get('/studentsledger/{batch}/{cours}/{section}/edit','Vincent\TvetController@edittvetcontribution');
+    Route::post('/studentsledger/{batch}/{cours}/{section}/edit','Vincent\TvetController@savetvetChanges');
+    
     
 });
 
@@ -158,6 +165,7 @@
     Route::get('/getsectionstrand/{level}/{strand}','AjaxController@getsectionstrand');
     Route::get('/displaygrade','AjaxController@displaygrade');
     Route::get('/gettvetplan/{batch}/{course}','AjaxController@gettvetplan');
+    
     // Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}','AjaxController@getsoasummary');
    
     //Ajax Route Sheryl
@@ -182,7 +190,14 @@
     Route::get('/changeTotal/{total}','Vincent\AjaxController@changeTotal');
     Route::get('/changeSponsor/{total}','Vincent\AjaxController@changeSponsor');
     Route::get('/changeSubsidy/{total}','Vincent\AjaxController@changeSubsidy');
-    Route::get('/saveLog','Vincent\AjaxController@saveLog');    
-
-
-  
+    
+    //10-12-2016
+    Route::get('/gettvetstudentlist/{batch}/{strand}','Vincent\AjaxController@gettvetstudentlist');    
+    Route::get('/gettvetsection/{batch}','Vincent\AjaxController@gettvetsection');
+    Route::get('/gettvetsectionlist/{batch}/{section}','Vincent\AjaxController@gettvetsectionlist');
+    Route::get('/gettvetledgersection/{batch}/{course}','Vincent\AjaxController@gettvetledgersection');
+    
+    //10-15-2016
+    Route::get('/dropStudent/{idno}','Vincent\AjaxController@dropStudent');
+    
+    
