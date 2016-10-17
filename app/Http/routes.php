@@ -97,6 +97,7 @@
     Route::get('printsoa/{idno}/{tradate}','Accounting\AccountingController@printsoa');
      Route::get('/printallsoa/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@printallsoa');
     Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@getsoasummary');
+    //Route::get('/getsoasummary','Accounting\AccountingController@getsoasummary');
     Route::get('/printsoasummary/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@printsoasummary');
     Route::get('penalties','Accounting\AccountingController@penalties');
     Route::post('postpenalties','Accounting\AccountingController@postpenalties');
@@ -148,7 +149,7 @@
     Route::get('/removeslip/{refid}','AjaxController@removeslip');
     Route::get('/getstudentlist/{level}','AjaxController@getstudentlist');
     Route::get('/getsection/{level}','AjaxController@getsection');
-    Route::get('/getsection1/{level}','AjaxController@getsection1');
+    Route::get('/getsection2/{level}','AjaxController@getsection1');
     Route::get('/getsectionlist/{level}/{section}','AjaxController@getsectionlist');
     Route::get('/setsection/{id}/{section}','AjaxController@setsection');
     Route::get('/rmsection/{id}','AjaxController@rmsection');

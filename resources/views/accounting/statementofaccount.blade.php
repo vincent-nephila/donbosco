@@ -1,16 +1,25 @@
 @extends('appcashier')
 @section('content')
 <div class="container_fluid">
+     <form method="POST" action="{{url('/getsoasummary')}}">
+            {!! csrf_field() !!}
     <div class="col-md-6">
         <h5>Plan</h5>
+       
         <div class="form form-group col-md-12">
+           <!--
+            <input type="checkbox" name="whatplan[]" value="Monthly 1"> Monthly 1
+            <input type="checkbox" name="whatplan[]" value="Monthly 2"> Monthly 2
+            <input type="checkbox" name="whatplan[]" value="Quartely"> Quarterly
+            <input type="checkbox" name="whatplan[]" value="Semi Annual"> Semi Annual
+            <input type="checkbox" name="whatplan[]" value="Annual"> Annual-->
+          
             <select id="plan" name="plan" class="form form-control">
-                <option value="all">All</option>
                 <option value="monthly1monthly2">Monthly 1 / Monthly 2 </option>
-                @foreach($payscheds as $ps)
-                <option value="{{$ps->plan}}">{{$ps->plan}}</option>
-                @endforeach
-            </select>    
+                <option value="Quarterly">Quarterly</option>
+                <option value="Semi Annual">Semi Annual</option>
+                <option value="Annual">Annual</option>
+            </select>   
          </div>   
         <h5>Due Date</h5>
         <div class="form form-group col-md-4">
@@ -73,6 +82,7 @@
         </div> 
         <div class="form form-group col-md-12">
             <div id="mybutton">
+             <!--   <input type="button" value="Show SOA" name="submit" class="btn btn-primary">-->
                 <a href="#" onclick="showsoa()" class="btn btn-primary">Show SOA</a>
             </div>    
         </div> 
@@ -82,15 +92,17 @@
     <div id="soasummary">
             
     </div>
+        
     </div>    
-    
+    </form>
 </div>      
 
 <script>
     $('#level').change(function(){
+        
         $.ajax({
             type: "GET", 
-            url: "/getsection1/" + $('#level').val(), 
+            url: "/getsection2/" + $('#level').val(), 
             success:function(data){
                 $('#section').html("");
                 $('#soasummary').html("");

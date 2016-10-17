@@ -774,12 +774,19 @@ foreach ($collections as $collection){
       $planparam = "AND statuses.plan = '$plan'";   
      }
        if($strand=="none"){
-           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
+           if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level'  and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by statuses.level, statuses.section, users.lastname, users.firstname, statuses.plan");
+               
+           }else{
+           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,statuses.section, statuses.level,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
                 . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
-
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section, statuses.level having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
+           }
        }   else{  
         $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
@@ -792,8 +799,11 @@ foreach ($collections as $collection){
             return view('accounting.showsoa',compact('soasummary','trandate','level','section','strand','amtover','plan'));
         }
         
+       
         
-        
+       
+ 
+ 
      function printallsoa($level,$strand,$section,$trandate,$plan,$amtover){
      if($plan=="all"){
      $planparam = "";    
@@ -805,12 +815,19 @@ foreach ($collections as $collection){
       $planparam = "AND statuses.plan = '$plan'";   
      }
        if($strand=="none"){
-       $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
+       if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level'  and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by statuses.level, statuses.section, users.lastname, users.firstname, statuses.plan");
+               
+           }else{
+           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,statuses.section, statuses.level,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
                 . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
-
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section, statuses.level having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
+           }
        }   else{  
         $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
@@ -836,12 +853,19 @@ foreach ($collections as $collection){
       $planparam = "AND statuses.plan = '$plan'";   
      }
        if($strand=="none"){
-           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
+          if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
+                . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " statuses.level = '$level'  and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by statuses.level, statuses.section, users.lastname, users.firstname, statuses.plan");
+               
+           }else{
+           $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,statuses.section, statuses.level,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
                 . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
-
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section, statuses.level having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
+           }
        }   else{  
         $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "

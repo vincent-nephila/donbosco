@@ -12,7 +12,7 @@
  <style>
     .body table, th  , .body td{
     border: 1px solid black;
-    font-size: 12pt;
+    font-size: 10pt;
 }
 
 td{
@@ -72,15 +72,19 @@ th {
             <tr><td>Statement Date : {{date('M d Y',strtotime($trandate))}}
                     
             <hr />
-   </table>             
-    <table class="table table-stripped"><tr><td>Student No</td><td>Name</td><td>Plan</td><td>Balance</td><td></td></tr>
+   </table>    
+    <div class="body">
+    <table class="table table-stripped"><thead><tr><th>Student No</th><th>Name</th><th>Plan</th><th>Level</th><th>Section</th><th>Balance</th></tr></thead>
+        <tbody>
        @foreach($soasummary as $soa)
        @if($soa->amount > 0)
        <tr><td>{{$soa->idno}}</td><td>{{$soa->lastname}}, {{$soa->firstname}} {{$soa->middlename}}</td>
-           <td>{{$soa->plan}}</td><td align="right">{{number_format($soa->amount,2)}}</td>
+           <td>{{$soa->plan}}</td><td>{{$soa->level}}</td><td>{{$soa->section}}</td><td align="right">{{number_format($soa->amount,2)}}</td>
            </tr>
        @endif
        @endforeach
+       </tbody>
  </table> 
+        </div>
     </body>
     </html>

@@ -686,6 +686,7 @@ class AjaxController extends Controller
         
         function getsection1($level){
             if(Request::ajax()){
+                /*
               if($level=="Grade 9" || $level=="Grade 10" || $level=="Grade 11" || $level=="Grade 12"){
                   $strands = DB::Select("select distinct strand from ctr_sections where level = '$level'");
                   $data="";
@@ -695,16 +696,17 @@ class AjaxController extends Controller
                       $data = $data . "<option value= '". $strand->strand ."'>" .$strand->strand . "</option>";  
                     }
                    $data = $data."</select>";
-              }  else {
-                $sections = DB::Select("select  * from ctr_sections where level = '$level'");
+              }  else {*/
+                $sections = DB::Select("select  distinct section from ctr_sections where level = '$level'");
                    $data = "";
                    $data = $data . "<label for=\"section\">Select Section</label><select id=\"section\"  class=\"form form-control\">";
                    $data = $data . "<option>--Select--</option>"; 
+                   $data = $data . "<option value=\"All\">All</option>"; 
                    foreach($sections as $section){
                       $data = $data . "<option value= '". $section->section ."'>" .$section->section . "</option>";  
                     }
                    $data = $data."</select>";
-              }
+              //}
                 return $data;   
                 //return "roy";
             }
@@ -742,7 +744,7 @@ class AjaxController extends Controller
                 $data = $data."</table>";
                 $data = $data . "<a href = \"". url('/printsection', array($level,$section,Input::get('strand')))."\" class =\"btn btn-primary\"> Print Section</a>";
                 return $data;
-                
+                //return "roy";
             }
         }
         
