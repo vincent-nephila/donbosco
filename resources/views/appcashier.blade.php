@@ -31,6 +31,12 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+        <style>
+            @media print{
+                .header,.header_logo {display:inline-block;}
+                .header{vertical-align: top}
+            }
+        </style>        
        
         <script src="{{asset('/js/jquery.js')}}"></script>
         <script src="{{asset('/js/bootstrap.min.js')}}"></script>
@@ -40,10 +46,10 @@
 <body> 
 <div class= "container-fluid">
          <div class="col-md-12">
-          <div class="col-md-1"> 
+          <div class="col-md-1 header_logo"> 
          <img class ="img-responsive" style ="margin-top:10px;" src = "{{ asset('/images/logo.png') }}" alt="Don Bosco Technical School" />
          </div>
-          <div class="col-md-11" style="padding-top: 20px"><span style="font-size: 14pt; font-weight: bold;">Don Bosco Technical Institute of Makati</span><br>Chino Roces Ave., Makati City<br>Tel No : 892-01-01
+          <div class="col-md-11 header" style="padding-top: 20px"><span style="font-size: 14pt; font-weight: bold;">Don Bosco Technical Institute of Makati</span><br>Chino Roces Ave., Makati City<br>Tel No : 892-01-01
          </div>   
 </div>
 </div>    

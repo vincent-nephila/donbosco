@@ -777,7 +777,7 @@ foreach ($collections as $collection){
            if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
-                . " statuses.level = '$level'  and ledgers.duedate <= '$trandate' $planparam  "
+                . " statuses.level = '$level' and statuses.status = '2' and ledgers.duedate <= '$trandate' $planparam  "
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by statuses.level, statuses.section, users.lastname, users.firstname, statuses.plan");
                
            }else{

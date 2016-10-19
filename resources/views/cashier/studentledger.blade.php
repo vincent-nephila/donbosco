@@ -279,7 +279,7 @@
                                             <input type="radio" name="depositto" value="BPI 2"> BPI 2
                                             
                         </td></tr> 
-                <tr><td colspan="2"><label>Description :</label><input type="text" name="remarks" id="remarks" class="form-control" onkeypres = "validate(event)"></td></tr>
+                <tr><td colspan="2"><label>Particular :</label><input type="text" name="remarks" id="remarks" class="form-control" onkeypres = "validate(event)"></td></tr>
                 <tr><td colspan="2"><input  style="visibility: hidden; font-weight: bold" type="submit" name="submit" id="submit" value ="Process Payment" class="btn btn-danger form form-control"> </td></tr>
                
              </table>    
