@@ -240,7 +240,7 @@
                         
                     </div>   
                     <div class="form-group">
-                        <label>Description</label>
+                        <label>Particular</label>
                         <input type="text" name="remarks" id="remarks" class="form-control" >
                     </div>    
                     <div class="form-group">
@@ -402,7 +402,7 @@
             var amount2 = document.getElementById('amount2').value != "" ? eval(document.getElementById('amount2').value):0;
             var amount3 = document.getElementById('amount3').value != "" ? eval(document.getElementById('amount3').value):0;
             var amount4 = document.getElementById('amount4').value != "" ? eval(document.getElementById('amount4').value):0;
-            document.getElementById('totalcredit').value = r + amount1 + amount2 + amount3 + amount4;
+            document.getElementById('totalcredit').value = (r + amount1 + amount2 + amount3 + amount4).toFixed(2);
             var totalcredit = eval(document.getElementById('totalcredit').value);
                 var totalcash = document.getElementById('cash').value != "" ? eval(document.getElementById('cash').value):0;
                 var totalcheck = document.getElementById('receivecheck').value  != "" ? eval(document.getElementById('receivecheck').value):0;

@@ -194,7 +194,7 @@
                @endif
                </table>
                <h5>Other Account</h5>
-               <table class="table table-striped"><tr><td>Description</td><td>Amount</td></tr>
+               <table class="table table-striped"><tr><td>Particular</td><td>Amount</td></tr>
                @if(count($othercollections)>0)
                     @foreach($othercollections as $othercollection)
                     <?php

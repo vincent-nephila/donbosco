@@ -1407,7 +1407,7 @@ for($counter = 1;$counter<=$numberofrow;$counter++){ ?>
         getAge();
     });  
     
-    
+    @if($status!= NULL)
         function drop(){
             var drop = confirm("Do you really want to drop this student?\n\
         \n\
@@ -1422,7 +1422,7 @@ for($counter = 1;$counter<=$numberofrow;$counter++){ ?>
                 });    
             }
         }
-    
+    @endif
 
 function getAge(){
     var bdate = document.getElementById("birthDate").value;
