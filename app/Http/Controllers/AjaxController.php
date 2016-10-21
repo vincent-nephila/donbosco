@@ -202,13 +202,19 @@ class AjaxController extends Controller
                  $value=$value."<td> <input style=\"text-align:right\" id=\"tuitionfee\"  value=\"$tf\"name = \"tuitionfee\" type=\"text\" readonly class=\"form form-control\"></td>";
                  $value=$value."<td><select id=\"discount\" name=\"discount\" class=\"form form-control\" onchange=\"computetvet()\"> ";
                  $value=$value."<option value=\"0\">None</option>";
-                 $value=$value."<option value=\"10\">10 Percent</option>";
-                 $value=$value."<option value=\"15\">15 Percent</option>";
-                 $value=$value."<option value=\"30\">30 Percent</option>";
-                 $value=$value."<option value=\"50\">50 Percent</option>";
+                 $value=$value."<option value=\"100\">100 Percent</option>";
+                // $value=$value."<option value=\"10\">10 Percent</option>";
+                // $value=$value."<option value=\"15\">15 Percent</option>";
+                // $value=$value."<option value=\"30\">30 Percent</option>";
+                // $value=$value."<option value=\"50\">50 Percent</option>";
+                // $value=$value."<option value=\"70\">70 Percent</option>";
+                // $value=$value."<option value=\"75\">75 Percent</option>";
+                 $value=$value."<option value=\"90\">90 Percent</option>";
+                 $value=$value."<option value=\"85\">85 Percent</option>";
                  $value=$value."<option value=\"70\">70 Percent</option>";
-                 $value=$value."<option value=\"75\">75 Percent</option>";
-                 $value=$value."<option value=\"100\">100 Percent</option></select></td>";
+                 $value=$value."<option value=\"50\">50 Percent</option>";
+                 $value=$value."<option value=\"30\">30 Percent</option>";
+                 $value=$value."<option value=\"25\">25 Percent</option></select></td>";
                  $value=$value."<td align=\"center\"><input name=\"paidby_tuitionfee\"  id =\"tuitionfee_sponsor\" value=\"sponsor\" type=\"radio\" onclick=\"computetvet()\"></td>";
                  $value=$value."<td align=\"center\"><input name=\"paidby_tuitionfee\" id =\"tuitionfee_trainee\" checked value=\"trainee\" type=\"radio\" onclick=\"computetvet()\"></td></tr>";
                  

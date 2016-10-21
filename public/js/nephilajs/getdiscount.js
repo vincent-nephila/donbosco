@@ -69,8 +69,8 @@ function computetvet(){
     var gradfee = 0;
     
    if(document.getElementById('tuitionfee_trainee').checked){
-     //tuitionfee = eval(tf-(tf*(discount/100)));   
-     tuitionfee = eval(tf*(discount/100));   
+     tuitionfee = eval(tf-(tf*(discount/100)));   
+     //tuitionfee = eval(tf*(discount/100));   
      
     }
     if(document.getElementById('misc_trainee').checked){
@@ -82,5 +82,5 @@ function computetvet(){
     
     document.getElementById('contribution').value = eval(tuitionfee+misc+gradfee)
     
-   alert()
+   //alert()
 }
