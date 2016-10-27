@@ -116,7 +116,7 @@
                                         <li>
                                         <a href="{{url('/')}}" >Home</a>
                                         
-                                        
+                                        <?php $prereg = \App\RegistrarSchoolyear::first();?>
                                         </li>
                                         
                                          <li class="dropdown">
@@ -126,7 +126,7 @@
                                         <ul class="dropdown-menu" role="menu">
                            
                                         <li><a href="{{url('/')}}"><i class="fa fa-btn fa-sign-out"></i>Assessment</a></li>
-                                        <li><a href="{{url('studentinfokto12')}}"><i class="fa fa-btn fa-sign-out"></i>Register</a></li>
+                                        <li><a href="{{url('studentinfokto12')}}"><i class="fa fa-btn fa-sign-out"></i>Pre-Register ({{$prereg->schoolyear}} Series)</a></li>
                                         <!--li><a href="{{url('studentregister')}}"><i class="fa fa-btn fa-sign-out"></i>Register</a></li-->
                                         
                                         </ul>

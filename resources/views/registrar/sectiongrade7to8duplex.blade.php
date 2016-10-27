@@ -6,7 +6,7 @@
                 display:none;
             }
            table tr td{
-            font-size:11pt;
+            font-size:10.2pt;
             padding-left: 5px;
             padding-right: 5px;
            }
@@ -15,6 +15,9 @@
             font-family: calibri;
             margin-left: auto;
             margin-right: auto;
+            width:16.5cm;
+            padding-left: .2cm;
+            padding-right: .2cm;
             }
             .greyed{
                 background-color: rgba(201, 201, 201, 0.79) !important;;
@@ -27,6 +30,9 @@
             font-family: calibri;
             margin-left: auto;
             margin-right: 0px;
+            width:100%;
+            padding-left: .5cm;
+            padding-right: .5cm;            
             }            
             body{
                 font-family: calibri;
@@ -52,7 +58,7 @@
             </form>
         </nav-->
             
-        <div class="body" style="width:16.5cm;padding-left: .2cm;padding-right: .9cm;">
+        <div class="body">
         @foreach($collection as $info)
         <div class="front" style="padding-top: 40px;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
@@ -81,7 +87,7 @@
                     <br>
                         </td>
                     </tr>
-                    <tr><td style="font-size:3px"><br></td></tr>
+                    <tr><td style="font-size:2px"><br></td></tr>
                     </table>
                 </td>
             </tr>
@@ -91,13 +97,13 @@
                     <br>
                     <table class="head" width="100%" border = '0' cellpacing="0" cellpadding = "0">
                         <tr>
-                            <td width="13%" style="font-size:10pt;padding-left: 0px;">
+                            <td width="16%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Name:</b>
                             </td>
-                            <td width="53%" style="font-size:10pt;padding-left: 0px;">
+                            <td width="47%" style="font-size:10pt;padding-left: 0px;">
                                 <b>{{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}</b>
                             </td>
-                            <td width="13%" style="font-size:10pt;padding-left: 0px;">
+                            <td width="16%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Student No:</b>
                             </td>
                             <td width="23%" style="font-size:10pt;padding-left: 0px;">

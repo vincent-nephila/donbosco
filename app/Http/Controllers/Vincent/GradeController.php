@@ -206,9 +206,11 @@ class GradeController extends Controller
                 }           
                 
         if($students[0]->department =="Elementary"){            
-            return view('registrar.sectiongradereport',compact('collection','students','level','section','teacher','schoolyear'));
+            //return view('registrar.sectiongradereport',compact('collection','students','level','section','teacher','schoolyear'));
+            return view('registrar.sectiongradereportduplex',compact('collection','students','level','section','teacher','schoolyear'));
         }else{
-            return view('registrar.sectiongrade7to8',compact('collection','students','level','section','teacher','schoolyear'));
+            //return view('registrar.sectiongrade7to8',compact('collection','students','level','section','teacher','schoolyear'));
+            return view('registrar.sectiongrade7to8duplex',compact('collection','students','level','section','teacher','schoolyear'));
         }
                 
     }    
