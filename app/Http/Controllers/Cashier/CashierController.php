@@ -190,7 +190,7 @@ class CashierController extends Controller
              
                 $this->changestatatus($request->idno, $request->reservation);
                 if($request->reservation > 0){
-                $this->debit_reservation_discount($request->idno,env('DEBIT_RESERVATION') , $request->reservation);
+                $this->debit_reservation_discount($request->idno,env('DEBIT_RESERVATION','Reservation') , $request->reservation);
                 $this->consumereservation($request->idno);
                 }
             }
@@ -227,6 +227,13 @@ class CashierController extends Controller
                     $updateother->payment = $updateother->payment + $value;
                     $updateother->save();
                     $this->credit($updateother->idno, $updateother->id, $refno, $orno, $value);
+                }
+                $statusnow =  \App\Status::where('idno',$request->idno)->where('department','TVET')->first();
+                if(count($statusnow)>0){
+                    if($statusnow->status=="1"){
+                       $statusnow->status="2";
+                       $statusnow->update(); 
+                    }
                 }
             }
             
@@ -280,7 +287,13 @@ class CashierController extends Controller
             //}
                     
             if($discount > 0 ){
-              $this->debit_reservation_discount($request->idno,env('DEBIT_DISCOUNT') , $discount);
+                $discountname="Plan Discount";
+                $schoolyear = \App\CtrRefSchoolyear::first()->schoolyear;
+                $disc = \App\Discount::where('idno',$request->idno)->first()->description;
+                if(count($disc)>0){
+                    $discountname = $disc;
+                }
+              $this->debit_reservation_discount($request->idno,env('DEBIT_DISCOUNT') , $discount, $discountname);
             }      
          
             
@@ -391,11 +404,12 @@ class CashierController extends Controller
         
     }
    
-    function debit_reservation_discount($idno,$debittype,$amount){
+    function debit_reservation_discount($idno,$debittype,$amount,$discountname){
         $student = \App\User::where('idno',$idno)->first();
         $debitaccount = new \App\Dedit;
         $debitaccount->idno = $idno;
         $debitaccount->transactiondate=Carbon::now();
+        $debitaccount->acctcode=$discountname;
         $debitaccount->refno=$this->getRefno();
         $debitaccount->receiptno = $this->getOR();
         $debitaccount->paymenttype = $debittype;
