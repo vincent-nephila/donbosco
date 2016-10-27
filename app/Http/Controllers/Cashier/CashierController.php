@@ -42,7 +42,7 @@ class CashierController extends Controller
        //get previous balance
        $previousbalances = DB::Select("select schoolyear, sum(amount)- sum(plandiscount)- sum(otherdiscount)
                - sum(debitmemo) - sum(payment) as amount from ledgers where idno = '$idno' 
-               and categoryswitch >= '"  .env('PREVIOUS_MISCELLANEOUS_FEE') ."' group by schoolyear");
+               and categoryswitch >= '"  .env('PREVIOUS_ELEARNING_FEE') ."' group by schoolyear");
        if(count($previousbalances)>0){ 
        foreach($previousbalances as $prev){
             $totalprevious = $totalprevious + $prev->amount;
