@@ -206,10 +206,10 @@
                             {{--*/$second = $second + round($core->second_grading,2)/*--}}
                         </td >
                         <td>
-                            @if(round($core->final_grading,2) != 0)
-                            {{round($core->final_grade,2)}}
+                            @if(round($core->second_grading,2) != 0)
+                            {{round((round($core->second_grading,2)+round($core->first_grading,2))/2,0)}}
                             @endif
-                            {{--*/$final = $final + round($core->final_grade,2)/*--}}
+                            <?php $final = $final + round((round($core->second_grading,2)+round($core->first_grading,2))/2,0)?>
                         </td>
 
                             {{--*/$count ++/*--}}                        
@@ -239,10 +239,10 @@
                             {{--*/$second = $second + round($spec->second_grading,2)/*--}}
                         </td >
                         <td>
-                            @if(round($spec->final_grading,2) != 0)
-                            {{round($spec->final_grade,2)}}
+                            @if(round($spec->second_grading,2) != 0)
+                            {{round((round($spec->second_grading,2)+round($spec->first_grading,2))/2,0)}}
                             @endif
-                            {{--*/$final = $final + round($spec->final_grade,2)/*--}}
+                            <?php $final = $final + round((round($spec->second_grading,2)+round($spec->first_grading,2))/2,0)?>
                         </td>
 
                             {{--*/$count ++/*--}}                        
@@ -253,8 +253,8 @@
                         <td colspan="2" style="text-align: right;padding-right: 10px">
                             <b>GENERAL AVERAGE for the Semester</b>
                         </td>
-                        <td>@if(round($final/$count,2) != 0)
-                            <b>{{round($final/$count,2)}}</b>
+                        <td>@if(round($final/$count,0) != 0)
+                            <b>{{round($final/$count,0)}}</b>
                             @endif
                         </td>
                     </tr>
