@@ -33,15 +33,8 @@
     
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
      Route::get('printreportcard','Registrar\GradeController@printreportcard');
-     //Vincent Registrar
-     Route::get('/printsheetA/{level}/{section}/{subject}', 'Vincent\ReportController@printSheetAElem');
-     Route::get('conduct', 'Vincent\ReportController@conduct');
-     Route::get('sheetaconduct/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetAConduct');
-     Route::get('sheetaAttendance/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetaAttendance');
-     Route::get('attendance', 'Vincent\ReportController@attendance');
-     Route::get('/sheetb', 'Vincent\ReportController@sheetB');
-     Route::get('/sectiontvet','Vincent\SectionController@sectiontvet');
-    
+
+     
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
     Route::post('payment','Cashier\CashierController@payment');
@@ -109,8 +102,8 @@
     //Update grades of students
     //Route::get('updategrades','Registrar\AssessmentController@updategrades');
     //Route::get('updatemapeh','Registrar\AssessmentController@updatemapeh');
-    //Route::get('updatehsconduct','Update\UpdateController@updatehsconduct');
-    //Route::get('updatehsgrade','Update\UpdateController@updatehsgrade');
+    Route::get('updatehsconduct','Update\UpdateController@updatehsconduct');
+    Route::get('updatehsgrade','Update\UpdateController@updatehsgrade');
     //Route::get('checkno','Update\UpdateController@checkno');
     //Route::get('updatehsattendance','Update\UpdateController@updatehsattendance');
     Route::get('updateacctcode','Update\UpdateController@updateacctcode');
@@ -126,6 +119,17 @@
     Route::get('overallrank', 'Vincent\GradeController@overallRank');
     Route::post('test', 'Vincent\AttendanceController@importMonthlyAttendance');
     Route::get('test', 'Vincent\AttendanceController@index');
+    Route::get('/printsheetA/{level}/{section}/{subject}', 'Vincent\ReportController@printSheetAElem');
+    Route::get('/printsheetA/{level}/{strand}/{section}/{subject}', 'Vincent\ReportController@printSheetASHS');
+    
+    Route::get('conduct', 'Vincent\ReportController@conduct');
+    Route::get('sheetaconduct/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetAConduct');
+    Route::get('sheetaAttendance/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetaAttendance');
+    Route::get('attendance', 'Vincent\ReportController@attendance');
+    Route::get('/sheetb', 'Vincent\ReportController@sheetB');
+    Route::get('/sectiontvet','Vincent\SectionController@sectiontvet');
+    Route::post('/changecourses/{batch}/{idno}','Vincent\TvetController@changecourses');
+    
     
     //Accounting VINCENT (10-13-2016)
     Route::get('/tvetledger','Vincent\TvetController@tvetledger');
@@ -133,7 +137,8 @@
     Route::get('/studentsledger/{batch}/{cours}/{section}/edit','Vincent\TvetController@edittvetcontribution');
     Route::post('/studentsledger/{batch}/{cours}/{section}/edit','Vincent\TvetController@savetvetChanges');
     
-    
+    //ACADEMIC VINCENT
+    Route::get('/registerAdviser','Vincent\TvetController@tvetledger');
 });
 
 //Ajax route
