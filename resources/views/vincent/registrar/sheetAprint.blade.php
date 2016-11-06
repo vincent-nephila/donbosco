@@ -146,7 +146,13 @@
                             ?>
                             
                             <td>@if(!$grades == 0)
-                                {{$grades}}
+                                @if($level == 'Grade 7' || $level == 'Grade 8' || $level == 'Grade 9' || $level == 'Grade 10' || $level == 'Grade 11' || $level == 'Grade 12')
+                                    {{round($grades,0)}}
+                                    
+                                @else
+                                    {{$grades}}
+                                    
+                                @endif
                             @endif</td>
                             
                         @endforeach

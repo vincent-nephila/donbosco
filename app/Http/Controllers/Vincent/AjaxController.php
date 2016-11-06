@@ -790,9 +790,9 @@ class AjaxController extends Controller
         if(Request::ajax()){
             $strand = Input::get("strand");
             if(empty($strand)){
-                $subjects = DB::Select("select  distinct subjectname as subject,subjectcode from grades where level = '$level' and strand = '$strand' and subjecttype IN (0,1,5,6) ORDER BY subjecttype asc, sortto asc");
+                $subjects = DB::Select("select  distinct subjectname as subject,subjectcode from ctr_subjects where level = '$level' and strand = '$strand' and subjecttype IN (0,1,5,6) ORDER BY subjecttype asc, sortto asc");
             }else{
-                $subjects = DB::Select("select  distinct subjectname as subject,subjectcode from grades where level = '$level' and subjecttype IN (0,1,5,6) ORDER BY subjecttype asc, sortto asc");
+                $subjects = DB::Select("select  distinct subjectname as subject,subjectcode from ctr_subjects where level = '$level' and subjecttype IN (0,1,5,6) ORDER BY subjecttype asc, sortto asc");
             }
 
             

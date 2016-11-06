@@ -38,10 +38,8 @@
                 <option>--Select--</option>
                 <option value="1">1st Semester</option>
                 <option value="2">2nd Semester</option>
-
             </select>
-         </div>         
-
+         </div>        
     </div> 
     <div class="col-md-6">
         <div class="form form-group">
@@ -100,10 +98,6 @@ function displaycards(){
     }
 }
 function getstrandall(strand){
-    //getstudentlist(strand);
-
-        
-
     getsection(strand);
 }
 
@@ -122,22 +116,7 @@ function kbutton(){
 function callsection(){
     getsectionlist()
 }
-/*
-function getstudentlist(strand){
-    var array={};
-    array['strand'] = strand;
-        $.ajax({
-            type: "GET", 
-            data: array,
-            url: "/getstudentlist/" + $('#level').val() , 
-            success:function(data){
-                $("#studentlist").html(data);
-            }
-            
-});
-       
-}
-*/
+
 function getsection(strand){
     var array = {};
     array['strand'] = strand;
@@ -155,20 +134,7 @@ function getsection(strand){
 
 
 function getsectionlist(){
-  /*      strand= "";
-        if($("#strand").length){
-            strand = $("#strand").val();
-        }
-        var array={};
-        array['strand']=strand;
-         $.ajax({
-            type: "GET", 
-            data: array,
-            url: "/getsectionlist/" + $('#level').val() + "/" + $('#section').val() , 
-            success:function(data){
-                $("#sectionlist").html(data);
-            }
-});*/
+
         var level = document.getElementById('level').value
 
         if(level == "Grade 11" || level == "Grade 12"){
@@ -182,53 +148,7 @@ function getsectionlist(){
         document.getElementById('btncard').style.display='block'
     }
 }
-/*
-function setsection(id){
-    strand="";
-    if($("#strand").length>0){
-        strand=$("#strand").val();
-    }
-    //alert($("#strand").val());
-    $.ajax({
-            type: "GET", 
-            url: "/setsection/" + id + "/" + $('#section').val() , 
-            success:function(data){
-                if(data == "true"){
-                    getstudentlist(strand);
-                    getsectionlist();
-                }
-                
-            }
-});
-}
 
-function rmsection(id){
-    strand="";
-    if($("#strand")){
-        strand =$("#strand").val();
-    }
-      $.ajax({
-            type: "GET", 
-            url: "/rmsection/" + id  , 
-            success:function(data){
-                if(data == "true"){
-                    getstudentlist(strand);
-                    getsectionlist();
-                }
-                
-            }
-});
-}
-
-function updateadviser(value, id){
-    $.ajax({
-       type: "GET",
-       url: "/updateadviser/" + id + "/" + value,
-       success:function(data){
-           
-       }
-    });
-}*/
 </script>
 @stop
 

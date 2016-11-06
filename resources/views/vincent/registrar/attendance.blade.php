@@ -53,7 +53,8 @@ function goto(){
     var level = document.getElementById('level').value
     var section = document.getElementById('section').value
     var quarter = document.getElementById('qtr').value
-    document.location = "/sheetaAttendance/" + level + "/" + section +"/"+ quarter
+    window.open("/sheetaAttendance/" + level + "/" + section +"/"+ quarter, '_blank');
+    
 }
 </script>
 @stop

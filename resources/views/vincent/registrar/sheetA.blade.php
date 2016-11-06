@@ -38,6 +38,7 @@
 
 <script>
  var strn;
+ var strand;
     
 $('#level').change(function(){
 if($('#level').val() == "Grade 9" || $('#level').val() == "Grade 10" || $('#level').val() == "Grade 11" ){
@@ -58,12 +59,18 @@ if($('#level').val() == "Grade 9" || $('#level').val() == "Grade 10" || $('#leve
 function generatesheet(){
     var level = document.getElementById('level').value
     var section = document.getElementById('section').value
-    var strand
+    
     var subject = document.getElementById('subject').value
     if(document.getElementById('strand')){
     strand = document.getElementById('strand').value
     }
-    document.location = "/printsheetA/" + level + "/" + section +"/"+ subject
+    if(strn != null){
+        window.open("/printsheetA/" + level + "/" + strn + "/" + section +"/"+ subject, '_blank');
+    }
+    else{
+        window.open("/printsheetA/" + level + "/" + section +"/"+ subject, '_blank');
+    }
+    
 }
 
 function getstrand(){

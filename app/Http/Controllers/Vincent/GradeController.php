@@ -129,7 +129,7 @@ class GradeController extends Controller
                 $collection[] = array('info'=>$student,'aca'=>$academic,'con'=>$conduct,'att'=>$attendance,'tech'=>$technical,'core'=>$core,'spec'=>$special);
             }
 
-        return view('registrar.sectiongrade9to10',compact('collection','students','level','section','teacher','schoolyear','shop'));
+        return view('registrar.sectiongrade9to10duplex',compact('collection','students','level','section','teacher','schoolyear','shop'));
     }
     
     function viewSectionGrade11to12($level,$shop,$section,$sem){

@@ -53,7 +53,7 @@ function goto(){
     var level = document.getElementById('level').value
     var section = document.getElementById('section').value
     var quarter = document.getElementById('qtr').value
-    document.location = "/sheetaconduct/" + level + "/" + section +"/"+ quarter
+    window.open("/sheetaconduct/" + level + "/" + section +"/"+ quarter, '_blank');
 }
 </script>
 @stop

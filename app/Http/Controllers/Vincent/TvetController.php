@@ -176,4 +176,19 @@ class TvetController extends Controller
         
         return null;
     }
+    
+    function changecourses(Request $request,$batch,$idno){
+        $status = \App\Status::where('period',$batch)->where('idno',$idno)->first();
+        $status->course = $request->course;
+        $status->save();
+        
+        $ledger = \App\Ledger::where('period',$batch)->where('idno',$idno)->first();
+        $ledger->course = $request->course;
+        $ledger->save();
+        
+        return Redirect::back();
+        
+        
+        
+    }
 }

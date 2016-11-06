@@ -22,10 +22,39 @@
             .greyed{
                 background-color: rgba(201, 201, 201, 0.79) !important;;
                 -webkit-print-color-adjust: exact; 
-            }            
+            }      
+            .front{
+                border: 1px solid;
+                margin-left: -0.8cm;
+                padding-left: .8cm;
+                margin-right: -0.8cm;
+                padding-right: .8cm;                
+            }
+            .back{
+                border: 1px solid;
+                margin-left: -0.8cm;
+                padding-left: .8cm;
+                margin-right: -0.8cm;
+                padding-right: .8cm;                
+            } 
         </style>    
        
         <style type="text/css" media="print">
+            body{width:100%;}
+            .front{
+                border: none;
+                margin-left: 0px;
+                padding-left: 0px;
+                margin-right: 0px;
+                padding-right: 0px;                
+            }
+            .back{
+                border: none;
+                margin-left: 0px;
+                padding-left: 0px;
+                margin-right: 0px;
+                padding-right: 0px;               
+            }
            .body{
             font-family: calibri;
             margin-left: auto;
@@ -58,18 +87,18 @@
             </form>
         </nav-->
             
-        <div class="body">
+        <div class="body" id="body">
         @foreach($collection as $info)
         <div class="front" style="padding-top: 40px;">
-        <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
+        <table class="parent" width="100%" style="margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:43px;">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" id="cardHeader">
 
                     <tr>
-                        <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
-                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:90px">
+                        <td rowspan="7" style="text-align: right;padding-left: 0px;width: 140px;vertical-align: top" class="logo">
+                            <img src="{{asset('images/DBTI.png')}}"  style="display: inline-block;width:100%">
                         </td>
                         <td style="padding-left: 0px;">
                             <span style="font-size:12pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
@@ -685,6 +714,18 @@
                 });                  
             }           
 
-        </script-->    
+        </script-->
+        <script type="text/javascript">
+            var widths = document.getElementById('cardHeader').offsetWidth;
+            var bodywidth = document.getElementById('body').offsetWidth;
+            
+            bodywidth = bodywidth/2
+            widths = (widths+120)/2
+            
+            var placement = bodywidth - widths;
+            document.getElementById("cardHeader").style.marginLeft = placement+"px";
+            
+            
+        </script>        
         </body>
 </html>

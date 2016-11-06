@@ -66,7 +66,7 @@
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
-                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:90px">
+                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:115px">
                         </td>
                         <td style="padding-left: 0px;">
                             <span style="font-size:12pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>

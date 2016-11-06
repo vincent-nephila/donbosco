@@ -11,7 +11,9 @@ use Carbon\Carbon;
 class UpdateController extends Controller
 {
     function updatehsconduct(){
-        $hsgrades = DB::Select("select * from grade1 where SY_EFFECTIVE = '2016'");
+        $quarters = \App\CtrQuarter::first();
+        
+        $hsgrades = DB::connection('dbtitest')->Select("select * from grade1 where SY_EFFECTIVE = '2016' and QTR = $quarters->qtrperiod");
         foreach($hsgrades as $hsgrade){
             $newconduct = new \App\ConductRepo;
             $newconduct->OSR = $hsgrade->obedience;
@@ -61,7 +63,9 @@ class UpdateController extends Controller
         }
         
         public function updatehsgrade(){
-            $grades = DB::Select("select * from grade2");
+            $sy = \App\ctrSchoolYear::first();
+            $quarters = \App\CtrQuarter::first();
+            $grades = DB::connection('dbti2test')->Select("select * from grade where SY_EFFECTIVE = $sy->schoolyear and QTR = $quarters->qtrperiod");
             foreach($grades as $grade){
              $this->updatehs($grade->SCODE, $grade->SUBJ_CODE, $grade->GRADE_PASS1, $grade->QTR);
             }

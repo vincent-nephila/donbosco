@@ -27,7 +27,7 @@ public function studentinfokto12()
 
 public function studentinfokto12edit($idno){
     $sy = \App\CtrRefSchoolyear::first()->schoolyear;
-    $status = \App\Status::where('idno',$idno)->where('schoolyear',$sy)->first();
+    $status = \App\Status::where('idno',$idno)->where('schoolyear',$sy)->orderBy('id','DESC')->first();
     $student = \App\User::where('idno',$idno)->first();
     $studentcount = \App\User::where('idno',$idno)->count();
     $studentInfo = \App\StudentInfo::where('idno',$idno)->first();

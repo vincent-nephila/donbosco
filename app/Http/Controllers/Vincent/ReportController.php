@@ -42,10 +42,8 @@ class ReportController extends Controller
 
         
         $schoolyear = \App\CtrRefSchoolyear::first();
-        $quarter = '1';
-        //$level = 'Grade 1';
-        //$section = 'Blessed Michael Rua';
-        $strand = '';
+        $quarters = \App\CtrQuarter::first();
+        $quarter = ''.$quarters->qtrperiod;
         
         if($subject == "All"){
             $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(0,1))->get();
@@ -60,17 +58,35 @@ class ReportController extends Controller
                 $subjects = \App\CtrSubjects::where('subjectcode',$subject)->where('level',$level)->whereIn('subjecttype',array(5,6))->get();
             }              
         }
-
-        //$students = DB::Select("Select lastname,firstname,middlename, extensionname from users join statuses on statuses.idno=users.idno where statuses.status = 2 and schoolyear ='$schoolyear' and level='$level' and section = '$section' and strand='$strand' order by lastname ASC,firstname asc ");
         
         $students = DB::Select("SELECT statuses.idno as idno,class_no,lastname, firstname, middlename, extensionname,statuses.status as stat FROM users JOIN statuses ON statuses.idno = users.idno WHERE statuses.status IN(2,3) AND schoolyear = '$schoolyear->schoolyear' AND level ='$level'  AND section = '$section' ORDER BY class_no ASC");
-        
-        
-        
+
         return view('vincent.registrar.sheetAprint',compact('students','subjects','today','print','schoolyear','level','section','quarter'));
-        //return $schoolyear;
+    }
+    
+    function printSheetASHS($level,$strand,$section,$subject){
+        if(Auth::User()->accesslevel != env('USER_REGISTRAR')){
+            return redirect('/');
+        }        
+        $today = date("F d, Y");
         
-    }    
+        $print =      $this->printDate();  
+
+        $schoolyear = \App\CtrRefSchoolyear::first();
+        $quarters = \App\CtrQuarter::first();
+        $quarter = ''.$quarters->qtrperiod;
+        
+        if($subject == "All"){
+                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname)'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->get();
+        }else{
+                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname)'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->where('subjectcode',$subject)->get();
+        }
+        
+        
+
+        return view('vincent.registrar.sheetAprintSHS',compact('subjects','today','print','schoolyear','level','section','quarter'));
+        //return $subjects;
+    }        
     
     function conduct(){
      if(Auth::User()->accesslevel != env('USER_REGISTRAR')){

@@ -9,15 +9,7 @@
        <link href="{{ asset('/css/app_1.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/fileinput.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/datepicker.css') }}" rel="stylesheet">
-	<!-- Fonts 
-	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
--->
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
+
        
         <script src="{{asset('/js/jquery.js')}}"></script>
         <script src="{{asset('/js/bootstrap.min.js')}}"></script>
@@ -59,9 +51,29 @@
 <body> 
     <div class="container">
     <table border = '1' cellpacing="0" cellpadding = "0" width="100%" align="center">
-        <tr><td rowspan="5" width="65" style="vertical-align: top"><img src="{{asset('/images/logo.png')}}" width="60"></td><td><span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span></td><td>Gr/Yr</td><td>@if($status != NULL){{$status->level}} @endif</td></tr>
+        <tr><td rowspan="5" width="65" style="vertical-align: top"><img src="{{asset('/images/logo.png')}}" width="60"></td><td><span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute of Makati, Inc. </span></td><td>Gr/Batch</td><td>@if($status != NULL){{$status->level}}{{$status->period}} @endif</td></tr>
         <tr><td style="font-size:10pt;">Chino Roces Ave., Makati City </td><td>Section</td><td>@if($status!= NULL){{$status->section}} @endif</td></tr>
-        <tr><td style="font-size:10pt;">Tel No : 892-01-01</td><td>Shop</td><td>@if($status!= NULL){{$status->strand}} @endif</td></tr>
+        <tr><td style="font-size:10pt;">Tel No : 892-01-01</td><td width="5%">Shop/Course</td><td width="33%">@if($status!= NULL)<div id="currcourse">{{$status->strand}}{{$status->course}}
+                @if($status->course != "")
+                <button class="btn" onclick="updateCourse()">Change</button>
+                @endif</div>
+                <div id="changecourse">
+                    <form method="POST" action="{{url('/changecourses/'.$status->period.'/'.$student->idno)}}">
+                        {!!csrf_field()!!}
+                        <?php $courses = \App\CtrSubjects::distinct()->select('course')->where('department','TVET')->get();?>
+                        
+                        <select name="course" style="width: 60%;">
+                            @foreach($courses as $course)
+                            <option value="{{$course->course}}" @if($status->course == $course->course)
+                                    selected
+                                    @endif>{{$course->course}}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a href="#" class="btn btn-danger" onclick="cancelChange()">Cancel</a>
+                    </form>
+                </div>
+                @endif</td></tr>
         <tr><td></td><td>Student No</td><td id="studno">@if($student != NULL){{$student->idno}}@endif</td></tr>
         @if($student != NULL)
             <tr>
@@ -1507,155 +1519,17 @@ function getAge(){
     });    
 
 @endif
+$("#changecourse").hide();
+function updateCourse(){
+    $("#currcourse").hide();
+    $("#changecourse").show();
+}
 
+function cancelChange(){
+    $("#currcourse").show();
+    $("#changecourse").hide();
+}
 
 </script>    
 </div>
-
-
-
-
-
-
-
-
-<!-- <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo1"><strong>STEP 2:</strong>Educational Record</button>
- <div id="demo1" class="collapse">
-    
-    <div class="form-group">
-    <div class="col-xs-4">
-    <label>COLLEGE SCHOOLING AT:</label>
-    <input type="text" class="form-control" name="collegesch" id="collegsch" placeholder="Enter info here">
-    </div>
-    </div>
-        
-    <div class="form-group">
-    <div class="col-xs-4">
-    <label>YEAR ATTENDED:</label>
-    <input type="text" class="form-control" name="yrattended" id="yrattended" placeholder="Enter year attended">
-    </div>
-    </div>    
-    
-    <div class="form-group">
-    <div class="col-xs-4">
-    <label>COURSE:</label>
-    <input type="text" class="form-control" name="course" id="collegecourse" placeholder="Enter course">
-    </div>
-    </div>
-    
-    <div class="form-group">
-    <div class="col-xs-6">
-    <label>HIGHSCHOOL:</label>
-    <input type="text" class="form-control" name="hs" id="hs" placeholder="Enter info here">
-    </div>
-    </div>
-        
-    <div class="form-group">
-    <div class="col-xs-6">
-    <label>YEAR GRADUATED:</label>
-    <input type="text" class="form-control" name="yrgradhs" id="yrgradhs" placeholder="Enter year graduated">
-    </div>
-    </div>    
- 
-    <div class="form-group">
-    <div class="col-xs-6">
-    <label>ELEMENTARY:</label>
-    <input type="text" class="form-control" name="elem" id="elem" placeholder="Enter info here">
-    </div>
-    </div>
-        
-    <div class="form-group">
-    <div class="col-xs-6">
-    <label>YEAR GRADUATED:</label>
-    <input type="text" class="form-control" name="yrgradelem" id="yrgradelem" placeholder="Enter year graduated">
-    </div>
-    </div>    
-</div> 
-      
-       
-<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo2"><strong>STEP 3:</strong>Select Course/s</button>
- <div id="demo2" class="collapse">
-    <label>DEGREE COURSES:</label> 
-    <div class="checkbox">
-      <label><input type="checkbox" name="beed" value="1">BS Elementary Education</label>
-    </div>
-     <div class="checkbox">
-      <label><strong>BS Secondary Education</strong></label> <br> 
-      <label><input type="checkbox" name="english" value="1">Major in English</label>
-    </div>
-    <div class="checkbox">
-      <label><input type="checkbox" name="mapeh" value="1">Major in MAPEH</label>
-    </div>
-    <div class="checkbox">
-      <label><input type="checkbox" name="math" value="1">Major in Mathematics</label>
-    </div>
-    <div class="checkbox">
-      <label><input type="checkbox" name="social" value="1">Major in Social Studies</label>
-    </div>
-    <div class="checkbox">
-    <label><input type="checkbox" name="accountancy" value="1">BS Accountancy</label>
-    </div>
-     <div class="checkbox">
-      <label><input type="checkbox" name="accountingtech" value="1">BS Accounting Technology</label>
-    </div>
-    <div class="checkbox">
-      <label><input type="checkbox" name="realestate" value="1">BS Real Estate Management</label>
-    </div>
-    <div class="checkbox">
-    <label><strong>BS Business Administration</strong></label> <br> 
-    <label><input type="checkbox" name="hrdm" value="1">Major in Human Resource Development Management</label>
-    </div>
-    <div class="checkbox">
-    <label><input type="checkbox" name="bf" value="1">Major in Banking and Finance</label>
-    </div>
-    <label>TESDA COURSES:</label>
-    <div class="checkbox">
-    <label><input type="checkbox" name="hrm" value="1">Diploma in Hotel and Restaurant Management</label>
-    </div>
-    <div class="checkbox">
-    <label><input type="checkbox" name="it" value="1">Diploma in Information Technology</label>
-    </div>
-</div>
-
- <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo3"><strong>STEP 4:</strong>Requirements Submitted</button>
- <div id="demo3" class="collapse">
-      Please check the requirements submitted to the Registrar.<br>
-    <label>Incoming First Year</label>     
-    <div class="checkbox">
-      <label><input type="checkbox" name="reporcard" value="1">Report Card</label>
-    </div>
-     <div class="checkbox">
-      <label><input type="checkbox" name="form137" value="1">Form 137</label>
-    </div>
-    <div class="checkbox">
-      <label><input type="checkbox" name="nso" value="1">NSO Birth Certificate</label>
-    </div>
-    <div class="checkbox">
-      <label><input type="checkbox" name="goodmoral" value="1">Certification of Good Moral Character</label>
-    </div>
-    <div class="checkbox">
-    <label><input type="checkbox" name="picture" value="1">2 x 2 Picture</label>
-    </div>
-    <label>Transferees</label>    
-    <div class="checkbox">
-    <label><input type="checkbox" name="hdismissal" value="1">Certification of Honorable Dismissal</label>
-    </div>
-    <div class="checkbox">
-    <label><input type="checkbox" name="grades" value="1">Certification of Grades</label>
-    </div>
-    <div class="checkbox">
-    <label><input type="checkbox" name="goodmoraltrans" value="1">Certification of Good Moral Character</label>
-    </div>
-    <div class="checkbox">
-    <label><input type="checkbox" name="nsotrans" value="1">NSO Birth Certificate </label>
-    </div>
-    <div class="checkbox">
-    <label><input type="checkbox" name="picturetrans" value="1">2x2 Picture</label>
-    </div>   
-<button type="submit" class="btn btn-info">Submit</button> 
-</div>
-   
-</div>
-
--->
-
+</html>
