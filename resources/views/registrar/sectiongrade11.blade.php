@@ -15,6 +15,9 @@
             font-family: calibri;
             margin-left: auto;
             margin-right: auto;
+            width:16.6cm;
+            padding-left: .8cm;
+            padding-right: .8cm;            
             }
             .greyed{
                 background-color: rgba(201, 201, 201, 0.79) !important;;
@@ -26,8 +29,9 @@
  
            .body{
             font-family: calibri;
-            margin-left: auto;
-            margin-right: 0px;
+            width:100%;
+            padding-left: .5cm;
+            padding-right: .5cm;
             }            
             body{
                 font-family: calibri;
@@ -41,19 +45,9 @@
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     </head>
     <body>
-        <!--nav class="nav navbar-fixed-top hide-print">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="email">Display side:</label>
-                      <select class="form-control" id="display">
-                        <option value="front">Front</option>
-                        <option value="back"  selected>Back</option>
-                      </select>
-                </div>
-            </form>
-        </nav-->
-        
-        <div class="body" style="width:16.5cm;padding-left: .8cm;padding-right: .8cm;">
+
+        <div class="body" id="body">
+            <?php $card = 1;?>    
         @foreach($collection as $info)
         <div class="front" style="padding-top: 50px;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
@@ -63,8 +57,8 @@
                     <table class="head"  border="0" cellpadding="0" cellspacing="0" style="margin-left:43px;">
 
                     <tr>
-                        <td rowspan="7" style="text-align: right;padding-left: 0px;width: 35%;vertical-align: top" class="logo" width="55px">
-                            <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:90px">
+                        <td rowspan="7" style="text-align: right;padding-left: 0px;width: 140px;vertical-align: top" class="logo" >
+                            <img src="{{asset('images/DBTI.png')}}"  style="display: inline-block;width:120px">
                         </td>
                         <td style="padding-left: 0px;">
                             <span style="font-size:12pt; font-weight: bold">DON BOSCO TECHNICAL INSTITUTE</span>
@@ -507,19 +501,19 @@
                         <td style="text-align: left">Days of School</td>
                         <?php $tsd  = \App\CtrAttendance::Select(DB::raw('*,Jun+Jul+Aug+Sept+Oct as sem1,Nov+Dece+Jan+Feb+Mar as sem2'))->where('schoolyear',$schoolyear->schoolyear)->where('level',$level)->first();?>
                             @if($sem == 2)
-                                <td>@if($tsd->Nov != 0){{$tsd->Nov}}@endif</td>
-                                <td>@if($tsd->Dece != 0){{$tsd->Dece}}@endif</td>
-                                <td>@if($tsd->Jan != 0){{$tsd->Jan}}@endif</td>
-                                <td>@if($tsd->Feb != 0){{$tsd->Feb}}@endif</td>
-                                <td>@if($tsd->Mar != 0){{$tsd->Mar}}@endif</td>
-                                <td>@if($tsd->Mar != 0){{$tsd->sem2}}@endif</td>
+                                <td>@if($tsd->Nov != 0){{round($tsd->Nov,1)}}@endif</td>
+                                <td>@if($tsd->Dece != 0){{round($tsd->Dece,1)}}@endif</td>
+                                <td>@if($tsd->Jan != 0){{round($tsd->Jan,1)}}@endif</td>
+                                <td>@if($tsd->Feb != 0){{round($tsd->Feb,1)}}@endif</td>
+                                <td>@if($tsd->Mar != 0){{round($tsd->Mar,1)}}@endif</td>
+                                <td>@if($tsd->Mar != 0){{round($tsd->sem2,1)}}@endif</td>
                             @else
-                                <td>@if($tsd->Jun != 0){{$tsd->Jun}}@endif</td>
-                                <td>@if($tsd->Jul != 0){{$tsd->Jul}}@endif</td>
-                                <td>@if($tsd->Aug != 0){{$tsd->Aug}}@endif</td>
-                                <td>@if($tsd->Sept != 0){{$tsd->Sept}}@endif</td>
-                                <td>@if($tsd->Oct != 0){{$tsd->Oct}}@endif</td>
-                                <td>@if($tsd->Oct != 0){{$tsd->sem1}}@endif</td>
+                                <td>@if($tsd->Jun != 0){{round($tsd->Jun,1)}}@endif</td>
+                                <td>@if($tsd->Jul != 0){{round($tsd->Jul,1)}}@endif</td>
+                                <td>@if($tsd->Aug != 0){{round($tsd->Aug,1)}}@endif</td>
+                                <td>@if($tsd->Sept != 0){{round($tsd->Sept,1)}}@endif</td>
+                                <td>@if($tsd->Oct != 0){{round($tsd->Oct,1)}}@endif</td>
+                                <td>@if($tsd->Oct != 0){{round($tsd->sem1,1)}}@endif</td>
                             @endif
                             
                             
@@ -531,19 +525,19 @@
                             {{$attend->attendanceName}}
                         </td>
                         @if($sem == 2)
-                        <td>@if($curr_month->nov != 0){{$attend->Nov}}@endif</td>
-                        <td>@if($curr_month->dece != 0){{$attend->Dece}}@endif</td>
-                        <td>@if($curr_month->jan != 0){{$attend->Jan}}@endif</td>
-                        <td>@if($curr_month->feb != 0){{$attend->Feb}}@endif</td>
-                        <td>@if($curr_month->mar != 0){{$attend->Mar}}@endif</td>                        
-                        <td>@if($curr_month->mar != 0){{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar}}@endif</td>
+                        <td>@if($curr_month->nov != 0){{round($attend->Nov,1)}}@endif</td>
+                        <td>@if($curr_month->dece != 0){{round($attend->Dece,1)}}@endif</td>
+                        <td>@if($curr_month->jan != 0){{round($attend->Jan,1)}}@endif</td>
+                        <td>@if($curr_month->feb != 0){{round($attend->Feb,1)}}@endif</td>
+                        <td>@if($curr_month->mar != 0){{round($attend->Mar,1)}}@endif</td>                        
+                        <td>@if($curr_month->mar != 0){{round($attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar,1)}}@endif</td>
                         @else
-                        <td>@if($curr_month->jun != 0){{$attend->Jun}}@endif</td>
-                        <td>@if($curr_month->jul != 0){{$attend->Jul}}@endif</td>
-                        <td>@if($curr_month->aug != 0){{$attend->Aug}}@endif</td>
-                        <td>@if($curr_month->sept != 0){{$attend->Sept}}@endif</td>
-                        <td>@if($curr_month->oct != 0){{$attend->Oct}}@endif</td>
-                        <td>@if($curr_month->oct != 0){{$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}@endif</td>
+                        <td>@if($curr_month->jun != 0){{round($attend->Jun,1)}}@endif</td>
+                        <td>@if($curr_month->jul != 0){{round($attend->Jul,1)}}@endif</td>
+                        <td>@if($curr_month->aug != 0){{round($attend->Aug,1)}}@endif</td>
+                        <td>@if($curr_month->sept != 0){{round($attend->Sept,1)}}@endif</td>
+                        <td>@if($curr_month->oct != 0){{round($attend->Oct,1)}}@endif</td>
+                        <td>@if($curr_month->oct != 0){{round($attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct,1)}}@endif</td>
                         @endif
                         
                         
@@ -634,6 +628,17 @@
         <div style="text-align: right;padding-left: 0px"><b>{{$info['info']->idno}}</b></div>
     <div class="page-break"></div>
     </div>
+        <script type="text/javascript">
+            var widths = document.getElementById('cardHeader{{$card}}').offsetWidth;
+            var bodywidth = document.getElementById('body').offsetWidth;
+            
+            bodywidth = bodywidth/2
+            widths = (widths+120)/2
+            
+            var placement = bodywidth - widths;
+            document.getElementById("cardHeader{{$card}}").style.marginLeft = placement+"px";
+        </script>        
+        <?php $card++; ?>        
     @endforeach
         </div>
         <!--script type="text/javascript">

@@ -89,12 +89,13 @@
             
         <div class="body" id="body">
         @foreach($collection as $info)
+        <?php $card = 1?>
         <div class="front" style="padding-top: 40px;">
         <table class="parent" width="100%" style="margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table class="head"  border="0" cellpadding="0" cellspacing="0" id="cardHeader">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" id="cardHeader{{$card}}">
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 140px;vertical-align: top" class="logo">
@@ -699,6 +700,17 @@
         <div style="text-align: right;padding-left: 0px"><b>{{$info['info']->idno}}</b></div>        
     <div class="page-break"></div>
     </div>
+        <script type="text/javascript">
+            var widths = document.getElementById('cardHeader{{$card}}').offsetWidth;
+            var bodywidth = document.getElementById('body').offsetWidth;
+            
+            bodywidth = bodywidth/2
+            widths = (widths+120)/2
+            
+            var placement = bodywidth - widths;
+            document.getElementById("cardHeader{{$card}}").style.marginLeft = placement+"px";
+        </script>        
+        <?php $card++; ?>        
     @endforeach
     </div>    
         
@@ -715,17 +727,6 @@
             }           
 
         </script-->
-        <script type="text/javascript">
-            var widths = document.getElementById('cardHeader').offsetWidth;
-            var bodywidth = document.getElementById('body').offsetWidth;
-            
-            bodywidth = bodywidth/2
-            widths = (widths+120)/2
-            
-            var placement = bodywidth - widths;
-            document.getElementById("cardHeader").style.marginLeft = placement+"px";
-            
-            
-        </script>        
+
         </body>
 </html>

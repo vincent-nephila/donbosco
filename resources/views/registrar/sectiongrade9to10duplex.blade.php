@@ -86,13 +86,14 @@
             </form>
         </nav-->
         <div class="body" id="body">
+            <?php $card = 1;?>    
         @foreach($collection as $info)
         <div class="front" style="padding-top: 50px;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table class="head"  border="0" cellpadding="0" cellspacing="0" id="cardHeader">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" id="cardHeader" id="cardHeader{{$card}}">
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 140px;vertical-align: top" class="logo">
@@ -564,17 +565,17 @@
                     <tr style="font-size:11px;">
                         <td style="text-align: left">Days of School</td>
                         <?php $tsd  = \App\CtrAttendance::Select(DB::raw('*,Jun+Jul+Aug+Sept+Oct+Nov+Dece+Jan+Feb+Mar as total'))->where('schoolyear',$schoolyear->schoolyear)->where('level',$level)->first();?>
-                        <td>@if($tsd->Jun != 0){{$tsd->Jun}}@endif</td>
-                        <td>@if($tsd->Jul != 0){{$tsd->Jul}}@endif</td>
-                        <td>@if($tsd->Aug != 0){{$tsd->Aug}}@endif</td>
-                        <td>@if($tsd->Sept != 0){{$tsd->Sept}}@endif</td>
-                        <td>@if($tsd->Oct != 0){{$tsd->Oct}}@endif</td>
-                        <td>@if($tsd->Nov != 0){{$tsd->Nov}}@endif</td>
-                        <td>@if($tsd->Dece != 0){{$tsd->Dece}}@endif</td>
-                        <td>@if($tsd->Jan != 0){{$tsd->Jan}}@endif</td>
-                        <td>@if($tsd->Feb != 0){{$tsd->Feb}}@endif</td>
-                        <td>@if($tsd->Mar != 0){{$tsd->Mar}}@endif</td>
-                        <td>@if($tsd->Mar != 0){{$tsd->total}}@endif</td>
+                        <td>@if($tsd->Jun != 0){{round($tsd->Jun,1)}}@endif</td>
+                        <td>@if($tsd->Jul != 0){{round($tsd->Jul,1)}}@endif</td>
+                        <td>@if($tsd->Aug != 0){{round($tsd->Aug,1)}}@endif</td>
+                        <td>@if($tsd->Sept != 0){{round($tsd->Sept,1)}}@endif</td>
+                        <td>@if($tsd->Oct != 0){{round($tsd->Oct,1)}}@endif</td>
+                        <td>@if($tsd->Nov != 0){{round($tsd->Nov,1)}}@endif</td>
+                        <td>@if($tsd->Dece != 0){{round($tsd->Dece,1)}}@endif</td>
+                        <td>@if($tsd->Jan != 0){{round($tsd->Jan,1)}}@endif</td>
+                        <td>@if($tsd->Feb != 0){{round($tsd->Feb,1)}}@endif</td>
+                        <td>@if($tsd->Mar != 0){{round($tsd->Mar,1)}}@endif</td>
+                        <td>@if($tsd->Mar != 0){{round($tsd->total,1)}}@endif</td>
                     </tr>      
                     <?php $curr_month = \App\Attendance::Select(DB::raw('max(Jun) as jun,max(Jul) as jul,max(Aug) as aug,max(Sept) as sept,max(Oct) as oct,max(Nov) as nov,max(Dece) as dece,max(Jan) as jan,max(Feb) as feb,max(Mar) as mar'))->first(); ?>
                     @foreach($info['att'] as $key=>$attend)
@@ -582,17 +583,17 @@
                         <td style="text-align: left">
                             {{$attend->attendanceName}}
                         </td>                    
-                        <td>@if($curr_month->jun != 0){{$attend->Jun}}@endif</td>
-                        <td>@if($curr_month->jul != 0){{$attend->Jul}}@endif</td>
-                        <td>@if($curr_month->aug != 0){{$attend->Aug}}@endif</td>
-                        <td>@if($curr_month->sept != 0){{$attend->Sept}}@endif</td>
-                        <td>@if($curr_month->oct != 0){{$attend->Oct}}@endif</td>
-                        <td>@if($curr_month->nov != 0){{$attend->Nov}}@endif</td>
-                        <td>@if($curr_month->dece != 0){{$attend->Dece}}@endif</td>
-                        <td>@if($curr_month->jan != 0){{$attend->Jan}}@endif</td>
-                        <td>@if($curr_month->feb != 0){{$attend->Feb}}@endif</td>
-                        <td>@if($curr_month->mar != 0){{$attend->Mar}}@endif</td>                        
-                        <td>@if($curr_month->mar != 0){{$attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar+$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct}}@endif</td>
+                        <td>@if($curr_month->jun != 0){{round($attend->Jun,1)}}@endif</td>
+                        <td>@if($curr_month->jul != 0){{round($attend->Jul,1)}}@endif</td>
+                        <td>@if($curr_month->aug != 0){{round($attend->Aug,1)}}@endif</td>
+                        <td>@if($curr_month->sept != 0){{round($attend->Sept,1)}}@endif</td>
+                        <td>@if($curr_month->oct != 0){{round($attend->Oct,1)}}@endif</td>
+                        <td>@if($curr_month->nov != 0){{round($attend->Nov,1)}}@endif</td>
+                        <td>@if($curr_month->dece != 0){{round($attend->Dece,1)}}@endif</td>
+                        <td>@if($curr_month->jan != 0){{round($attend->Jan,1)}}@endif</td>
+                        <td>@if($curr_month->feb != 0){{round($attend->Feb,1)}}@endif</td>
+                        <td>@if($curr_month->mar != 0){{round($attend->Mar,1)}}@endif</td>                        
+                        <td>@if($curr_month->mar != 0){{round($attend->Nov+$attend->Dece+$attend->Jan+$attend->Feb+$attend->Mar+$attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct,1)}}@endif</td>
                         
                         
                         
@@ -682,6 +683,17 @@
     <div class="page-break"></div>
     
     </div>
+        <script type="text/javascript">
+            var widths = document.getElementById('cardHeader{{$card}}').offsetWidth;
+            var bodywidth = document.getElementById('body').offsetWidth;
+            
+            bodywidth = bodywidth/2
+            widths = (widths+120)/2
+            
+            var placement = bodywidth - widths;
+            document.getElementById("cardHeader{{$card}}").style.marginLeft = placement+"px";
+        </script>        
+        <?php $card++; ?>        
     @endforeach
     
     </div>
