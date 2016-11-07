@@ -60,7 +60,7 @@
                             
                             <td colspan="2" style="text-align: right;font-size: 12px;">
                                 <?php $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectcode)->first();
-                                if($adviser == null){
+                                if(empty($adviser)){
                                   $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectname)->first();  
                                 }
                                 ?>

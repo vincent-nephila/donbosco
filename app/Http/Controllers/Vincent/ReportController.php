@@ -77,9 +77,9 @@ class ReportController extends Controller
         $quarter = ''.$quarters->qtrperiod;
         
         if($subject == "All"){
-                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname)'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->get();
+                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname),subjectcode'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->get();
         }else{
-                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname)'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->where('subjectcode',$subject)->get();
+                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname),subjectcode'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->where('subjectcode',$subject)->get();
         }
         
         
