@@ -47,16 +47,11 @@ class ReportController extends Controller
         
         if($subject == "All"){
             $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(0,1))->get();
-
-            if($level == "Grade 11"){
-                $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(5,6))->get();
-            }            
+            
+           
         }else{
             $subjects = \App\CtrSubjects::where('subjectcode',$subject)->where('level',$level)->whereIn('subjecttype',array(0,1))->get();
-
-            if($level == "Grade 11"){
-                $subjects = \App\CtrSubjects::where('subjectcode',$subject)->where('level',$level)->whereIn('subjecttype',array(5,6))->get();
-            }              
+             
         }
         
         $students = DB::Select("SELECT statuses.idno as idno,class_no,lastname, firstname, middlename, extensionname,statuses.status as stat FROM users JOIN statuses ON statuses.idno = users.idno WHERE statuses.status IN(2,3) AND schoolyear = '$schoolyear->schoolyear' AND level ='$level'  AND section = '$section' ORDER BY class_no ASC");
@@ -78,8 +73,14 @@ class ReportController extends Controller
         
         if($subject == "All"){
                 $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname),subjectcode'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->get();
+                if($level != "Grade 11"){
+                    $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(0,1))->get();
+                }
         }else{
                 $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname),subjectcode'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->where('subjectcode',$subject)->get();
+                if($level != "Grade 11"){
+                    $subjects = \App\CtrSubjects::where('subjectcode',$subject)->where('level',$level)->whereIn('subjecttype',array(0,1))->get();
+                }
         }
         
         
