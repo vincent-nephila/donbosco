@@ -59,7 +59,11 @@
                             </td>
                             
                             <td colspan="2" style="text-align: right;font-size: 12px;">
-                                <?php $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectcode)->first(); ?>
+                                <?php $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectcode)->first();
+                                if($adviser == null){
+                                  $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectname)->first();  
+                                }
+                                ?>
                                 <b>Teacher:</b>
                                 @if(isset($adviser->adviser))
                                 {{$adviser->adviser}}
