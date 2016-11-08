@@ -89,13 +89,42 @@
                         @foreach($students as $student)
                         <?php
                         if($quarter == 1){
-                            $grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 1 and month IN('JUN','JUL','AUG') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
+                            //$grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 1 and month IN('JUN','JUL','AUG') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
+                            $month1 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUN')->orderBy('id','DESC')->first();
+                            $month2 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUL')->orderBy('id','DESC')->first();
+                            $month3 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','AUG')->orderBy('id','DESC')->first();
+                            
+                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
                         }elseif($quarter == 2){
-                            $grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 2 and month IN('AUG','SEPT','OCT') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
+                            //$grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 2 and month IN('AUG','SEPT','OCT') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
+                            $month1 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"Sept")->orderBy('id','DESC')->first();
+                            $month2 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
+                            $month3 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"AUG")->orderBy('id','DESC')->first();
+                            
+                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                            
                         }elseif($quarter ==3){
                             $grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 3 and month IN('OCT','NOV','DECE') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
+                            $month1 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
+                            $month2 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"NOV")->orderBy('id','DESC')->first();
+                            $month3 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"DECE")->orderBy('id','DESC')->first();
+                            
+                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;                            
                         }elseif($quarter == 4){
                             $grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 4 and month IN('JAN','FEB','MAR') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
+                            $month1 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"JAN")->orderBy('id','DESC')->first();
+                            $month2 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"FEB")->orderBy('id','DESC')->first();
+                            $month3 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"MAR")->orderBy('id','DESC')->first();
+                            
+                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
                         }
                         ?>
                         <tr>
@@ -114,17 +143,17 @@
                                 @endif
                             </td>
                             
-                            @foreach($grades as $grade)
+                            
                             <td style="text-align: center">
-                                {{number_format($grade->dayp,1)}}
+                                {{number_format($dayp,1)}}
                             </td>
                             <td style="text-align: center">
-                                {{number_format($grade->daya,1)}}
+                                {{number_format($daya,1)}}
                             </td>
                             <td style="text-align: center">
-                                {{number_format($grade->dayt,1)}}
+                                {{number_format($dayt,1)}}
                             </td>
-                            @endforeach
+                            
                         
                         </tr>
                         @endforeach
