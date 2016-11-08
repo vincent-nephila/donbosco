@@ -13,7 +13,7 @@ class UpdateController extends Controller
     function updatehsconduct(){
         $quarters = \App\CtrQuarter::first();
         
-        $hsgrades = DB::connection('dbtitest')->Select("select * from grade1 where SY_EFFECTIVE = '2016' and QTR = $quarters->qtrperiod");
+        $hsgrades = DB::connection('dbtiprod')->Select("select * from grade1 where SY_EFFECTIVE = '2016' and QTR = $quarters->qtrperiod");
         foreach($hsgrades as $hsgrade){
             $newconduct = new \App\ConductRepo;
             $newconduct->OSR = $hsgrade->obedience;
