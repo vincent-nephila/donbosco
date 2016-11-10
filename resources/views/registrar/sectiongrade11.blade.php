@@ -6,7 +6,7 @@
                 display:none;
             }
            table tr td{
-            font-size:11pt;
+            font-size:10.5pt;
             padding-left: 5px;
             padding-left: 5px;
            }
@@ -141,7 +141,7 @@
                                 {{$info['info']->gender}}
                             </td>
                             <td colspan="2" style="font-size:10pt;padding-left: 0px;"  >
-                                <b style="display: inline-block;vertical-align: top;">Adviser:&nbsp;</b><div style="display: inline-block;width: 153.6px;">{{$teacher->adviser}}</div>
+                                <b style="display: inline-block;vertical-align: top;">Adviser:&nbsp;</b><div style="display: inline-block;width: 75%;">{{$teacher->adviser}}</div>
                             </td>
 
                         </tr>
@@ -318,7 +318,7 @@
             <tr><td><span style="height:10pt"></td></tr>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
+                    <table class="greyed" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
                         <tr style="font-weight:bold;">
                             <td width="36%" class="descriptors">
                                 DESCRIPTORS
@@ -537,7 +537,7 @@
                         <td>@if($curr_month->aug != 0){{round($attend->Aug,1)}}@endif</td>
                         <td>@if($curr_month->sept != 0){{round($attend->Sept,1)}}@endif</td>
                         <td>@if($curr_month->oct != 0){{round($attend->Oct,1)}}@endif</td>
-                        <td>@if($curr_month->oct != 0){{round($attend->Jun+$attend->Jul+$attend->Aug+$attend->Sep+$attend->Oct,1)}}@endif</td>
+                        <td>@if($curr_month->oct != 0){{round($attend->Jun+$attend->Jul+$attend->Aug+$attend->Sept+$attend->Oct,1)}}@endif</td>
                         @endif
                         
                         

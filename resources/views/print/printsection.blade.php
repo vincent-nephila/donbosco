@@ -64,7 +64,8 @@
         <p>&nbsp;</p>
         <table border = "0" width="100%" cellspacing = '0' class="footer">
             <tr align="center"><td>Prepared By:<br><br></td><td>Checked By:<br><br></td><td></td><td>Noted By:<br><br></td><td></tr>
-            <tr align="center"><td>Subject Teacher</td><td>Subject Area Head</td><td>Date Submitted</td><td>Asst. Principal</td><td>Due Date</td></tr>
+            <!--tr align="center"><td>Subject Teacher</td><td>Subject Area Head</td><td>Date Submitted</td><td>Asst. Principal</td><td>Due Date</td></tr-->
+            <tr align="center"><td>TVET Records Assistant</td><td>Adviser</td><td>Date Submitted</td><td>Asst. Technical Director</td><td>Due Date</td></tr>
             </table>
     </body>
 </html>
