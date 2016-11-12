@@ -20,7 +20,7 @@ class ReportController extends Controller
         if(Auth::User()->accesslevel != env('USER_REGISTRAR')){
             return redirect('/');
         }
-        $levels = \App\CtrLevel::get();
+        $levels = $this->get_level();
         return view('vincent.registrar.sheetA', compact('levels'));
     }
 
@@ -48,7 +48,6 @@ class ReportController extends Controller
         if($subject == "All"){
             $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(0,1))->get();
             
-           
         }else{
             $subjects = \App\CtrSubjects::where('subjectcode',$subject)->where('level',$level)->whereIn('subjecttype',array(0,1))->get();
              
@@ -94,7 +93,7 @@ class ReportController extends Controller
         return redirect('/');
      }
 
-       $levels = DB::Select("Select level from ctr_levels");  
+       $levels = $this->get_level();
 
      
      return view('vincent.registrar.conduct',compact('levels'));
@@ -143,7 +142,7 @@ class ReportController extends Controller
     
     function attendance(){
      
-        $levels = DB::Select("Select level from ctr_levels");  
+        $levels = $this->get_level();
 
         return view('vincent.registrar.attendance',compact('levels'));
  }    
@@ -155,11 +154,25 @@ class ReportController extends Controller
         
         $schoolyear = \App\CtrRefSchoolyear::first();
 
-        $levels = DB::Select("Select distinct level,department from ctr_levels order by id asc");
+        //$levels = DB::Select("Select distinct level,department from ctr_levels order by id asc");
+        $levels = $this->get_level();
         $tvet = DB::Select("SELECT distinct course as courses FROM `ctr_subjects` WHERE `department` LIKE 'TVET'");
         return view('vincent.registrar.sheetB',compact('levels','tvet','today','print','schoolyear')) ;
             
     }
  
+    function get_level(){
+        if(Auth::User()->accesslevel == env('USER_ACADEMIC_HS'))
+        {
+            $level = \App\CtrLevel::where('department','Senior High School')->orWhere('department','Junior High School')->get();
+        }else if(Auth::User()->accesslevel == env('USER_ACADEMIC_ELEM'))
+            {
+            $level = \App\CtrLevel::where('department','Kindergarten')->orWhere('department','Elementary')->get();
+        }else{
+            $level = \App\CtrLevel::get();
+        }
+        
+        return $level;
+    } 
  
 }

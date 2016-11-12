@@ -61,15 +61,16 @@ class GradeController extends Controller
                     }
                     $no_student =$no_student +1;
                     echo "NO Of Student: ".$no_student;
-        }
-        $students = \App\Status::where('idno','160105')->where('department','Kindergarten')->get();
+        }*/
+        $students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
         foreach($students as $student){
-            $subjects = \App\CtrCompetence::where('quarter',1)->get();
+            $subjects = \App\CtrCompetence::where('quarter',2)->get();
                     foreach($subjects as $subject){
                             $newgrade = new \App\Competency;
                             $newgrade->idno = $student->idno;
                             $newgrade->subject = $subject->subject;
                             $newgrade->section = $subject->section;
+                            $newgrade->competencycode = $subject->competencycode;
                             $newgrade->description = $subject->description;
                             $newgrade->sortto = $subject->sortto;
                             $newgrade->quarter = $subject->quarter;
@@ -79,7 +80,7 @@ class GradeController extends Controller
                     }
                     
         }        
-        */
+        /*
         $students = \App\Grade::distinct()->select('idno')->get();
         foreach($students as $student){
             $subjects = \App\CtrSubjects::where('subjecttype',2)->where('level','Grade 11')->where('strand','ABM')->get();
@@ -92,7 +93,7 @@ class GradeController extends Controller
                             $newgrade->save();
                     }
                     
-        }        
+        } */       
     }
     
     function viewSectionGrade9to10($level,$shop,$section){

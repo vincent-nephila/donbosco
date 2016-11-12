@@ -128,6 +128,7 @@
     Route::get('sheetaAttendance/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetaAttendance');
     Route::get('attendance', 'Vincent\ReportController@attendance');
     Route::get('/sheetb', 'Vincent\ReportController@sheetB');
+    
     Route::get('/sectiontvet','Vincent\SectionController@sectiontvet');
     Route::post('/changecourses/{batch}/{idno}','Vincent\TvetController@changecourses');
     

@@ -475,17 +475,60 @@
                         
                         
                     </table>
-                        @else
+                        @elseif($quarter == 2)
                     <table border="1" width="100%" cellpadding="0" cellspacing="0">
                         <tr style="text-align:center"><td colspan="2"><b>MATHEMATICS</b></td></tr>
+                        <tr>
+                            <td>
+                                I. Numbers and Number Sense 
+                            </td>
+                            <td></td>
+                        </tr>                        
                         @foreach($info['comp'] as $key=>$comp)
                         @if($comp->subject == "Mathematics")
+                           @if($comp->section == "1A")
                         <tr>
                             <td width="80%" style="padding-left: 20px;">{{$comp->description}}</td>
                             <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
                         </tr>
                         @endif
+                            
+                        @endif
                         @endforeach
+                        <tr>
+                            <td>
+                                II. Patterns and Algebra
+                            </td>
+                            <td></td>
+                        </tr>                        
+                        @foreach($info['comp'] as $key=>$comp)
+                        @if($comp->subject == "Mathematics")
+                           @if($comp->section == "2A")
+                        <tr>
+                            <td width="80%" style="padding-left: 20px;">{{$comp->description}}</td>
+                            <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
+                        </tr>
+                        @endif
+                            
+                        @endif
+                        @endforeach                        
+                        
+                    </table>                        
+                        @else
+                    <table border="1" width="100%" cellpadding="0" cellspacing="0">
+                        <tr style="text-align:center"><td colspan="2"><b>MATHEMATICS</b></td></tr>
+                                              
+                        @foreach($info['comp'] as $key=>$comp)
+                        @if($comp->subject == "Mathematics")
+                           
+                        <tr>
+                            <td width="80%" style="padding-left: 20px;">{{$comp->description}}</td>
+                            <td style="text-align: center;vertical-align: middle">{{$comp->value}}</td>
+                        </tr>
+                            
+                        @endif
+                        @endforeach
+                        
                     </table>
                         @endif
                     <br>
@@ -573,7 +616,7 @@
                                 <span style="font-size: 10pt;">Chino Roces Ave., Brgy. Pio del Pilar</span><br>
                                 <span style="font-size: 10pt;">Makati City</span>
                                 <div>
-                                <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:180px;padding-top: 70px;padding-bottom: 70px">
+                                <img src="{{asset('images/DBTI.png')}}"  style="display: inline-block;width:200px;padding-top: 60px;padding-bottom: 60px">
                                 <br>
                                 
                                 <br>
@@ -616,10 +659,10 @@
             @endif
             @if($quarter == 2)
             $("#fil_{{$info['info']->idno}}").prependTo("#com2_{{$info['info']->idno}}");
-            $("#chr_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
+            $("#math_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
             $("#cert_{{$info['info']->idno}}").appendTo("#com4_{{$info['info']->idno}}");
-            //$("#art_{{$info['info']->idno}}").prependTo("#com4_{{$info['info']->idno}}");
             $("#eng_{{$info['info']->idno}}").prependTo("#com3_{{$info['info']->idno}}");
+            $("#chr_{{$info['info']->idno}}").prependTo("#com2_{{$info['info']->idno}}");
             $("#phy_{{$info['info']->idno}}").appendTo("#com1_{{$info['info']->idno}}");
             @endif  
             @if($quarter == 3)
