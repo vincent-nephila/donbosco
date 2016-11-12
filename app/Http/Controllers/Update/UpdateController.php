@@ -127,4 +127,20 @@ class UpdateController extends Controller
             }
             return "Done";
         }
+        
+        function updatecashdiscount(){
+            $cashdiscounts = \App\Dedit::where('paymenttype','4')->get();
+            if(count($cashdiscounts)>0){
+                foreach($cashdiscounts as $cashdiscount){
+                    $discountname = \App\Discount::where('idno',$cashdiscount->idno)->first();
+                    $dname="Plan Discount";
+                     if(count($discountname)>0){
+                     $dname = $discountname->description;
+                    }
+                    $cashdiscount->acctcode = $dname;
+                    $cashdiscount->update();
+                }
+                return "done updating";
+            }
+        }
 }

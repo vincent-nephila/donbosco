@@ -106,6 +106,7 @@
     Route::get('updatehsgrade','Update\UpdateController@updatehsgrade');
     //Route::get('checkno','Update\UpdateController@checkno');
     //Route::get('updatehsattendance','Update\UpdateController@updatehsattendance');
+    Route::get('updatecashdiscount','Update\UpdateController@updatecashdiscount');
     Route::get('updateacctcode','Update\UpdateController@updateacctcode');
     
     //Registrar Vincent

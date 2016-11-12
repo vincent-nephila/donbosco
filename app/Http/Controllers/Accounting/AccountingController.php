@@ -635,7 +635,7 @@ function cashreceipts($transactiondate){
      $otheraccounts = DB::Select("select sum(credits.amount) as amount, credits.receipt_details, users.idno, users.lastname, users.firstname,"
                 . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno, dedits.postedby from users, dedits, credits where users.idno = dedits.idno and"
                 . " dedits.transactiondate = '" 
-                . $transactiondate . "' and credits.refno=dedits.refno and credits.categoryswitch >= '9'  and credits.receipt_details != 'Reservation' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, dedits.postedby, users.lastname, "
+                . $transactiondate . "' and credits.refno=dedits.refno and (credits.categoryswitch >= '9'   and credits.receipt_details != 'Reservation' and dedits.paymenttype = '1' group by users.idno, dedits.transactiondate, dedits.postedby, users.lastname, "
                 . " users.firstname, credits.receipt_details, dedits.isreverse,dedits.receiptno,dedits.refno order by dedits.refno" );
     
      $othersummaries = DB::Select("select sum(credits.amount) as amount, credits.acctcode, "

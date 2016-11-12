@@ -159,111 +159,104 @@ class CashierController extends Controller
             if($request->totaldue > 0 ){
             $totaldue = $request->totaldue;       
             //$accounts = \App\Ledger::where('idno',$request->idno)->where('categoryswitch','<=','6')->orderBy('categoryswitch')->get();
-            $accounts = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch <= '6' "
+                $accounts = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch <= '6' "
                      . " and (amount - payment - debitmemo - plandiscount - otherdiscount) > 0 order By duedate, categorySwitch");    
                     foreach($accounts as $account){
                     
-                    $balance = $account->amount - $account->payment - $account->plandiscount - $account->otherdiscount - $account->debitmemo;
+                        $balance = $account->amount - $account->payment - $account->plandiscount - $account->otherdiscount - $account->debitmemo;
                        
-                        if($balance < $totaldue){
-                            $discount = $discount + $account->plandiscount + $account->otherdiscount;
-                            $updatepay = \App\Ledger::where('id',$account->id)->first();
-                            $updatepay->payment = $updatepay->payment + $balance;
-                            $updatepay->save();
-                            $totaldue = $totaldue - $balance;
-                            $this->credit($request->idno, $account->id, $refno, $orno, $account->amount-$account->payment-$account->debitmemo);
-                        } else {
-                            $updatepay = \App\Ledger::where('id',$account->id)->first();
-                            $updatepay->payment = $updatepay->payment + $totaldue;
-                            $updatepay->save();
-                            if($totaldue==$balance){
-                            $discount = $discount + $account->plandiscount + $account->otherdiscount;    
-                            $this->credit($request->idno, $account->id, $refno, $orno, $account->amount -$account->payment - $account->debitmemo);
-                            }else{      
-                            $this->credit($request->idno, $account->id, $refno, $orno, $totaldue);
-                          }
-                            $totaldue = 0;
-                            break;
-                        }
-                    
-                }
+                            if($balance < $totaldue){
+                                $discount = $discount + $account->plandiscount + $account->otherdiscount;
+                                $updatepay = \App\Ledger::where('id',$account->id)->first();
+                                $updatepay->payment = $updatepay->payment + $balance;
+                                $updatepay->save();
+                                $totaldue = $totaldue - $balance;
+                                $this->credit($request->idno, $account->id, $refno, $orno, $account->amount-$account->payment-$account->debitmemo);
+                            } else {
+                                $updatepay = \App\Ledger::where('id',$account->id)->first();
+                                $updatepay->payment = $updatepay->payment + $totaldue;
+                                    $updatepay->save();
+                                    if($totaldue==$balance){
+                                    $discount = $discount + $account->plandiscount + $account->otherdiscount;    
+                                    $this->credit($request->idno, $account->id, $refno, $orno, $account->amount -$account->payment - $account->debitmemo);
+                                    }else{      
+                                    $this->credit($request->idno, $account->id, $refno, $orno, $totaldue);
+                                    }
+                                $totaldue = 0;
+                                break;
+                            }
+                    }
              
-                $this->changestatatus($request->idno, $request->reservation);
-                if($request->reservation > 0){
-                $this->debit_reservation_discount($request->idno,env('DEBIT_RESERVATION','Reservation') , $request->reservation);
-                $this->consumereservation($request->idno);
+                    $this->changestatatus($request->idno, $request->reservation);
+                        if($request->reservation > 0){
+                        $this->debit_reservation_discount($request->idno,env('DEBIT_RESERVATION','Reservation') , $request->reservation);
+                        $this->consumereservation($request->idno);
+                        }
+            }   
+            
+            
+                if($request->previous > 0 ){
+                $previous = $request->previous;
+                $updateprevious = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch >= '11' "
+                         . " and amount - payment - debitmemo - plandiscount - otherdiscount > 0 order By categoryswitch");
+                    foreach($updateprevious as $up){
+                    $balance = $up->amount - $up->payment - $up->plandiscount - $up->otherdiscount - $up->debitmemo;
+                        if($balance < $previous ){
+                        $updatepay = \App\Ledger::where('id',$up->id)->first();
+                        $updatepay->payment = $updatepay->payment + $balance;
+                        $updatepay->save();
+                        $previous = $previous - $balance;
+                        $this->credit($request->idno, $up->id, $refno, $orno, $up->amount);
+                        } else {
+                        $updatepay = \App\Ledger::where('id',$up->id)->first();
+                        $updatepay->payment = $updatepay->payment + $previous;
+                        $updatepay->save();
+                        $this->credit($request->idno, $up->id, $refno, $orno, $previous);
+                        $previous = 0;
+                        break;
+                        }
+                    }   
                 }
-            }
             
-            
-            if($request->previous > 0 ){
-             $previous = $request->previous;
-             $updateprevious = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch >= '11' "
-                     . " and amount - payment - debitmemo - plandiscount - otherdiscount > 0 order By categoryswitch");
-             foreach($updateprevious as $up){
-                 $balance = $up->amount - $up->payment - $up->plandiscount - $up->otherdiscount - $up->debitmemo;
-                 if($balance < $previous ){
-                     $updatepay = \App\Ledger::where('id',$up->id)->first();
-                     $updatepay->payment = $updatepay->payment + $balance;
-                     $updatepay->save();
-                     $previous = $previous - $balance;
-                     $this->credit($request->idno, $up->id, $refno, $orno, $up->amount);
-                 } else {
-                            $updatepay = \App\Ledger::where('id',$up->id)->first();
-                            $updatepay->payment = $updatepay->payment + $previous;
-                            $updatepay->save();
-                            $this->credit($request->idno, $up->id, $refno, $orno, $previous);
-                            $previous = 0;
-                            break;
-                       }
-                 
-                 
-             }   
-            }
-            
-            if(isset($request->other)){
-                foreach($request->other as $key=>$value){
+                if(isset($request->other)){
+                    foreach($request->other as $key=>$value){
                     $updateother = \App\Ledger::find($key);
                     $updateother->payment = $updateother->payment + $value;
                     $updateother->save();
                     $this->credit($updateother->idno, $updateother->id, $refno, $orno, $value);
-                }
+                    }
+                
                 $statusnow =  \App\Status::where('idno',$request->idno)->where('department','TVET')->first();
-                if(count($statusnow)>0){
-                    if($statusnow->status=="1"){
-                       $statusnow->status="2";
-                       $statusnow->update(); 
+                    if(count($statusnow)>0){
+                        if($statusnow->status=="1"){
+                        $statusnow->status="2";
+                        $statusnow->update(); 
+                        }
                     }
                 }
-            }
             
-       if($request->penalty > 0){
-           $penalty = $request->penalty;
-            $updatepenalties = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch = '". env('PENALTY_CHARGE'). "' "
+                if($request->penalty > 0){
+                $penalty = $request->penalty;
+                $updatepenalties = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch = '". env('PENALTY_CHARGE'). "' "
                      . " and amount - payment - debitmemo - plandiscount - otherdiscount > 0");
-           foreach($updatepenalties as $pen){
-               $balance = $pen->amount - $pen->payment = $pen->plandiscount - $pen-> otherdiscount - $pen->debitmemo;
-               
-               if($balance < $penalty ){
-                     $updatepay = \App\Ledger::where('id',$pen->id)->first();
-                     $updatepay->payment = $updatepay->payment + $balance;
-                     $updatepay->save();
-                     $penalty = $penalty - $balance;
-                     $this->credit($request->idno, $pen->id, $refno, $orno, $pen->amount);
-                 } else {
-                            $updatepay = \App\Ledger::where('id',$pen->id)->first();
-                            $updatepay->payment = $updatepay->payment + $penalty;
-                            $updatepay->save();
-                            $this->credit($request->idno, $pen->id, $refno, $orno, $penalty);
-                            $penalty = 0;
-                            break;
-                       }
-           }
-            
+                    foreach($updatepenalties as $pen){
+                    $balance = $pen->amount - $pen->payment = $pen->plandiscount - $pen-> otherdiscount - $pen->debitmemo;
+                        if($balance < $penalty ){
+                        $updatepay = \App\Ledger::where('id',$pen->id)->first();
+                        $updatepay->payment = $updatepay->payment + $balance;
+                        $updatepay->save();
+                        $penalty = $penalty - $balance;
+                        $this->credit($request->idno, $pen->id, $refno, $orno, $pen->amount);
+                        } else {
+                        $updatepay = \App\Ledger::where('id',$pen->id)->first();
+                        $updatepay->payment = $updatepay->payment + $penalty;
+                        $updatepay->save();
+                        $this->credit($request->idno, $pen->id, $refno, $orno, $penalty);
+                        $penalty = 0;
+                        break;
+                        }
+                    }
            
-          
-           
-       }
             $bank_branch = "";
             $check_number = "";
             
@@ -296,19 +289,11 @@ class CashierController extends Controller
               $this->debit_reservation_discount($request->idno,env('DEBIT_DISCOUNT') , $discount, $discountname);
             }      
          
-            
-            
-            
-           
-            
             $this->reset_or();
           
-          return $this->viewreceipt($refno, $request->idno);
-           //return redirect(url('/viewreceipt',array($refno,$request->idno)));
-          
-           
-            
-            //return view("cashier.payment", compact('previous','idno','reservation','totaldue','totalother','totalprevious','totalpenalty'));
+          //return $this->viewreceipt($refno, $request->idno);
+           return redirect(url('/viewreceipt',array($refno,$request->idno)));  
+          //return view("cashier.payment", compact('previous','idno','reservation','totaldue','totalother','totalprevious','totalpenalty'));
    }
    
    function changestatatus($idno, $reservation){
