@@ -92,7 +92,13 @@
                                             <a href="{{url('/setreceipt',Auth::user()->id)}}" >Set Receipt</a>
                                         </li>
                                         @if(Auth::user()->accesslevel == env('USER_CASHIER'))
+                                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Posting
+                                        <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{url('statementofaccount')}}"><i class="fa fa-btn fa-sign-out"></i>Statement of Account</a></li>
+                                        <li><a href="{{url('penalties')}}"><i class="fa fa-btn"></i>Over Due Charges </a></li>
+                                        </ul>
+                                        </li>
                                         @endif
                                         <li><a href="{{url('encashment')}}">Encashment</a></li>
                                         <!--<li><a href="{{url('nonstudent')}}">Other Payment</a></li>-->

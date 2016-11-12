@@ -226,7 +226,7 @@ class CashierController extends Controller
                     $this->credit($updateother->idno, $updateother->id, $refno, $orno, $value);
                     }
                 
-                $statusnow =  \App\Status::where('idno',$request->idno)->where('department','TVET')->first();
+                    $statusnow =  \App\Status::where('idno',$request->idno)->where('department','TVET')->first();
                     if(count($statusnow)>0){
                         if($statusnow->status=="1"){
                         $statusnow->status="2";
@@ -256,7 +256,7 @@ class CashierController extends Controller
                         break;
                         }
                     }
-           
+                }        
             $bank_branch = "";
             $check_number = "";
             
@@ -287,15 +287,15 @@ class CashierController extends Controller
                     $discountname = $disc;
                 }
               $this->debit_reservation_discount($request->idno,env('DEBIT_DISCOUNT') , $discount, $discountname);
-            }      
-         
+                  
+          }
             $this->reset_or();
           
           //return $this->viewreceipt($refno, $request->idno);
            return redirect(url('/viewreceipt',array($refno,$request->idno)));  
           //return view("cashier.payment", compact('previous','idno','reservation','totaldue','totalother','totalprevious','totalpenalty'));
    }
-   
+
    function changestatatus($idno, $reservation){
    $status = \App\Status::where('idno',$idno)->first();    
        if(count($status)> 0 ){
@@ -1179,4 +1179,4 @@ function otherpayment($idno){
         //return redirect(url('addtoaccount',$account->idno));
     }
     
-    }
+   }

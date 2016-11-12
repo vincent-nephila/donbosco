@@ -763,7 +763,7 @@ class AjaxController extends Controller
                         $data = $data . "<tr><td>".$studentname->idno."</td><td>" . $cn++ . "</td><td><span style=\"cursor:pointer\" onclick=\"rmsection('" . $studentname->id . "')\">".$studentname->lastname . ", " . $studentname->firstname . " " .$studentname->middlename . "</span></td><td>" . $studentname->section . "</td></tr>"; 
                     }
                 $data = $data."</table>";
-                $data = $data . "<a href = \"". url('/printsection', array($level,$section,Input::get('strand')))."\" class =\"btn btn-primary\"> Print Section</a>";
+                $data = $data . "<a href = \"". url('/printsection', array($level,$section,Input::get('strand')))."\" class =\"btn btn-primary\" target = \"_blank\"> Print Section</a>";
                 return $data;
                 //return "roy";
             }
