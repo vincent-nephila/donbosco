@@ -841,8 +841,8 @@ class AjaxController extends Controller
         if(Request::ajax()){  
           $sections = DB::Select("select  distinct section from ctr_sections where level = '$level'");
                $data = "";
-               $data = $data . "<label for=\"section\">Select Section</label><select id=\"section\" onchange=\"showqtr()\" class=\"form form-control\">";
-             $data = $data . "<option>--Select--</option>";
+               $data = $data . "<label for=\"section\">Section</label><select id=\"section\" onchange=\"showqtr()\" class=\"form form-control\">";
+             $data = $data . "<option disabled hidden>--Select--</option>";
                foreach($sections as $section){
                   $data = $data . "<option value= '". $section->section ."'>" .$section->section . "</option>";  
                 }
@@ -1137,5 +1137,62 @@ class AjaxController extends Controller
         $status->save();
         
         return "Dropped";
+    }
+    
+    function getsubsidy($account){
+        $subsidies = \App\CtrOtherPayment::where('accounttype',$account)->get();
+        $data = '';
+        $data =$data.'<option disable hidden>--Select--</option>';
+        foreach ($subsidies as $subsidy){
+            $data=$data . '<option value= "'. $subsidy->particular.'">'.$subsidy->particular.'</option>';
+        }
+        
+        return $data;
+    }
+    
+    function getlevel(){
+        if(Request::ajax()){
+            $levels = \App\CtrLevel::get();
+            $data = '<label>Level</label>';
+            $data =$data.'<select name="level" id="level" class="form form-control" onchange="setsection(this.value)">';
+                foreach($levels as $level){
+                    $data =$data.'<option disable hidden>--Select--</option>';
+                    $data =$data.'<option value= "'.$level->level.'">'.$level->level.'</option>';
+                }
+            $data =$data.'</select>';
+
+            return $data;
+        }
+    }
+    
+    function studentselect(){
+        if(Request::ajax()){
+            $level = Input::get('level');
+            $section = Input::get('section');
+            //$section = "All";
+            $sy = \App\CtrRefSchoolyear::first();
+            
+            if($section == "All"){
+                //$students = DB::Select("Select statuses.idno,lastname,firstname,middlename,extensionname from statuses join users on users.idno = statuses.idno join ctr_sections on ctr_sections.section = statuses.section where statuses.status = 2 and schoolyear = $sy->schoolyear and level = '$level' order by ctr_sections.id ASC");
+                $students = DB::Select("Select distinct statuses.idno,lastname,firstname,middlename,extensionname,statuses.section from statuses join users on users.idno = statuses.idno join ctr_sections on ctr_sections.section = statuses.section where statuses.status = 2 and statuses.schoolyear = $sy->schoolyear and statuses.level = '$level' order by lastname,firstname,middlename,extensionname");
+            }else{
+                //$students = DB::Select("Select statuses.idno,lastname,firstname,middlename,extensionname from statuses join users on users.idno = statuses.idno join ctr_sections on ctr_sections.section = statuses.section where statuses.status = 2 and schoolyear = $sy->schoolyear and level = '$level' and section = '$section' order by ctr_sections.id ASC");
+                $students = DB::Select("Select distinct statuses.idno,lastname,firstname,middlename,extensionname,statuses.section from statuses join users on users.idno = statuses.idno join ctr_sections on ctr_sections.section = statuses.section where statuses.status = 2 and statuses.schoolyear = $sy->schoolyear and statuses.level = '$level' and statuses.section = '$section' order by lastname,firstname,middlename,extensionname");
+            }
+            
+            $data = '<table class = "table table-responsive"><thead><td>Student No</td><td>Name</td><td></td></thead>';
+            foreach($students as $student){
+                $data = $data.'<tr>';
+                $data = $data.'<td>'.$student->idno.'</td>';
+                $data = $data.'<td>'.$student->lastname.', '.$student->firstname.' '.$student->middlename.' '.$student->extensionname.'</td>';
+                $data = $data.'<td><input type="checkbox" name="idnumber[]" value="'.$student->idno.'" checked="checked"></td>';
+                $data = $data.'</tr>';
+            }
+            $data = $data.'</table>';
+
+            return $data;       
+            
+        }      
+
     }
 }

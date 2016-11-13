@@ -132,6 +132,9 @@
     Route::get('/sectiontvet','Vincent\SectionController@sectiontvet');
     Route::post('/changecourses/{batch}/{idno}','Vincent\TvetController@changecourses');
     
+    //Cashier VINCENT
+    Route::get('/addbatchaccount','Vincent\CashierController@batchposting');
+    Route::post('/addtobatchaccount','Vincent\CashierController@savebatchposting');
     
     //Accounting VINCENT (10-13-2016)
     Route::get('/tvetledger','Vincent\TvetController@tvetledger');
@@ -192,19 +195,17 @@
     Route::get('showallrank/{level}','Vincent\AjaxController@viewallrank');
     Route::get('setallrank','Vincent\AjaxController@setOARank');
     Route::get('/getpreregid/{varid}','Vincent\AjaxController@getid');
-    //10-5-2016
     Route::get('getsearchtvet/{search}','Vincent\AjaxController@searchStudtvet');
     Route::get('/changeTotal/{total}','Vincent\AjaxController@changeTotal');
     Route::get('/changeSponsor/{total}','Vincent\AjaxController@changeSponsor');
     Route::get('/changeSubsidy/{total}','Vincent\AjaxController@changeSubsidy');
-    
-    //10-12-2016
     Route::get('/gettvetstudentlist/{batch}/{strand}','Vincent\AjaxController@gettvetstudentlist');    
     Route::get('/gettvetsection/{batch}','Vincent\AjaxController@gettvetsection');
     Route::get('/gettvetsectionlist/{batch}/{section}','Vincent\AjaxController@gettvetsectionlist');
     Route::get('/gettvetledgersection/{batch}/{course}','Vincent\AjaxController@gettvetledgersection');
-    
-    //10-15-2016
     Route::get('/dropStudent/{idno}','Vincent\AjaxController@dropStudent');
+    Route::get('/getSubsidy/{account}','Vincent\AjaxController@getsubsidy');
+    Route::get('/getaccountlevel','Vincent\AjaxController@getlevel');
+    Route::get('/studentchecklist','Vincent\AjaxController@studentselect');
     
     
