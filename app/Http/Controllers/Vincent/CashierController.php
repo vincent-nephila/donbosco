@@ -43,9 +43,9 @@ class CashierController extends Controller
             $newledger->categoryswitch = '7';
             $newledger->transactiondate = Carbon::now();       
             $newledger->acctcode=$myacct;
-            $newledger->description=$request->accttype;
+            $newledger->description=$request->subsidy;
             $newledger->postedby=\Auth::user()->idno;
-            $newledger->receipt_details=$request->accttype;
+            $newledger->receipt_details=$request->subsidy;
             $newledger->duetype="0";
             $newledger->duedate=Carbon::now();
             $newledger->amount=$request->amount;
