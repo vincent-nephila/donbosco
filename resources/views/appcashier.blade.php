@@ -97,6 +97,7 @@
                                         <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{url('statementofaccount')}}"><i class="fa fa-btn fa-sign-out"></i>Statement of Account</a></li>
                                         <li><a href="{{url('penalties')}}"><i class="fa fa-btn"></i>Over Due Charges </a></li>
+                                        <li><a href="{{url('/addbatchaccount')}}"><i class="fa fa-btn"></i>Add Account to Batch </a></li>
                                         </ul>
                                         </li>
                                         @endif

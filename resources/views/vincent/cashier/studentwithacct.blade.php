@@ -30,7 +30,8 @@
                                     <b>Amount:</b>{{$request->amount}}                                    
                                 </td>
                                 <td style="text-align: right;padding-left: 0px;padding-right: 0px;vertical-align: top;border:none;">
-                                    <b>Date Issued:</b><?php echo date('M d Y') ?>
+                                    <b>Date Issued: </b><?php echo date('M d Y') ?><br>
+                                    <b>Level: </b>{{$request->level}}
                                 </td>
                             </tr>
                         </table>
