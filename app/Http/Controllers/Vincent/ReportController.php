@@ -44,7 +44,9 @@ class ReportController extends Controller
         $schoolyear = \App\CtrRefSchoolyear::first();
         $quarters = \App\CtrQuarter::first();
         $quarter = ''.$quarters->qtrperiod;
-        
+        if(strpos($subject, ':') !== false){
+        $subject = str_replace(":","/",$subject);
+        }
         if($subject == "All"){
             $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(0,1))->get();
             

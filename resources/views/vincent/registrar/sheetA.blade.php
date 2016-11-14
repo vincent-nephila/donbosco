@@ -64,6 +64,11 @@ function generatesheet(){
     if(document.getElementById('strand')){
     strand = document.getElementById('strand').value
     }
+    
+    if(subject.indexOf("/") > 0){
+        subject = subject.replace("/",":");
+    }
+    
     if(strn != null){
         window.open("/printsheetA/" + level + "/" + strn + "/" + section +"/"+ subject, '_blank');
     }
