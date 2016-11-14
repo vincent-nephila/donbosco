@@ -87,7 +87,7 @@ class UpdateController extends Controller
                 
         }
         $check = \App\SubjectRepo::where('idno',$idno)->where('subjectcode',$subjectcode)->where('qtrperiod',$qtrperiod)->first();
-        if(count($check)>0){
+        if(count($check) == 0){
         $newgrade = \App\Grade::where('idno',$idno)->where('subjectcode',$subjectcode)->first();
         
         if(count($newgrade)>0){
