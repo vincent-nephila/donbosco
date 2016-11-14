@@ -65,7 +65,7 @@ class UpdateController extends Controller
         public function updatehsgrade(){
             $sy = \App\ctrSchoolYear::first();
             $quarters = \App\CtrQuarter::first();
-            $grades = DB::connection('dbti2test')->Select("select * from grade where SY_EFFECTIVE = $sy->schoolyear and QTR = $quarters->qtrperiod");
+            $grades = DB::connection('dbti2prod')->Select("select * from grade where SY_EFFECTIVE = $sy->schoolyear and QTR = $quarters->qtrperiod");
             foreach($grades as $grade){
              $this->updatehs($grade->SCODE, $grade->SUBJ_CODE, $grade->GRADE_PASS1, $grade->QTR);
             }
@@ -86,7 +86,10 @@ class UpdateController extends Controller
                 $qtrname="fourth_grading";
                 
         }
+        $check = \App\SubjectRepo::where('idno',$idno)->where('subjectcode',$subjectcode)->where('qtrperiod',$qtrperiod)->first();
+        if(count($check)>0){
         $newgrade = \App\Grade::where('idno',$idno)->where('subjectcode',$subjectcode)->first();
+        
         if(count($newgrade)>0){
         $newgrade->$qtrname=$grade;
         $newgrade->update();
@@ -98,6 +101,7 @@ class UpdateController extends Controller
         $loadgrade->qtrperiod=$qtrperiod;
         $loadgrade->schoolyear='2016';
         $loadgrade->save();
+        }
         }
         function checkno(){
             $idnos=DB::Select("select * from grade2");
