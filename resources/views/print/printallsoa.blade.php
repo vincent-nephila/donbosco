@@ -179,8 +179,14 @@ th {
 </td>
 </table>
     <table><tr><td width="70%">
-    <p style="font-size: 8pt;"><b>Reminder:</b><br>Please disregard this statement if payment has been made. Last day of payment is <b>{{date('M d, Y',strtotime($trandate))}}</b>. Payments made after due date is subject 
-        to penalty of 5% or P250.00 whichever is higher. ADMINISTRATION</P>
+    <p style="font-size: 8pt;"><b>Reminder:</b><br>
+        @if(strlen($reminder) == 0)
+        Please disregard this statement if payment has been made. Last day of payment is <b>{{date('M d, Y',strtotime($trandate))}}</b>. Payments made after due date is subject 
+        to penalty of 5% or P250.00 whichever is higher. ADMINISTRATION
+        @else
+        {{$reminder}}
+        @endif
+    </p>
     </td>
     <td><br><br><div style="height:50px"><img src="{{url('images','frbocsignature.png')}}" height="80" style=";margin-left:20"></div>
         <p style="align:center; font-size:9pt;margin-top: 0px">Fr. Manuel H. Nicholas, SDB<br>

@@ -90,6 +90,7 @@
      Route::get('/printallsoa/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@printallsoa');
     Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@getsoasummary');
     //Route::get('/getsoasummary','Accounting\AccountingController@getsoasummary');
+    Route::post('/getsoasummary','Accounting\AccountingController@setsoasummary');
     Route::get('/printsoasummary/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@printsoasummary');
     Route::get('penalties','Accounting\AccountingController@penalties');
     Route::post('postpenalties','Accounting\AccountingController@postpenalties');

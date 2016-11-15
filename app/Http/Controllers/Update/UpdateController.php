@@ -86,7 +86,7 @@ class UpdateController extends Controller
                 $qtrname="fourth_grading";
                 
         }
-        $check = \App\SubjectRepo::where('idno',$idno)->where('subjectcode',$subjectcode)->where('qtrperiod',$qtrperiod)->first();
+        $check = \App\SubjectRepos::where('idno',$idno)->where('subjectcode',$subjectcode)->where('qtrperiod',$qtrperiod)->first();
         if(count($check) == 0){
         $newgrade = \App\Grade::where('idno',$idno)->where('subjectcode',$subjectcode)->first();
         
@@ -94,7 +94,7 @@ class UpdateController extends Controller
         $newgrade->$qtrname=$grade;
         $newgrade->update();
         }
-        $loadgrade = new \App\SubjectRepo;
+        $loadgrade = new \App\SubjectRepos;
         $loadgrade->idno=$idno;
         $loadgrade->subjectcode=$subjectcode;
         $loadgrade->grade=$grade;

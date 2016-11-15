@@ -9,9 +9,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
+
+
+
+
 class AccountingController extends Controller
 {
- 
+
+    
     public function __construct()
 	{
 		$this->middleware('auth');
@@ -765,6 +770,7 @@ foreach ($collections as $collection){
  }
  
  function getsoasummary($level,$strand,$section,$trandate,$plan,$amtover){
+     
      if($plan=="all"){
      $planparam = "";    
      }
@@ -784,17 +790,18 @@ foreach ($collections as $collection){
            $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,statuses.section, statuses.level,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
-                . " statuses.level = '$level' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section, statuses.level having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
+                . " statuses.level = '$level' and statuses.section='$section' and statuses.status = '2' and ledgers.duedate <= '$trandate' $planparam  "
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section, statuses.level having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");
            }
        }   else{  
         $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,"
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.status = '2' and "
                 . " statuses.level = '$level' and statuses.strand='$strand' and statuses.section='$section' and ledgers.duedate <= '$trandate' $planparam  "
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
        }
         
+     
        
             return view('accounting.showsoa',compact('soasummary','trandate','level','section','strand','amtover','plan'));
         }
@@ -836,8 +843,9 @@ foreach ($collections as $collection){
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename having amount > '$amtover' order by users.lastname, users.firstname, statuses.plan");    
        }
         
+       $reminder = session('remind');
+       return view('print.printallsoa',compact('soasummary','trandate','level','section','strand','amtover','plan','reminder'));
        
-       return view('print.printallsoa',compact('soasummary','trandate','level','section','strand','amtover','plan'));
        
          }
         
@@ -1008,7 +1016,7 @@ foreach ($collections as $collection){
                         . "from users, credits where users.idno = credits.idno and credits.receipt_details = '".$request->accountname ."' and credits.isreverse='0' and credits.sub_department = '". $request->deptname."' order by users.lastname, users.firstname");
             }
             }
-           else{
+           else{ 
               if($request->deptname =="none"){
                    $dblist = DB::Select("select users.idno, users.lastname, users.firstname, users.middlename, credits.transactiondate, credits.receiptno, credits.receipt_details, credits.amount, credits.postedby "
                      . "from users, credits where users.idno = credits.idno and credits.receipt_details = '".$request->accountname ."' and credits.transactiondate  between '".$request->from ."' AND '" . $request->to ."'"
@@ -1027,4 +1035,24 @@ foreach ($collections as $collection){
            return view('print.printsubsidiary',compact('dblist','request'));
                }    
         }
+        
+        public function setsoasummary(Request $request){
+         $level  = $request->level;
+         $trandate = $request->year ."-". $request->month ."-" . $request->day;
+         $strand="none";
+         $plan = $request->plan;
+         $amtover = $request->amtover;
+         if($amtover == ""){
+             $amtover = 0;
+         }
+         
+         session()->flash('remind', $request->reminder);
+         
+         $section = $request->section;
+         return redirect("/getsoasummary/". $level ."/". $strand ."/". $section ."/". $trandate ."/". $plan ."/". $amtover);
+
+        }
+        
+        
+
 }

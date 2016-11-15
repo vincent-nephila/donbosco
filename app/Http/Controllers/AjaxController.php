@@ -720,7 +720,7 @@ class AjaxController extends Controller
               }  else {*/
                 $sections = DB::Select("select  distinct section from ctr_sections where level = '$level'");
                    $data = "";
-                   $data = $data . "<label for=\"section\">Section</label><select id=\"section\"  class=\"form form-control\" onchange= \"getstudents(this.value)\">";
+                   $data = $data . "<label for=\"section\">Section</label><select id=\"section\" name=\"section\" class=\"form form-control\" onchange= \"getstudents(this.value)\">";
                    $data = $data . "<option>--Select--</option>"; 
                    $data = $data . "<option value=\"All\">All</option>"; 
                    foreach($sections as $section){

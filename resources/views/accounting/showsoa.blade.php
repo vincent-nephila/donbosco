@@ -31,7 +31,7 @@
     <div class="col-md-6">
         <a href="{{url('printsoasummary',array($level,$strand,$section,$trandate,$plan,$amtover))}}" class="btn btn-primary">Print Summary</a>
         <a href="{{url('printallsoa',array($level,$strand,$section,$trandate,$plan,$amtover))}}" class="btn btn-primary">View SOA</a>
-        
+    <?php session()->reflash(); ?>
     </div>    
 </div>
 @stop

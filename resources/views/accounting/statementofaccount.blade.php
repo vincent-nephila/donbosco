@@ -1,6 +1,6 @@
 @extends('appcashier')
 @section('content')
-<div class="container_fluid">
+<div class="container-fluid">
      <form method="POST" action="{{url('/getsoasummary')}}">
             {!! csrf_field() !!}
     <div class="col-md-6">
@@ -81,9 +81,13 @@
             </div>    
         </div> 
         <div class="form form-group col-md-12">
+            <label>Custom reminder</label>
+            <textarea row="4" id="reminder" name="reminder" class="form form-control"></textarea>
+         </div>   
+        <div class="form form-group col-md-12">
             <div id="mybutton">
              <!--   <input type="button" value="Show SOA" name="submit" class="btn btn-primary">-->
-                <a href="#" onclick="showsoa()" class="btn btn-primary">Show SOA</a>
+                <input type="submit" class="btn btn-primary" value="Show SOA">
             </div>    
         </div> 
 </div>
@@ -124,6 +128,7 @@
  
  
  function showsoa(){
+            
      var level  = $("#level").val();
      var trandate = $("#year").val() + "-" + $("#month").val() + "-" + $("#day").val();
      var strand="none";
