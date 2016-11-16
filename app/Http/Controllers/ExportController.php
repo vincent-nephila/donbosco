@@ -158,76 +158,76 @@ class ExportController extends Controller
                                     }
                                     
                                     $insert[] = ['idno'=>$idnof, 
-                                        'qtrperiod'=>$value->qtrperiod, 
+                                        'qtrperiod'=>$qtrperiod->qtrperiod, 
                                         'schoolyear'=>$value->schoolyear,
-                                        'CL12'=>$value->cl12,
-                                        'CL22'=>$value->cl22,
-                                        'CL32'=>$value->cl32,
-                                        'CL42'=>$value->cl42,
-                                        'CL52'=>$value->cl52,
-                                        'CL62'=>$value->cl62,
-                                        'CL72'=>$value->cl72,
-                                        'CL82'=>$value->cl82,
-                                        'ENGL12'=>$value->engl12,
-                                        'ENGL22'=>$value->engl22,  
-                                        'ENGL32'=>$value->engl32,
-                                        'ENGL42'=>$value->engl42,
-                                        'ENGL52'=>$value->engl52,
-                                        'ENGL62'=>$value->engl62,
-                                        'ENGL72'=>$value->engl72,
-                                        'MATH12'=>$value->math12,
-                                        'MATH22'=>$value->math22,
-                                        'MATH32'=>$value->math32,
-                                        'MATH42'=>$value->math42,
-                                        'MATH52'=>$value->math52,
-                                        'MATH62'=>$value->math62,
-                                        'MATH72'=>$value->math72,
-                                        'MATH82'=>$value->math82,
-                                        'MATH92'=>$value->math92,
-                                        'MATH102'=>$value->math102,
-                                        'FIL12'=>$value->fil12,
-                                        'FIL22'=>$value->fil22,
-                                        'FIL32'=>$value->fil32,
-                                        'FIL42'=>$value->fil42,
-                                        'FIL52'=>$value->fil52,
-                                        'FIL62'=>$value->fil62,
-                                        'FIL72'=>$value->fil72,
-                                        'FIL82'=>$value->fil82
+                                        'CL11'=>$value->cl11,
+                                        'CL21'=>$value->cl21,
+                                        'CL31'=>$value->cl31,
+                                        'CL41'=>$value->cl41,
+                                        'CL51'=>$value->cl51,
+                                        'CL61'=>$value->cl61,
+                                        'CL71'=>$value->cl71,
+                                        'CL81'=>$value->cl81,
+                                        'ENGL11'=>$value->engl11,
+                                        'ENGL21'=>$value->engl21,  
+                                        'ENGL31'=>$value->engl31,
+                                        'ENGL41'=>$value->engl41,
+                                        'ENGL51'=>$value->engl51,
+                                        'ENGL61'=>$value->engl61,
+                                        'ENGL71'=>$value->engl71,
+                                        'MATH11'=>$value->math11,
+                                        'MATH21'=>$value->math21,
+                                        'MATH31'=>$value->math31,
+                                        'MATH41'=>$value->math41,
+                                        'MATH51'=>$value->math51,
+                                        'MATH61'=>$value->math61,
+                                        'MATH71'=>$value->math71,
+                                        'MATH81'=>$value->math81,
+                                        'MATH91'=>$value->math91,
+                                        'MATH101'=>$value->math101,
+                                        'FIL11'=>$value->fil11,
+                                        'FIL21'=>$value->fil21,
+                                        'FIL31'=>$value->fil31,
+                                        'FIL41'=>$value->fil41,
+                                        'FIL51'=>$value->fil51,
+                                        'FIL61'=>$value->fil61,
+                                        'FIL71'=>$value->fil71,
+                                        'FIL81'=>$value->fil81
                                         ];
                                     
-                                   $this->upgradecompetence($idnof,'CL12',$value->qtrperiod, $value->cl12,$sy);
-                                   $this->upgradecompetence($idnof,'CL22',$value->qtrperiod, $value->cl22,$sy);
-                                   $this->upgradecompetence($idnof,'CL32',$value->qtrperiod, $value->cl32,$sy);
-                                   $this->upgradecompetence($idnof,'CL42',$value->qtrperiod, $value->cl42,$sy);
-                                   $this->upgradecompetence($idnof,'CL52',$value->qtrperiod, $value->cl52,$sy);
-                                   $this->upgradecompetence($idnof,'CL62',$value->qtrperiod, $value->cl62,$sy);
-                                   $this->upgradecompetence($idnof,'CL72',$value->qtrperiod, $value->cl72,$sy);
-                                   $this->upgradecompetence($idnof,'CL82',$value->qtrperiod, $value->cl82,$sy);                                   
-                                   $this->upgradecompetence($idnof,'ENGL12',$value->qtrperiod, $value->engl12,$sy);
-                                   $this->upgradecompetence($idnof,'ENGL22',$value->qtrperiod, $value->engl22,$sy);
-                                   $this->upgradecompetence($idnof,'ENGL32',$value->qtrperiod, $value->engl32,$sy);
-                                   $this->upgradecompetence($idnof,'ENGL42',$value->qtrperiod, $value->engl42,$sy);
-                                   $this->upgradecompetence($idnof,'ENGL52',$value->qtrperiod, $value->engl52,$sy);
-                                   $this->upgradecompetence($idnof,'ENGL62',$value->qtrperiod, $value->engl62,$sy);
-                                   $this->upgradecompetence($idnof,'ENGL72',$value->qtrperiod, $value->engl72,$sy);
-                                   $this->upgradecompetence($idnof,'MATH12',$value->qtrperiod, $value->math12,$sy);
-                                   $this->upgradecompetence($idnof,'MATH22',$value->qtrperiod, $value->math22,$sy);
-                                   $this->upgradecompetence($idnof,'MATH32',$value->qtrperiod, $value->math32,$sy);
-                                   $this->upgradecompetence($idnof,'MATH42',$value->qtrperiod, $value->math42,$sy);
-                                   $this->upgradecompetence($idnof,'MATH52',$value->qtrperiod, $value->math52,$sy);
-                                   $this->upgradecompetence($idnof,'MATH62',$value->qtrperiod, $value->math62,$sy);
-                                   $this->upgradecompetence($idnof,'MATH72',$value->qtrperiod, $value->math72,$sy);
-                                   $this->upgradecompetence($idnof,'MATH82',$value->qtrperiod, $value->math82,$sy);
-                                   $this->upgradecompetence($idnof,'MATH92',$value->qtrperiod, $value->math92,$sy);
-                                   $this->upgradecompetence($idnof,'MATH102',$value->qtrperiod, $value->math102,$sy);
-                                   $this->upgradecompetence($idnof,'FIL12',$value->qtrperiod, $value->fil12,$sy);
-                                   $this->upgradecompetence($idnof,'FIL22',$value->qtrperiod, $value->fil22,$sy);
-                                   $this->upgradecompetence($idnof,'FIL32',$value->qtrperiod, $value->fil32,$sy);
-                                   $this->upgradecompetence($idnof,'FIL42',$value->qtrperiod, $value->fil42,$sy);
-                                   $this->upgradecompetence($idnof,'FIL52',$value->qtrperiod, $value->fil52,$sy);
-                                   $this->upgradecompetence($idnof,'FIL62',$value->qtrperiod, $value->fil62,$sy);
-                                   $this->upgradecompetence($idnof,'FIL72',$value->qtrperiod, $value->fil72,$sy);
-                                   $this->upgradecompetence($idnof,'FIL82',$value->qtrperiod, $value->fil82,$sy);
+                                   $this->upgradecompetence($idnof,'CL11',$qtrperiod->qtrperiod, $value->cl12,$sy);
+                                   $this->upgradecompetence($idnof,'CL21',$qtrperiod->qtrperiod, $value->cl22,$sy);
+                                   $this->upgradecompetence($idnof,'CL31',$qtrperiod->qtrperiod, $value->cl32,$sy);
+                                   $this->upgradecompetence($idnof,'CL41',$qtrperiod->qtrperiod, $value->cl42,$sy);
+                                   $this->upgradecompetence($idnof,'CL51',$qtrperiod->qtrperiod, $value->cl52,$sy);
+                                   $this->upgradecompetence($idnof,'CL61',$qtrperiod->qtrperiod, $value->cl62,$sy);
+                                   $this->upgradecompetence($idnof,'CL71',$qtrperiod->qtrperiod, $value->cl72,$sy);
+                                   $this->upgradecompetence($idnof,'CL81',$qtrperiod->qtrperiod, $value->cl82,$sy);                                   
+                                   $this->upgradecompetence($idnof,'ENGL11',$qtrperiod->qtrperiod, $value->engl12,$sy);
+                                   $this->upgradecompetence($idnof,'ENGL21',$qtrperiod->qtrperiod, $value->engl22,$sy);
+                                   $this->upgradecompetence($idnof,'ENGL31',$qtrperiod->qtrperiod, $value->engl32,$sy);
+                                   $this->upgradecompetence($idnof,'ENGL41',$qtrperiod->qtrperiod, $value->engl42,$sy);
+                                   $this->upgradecompetence($idnof,'ENGL51',$qtrperiod->qtrperiod, $value->engl52,$sy);
+                                   $this->upgradecompetence($idnof,'ENGL61',$qtrperiod->qtrperiod, $value->engl62,$sy);
+                                   $this->upgradecompetence($idnof,'ENGL71',$qtrperiod->qtrperiod, $value->engl72,$sy);
+                                   $this->upgradecompetence($idnof,'MATH11',$qtrperiod->qtrperiod, $value->math12,$sy);
+                                   $this->upgradecompetence($idnof,'MATH21',$qtrperiod->qtrperiod, $value->math22,$sy);
+                                   $this->upgradecompetence($idnof,'MATH31',$qtrperiod->qtrperiod, $value->math32,$sy);
+                                   $this->upgradecompetence($idnof,'MATH41',$qtrperiod->qtrperiod, $value->math42,$sy);
+                                   $this->upgradecompetence($idnof,'MATH51',$qtrperiod->qtrperiod, $value->math52,$sy);
+                                   $this->upgradecompetence($idnof,'MATH61',$qtrperiod->qtrperiod, $value->math62,$sy);
+                                   $this->upgradecompetence($idnof,'MATH71',$qtrperiod->qtrperiod, $value->math72,$sy);
+                                   $this->upgradecompetence($idnof,'MATH81',$qtrperiod->qtrperiod, $value->math82,$sy);
+                                   $this->upgradecompetence($idnof,'MATH91',$qtrperiod->qtrperiod, $value->math92,$sy);
+                                   $this->upgradecompetence($idnof,'MATH101',$qtrperiod->qtrperiod, $value->math102,$sy);
+                                   $this->upgradecompetence($idnof,'FIL11',$qtrperiod->qtrperiod, $value->fil12,$sy);
+                                   $this->upgradecompetence($idnof,'FIL21',$qtrperiod->qtrperiod, $value->fil22,$sy);
+                                   $this->upgradecompetence($idnof,'FIL31',$qtrperiod->qtrperiod, $value->fil32,$sy);
+                                   $this->upgradecompetence($idnof,'FIL41',$qtrperiod->qtrperiod, $value->fil42,$sy);
+                                   $this->upgradecompetence($idnof,'FIL51',$qtrperiod->qtrperiod, $value->fil52,$sy);
+                                   $this->upgradecompetence($idnof,'FIL61',$qtrperiod->qtrperiod, $value->fil62,$sy);
+                                   $this->upgradecompetence($idnof,'FIL71',$qtrperiod->qtrperiod, $value->fil72,$sy);
+                                   $this->upgradecompetence($idnof,'FIL81',$qtrperiod->qtrperiod, $value->fil82,$sy);
 				
                               }
                              

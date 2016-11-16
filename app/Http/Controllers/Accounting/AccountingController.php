@@ -1046,7 +1046,7 @@ foreach ($collections as $collection){
              $amtover = 0;
          }
          
-         session()->flash('remind', $request->reminder);
+         session()->put('remind', $request->reminder);
          
          $section = $request->section;
          return redirect("/getsoasummary/". $level ."/". $strand ."/". $section ."/". $trandate ."/". $plan ."/". $amtover);
