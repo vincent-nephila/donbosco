@@ -86,8 +86,8 @@ class UpdateController extends Controller
                 $qtrname="fourth_grading";
                 
         }
-        $check = \App\SubjectRepos::where('idno',$idno)->where('subjectcode',$subjectcode)->where('qtrperiod',$qtrperiod)->first();
-        if(count($check) == 0){
+        $check = \App\Status::where('idno',$idno)->where('department','Junior High School')->first();
+        if(count($check) != 0 && $subjectcode =='MAPEH'){
         $newgrade = \App\Grade::where('idno',$idno)->where('subjectcode',$subjectcode)->first();
         
         if(count($newgrade)>0){

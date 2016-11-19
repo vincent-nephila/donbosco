@@ -136,6 +136,8 @@
     //Cashier VINCENT
     Route::get('/addbatchaccount','Vincent\CashierController@batchposting');
     Route::post('/addtobatchaccount','Vincent\CashierController@savebatchposting');
+    Route::get('/searchor','Vincent\CashierController@searchor');
+    Route::post('/searchor','Vincent\CashierController@findor');
     
     //Accounting VINCENT (10-13-2016)
     Route::get('/tvetledger','Vincent\TvetController@tvetledger');
