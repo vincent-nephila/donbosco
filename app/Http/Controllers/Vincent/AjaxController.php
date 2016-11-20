@@ -52,7 +52,7 @@ class AjaxController extends Controller
         $this->techRank($section,$level,$quarters,$strand);
         }
         
-        $students = DB::Select("Select statuses.idno,class_no,gender,lastname,firstname,middlename,extensionname from users left join statuses on users.idno = statuses.idno where statuses.status IN (2,3) and statuses.level = '$level' and statuses.section = '$section' AND statuses.strand = '$strand' order by class_no ASC");
+        $students = DB::Select("Select statuses.idno,class_no,gender,lastname,firstname,middlename,extensionname,statuses.status from users left join statuses on users.idno = statuses.idno where statuses.status IN (2,3) and statuses.level = '$level' and statuses.section = '$section' AND statuses.strand = '$strand' order by class_no ASC");
         //$students = DB::Select("Select statuses.idno,gender,lastname,firstname,middlename,extensionname from users left join statuses on users.idno = statuses.idno where statuses.status= 2 and statuses.level = 'Grade 10' and statuses.section = 'Saint Callisto Caravario' AND statuses.strand = 'Industrial Drafting Technology' order by gender DESC,lastname ASC,firstname ASC");
         if(Input::get('department') != 'Senior High School'){
             $strand = '';
@@ -65,8 +65,9 @@ class AjaxController extends Controller
         
         $data = $data."<table border='1' cellpadding='1' cellspacing='2' width='100%'>";
         $data = $data."<tr>";
-        $data = $data."<td style='width:30px;text-align:center;'>CN</td>";
-        $data = $data."<td style='width:310px;text-align:center;'>Student Name</td>";
+        $data = $data."<thead>";
+        $data = $data."<td style='width:50px;text-align:center;'>CN</td>";
+        $data = $data."<td style='width:400px;text-align:center;'>Student Name</td>";
         
             foreach($subjects as $subj){
                 if($subj->subjecttype == 0){
@@ -81,7 +82,7 @@ class AjaxController extends Controller
             }
             
             $data = $data."<td style='width:80px;font-weight: bold;text-align:center;'>ACAD GEN AVE</td>";
-            $data = $data."<td style='width:80px;font-weight: bold;text-align:center;'><button class='btn btn-default' onclick=\"setAcadRank('".$section."','".$level."',".Input::get('quarter').")\" >RANKING</button></td>";
+            $data = $data."<td style='width:50px;font-weight: bold;text-align:center;'><button class='btn btn-default' onclick=\"setAcadRank('".$section."','".$level."',".Input::get('quarter').")\" >RANK</button></td>";
             foreach($subjects as $subj){
                 if($subj->subjecttype == 1){
                     $data = $data."<td style='width:50px;text-align:center;'>".$subj->subjectcode."</td>";
@@ -89,7 +90,7 @@ class AjaxController extends Controller
             }
             if(Input::get('department') == 'Junior High School'){
             $data = $data."<td style='width:50px;font-weight: bold;text-align:center;'>TWA</td>";
-            $data = $data."<td style='width:80px;font-weight: bold;text-align:center;'><button class='btn btn-default' onclick=\"setTechRank()\" >TECH RANKING</button></td>";
+            $data = $data."<td style='width:50px;font-weight: bold;text-align:center;'><button class='btn btn-default' onclick=\"setTechRank()\" >TECH<br>RANK</button></td>";
             }
             
             $data = $data."<td style='width:50px;font-weight: bold;text-align:center;'>GMRC</td>";
@@ -101,11 +102,15 @@ class AjaxController extends Controller
             }
             $data = $data."</tr>";
 
-            
+            $data = $data."</thead>";
             foreach($students as $student){
             $data = $data."<tr>";
             $data = $data."<td style='text-align:center;'>".$student->class_no."</td>";
-            $data = $data."<td style='font-size: 9pt;padding-left:5px;'>".$student->lastname.", ".$student->firstname." ".$student->middlename." ".$student->extensionname."</td>";
+            $data = $data."<td style='font-size: 9pt;padding-left:5px;'>".$student->lastname.", ".$student->firstname." ".$student->middlename." ".$student->extensionname;
+            if($student->status == 3){
+                $data = $data."<span style='float: right;color: red;font-weight: bold'>DROPPED</span>";
+            }
+            $data = $data."</td>";
             
   
             switch (Input::get('quarter')){
@@ -115,10 +120,15 @@ class AjaxController extends Controller
                             $month1 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUN')->orderBy('id','DESC')->first();
                             $month2 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUL')->orderBy('id','DESC')->first();
                             $month3 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','AUG')->orderBy('id','DESC')->first();
-                            
-                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
-                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
-                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;                        
+                            if(!empty($month1) && !empty($month2) && !empty($month3)){
+                                $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                                $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                                $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                            }else{
+                                $dayt = 0;
+                                $dayp = 0;
+                                $daya = 0;
+                            }
                     break;
                     case 2;
                         $grades = \App\Grade::select('subjecttype','second_grading as grade')->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
@@ -127,9 +137,15 @@ class AjaxController extends Controller
                             $month2 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
                             $month3 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"AUG")->orderBy('id','DESC')->first();
                             
-                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
-                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
-                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;                        
+                            if(!empty($month1) && !empty($month2) && !empty($month3)){
+                                $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                                $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                                $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                            }else{
+                                $dayt = 0;
+                                $dayp = 0;
+                                $daya = 0;
+                            }
                     break;                
                     case 3;
                         $grades = \App\Grade::select('subjecttype','third_grading as grade') ->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
@@ -138,9 +154,15 @@ class AjaxController extends Controller
                             $month2 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"NOV")->orderBy('id','DESC')->first();
                             $month3 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"DECE")->orderBy('id','DESC')->first();
                             
-                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
-                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
-                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                            if(!empty($month1) && !empty($month2) && !empty($month3)){
+                                $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                                $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                                $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                            }else{
+                                $dayt = 0;
+                                $dayp = 0;
+                                $daya = 0;
+                            }
                     break;
                     case 4;
                         $grades = \App\Grade::select('subjecttype','fourth_grading as grade')->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
@@ -149,9 +171,15 @@ class AjaxController extends Controller
                             $month2 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"FEB")->orderBy('id','DESC')->first();
                             $month3 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"MAR")->orderBy('id','DESC')->first();
                             
-                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
-                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
-                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                            if(!empty($month1) && !empty($month2) && !empty($month3)){
+                                $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                                $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                                $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                            }else{
+                                $dayt = 0;
+                                $dayp = 0;
+                                $daya = 0;
+                            }
                     break;                
                 }
                 if($grades->isEmpty()){}

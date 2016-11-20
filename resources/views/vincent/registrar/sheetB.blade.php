@@ -1,9 +1,15 @@
 @extends('app')
 @section('content')
+<style type="text/css" media="print">
+    .container-fluid{
+        padding-left:0px;
+        padding-right:0px;
+    }
+</style>
 <table width="100%" class="print-header">
                         <tr>
                             <td rowspan="3" style="text-align: right;padding-left: 0px;vertical-align: top" class="logo" width="55px">
-                                <img src="{{asset('images/logo.png')}}"  style="display: inline-block;width:50px">
+                                <img src="{{asset('images/logo.png')}}"  style="display: inline-block;height:50px">
                             </td>
                             <td style="padding-left: 0px;">
                                 <span style="font-size:12pt; font-weight: bold">Don Bosco Technical Institute</span>

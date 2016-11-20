@@ -104,23 +104,10 @@ class ReportController extends Controller
     function printSheetAConduct($level,$section,$quarter){
         $today = date("F d, Y");
         $print = $this->printDate();  
-        switch ($quarter){
-            case 1;
-                $qrt = "first_grading";
-            break;
-            case 2;
-                $qrt = "second_grading";
-            break;                
-           case 3;
-                $qrt = "third_grading";
-            break;
-            case 4;
-                $qrt = "fourth_grading";
-           break; 
-        }        
+
              
         $schoolyear = \App\CtrRefSchoolyear::first();
-        $students = DB::Select("SELECT total,statuses.idno as idno,class_no,lastname, firstname, middlename, extensionname,statuses.status as stat FROM users left join (SELECT idno,sum(".$qrt.") as total FROM `grades` where subjecttype=3 and schoolyear = '$schoolyear->schoolyear' GROUP BY idno)conduct on conduct.idno = users.idno JOIN statuses ON statuses.idno = users.idno WHERE statuses.status IN (2,3) AND schoolyear = '$schoolyear->schoolyear' AND level ='$level'  AND section = '$section' ORDER BY class_no ASC");
+        $students = DB::Select("SELECT first,second,third,fourth,statuses.idno as idno,class_no,lastname, firstname, middlename, extensionname,statuses.status as stat FROM users left join (SELECT idno,sum(first_grading) as first,sum(second_grading) as second,sum(third_grading) as third,sum(fourth_grading) as fourth FROM `grades` where subjecttype=3 and schoolyear = '$schoolyear->schoolyear' GROUP BY idno)conduct on conduct.idno = users.idno JOIN statuses ON statuses.idno = users.idno WHERE statuses.status IN (2,3) AND schoolyear = '$schoolyear->schoolyear' AND level ='$level'  AND section = '$section' ORDER BY class_no ASC");
         $adviser = DB::table('ctr_sections')->where('level',$level)->where('section',$section)->first();
         
         return view('vincent.registrar.sheetAConduct',compact('students','today','print','schoolyear','level','section','quarter','adviser'));

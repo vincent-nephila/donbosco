@@ -79,44 +79,97 @@
                     <table class='report' width="100%" cellpadding="0" cellspacing="0" border="1">
                         <tr>
                             <td style='text-align: center;width:60px;'>CLASS NO</td>
-                            <td style='text-align: center;width:200px;'>LAST NAME</td>
-                            <td style='text-align: center;width:200px;'>FIRST NAME</td>
-                            <td style='text-align: center'>M.I.</td>
-                            <td style='text-align: center'>
-                                @if($quarter == 1)
-                                QTR1
-                                @endif
-                                @if($quarter == 2)
-                                QTR2
-                                @endif
-                                @if($quarter == 3)
-                                QTR3
-                                @endif
-                                @if($quarter == 4)
-                                QTR4
-                                @endif
-                            </td>
+                            <td style='text-align: center;width:120px;'>LAST NAME</td>
+                            <td style='text-align: center;width:300px;'>FIRST NAME</td>
+                            <td style='text-align: center;width:100px;'>QTR1</td>
+                            <td style='text-align: center;width:100px;'>Remarks</td>
+                            <td style='text-align: center;width:100px;'>QTR2</td>
+                            <td style='text-align: center;width:100px;'>Remarks</td>
+                            <td style='text-align: center;width:100px;'>QTR3</td>
+                            <td style='text-align: center;width:100px;'>Remarks</td>
+                            <td style='text-align: center;width:100px;'>QTR4</td>
+                            <td style='text-align: center;width:100px;'>Remarks</td>
+                            <td style='text-align: center;width:80px;'>RUNNING AVE</td>
                         </tr>
                         @foreach($students as $student)
                      
                         <tr>
                             <td style="text-align: center">{{$student->class_no}}</td>
                             <td>{{$student->lastname}}</td>
-                            <td>{{$student->firstname}}
+                            <td>{{$student->firstname}} {{substr($student->middlename, 0,1)."."}}
                             @if($student->stat == 3)
                             <span style="float: right;color: red;font-weight: bold">
                             DROPPED
                             </span>
                             @endif                            
                             </td>
-                            
-                            <td style="text-align: center">@if(!$student->middlename == ''||!$student->middlename == NULL)
-                                {{substr($student->middlename, 1,1)."."}}
+                            <td style="text-align: center">
+                                @if(!round($student->first,2) == 0)
+                                    {{round($student->first,2)}}
                                 @endif
                             </td>
                             <td style="text-align: center">
-                                {{round($student->total,2)}}
+                                
                             </td>
+                            <td style="text-align: center">
+                                @if(!round($student->second,2) == 0)
+                                    {{round($student->second,2)}}
+                                @endif
+                            </td>
+                            <td style="text-align: center">
+                                
+                            </td>
+                            <td style="text-align: center">
+                                @if(!round($student->third,2) == 0)
+                                    {{round($student->third,2)}}
+                                @endif
+                            </td>
+                            <td style="text-align: center">
+                                
+                            </td>
+                            <td style="text-align: center">
+                                @if(!round($student->fourth,2) == 0)
+                                    {{round($student->fourth,2)}}
+                                @endif
+                            </td>
+                            <td style="text-align: center">
+                                
+                            </td>
+                            <td style="text-align: center">
+                            <?php 
+                            $count = 0;
+                            $grades = 0;
+                            
+                                if(!round($student->first,2) == 0){
+                                    $grades = $grades+round($student->first,2);
+                                    $count++;
+                                }
+                                if(!round($student->second,2) == null){
+                                    $grades = $grades+round($student->second,2);
+                                    $count++;
+                                }
+                                if(!round($student->third,2) == null){
+                                    $grades = $grades+round($student->third,2);
+                                    $count++;
+                                }
+                                if(!round($student->fourth,2) == null){
+                                    $grades = $grades+round($student->fourth,2);
+                                    $count++;
+                                }
+                                if(!$count == 0){
+                                $grades = $grades/$count;
+                                }
+                            ?>                                
+                            @if(!$grades == 0)
+                                @if($level == 'Grade 7' || $level == 'Grade 8' || $level == 'Grade 9' || $level == 'Grade 10' || $level == 'Grade 11' || $level == 'Grade 12')
+                                    {{round($grades,0)}}
+                                    
+                                @else
+                                    {{$grades}}
+                                    
+                                @endif
+                            @endif                                
+                            </td>                            
                         </tr>
                         @endforeach
                     </table>
