@@ -155,7 +155,7 @@ class CashierController extends Controller
             $discount = 0;
             $change = 0;
           
-            
+            $this->reset_or();
             if($request->totaldue > 0 ){
             $totaldue = $request->totaldue;       
             //$accounts = \App\Ledger::where('idno',$request->idno)->where('categoryswitch','<=','6')->orderBy('categoryswitch')->get();
@@ -289,7 +289,7 @@ class CashierController extends Controller
               $this->debit_reservation_discount($request->idno,env('DEBIT_DISCOUNT') , $discount, $discountname);
                   
           }
-            $this->reset_or();
+            
           
           //return $this->viewreceipt($refno, $request->idno);
            return redirect(url('/viewreceipt',array($refno,$request->idno)));  
@@ -489,6 +489,8 @@ function otherpayment($idno){
         $refno = $this->getRefno();
         $status = \App\Status::where('idno',$request->idno)->where('status','2')->first();
         $student=  \App\User::where('idno',$request->idno)->first();
+        
+        $this->reset_or();
         if($request->reservation > 0 ){
             $newreservation = new \App\AdvancePayment;
             $newreservation->idno = $request->idno;
@@ -602,7 +604,7 @@ function otherpayment($idno){
         $debit->postedby= \Auth::user()->idno;
         $debit->save();
         
-        $this->reset_or();
+        
         return $this->viewreceipt($refno, $request->idno);
         
         //return redirect(url('/viewreceipt',array($refno,$request->idno)));

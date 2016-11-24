@@ -927,7 +927,7 @@ foreach ($collections as $collection){
         function postpenalties(Request $request){
             $findpost = \App\penaltyPostings::where('duemonth',$request->duemonth)->where('plan',$request->plan)->first();
             if(count($findpost)==0){
-            /*   
+            
             $idnumber = $request->idnumber;
             $schoolyear = \App\CtrRefSchoolyear::first();
             $plan=$request->plan;
@@ -961,9 +961,9 @@ foreach ($collections as $collection){
             $addpost->save();
             return view('accounting.successfullyadded');
              
-            */
             
-             return $request->idnumber;
+            
+            // return $request->idnumber;
        
             }else{
             return "Already Posted";    

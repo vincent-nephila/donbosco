@@ -32,32 +32,32 @@
         </table>
         
         <table width="100%" border="1" cellspacing = "0" class="list"><tr>
-                <td width="10%" align="center">Student No</td><td width="5%" align="center">CN</td><td width="37%">Name</td><td width="8%"></td><td width="8%"></td><td width="8%"></td><td width="8%"></td><td width="8%"></td><td width="8%"></td></tr>
+                <td width="10%" align="center">Student No</td><td width="5%" align="center">CN</td><td width="37%">Name</td><td width="5.33%"></td><td width="5.33%"></td><td width="5.33%"></td><td width="5.33%"></td><td width="5.33%"></td><td width="5.33%"></td><td width="5.33%"></td><td width="5.33%"></td><td width="5.33%"></td></tr>
         <?php
         $cnt = 0;
         ?>
         @if(preg_match( '/^Batch.*/', $level))
-        <tr><td colspan="3" style="padding-left: 15px">Girls</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="3" style="padding-left: 15px">Girls</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             @foreach($studentnames as $studentname)
                 @if($studentname->gender == "Female")
                     <tr><td align="center">{{$studentname->idno}}</td><td align="center">
                     <?php if($cnt++ < 9){echo "0".$cnt;} else {echo $cnt;}?>    
-                    </td><td>{{$studentname->lastname}}, {{$studentname->firstname}} {{$studentname->middlename}}</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    </td><td>{{$studentname->lastname}}, {{$studentname->firstname}} {{$studentname->middlename}}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                 @endif
             @endforeach         
-            <tr><td colspan="3" style="padding-left: 15px">Boys</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td colspan="3" style="padding-left: 15px">Boys</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             @foreach($studentnames as $studentname)
                 @if($studentname->gender == "Male")
                     <tr><td align="center">{{$studentname->idno}}</td><td align="center">
                     <?php if($cnt++ < 9){echo "0".$cnt;} else {echo $cnt;}?>    
-                    </td><td>{{$studentname->lastname}}, {{$studentname->firstname}} {{$studentname->middlename}}</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    </td><td>{{$studentname->lastname}}, {{$studentname->firstname}} {{$studentname->middlename}}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                 @endif
             @endforeach                 
         @else
             @foreach($studentnames as $studentname)
             <tr><td align="center">{{$studentname->idno}}</td><td align="center">
             <?php if($cnt++ < 9){echo "0".$cnt;} else {echo $cnt;}?>    
-            </td><td>{{$studentname->lastname}}, {{$studentname->firstname}} {{$studentname->middlename}}</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            </td><td>{{$studentname->lastname}}, {{$studentname->firstname}} {{$studentname->middlename}}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             @endforeach        
         @endif            
         </table>   
