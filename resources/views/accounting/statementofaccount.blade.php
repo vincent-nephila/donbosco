@@ -14,12 +14,16 @@
             <input type="checkbox" name="whatplan[]" value="Semi Annual"> Semi Annual
             <input type="checkbox" name="whatplan[]" value="Annual"> Annual-->
           
-            <select id="plan" name="plan" class="form form-control">
+            <!--select id="plan" name="plan" class="form form-control">
                 <option value="monthly1monthly2">Monthly 1 / Monthly 2 </option>
                 <option value="Quarterly">Quarterly</option>
                 <option value="Semi Annual">Semi Annual</option>
                 <option value="Annual">Annual</option>
-            </select>   
+            </select-->   
+           <label><input type="checkbox" name="plan[]" value="monthly1monthly2"> Monthly 1 / Monthly 2</label><br>
+           <label><input type="checkbox" name="plan[]" value="Quarterly"> Quarterly</label><br>
+           <label><input type="checkbox" name="plan[]" value="Semi Annual"> Semi Annual</label><br>
+           <label><input type="checkbox" name="plan[]" value="Annual"> Annual</label><br>
          </div>   
         <h5>Due Date</h5>
         <div class="form form-group col-md-4">

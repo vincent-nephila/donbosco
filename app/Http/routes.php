@@ -87,11 +87,11 @@
     Route::get('cashreceipts/{transactiondate}','Accounting\AccountingController@cashreceipts');
     Route::get('statementofaccount','Accounting\AccountingController@statementofaccount');
     Route::get('printsoa/{idno}/{tradate}','Accounting\AccountingController@printsoa');
-     Route::get('/printallsoa/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@printallsoa');
+     Route::get('/printallsoa/{level}/{strand}/{section}/{trandate}/{amtover}','Accounting\AccountingController@printallsoa');
     Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@getsoasummary');
     //Route::get('/getsoasummary','Accounting\AccountingController@getsoasummary');
     Route::post('/getsoasummary','Accounting\AccountingController@setsoasummary');
-    Route::get('/printsoasummary/{level}/{strand}/{section}/{trandate}/{plan}/{amtover}','Accounting\AccountingController@printsoasummary');
+    Route::get('/printsoasummary/{level}/{strand}/{section}/{trandate}/{amtover}','Accounting\AccountingController@printsoasummary');
     Route::get('penalties','Accounting\AccountingController@penalties');
     Route::post('postpenalties','Accounting\AccountingController@postpenalties');
     Route::post('postviewpenalty','Accounting\AccountingController@postviewpenalty');
@@ -110,7 +110,7 @@
     Route::get('updatecashdiscount','Update\UpdateController@updatecashdiscount');
     Route::get('updateacctcode','Update\UpdateController@updateacctcode');
     
-    //Registrar Vincent
+    //Registrar VINCENT
     Route::get('/reportcards/{level}/{section}','Vincent\GradeController@viewSectionGrade');    
     Route::get('/reportcard/{level}/{section}/{quarter}','Vincent\GradeController@viewSectionKinder');    
     Route::get('/reportcards/{level}/{shop}/{section}','Vincent\GradeController@viewSectionGrade9to10');    
@@ -132,6 +132,8 @@
     
     Route::get('/sectiontvet','Vincent\SectionController@sectiontvet');
     Route::post('/changecourses/{batch}/{idno}','Vincent\TvetController@changecourses');
+    
+    Route::get('/finalreport','Vincent\ReportController@finalreport');
     
     //Cashier VINCENT
     Route::get('/addbatchaccount','Vincent\CashierController@batchposting');
@@ -210,5 +212,6 @@
     Route::get('/getSubsidy/{account}','Vincent\AjaxController@getsubsidy');
     Route::get('/getaccountlevel','Vincent\AjaxController@getlevel');
     Route::get('/studentchecklist','Vincent\AjaxController@studentselect');
+    Route::get('/showfinale','Vincent\AjaxController@getfinal'); 
     
     

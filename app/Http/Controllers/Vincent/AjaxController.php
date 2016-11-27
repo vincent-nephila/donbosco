@@ -930,7 +930,7 @@ class AjaxController extends Controller
         if(Request::ajax()){
             $quarter = Input::get('quarter');
             $data = "";
-            $sortby = "oa_acad_1";
+            $sortby = "oa_acad_".$quarter;
             $sy = '2016';
             
             if($level == "Grade 11" |$level == "Grade 12"){
@@ -1222,5 +1222,239 @@ class AjaxController extends Controller
             
         }      
 
+    }
+    
+    function getfinal(){
+        if(Request::ajax()){
+            $section = Input::get('section');
+            //$section = "Blessed Michael Rua";
+            $level = Input::get('level');
+            //$level = "Kindergarten";
+            $strand = Input::get('strand');
+            $department = Input::get('department');
+            //$department = "Kindergarten";
+            $sy = \App\ctrSchoolYear::first();
+            
+            if($strand == ''){
+                $students = DB::Select("Select * from users left join statuses on users.idno = statuses.idno left join rankings on rankings.idno = statuses.idno and rankings.schoolyear = statuses.schoolyear where statuses.status IN (2,3) and statuses.level = '$level' and statuses.section = '$section' order by class_no ASC");
+            }else{
+                $students = DB::Select("Select * from users left join statuses on users.idno = statuses.idno left join rankings on rankings.idno = statuses.idno and rankings.schoolyear = statuses.schoolyear where statuses.status IN (2,3) and statuses.level = '$level' and statuses.section = '$section' AND statuses.strand = '$strand' order by class_no ASC");
+            }
+            switch($department){
+                case 'Kindergarten';
+                    $report = $this->elemFinalReport($students,$level,$sy);
+                break;
+                case 'Elementary';
+                    $report = $this->elemFinalReport($students,$level,$sy);
+                break;
+                case 'Junior High School';
+                    $report = $this->HSFinalReport($students);
+                break;
+                case 'Senior High School';
+                    $report = $this->SHSFinalReport($students);
+                break;
+                default;
+                    $report = "No students found.";
+                break;
+            }
+            return $report;
+        }
+        
+    }
+    
+    function elemFinalReport($students,$level,$sy){
+        $report="";
+        $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+        
+        $report = $report . "<table width='100%' style='text-align:center;' border='1'>";
+        $report = $report . "<tr><td rowspan='2'>CN</td><td rowspan='2'>Student Name</td>";
+        foreach($subjects as $subject){
+            if($subject->subjecttype == 0){
+                $report = $report . "<td colspan = '4'>".$subject->subjectcode."</td>";
+            }
+        }
+        $report = $report . "<td colspan = '4'>ACAD GEN AVE</td><td colspan = '4'>RANK</td><td colspan = '4'>GMRC</td>";
+        $report = $report . "<td colspan = '4'>DAYP</td><td colspan = '4'>DAYA</td><td colspan = '4'>DAYT</td>";
+        $report = $report . "</tr>";
+        $report = $report . "<tr>";
+        foreach($subjects as $subject){
+            if($subject->subjecttype == 0){
+                $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+            }
+        }
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "</tr>";
+            
+        foreach($students as $student){
+            $report = $report . "<tr>";
+            $report = $report . "<td>".$student->class_no."</td><td style='text-align:left'>".$student->lastname.", ".$student->firstname." ".$student->middlename." ".$student->extensionname;
+            if($student->status == 3){
+                $report = $report . "<span style='float:right;color:red;'>DROPPED</span>";
+            }
+            $report = $report . "</td>";
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 0){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->first();
+                    $report = $report . "<td>".$this->blankgrade($grade->first_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->second_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->third_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->fourth_grading)."</td>";
+                    
+                }
+            } 
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,1,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,2,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,3,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,4,$student->idno,$sy->schoolyear))."</td>";
+            
+            $report = $report . "<td>".$this->blankgrade($student->acad_1)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->acad_2)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->acad_3)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->acad_4)."</td>";
+            $conduct1 = 0;
+            $conduct2 = 0;
+            $conduct3 = 0;
+            $conduct4 = 0;
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 3){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->first();
+                        $conduct1 = $conduct1+$grade->first_grading;
+                        $conduct2 = $conduct2+$grade->second_grading;
+                        $conduct3 = $conduct3+$grade->third_grading;
+                        $conduct4 = $conduct4+$grade->fourth_grading;
+                }
+            }
+            $report = $report . "<td>".$this->blankgrade($conduct1)."</td>";
+            $report = $report . "<td>".$this->blankgrade($conduct2)."</td>";
+            $report = $report . "<td>".$this->blankgrade($conduct3)."</td>";
+            $report = $report . "<td>".$this->blankgrade($conduct4)."</td>";
+            $dayp = array();
+            $dayt = array();
+            $daya = array();
+            $attendance = array();
+            for($i=1; $i < 5 ;$i++){
+                $attendance  = $this->getAttendance($i,$student->idno,$sy);
+                $dayp [] = $attendance[1];
+                $dayt [] = $attendance[0];
+                $daya [] = $attendance[2];
+            }
+            $qtr = 1;
+            foreach($dayp as $dayp){
+                $report = $report . "<td>".$this->blankattend($dayp,$qtr)."</td>";
+                $qtr++;
+            }
+            $qtr = 1;
+            foreach($dayt as $dayt){
+                $report = $report . "<td>".$this->blankattend($dayt,$qtr)."</td>";
+                $qtr++;
+            }
+            $qtr = 1;
+            foreach($daya as $daya){
+                $report = $report . "<td>".$this->blankattend($daya,$qtr)."</td>";
+                $qtr++;
+            }            
+            $report = $report . "</tr>";
+        }
+        $report = $report . "</table>";
+        return $report;
+    }
+    
+    function blankgrade($grade){
+        
+        if ($grade == 0 || $grade == '' || $grade == NULL){
+            $grade = '';
+        }else{
+            $grade = round($grade,2);
+        }
+        
+        return $grade;
+    }
+    
+    function blankattend($grade,$qtr){
+        $quarter = \App\CtrQuarter::first();
+        if ($quarter->qtrperiod < $qtr){
+            $grade = '';
+        }else{
+            $grade = round($grade,2);
+        }
+        
+        return $grade;
+    }    
+    
+    function getAttendance($quarter,$idno,$schoolyear){
+        $attend = array();
+        switch ($quarter){
+                case 1;
+                        $month1 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUN')->orderBy('id','DESC')->first();
+                        $month2 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUL')->orderBy('id','DESC')->first();
+                        $month3 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','AUG')->orderBy('id','DESC')->first();
+                        if(!empty($month1) && !empty($month2) && !empty($month3)){
+                            
+                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                        }else{
+                            $dayt = 0;
+                            $dayp = 0;
+                            $daya = 0;
+                        }
+              
+                break;
+                case 2;
+                        $month1 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"Sept")->orderBy('id','DESC')->first();
+                        $month2 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
+                        $month3 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"AUG")->orderBy('id','DESC')->first();
+
+                        if(!empty($month1) && !empty($month2) && !empty($month3)){
+                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                        }else{
+                            $dayt = 0;
+                            $dayp = 0;
+                            $daya = 0;
+                        }
+              
+                break;                
+                case 3;
+                        $month1 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
+                        $month2 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"NOV")->orderBy('id','DESC')->first();
+                        $month3 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"DECE")->orderBy('id','DESC')->first();
+
+                        if(!empty($month1) && !empty($month2) && !empty($month3)){
+                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                        }else{
+                            $dayt = 0;
+                            $dayp = 0;
+                            $daya = 0;
+                        }
+              
+                break;
+                case 4;
+                        $month1 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"JAN")->orderBy('id','DESC')->first();
+                        $month2 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"FEB")->orderBy('id','DESC')->first();
+                        $month3 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"MAR")->orderBy('id','DESC')->first();
+
+                        if(!empty($month1) && !empty($month2) && !empty($month3)){
+                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                        }else{
+                            $dayt = 0;
+                            $dayp = 0;
+                            $daya = 0;
+                        }
+              
+                break;                
+            }
+            
+            return array($dayt,$dayp,$daya);
     }
 }

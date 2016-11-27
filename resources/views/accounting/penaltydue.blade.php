@@ -16,6 +16,7 @@
     </div>
      <div class="form form-group">
          <input type="submit" name="submit" value="View Penalties" class="btn btn-primary">
+         
      </div>    
     </form>
 </div>

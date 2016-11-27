@@ -770,21 +770,27 @@ foreach ($collections as $collection){
  }
  
  function getsoasummary($level,$strand,$section,$trandate,$plan,$amtover){
+     $plans =array();
+     $plans = $plan;
+     if(in_array("monthly1monthly2", $plans)){
+        $plans [] = "Monthly 1";
+        $plans [] = "Monthly 2";
+     }
+     $planparam = "AND (plan IN(";
+     foreach($plans as $plans){
+         $planparam = $planparam."'".$plans."',";
+     }
+     $planparam = substr($planparam, 0, -1);
+     $planparam = $planparam . "))";
      
-     if($plan=="all"){
-     $planparam = "";    
-     }
-     elseif($plan=="monthly1monthly2"){
-     $planparam="AND (statuses.plan = 'Monthly 1' OR statuses.plan = 'Monthly 2') ";    
-     }else{
-      $planparam = "AND statuses.plan = '$plan'";   
-     }
+     session()->put('planparam', $planparam);
+     
        if($strand=="none"){
-           if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
+           if($section=="All"){$soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " from users, statuses, ledgers,ctr_sections where ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and "
                 . " statuses.level = '$level' and statuses.status = '2' and ledgers.duedate <= '$trandate' $planparam  "
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by statuses.level, statuses.section, users.lastname, users.firstname, statuses.plan");
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by ctr_sections.section, users.lastname, users.firstname, statuses.plan");
                
            }else{
            $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,statuses.section, statuses.level,"
@@ -804,29 +810,19 @@ foreach ($collections as $collection){
      
        
             return view('accounting.showsoa',compact('soasummary','trandate','level','section','strand','amtover','plan'));
+       //     return $planparam;
         }
         
-       
-        
-       
- 
- 
-     function printallsoa($level,$strand,$section,$trandate,$plan,$amtover){
-     if($plan=="all"){
-     $planparam = "";    
-     }
-     elseif($plan=="monthly1monthly2"){
-     $planparam="AND (statuses.plan = 'Monthly 1' OR statuses.plan = 'Monthly 2') ";    
-     }
-     else{
-      $planparam = "AND statuses.plan = '$plan'";   
-     }
+    function printallsoa($level,$strand,$section,$trandate,$amtover){
+
+      $planparam = session('planparam');   
+     
        if($strand=="none"){
-       if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
+       if($section=="All"){$soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " from users, statuses, ledgers,ctr_sections where ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and "
                 . " statuses.level = '$level'  and ledgers.duedate <= '$trandate' $planparam  "
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by statuses.level, statuses.section, users.lastname, users.firstname, statuses.plan");
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by statuses.level, ctr_sections.section, users.lastname, users.firstname, statuses.plan");
                
            }else{
            $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,statuses.section, statuses.level,"
@@ -850,22 +846,14 @@ foreach ($collections as $collection){
          }
         
         
-        function printsoasummary($level,$strand,$section,$trandate,$plan,$amtover){
-     if($plan=="all"){
-     $planparam = "";    
-     }
-     elseif($plan=="monthly1monthly2"){
-     $planparam="AND (statuses.plan = 'Monthly 1' OR statuses.plan = 'Monthly 2') ";    
-     }
-     else{
-      $planparam = "AND statuses.plan = '$plan'";   
-     }
+    function printsoasummary($level,$strand,$section,$trandate,$amtover){
+        $planparam = session('planparam'); 
        if($strand=="none"){
-          if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
+          if($section=="All"){$soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " from users, statuses, ledgers,ctr_sections where ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and "
                 . " statuses.level = '$level'  and ledgers.duedate <= '$trandate' $planparam  "
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by statuses.level, statuses.section, users.lastname, users.firstname, statuses.plan");
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by ctr_sections.id ASC, users.lastname, users.firstname, statuses.plan");
                
            }else{
            $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,statuses.section, statuses.level,"
@@ -907,17 +895,17 @@ foreach ($collections as $collection){
         $plan = $request->plan;
         //non monthly 2
         if($plan=="Monthly 2"){
-        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
+        $soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
+                . " from users, statuses, ledgers,ctr_levels,ctr_sections where ctr_levels.level = statuses.level and ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
                 . " ledgers.duedate <= '$currentdate' and statuses.status='2' and statuses.plan = 'Monthly 2'"
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.level, statuses.section, statuses.strand, users.lastname, users.firstname");    
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by ctr_levels.id ASC, ctr_sections.id ASC, statuses.strand, users.lastname, users.firstname");    
         }else{
-        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
+        $soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
+                . " from users, statuses, ledgers,ctr_levels,ctr_sections where ctr_levels.level = statuses.level and ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
                 . " ledgers.duedate <= '$currentdate' and statuses.status='2' and ledgers.acctcode like 'Tuition %' and statuses.plan = '$plan'"
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.level, statuses.section, statuses.strand, users.lastname, users.firstname");    
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by ctr_levels.id ASC, ctr_sections.id ASC, statuses.strand, users.lastname, users.firstname");    
 
         }
         
@@ -1049,7 +1037,7 @@ foreach ($collections as $collection){
          session()->put('remind', $request->reminder);
          
          $section = $request->section;
-         return redirect("/getsoasummary/". $level ."/". $strand ."/". $section ."/". $trandate ."/". $plan ."/". $amtover);
+         return $this->getsoasummary($level,$strand,$section,$trandate,$plan,$amtover);
 
         }
         

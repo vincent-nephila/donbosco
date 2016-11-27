@@ -113,7 +113,6 @@ function getsectionlist(){
 }
 
 function setsection(id){
-    alert("here");
     strand="";
     if($("#strand").length>0){
         strand=$("#strand").val();
@@ -121,6 +120,7 @@ function setsection(id){
     //alert($("#strand").val());
     $.ajax({
             type: "GET", 
+            //url: "/setsection/" + id + "/" + $('#section').val() , 
             url: "/setsection/" + id + "/" + $('#section').val() , 
             success:function(data){
                 if(data == "true"){
@@ -139,7 +139,8 @@ function rmsection(id){
     }
       $.ajax({
             type: "GET", 
-            url: "/rmsection/" + id  , 
+            //url: "/rmsection/" + id  , 
+            url: "/rmsection/" + 0  , 
             success:function(data){
                 if(data == "true"){
                     getstudentlist(strand);

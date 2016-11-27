@@ -1,7 +1,9 @@
 @extends('app')
 @section('content')
 <div class='col-md-12'>
-    
+    <span id="quarters">
+        <a class="btn btn-default quarter btn-primary" id="1st" onclick="changequarter(1)">1st Quarter</a><a class="btn btn-default quarter" id="2nd" onclick="changequarter(2)">2nd Quarter</a><a class="btn btn-default quarter" id="3rd" onclick="changequarter(3)">3rd Quarter</a><a class="btn btn-default quarter" id="4th" onclick="changequarter(4)">4th Quarter</a>
+    </span>
     <select id='level' class='form-control'  onchange="viewlist(this.value)">
         <option value="null">-- Select Level --</option>
         @foreach($levels as $level)
@@ -28,9 +30,21 @@
 
 </div>
 <script>
-    var level = ""
-    var strand = ""
+    var level = "";
+    var strand = "";
+    var qtr = 1;
+    var qtrstring = "FIRST";
     
+    $("#quarters").on("click", "a.quarter", function(){
+            $(this).siblings().removeClass('btn-primary');
+            $(this).addClass('btn-primary');
+            $(this).blur();
+        });
+
+    function changequarter(setQuarter){
+        qtr=setQuarter;
+        viewlist(document.getElementById('level').value);
+    }
     function viewlist(lvl){
         $('#main_content').html("");
         document.getElementById('rerank').style.visibility='hidden';
@@ -61,7 +75,7 @@
     function viewranking(lvl){
         var arrays ={} ;
         arrays['strand'] = strand;
-        arrays['quarter'] = 1;
+        arrays['quarter'] = qtr;
 
          $.ajax({
              type:"GET",
@@ -81,7 +95,7 @@
         document.getElementById('blocker').style.display='block';
         var arrays ={} ;
         arrays['level'] = level;
-        arrays['quarter'] = 1;
+        arrays['quarter'] = qtr;
         arrays['strand'] = strand;
 
 

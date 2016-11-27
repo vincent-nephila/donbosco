@@ -56,7 +56,7 @@ class SectionController extends Controller
            }
    
         $pdf = \App::make('dompdf.wrapper');
-        $pdf->setPaper("Folio", "portrait");
+        $pdf->setPaper("Legal", "portrait");
          $pdf->loadView('print.printsection',compact('studentnames','level','section','strand','adviser','schoolyear'));
         return $pdf->stream();
 

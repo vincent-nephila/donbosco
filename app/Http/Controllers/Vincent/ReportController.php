@@ -126,7 +126,6 @@ class ReportController extends Controller
         $adviser = DB::table('ctr_sections')->where('level',$level)->where('section',$section)->first();
         
         return view('vincent.registrar.sheetaAttendance',compact('students','today','print','schoolyear','level','section','quarter','adviser','subjects'));
-        
     }    
     
     function attendance(){
@@ -163,5 +162,18 @@ class ReportController extends Controller
         
         return $level;
     } 
+    
+    function finalreport(){
+        $today = date("F d, Y");
+        
+        $print =      $this->printDate();  
+        
+        $schoolyear = \App\CtrRefSchoolyear::first();
+
+        $levels = $this->get_level();
+        $tvet = DB::Select("SELECT distinct course as courses FROM `ctr_subjects` WHERE `department` LIKE 'TVET'");
+        return view('vincent.registrar.FinalReport',compact('levels','tvet','today','print','schoolyear')) ;
+            
+    }    
  
 }

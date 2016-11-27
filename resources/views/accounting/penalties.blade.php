@@ -38,6 +38,7 @@
             <input type="hidden" name="trandate" value="{{date('Y-m-d')}}">
             <input type="hidden" name="plan" value="{{$plan}}">
             <input type="hidden" name="duemonth" value="{{$forthemonth}}">
+        
         <input type="submit" name="submit" value="Post Penalties!" class="btn btn-warning form form-control"></div>    
             <div class="col-md-6">
             <h5>Date of Posting</h5>
