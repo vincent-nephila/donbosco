@@ -20,6 +20,7 @@
                 <option value="Semi Annual">Semi Annual</option>
                 <option value="Annual">Annual</option>
             </select-->   
+            
            <label><input type="checkbox" name="plan[]" value="monthly1monthly2"> Monthly 1 / Monthly 2</label><br>
            <label><input type="checkbox" name="plan[]" value="Quarterly"> Quarterly</label><br>
            <label><input type="checkbox" name="plan[]" value="Semi Annual"> Semi Annual</label><br>
