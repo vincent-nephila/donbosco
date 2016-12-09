@@ -134,6 +134,7 @@
     Route::post('/changecourses/{batch}/{idno}','Vincent\TvetController@changecourses');
     
     Route::get('/finalreport','Vincent\ReportController@finalreport');
+    Route::get('/prevgrade','Vincent\MigrationController@grademigration');
     
     //Cashier VINCENT
     Route::get('/addbatchaccount','Vincent\CashierController@batchposting');
@@ -146,6 +147,8 @@
     Route::get('/studentsledger/{batch}/{cours}/{section}','Vincent\TvetController@getsectionstudent');
     Route::get('/studentsledger/{batch}/{cours}/{section}/edit','Vincent\TvetController@edittvetcontribution');
     Route::post('/studentsledger/{batch}/{cours}/{section}/edit','Vincent\TvetController@savetvetChanges');
+    Route::get('/addentry','Vincent\JournalController@addEntry');
+    Route::post('/addentry','Vincent\JournalController@saveEntry');
     
     //ACADEMIC VINCENT
     Route::get('/registerAdviser','Vincent\TvetController@tvetledger');

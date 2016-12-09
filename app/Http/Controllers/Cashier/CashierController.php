@@ -194,8 +194,7 @@ class CashierController extends Controller
                         }
             }   
             
-            
-                if($request->previous > 0 ){
+            if($request->previous > 0 ){
                 $previous = $request->previous;
                 $updateprevious = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch >= '11' "
                          . " and amount - payment - debitmemo - plandiscount - otherdiscount > 0 order By categoryswitch");
@@ -218,7 +217,7 @@ class CashierController extends Controller
                     }   
                 }
             
-                if(isset($request->other)){
+            if(isset($request->other)){
                     foreach($request->other as $key=>$value){
                     $updateother = \App\Ledger::find($key);
                     $updateother->payment = $updateother->payment + $value;
@@ -235,7 +234,7 @@ class CashierController extends Controller
                     }
                 }
             
-                if($request->penalty > 0){
+            if($request->penalty > 0){
                 $penalty = $request->penalty;
                 $updatepenalties = DB::SELECT("select * from ledgers where idno = '".$request->idno."' and categoryswitch = '". env('PENALTY_CHARGE'). "' "
                      . " and amount - payment - debitmemo - plandiscount - otherdiscount > 0");
@@ -256,7 +255,8 @@ class CashierController extends Controller
                         break;
                         }
                     }
-                }        
+                }
+                
             $bank_branch = "";
             $check_number = "";
             

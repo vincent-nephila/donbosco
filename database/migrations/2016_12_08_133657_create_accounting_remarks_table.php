@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTvetSubsidiesTable extends Migration
+class CreateAccountingRemarksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,10 @@ class CreateTvetSubsidiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tvet_subsidies', function (Blueprint $table) {
+        Schema::create('accounting_remarks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('idno');
-            $table->decimal('sponsor',10,2);
-            $table->decimal('subsidy',10,2);
-            $table->decimal('discount',10,2);
-            $table->string('batch');
+            $table->string('refno');
+            $table->string('remarks');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateTvetSubsidiesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('tvet_subsidies');
+        Schema::drop('accounting_remarks');
     }
 }

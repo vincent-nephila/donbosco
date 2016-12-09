@@ -11,7 +11,7 @@
  <style>
     .body table, th  , .body td{
     border: 1px solid black;
-    font-size: 10pt;
+    font-size: 11pt;
 }
 
 td{
@@ -134,7 +134,6 @@ th {
             </table>        
         </td>
         <td valign="top">
-            <h5></h5>
             <table style="font-size:8pt;border:thin" border="1" cellpadding="1" cellspacing='0'>
                 <tr><td>Total Amount</td><td align="right">{{number_format($totamount + $otherbalance,2)}}</tr>
                 <tr><td>Less : Discount</td><td align="right">({{number_format($totdiscount,2)}})</tr>

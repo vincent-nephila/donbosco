@@ -583,7 +583,7 @@ class AjaxController extends Controller
         $data = $data."<h3 class='no-print'>".$level."</h3>";
         foreach($sections as $section){
             $lists = DB::Select("select users.idno, users.lastname, users.firstname, users.extensionname, users.middlename, "
-                     . "statuses.level, statuses.strand, student_infos.fname, student_infos.fmobile,student_infos.flandline,student_infos.mlandline, student_infos.mname, student_infos.mmobile from users, statuses, student_infos  where users.idno = statuses.idno "
+                     . "statuses.level, statuses.strand, student_infos.phone1,student_infos.phone2,student_infos.fname, student_infos.fmobile,student_infos.flandline,student_infos.mlandline, student_infos.mname, student_infos.mmobile from users, statuses, student_infos  where users.idno = statuses.idno "
                      . "and statuses.level = '$level' and statuses.section = '$section->section'  and statuses.status='2' and statuses.idno = student_infos.idno order by users.lastname, users.firstname");            
             $data = $data."<h3 class='no-print'>".$section->section."</h3>";
             $data = $data."<table style='width:100%'><thead class='headers'><td style='text-align:center;'>";
@@ -602,7 +602,7 @@ class AjaxController extends Controller
             $data = $data."<tr><td style='font-size:9pt;text-align: center;padding-left: 0px;'>PAASCU Accredited</td></tr>";
             $data = $data."<tr><td style='font-size:9pt;text-align: center;padding-left: 0px;'>School Year ".$schoolyear->schoolyear." - ".(intval($schoolyear->schoolyear)+1)."</td></tr>";
             $data = $data."<tr><td style='font-size:9pt;padding-left: 0px;'>&nbsp; </td></tr>";
-            $data = $data."<tr><td><span style='font-size:5px'></td></tr>";
+            $data = $data."<tr><td><span style='font-size:5px'></td></tr></table>";
             
             $data = $data."</table>";
             $data = $data."<div>STUDENT CONTACT</div>";
@@ -613,10 +613,16 @@ class AjaxController extends Controller
             $data = $data."</td></tr></table>";
             $data = $data."</td></tr><tr><td>";
             
-            $data = $data."<table class=\"table table-stripped\"><thead><td>Id No</td><td>Name</td><td>Father</td><td>Contact No</td><td>Mother</td><td>Contact No.</td></thead>";
+            $data = $data."<table class=\"table table-stripped\"><thead><td>Id No</td><td>Name</td><td>Contact No</td><td>Father</td><td>Contact No</td><td>Mother</td><td>Contact No.</td></thead>";
             foreach($lists as $list){
-            $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td><td>".$list->fname."</td>"
-                    . "<td>";
+            $data = $data . "<tr><td>".$list->idno . "</td><td>". $list->lastname.", ".$list->firstname. " " . $list->middlename . " </td><td>";
+            $data = $data.$list->phone1;
+            if($list->phone1 != "" && $list->phone2 != ""){
+                $data = $data ." / ";
+            }
+            $data = $data .$list->phone2."</td>";
+            
+            $data = $data ."<td>".$list->fname."</td><td>";
             $data = $data.$list->fmobile;
             if($list->fmobile != "" && $list->flandline != ""){
                 $data = $data ." / ";

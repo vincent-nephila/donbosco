@@ -163,6 +163,7 @@ class ReportController extends Controller
         return $level;
     } 
     
+    
     function finalreport(){
         $today = date("F d, Y");
         

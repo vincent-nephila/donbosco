@@ -1227,12 +1227,13 @@ class AjaxController extends Controller
     function getfinal(){
         if(Request::ajax()){
             $section = Input::get('section');
-            //$section = "Blessed Michael Rua";
+            //$section = "Saint Louis Versiglia";
             $level = Input::get('level');
-            //$level = "Kindergarten";
+            //$level = "Grade 7";
             $strand = Input::get('strand');
+            //$strand = '';
             $department = Input::get('department');
-            //$department = "Kindergarten";
+            //$department = "Junior High School";
             $sy = \App\ctrSchoolYear::first();
             
             if($strand == ''){
@@ -1248,10 +1249,11 @@ class AjaxController extends Controller
                     $report = $this->elemFinalReport($students,$level,$sy);
                 break;
                 case 'Junior High School';
-                    $report = $this->HSFinalReport($students);
+                    $report = $this->HSFinalReport($students,$level,$sy);
                 break;
                 case 'Senior High School';
-                    $report = $this->SHSFinalReport($students);
+                    $sem = Input::get('sem');
+                    $report = $this->SHSFinalReport($students,$sem,$level,$sy,$strand);
                 break;
                 default;
                     $report = "No students found.";
@@ -1267,13 +1269,14 @@ class AjaxController extends Controller
         $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
         
         $report = $report . "<table width='100%' style='text-align:center;' border='1'>";
-        $report = $report . "<tr><td rowspan='2'>CN</td><td rowspan='2'>Student Name</td>";
+        $report = $report . "<tr><td rowspan='2'>CN</td><td rowspan='2' >Student Name</td>";
         foreach($subjects as $subject){
             if($subject->subjecttype == 0){
                 $report = $report . "<td colspan = '4'>".$subject->subjectcode."</td>";
             }
         }
-        $report = $report . "<td colspan = '4'>ACAD GEN AVE</td><td colspan = '4'>RANK</td><td colspan = '4'>GMRC</td>";
+        $report = $report . "<td colspan = '4'>ACAD GEN AVE</td><td colspan = '4'>RANK</td>";
+        $report = $report . "<td colspan = '4'>GMRC</td>";
         $report = $report . "<td colspan = '4'>DAYP</td><td colspan = '4'>DAYA</td><td colspan = '4'>DAYT</td>";
         $report = $report . "</tr>";
         $report = $report . "<tr>";
@@ -1306,7 +1309,8 @@ class AjaxController extends Controller
                     $report = $report . "<td>".$this->blankgrade($grade->fourth_grading)."</td>";
                     
                 }
-            } 
+            }
+            
             $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,1,$student->idno,$sy->schoolyear))."</td>";
             $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,2,$student->idno,$sy->schoolyear))."</td>";
             $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,3,$student->idno,$sy->schoolyear))."</td>";
@@ -1316,10 +1320,13 @@ class AjaxController extends Controller
             $report = $report . "<td>".$this->blankgrade($student->acad_2)."</td>";
             $report = $report . "<td>".$this->blankgrade($student->acad_3)."</td>";
             $report = $report . "<td>".$this->blankgrade($student->acad_4)."</td>";
+            
+            //CONDUCT            
             $conduct1 = 0;
             $conduct2 = 0;
             $conduct3 = 0;
             $conduct4 = 0;
+                        
             foreach($subjects as $subject){
                 if($subject->subjecttype == 3){
                     $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->first();
@@ -1329,10 +1336,15 @@ class AjaxController extends Controller
                         $conduct4 = $conduct4+$grade->fourth_grading;
                 }
             }
+            
+            
+            
             $report = $report . "<td>".$this->blankgrade($conduct1)."</td>";
             $report = $report . "<td>".$this->blankgrade($conduct2)."</td>";
             $report = $report . "<td>".$this->blankgrade($conduct3)."</td>";
             $report = $report . "<td>".$this->blankgrade($conduct4)."</td>";
+            
+            //ATTENDANCE
             $dayp = array();
             $dayt = array();
             $daya = array();
@@ -1357,13 +1369,287 @@ class AjaxController extends Controller
             foreach($daya as $daya){
                 $report = $report . "<td>".$this->blankattend($daya,$qtr)."</td>";
                 $qtr++;
-            }            
+            }
             $report = $report . "</tr>";
         }
         $report = $report . "</table>";
         return $report;
     }
     
+    function HSFinalReport($students,$level,$sy){
+        $report="";
+        $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+        
+        $report = $report . "<table width='100%' style='text-align:center;' border='1'>";
+        $report = $report . "<tr><td rowspan='2'>CN</td><td rowspan='2' >Student Name</td>";
+        foreach($subjects as $subject){
+            if($subject->subjecttype == 0){
+                $report = $report . "<td colspan = '4'>".$subject->subjectcode."</td>";
+            }
+        }
+        $report = $report . "<td colspan = '4'>ACAD GEN AVE</td><td colspan = '4'>RANK</td>";
+        foreach($subjects as $subject){
+            if($subject->subjecttype == 1){
+                $report = $report . "<td colspan = '4'>".$subject->subjectcode."</td>";
+            }
+        }
+        $report = $report . "<td colspan = '4'>TECH GEN AVE</td><td colspan = '4'>RANK</td>";
+        $report = $report . "<td colspan = '4'>GMRC</td>";
+        $report = $report . "<td colspan = '4'>DAYP</td><td colspan = '4'>DAYA</td><td colspan = '4'>DAYT</td>";
+        $report = $report . "</tr>";
+        $report = $report . "<tr>";
+        foreach($subjects as $subject){
+            if($subject->subjecttype == 0){
+                $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+            }
+        }
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        foreach($subjects as $subject){
+            if($subject->subjecttype == 1){
+                $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+            }
+        }  
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";        
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "<td>1st</td><td>2nd</td><td>3rd</td><td>4th</td>";
+        $report = $report . "</tr>";
+            
+        foreach($students as $student){
+            $report = $report . "<tr>";
+            $report = $report . "<td>".$student->class_no."</td><td style='text-align:left'>".$student->lastname.", ".$student->firstname." ".$student->middlename." ".$student->extensionname;
+            if($student->status == 3){
+                $report = $report . "<span style='float:right;color:red;'>DROPPED</span>";
+            }
+            $report = $report . "</td>";
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 0){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->first();
+                    $report = $report . "<td>".$this->blankgrade($grade->first_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->second_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->third_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->fourth_grading)."</td>";
+                    
+                }
+            }
+            
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,1,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,2,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,3,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,4,$student->idno,$sy->schoolyear))."</td>";
+            
+            $report = $report . "<td>".$this->blankgrade($student->acad_1)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->acad_2)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->acad_3)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->acad_4)."</td>";
+            
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 1){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->first();
+                    $report = $report . "<td>".$this->blankgrade($grade->first_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->second_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->third_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->fourth_grading)."</td>";
+                    
+                }
+            }
+            
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(1,1,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(1,2,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(1,3,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(1,4,$student->idno,$sy->schoolyear))."</td>";
+            
+            $report = $report . "<td>".$this->blankgrade($student->tech_1)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->tech_2)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->tech_3)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->tech_4)."</td>";            
+            
+            //CONDUCT            
+            $conduct1 = 0;
+            $conduct2 = 0;
+            $conduct3 = 0;
+            $conduct4 = 0;
+                        
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 3){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->first();
+                        $conduct1 = $conduct1+$grade->first_grading;
+                        $conduct2 = $conduct2+$grade->second_grading;
+                        $conduct3 = $conduct3+$grade->third_grading;
+                        $conduct4 = $conduct4+$grade->fourth_grading;
+                }
+            }
+            
+            
+            
+            $report = $report . "<td>".$this->blankgrade($conduct1)."</td>";
+            $report = $report . "<td>".$this->blankgrade($conduct2)."</td>";
+            $report = $report . "<td>".$this->blankgrade($conduct3)."</td>";
+            $report = $report . "<td>".$this->blankgrade($conduct4)."</td>";
+            
+            //ATTENDANCE
+            $dayp = array();
+            $dayt = array();
+            $daya = array();
+            $attendance = array();
+            for($i=1; $i < 5 ;$i++){
+                $attendance  = $this->getAttendance($i,$student->idno,$sy);
+                $dayp [] = $attendance[1];
+                $dayt [] = $attendance[0];
+                $daya [] = $attendance[2];
+            }
+            $qtr = 1;
+            foreach($dayp as $dayp){
+                $report = $report . "<td>".$this->blankattend($dayp,$qtr)."</td>";
+                $qtr++;
+            }
+            $qtr = 1;
+            foreach($dayt as $dayt){
+                $report = $report . "<td>".$this->blankattend($dayt,$qtr)."</td>";
+                $qtr++;
+            }
+            $qtr = 1;
+            foreach($daya as $daya){
+                $report = $report . "<td>".$this->blankattend($daya,$qtr)."</td>";
+                $qtr++;
+            }
+            $report = $report . "</tr>";
+        }
+        
+        $report = $report . "</table>";
+        return $report;
+    }
+    
+    function SHSFinalReport($students,$level,$sy){
+        $report="";
+        $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->where('semester',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+        
+        $report = $report . "<table width='100%' style='text-align:center;' border='1'>";
+        $report = $report . "<tr><td rowspan='2'>CN</td><td rowspan='2' >Student Name</td>";
+        foreach($subjects as $subject){
+            if($subject->subjecttype == 5){
+                $report = $report . "<td>".$subject->subjectcode."1</td>";
+                $report = $report . "<td>".$subject->subjectcode."2</td>";
+            }
+        }
+        foreach($subjects as $subject){
+            if($subject->subjecttype == 6){
+                $report = $report . "<td>".$subject->subjectcode."1</td>";
+                $report = $report . "<td>".$subject->subjectcode."2</td>";
+            }
+        }        
+        $report = $report . "<td>ACAD GEN AVE</td><td>ACAD GEN AVE</td>";
+        $report = $report . "<td>GMRC</td>";
+        $report = $report . "<td colspan = '4'>DAYP</td><td colspan = '4'>DAYA</td><td colspan = '4'>DAYT</td>";
+        $report = $report . "</tr>";
+            /*
+        foreach($students as $student){
+            $report = $report . "<tr>";
+            $report = $report . "<td>".$student->class_no."</td><td style='text-align:left'>".$student->lastname.", ".$student->firstname." ".$student->middlename." ".$student->extensionname;
+            if($student->status == 3){
+                $report = $report . "<span style='float:right;color:red;'>DROPPED</span>";
+            }
+            $report = $report . "</td>";
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 0){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->first();
+                    $report = $report . "<td>".$this->blankgrade($grade->first_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->second_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->third_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->fourth_grading)."</td>";
+                    
+                }
+            }
+            
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,1,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,2,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,3,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(0,4,$student->idno,$sy->schoolyear))."</td>";
+            
+            $report = $report . "<td>".$this->blankgrade($student->acad_1)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->acad_2)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->acad_3)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->acad_4)."</td>";
+            
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 1){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->first();
+                    $report = $report . "<td>".$this->blankgrade($grade->first_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->second_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->third_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->fourth_grading)."</td>";
+                    
+                }
+            }
+            
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(1,1,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(1,2,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(1,3,$student->idno,$sy->schoolyear))."</td>";
+            $report = $report . "<td>".$this->blankgrade($this->calcGrade(1,4,$student->idno,$sy->schoolyear))."</td>";
+            
+            $report = $report . "<td>".$this->blankgrade($student->tech_1)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->tech_2)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->tech_3)."</td>";
+            $report = $report . "<td>".$this->blankgrade($student->tech_4)."</td>";            
+            
+            //CONDUCT            
+            $conduct1 = 0;
+            $conduct2 = 0;
+            $conduct3 = 0;
+            $conduct4 = 0;
+                        
+            foreach($subjects as $subject){
+                if($subject->subjecttype == 3){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->first();
+                        $conduct1 = $conduct1+$grade->first_grading;
+                        $conduct2 = $conduct2+$grade->second_grading;
+                        $conduct3 = $conduct3+$grade->third_grading;
+                        $conduct4 = $conduct4+$grade->fourth_grading;
+                }
+            }
+            
+            
+            
+            $report = $report . "<td>".$this->blankgrade($conduct1)."</td>";
+            $report = $report . "<td>".$this->blankgrade($conduct2)."</td>";
+            $report = $report . "<td>".$this->blankgrade($conduct3)."</td>";
+            $report = $report . "<td>".$this->blankgrade($conduct4)."</td>";
+            
+            //ATTENDANCE
+            $dayp = array();
+            $dayt = array();
+            $daya = array();
+            $attendance = array();
+            for($i=1; $i < 5 ;$i++){
+                $attendance  = $this->getAttendance($i,$student->idno,$sy);
+                $dayp [] = $attendance[1];
+                $dayt [] = $attendance[0];
+                $daya [] = $attendance[2];
+            }
+            $qtr = 1;
+            foreach($dayp as $dayp){
+                $report = $report . "<td>".$this->blankattend($dayp,$qtr)."</td>";
+                $qtr++;
+            }
+            $qtr = 1;
+            foreach($dayt as $dayt){
+                $report = $report . "<td>".$this->blankattend($dayt,$qtr)."</td>";
+                $qtr++;
+            }
+            $qtr = 1;
+            foreach($daya as $daya){
+                $report = $report . "<td>".$this->blankattend($daya,$qtr)."</td>";
+                $qtr++;
+            }
+            $report = $report . "</tr>";
+        }
+        /*
+        $report = $report . "</table>";
+        return $report;
+    }
     function blankgrade($grade){
         
         if ($grade == 0 || $grade == '' || $grade == NULL){

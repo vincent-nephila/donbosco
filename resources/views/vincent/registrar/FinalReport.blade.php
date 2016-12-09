@@ -16,7 +16,9 @@
 					<span style="margin-top: 4px;display: block;width: 22px;height: 2px;border-radius: 1px;background-color: gray;" class="icon-bar"></span>
 					<span style="margin-top: 4px;display: block;width: 22px;height: 2px;border-radius: 1px;background-color: gray;" class="icon-bar"></span>        
         </strong></button>
-        </div>
+        
+        <span id="semester" style="margin-left:20px;visibility: hidden"><a class="btn btn-default sem btn-primary" onclick="changesem(1)" style="border-bottom-right-radius: 0px;border-top-right-radius: 0px;">1st Sem</a><a class="btn btn-default sem" style="border-bottom-left-radius: 0px;border-top-left-radius: 0px;" onclick="changesem(2)">2nd Sem</a></span>
+    </div>
     <div class="col-md-3 collapse in" id='menu'>
         <?php $menu = 0;?>
         @foreach($levels as $level)
@@ -65,6 +67,18 @@
     </div>
 </div>
 <script type="text/javascript">
+    var sections
+    var levels
+    var strands
+    var departments
+    var semester = 1
+    
+    $("#semester").on("click", "a.sem", function(){
+        $(this).siblings().removeClass('btn-primary');
+        $(this).addClass('btn-primary');
+        $(this).blur();
+    });
+    
     function expand(){
         
         var displays = document.getElementById('menu');
@@ -83,12 +97,44 @@
     }
     
     function seefinal(section,level,department,strand){
-        
+        var loading = document.getElementById ( "semester" ) ;
+        if(department == 'Senior High School'){
+            
+            loading.style.visibility = "visible"
+            sections = section
+            levels = level
+            strands = strand
+            departments = department
+            seeseniorfinal();
+        }
+        else{
+            loading.style.visibility = "hidden"
+            arrays ={} ;
+            arrays['section'] = section;
+            arrays['level']= level;
+            arrays['strand']= strand;
+            arrays['department']= department;
+            
+            $.ajax({
+                   type: "GET", 
+                   url: "/showfinale",
+                   data : arrays,
+                   success:function(data){
+                       $("#display").html(data);
+                       }
+                   });            
+        }
+
+    }
+    
+    function seeseniorfinal(){
+               
         arrays ={} ;
-        arrays['section'] = section;
-        arrays['level']= level;
-        arrays['strand']= strand;
-        arrays['department']= department;
+        arrays['section'] = sections;
+        arrays['level']= levels;
+        arrays['strand']= strands;
+        arrays['department']= departments;
+        arrays['sem']= semester;
         $.ajax({
                type: "GET", 
                url: "/showfinale",
@@ -96,9 +142,15 @@
                success:function(data){
                    $("#display").html(data);
                    }
-               });         
+               });
+               
     }
     
+    function changesem(sem){
+        semester = sem;
+        
+        seeseniorfinal();
+    }
 
 </script>
 @endsection

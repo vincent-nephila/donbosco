@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCtrQuartersTable extends Migration
+class CreateChartOfAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,11 @@ class CreateCtrQuartersTable extends Migration
      */
     public function up()
     {
-        Schema::create('ctr_quarters', function (Blueprint $table) {
+        Schema::create('chart_of_accounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('qtrperiod');
+            $table->string('account');
+            $table->string('subsidiary');
+            $table->string('created_by');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateCtrQuartersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('ctr_quarters');
+        Schema::drop('chart_of_accounts');
     }
 }

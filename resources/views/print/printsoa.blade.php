@@ -13,6 +13,7 @@
     border: 1px solid black;
     font-size: 10pt;
 }
+body{margin:0px;}
 
 td{
     padding-right: 10px;
@@ -48,7 +49,8 @@ th {
 	<!-- Fonts -->
 	
         </head>
-<body> 
+<body style="max-height: 6.3in;height: 6.3in;position:relative;padding-top:25px;padding-bottom:25px;page-break-after:always;">
+
     <table border = '0' cellpacing="0" cellpadding = "0" width="100%" align="center">
         <tr><td rowspan="3" width="50">
         <img src="<?php echo $_SERVER['DOCUMENT_ROOT']; ?>/images/logo.png" width="60">
@@ -75,7 +77,7 @@ th {
     </table>
             
     <span style="font-size: 9pt;font-weight: bold"><u>ACCOUNT DETAILS</u></span>     
-   <table style="font-size: 8pt;"><tr><td>Account Description</td><td>Amount</td><td>Less: Discount</td><td>Payment</td><td>DM</td><td>Balance</td></tr>
+   <table style="font-size: 9pt;"><tr><td>Account Description</td><td>Amount</td><td>Less: Discount</td><td>Payment</td><td>DM</td><td>Balance</td></tr>
        <?php
        $totamount = 0; $totdiscount=0; $totdm=0; $totpayment=0;
        ?>
@@ -101,7 +103,7 @@ th {
         
 </td><td valign="top">
     <h5></h5>
-    <table style="font-size:8pt;border:thin" border="1" cellpadding="1" cellspacing='0'>
+    <table style="font-size:10pt;border:thin" border="1" cellpadding="1" cellspacing='0'>
     <tr><td>Total Amount</td><td align="right">{{number_format($totamount + $otherbalance,2)}}</tr>
     <tr><td>Less : Discount</td><td align="right">({{number_format($totdiscount,2)}})</tr>
     <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit Memo</td><td align="right">({{number_format($totdm,2)}})</tr>
@@ -144,7 +146,7 @@ th {
  @endif
 </td>
 </table>
-    <table><tr><td width="70%">
+    <table style="position:absolute;bottom:15px;"><tr><td width="70%">
     <p style="font-size: 8pt;"><b>Reminder:</b><br>
         @if(strlen($reminder) == 0)
         Please disregard this statement if payment has been made. Last day of payment is <b>{{date('M d, Y',strtotime($trandate))}}</b>. Payments made after due date is subject 
@@ -159,5 +161,6 @@ th {
             Administrator</p>
     </tr>
     </table>
+
 </body>
 </html>

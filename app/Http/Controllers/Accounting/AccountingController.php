@@ -1040,7 +1040,4 @@ foreach ($collections as $collection){
          return $this->getsoasummary($level,$strand,$section,$trandate,$plan,$amtover);
 
         }
-        
-        
-
 }
