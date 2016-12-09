@@ -75,7 +75,7 @@
                     <tr>
                         <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:11pt;"><b>HIGH SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:11pt;"><b>JUNIOR HIGH SCHOOL</b></div>
                     <br>
                         </td>
                     </tr>

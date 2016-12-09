@@ -2,11 +2,12 @@
     <head>
         <script src="{{asset('/js/jquery.js')}}"></script>
         <style type='text/css'>
+            
             .hide{
                 display:none;
             }
            table tr td{
-            font-size:10pt;
+            font-size:9.5pt;
             padding-left: 5px;
             padding-right: 5px;            
            }
@@ -85,8 +86,8 @@
         <div class="body" id="body">
         <?php $card = 1;?>    
         @foreach($collection as $info)
-        <div class="front"  style="padding-top: 40px;">
-        <table class="parent" width="100%" style="margin-bottom: .8cm;">
+        <div class="front"  style="padding-top: 20px;">
+        <table class="parent" width="100%" style="margin-bottom: .2cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;padding-right: 0px;">
@@ -125,7 +126,7 @@
                                 <b>Name:</b>
                             </td>
                             <td width="47%" style="font-size:10pt;padding-left: 0px;"><b>
-                                {{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}
+                                {{$info['info']->lastname}}, {{$info['info']->firstname}} {{substr($info['info']->middlename, 0,1)}}. {{$info['info']->extensionname}}
                                 </b>
                             </td>
                             <td width="16%" style="font-size:10pt;padding-left: 0px;">
@@ -364,7 +365,7 @@
         <div class="page-break"></div>
         </div>
 
-        <div class="back" style="padding-top: 50px;" >
+        <div class="back" style="padding-top: 20px;" >
         
         <table class="parent" width="100%" style="margin-bottom: .8cm;">
             <tr>
@@ -567,7 +568,7 @@
             var bodywidth = document.getElementById('body').offsetWidth;
             
             bodywidth = bodywidth/2
-            widths = (widths+120)/2
+            widths = (widths+150)/2
             
             var placement = bodywidth - widths;
             document.getElementById("cardHeader{{$card}}").style.marginLeft = placement+"px";

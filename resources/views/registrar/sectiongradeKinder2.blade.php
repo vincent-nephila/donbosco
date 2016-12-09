@@ -2,6 +2,7 @@
     <head>
         <script src="{{asset('/js/jquery.js')}}"></script>        
         <style type='text/css'>
+            
             .hide{
                 display:none;
             }            
@@ -35,6 +36,12 @@
                 margin-right: none;
                 
             }
+		.front{
+-ms-transform:rotate(180deg);
+        -o-transform:rotate(180deg);
+        transform:rotate(180deg);	
+
+}
         </style>
                 <link href="{{ asset('/css/print.css') }}" rel="stylesheet">
 
@@ -284,7 +291,7 @@
                     
                     <table class="padded" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
                         <tr><td colspan="3"><b>CONDUCT DESCRIPTORS</b></td></tr>
-                            <tr style="font-weight:bold;@if($quarter == 4)height: 48px;@endif">
+                            <tr style="font-weight:bold;@if ($quarter == 4)height: 48px;@endif">
                                 <td width="36%" class="descriptors">
                                     DESCRIPTORS
                                 </td>

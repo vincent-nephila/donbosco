@@ -2,6 +2,7 @@
     <head>
         <script src="{{asset('/js/jquery.js')}}"></script>        
         <style type='text/css'>
+            
             .hide{
                 display:none;
             }
@@ -88,12 +89,12 @@
         <div class="body" id="body">
             <?php $card = 1;?>    
         @foreach($collection as $info)
-        <div class="front" style="padding-top: 50px;">
+        <div class="front" style="padding-top: 30px;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table class="head"  border="0" cellpadding="0" cellspacing="0" id="cardHeader" id="cardHeader{{$card}}">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" id="cardHeader{{$card}}">
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 140px;vertical-align: top" class="logo">
@@ -111,7 +112,7 @@
                     <tr>
                         <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:11pt;"><b>HIGH SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:11pt;"><b>JUNIOR HIGH SCHOOL</b></div>
                     <br>
                         </td>
                     </tr>
@@ -128,12 +129,12 @@
                                 <b>Name:</b>
                             </td>
                             <td width="50%" style="font-size:10pt;padding-left: 0px;">
-                                <b>{{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}</b>
+                                <b>{{$info['info']->lastname}}, {{$info['info']->firstname}} {{substr($info['info']->middlename, 0,1)}}. {{$info['info']->extensionname}}</b>
                             </td>
-                            <td width="13%" style="font-size:10pt;padding-left: 0px;">
+                            <td width="15%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Student No:</b>
                             </td>
-                            <td width="23%" style="font-size:10pt;padding-left: 0px;">
+                            <td width="20%" style="font-size:10pt;padding-left: 0px;">
                                 <b>{{$info['info']->idno}}</b>
                             </td>
                         </tr>
@@ -319,7 +320,7 @@
                                 {{--*/$first = $first + round($tech->first_grading,2)*$weight/*--}}
                             </td>
                             <td class="print-size">
-                                @if(round($second/$count,0) != 0)
+                                @if(round($tech->second_grading/$count,0) != 0)
                                 {{round($tech->second_grading,0)}}
                                 @endif
                                 {{--*/$second = $second + round($tech->second_grading,2)*$weight/*--}}
@@ -366,7 +367,7 @@
             <tr><td><br></td></tr>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
+                    <table class="greyed" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
                         <tr style="font-weight:bold;">
                             <td width="36%" class="descriptors">
                                 DESCRIPTORS
@@ -401,7 +402,7 @@
         <div class="page-break"></div>
         </div>
 
-        <div class="back" style="padding-top: 50px;">
+        <div class="back" style="padding-top: 30px;">
         <table class="parent" width="100%" style="padding:10px;margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
         <tr>
             <td colspan="2" style="padding-left: 0px;">
@@ -608,7 +609,7 @@
                             <p style="text-indent: 20px">The school welcomes you should you desire to know more about your child's progress.</p>
                             <br>
                             <div style="width:200px;text-align: center;float:right;border-top: 1px solid">
-                                                    
+	                                                    
                            @if($teacher != null)
                            <span>{{$teacher->adviser}}</span>
                            @endif
@@ -621,10 +622,10 @@
                         <td class="print-size"  width="50%">
                             <b>Certificate of Eligibility for Promotion</b>
                         </td>
-                        <td rowspan="8" width="9%">
+                        <td rowspan="8" width="2%">
                             
                         </td>
-                        <td class="print-size" style="text-align: justify;font-weight: bold">
+                        <td class="print-size" width="48%" style="text-align: justify;font-weight: bold">
                             Cancellation of Eligibility to Transfer
                         </td>                                                    
                     </tr>
@@ -688,7 +689,7 @@
             var bodywidth = document.getElementById('body').offsetWidth;
             
             bodywidth = bodywidth/2
-            widths = (widths+120)/2
+            widths = (widths+140)/2
             
             var placement = bodywidth - widths;
             document.getElementById("cardHeader{{$card}}").style.marginLeft = placement+"px";
@@ -709,19 +710,5 @@
                 });                  
             }           
         </script-->
-        <script type="text/javascript">
-            
-            var widths = document.getElementById('cardHeader').offsetWidth;
-            
-            var bodywidth = document.getElementById('body').offsetWidth;
-            bodywidth = bodywidth/2
-            widths = (widths+120)/2
-            
-            var placement = bodywidth - widths;
-            
-            document.getElementById("cardHeader").style.marginLeft = placement+"px";
-            
-            
-        </script>        
     </body>
 </html>

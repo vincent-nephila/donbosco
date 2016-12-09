@@ -2,11 +2,12 @@
     <head>
         <script src="{{asset('/js/jquery.js')}}"></script>
         <style type='text/css'>
+            
             .hide{
                 display:none;
             }
            table tr td{
-            font-size:10.2pt;
+            font-size:10pt;
             padding-left: 5px;
             padding-right: 5px;
            }
@@ -88,14 +89,14 @@
         </nav-->
             
         <div class="body" id="body">
-        @foreach($collection as $info)
         <?php $card = 1?>
-        <div class="front" style="padding-top: 40px;">
+        @foreach($collection as $info)
+        <div class="front" style="padding-top: 10px;">
         <table class="parent" width="100%" style="margin-left: auto;margin-right: auto;margin-bottom: .8cm;">
             <thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table class="head"  border="0" cellpadding="0" cellspacing="0" id="cardHeader{{$card}}">
+                    <table class="head"  border="0" cellpadding="0" cellspacing="0" id="cardHeader<?php echo $card;?>">
 
                     <tr>
                         <td rowspan="7" style="text-align: right;padding-left: 0px;width: 140px;vertical-align: top" class="logo">
@@ -113,8 +114,7 @@
                     <tr>
                         <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:11pt;"><b>HIGH SCHOOL DEPARTMENT</b></div>
-                    <br>
+                    <div style="text-align: center;font-size:11pt;"><b>JUNIOR HIGH SCHOOL</b></div>
                         </td>
                     </tr>
                     <tr><td style="font-size:2px"><br></td></tr>
@@ -124,14 +124,14 @@
             </thead>
             <tr>
                 <td style="padding-left: 0px;">
-                    <br>
+               
                     <table class="head" width="100%" border = '0' cellpacing="0" cellpadding = "0">
                         <tr>
                             <td width="16%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Name:</b>
                             </td>
                             <td width="47%" style="font-size:10pt;padding-left: 0px;">
-                                <b>{{$info['info']->lastname}}, {{$info['info']->firstname}} {{$info['info']->middlename}} {{$info['info']->extensionname}}</b>
+                                <b>{{$info['info']->lastname}}, {{$info['info']->firstname}} {{substr($info['info']->middlename, 0,1)}}. {{$info['info']->extensionname}}</b>
                             </td>
                             <td width="16%" style="font-size:10pt;padding-left: 0px;">
                                 <b>Student No:</b>
@@ -381,7 +381,7 @@
             <tr><td style="padding-left: 0px;"><br></td></tr>
             <tr>
                 <td style="padding-left: 0px;">
-                    <table border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
+                    <table class="greyed" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;background-color: rgba(201, 201, 201, 0.79);">
                         <tr style="font-weight:bold;">
                             <td width="36%" class="descriptors">
                                 DESCRIPTORS
@@ -705,12 +705,12 @@
             var bodywidth = document.getElementById('body').offsetWidth;
             
             bodywidth = bodywidth/2
-            widths = (widths+120)/2
+            widths = (widths+140)/2
             
             var placement = bodywidth - widths;
             document.getElementById("cardHeader{{$card}}").style.marginLeft = placement+"px";
         </script>        
-        <?php $card++; ?>        
+        <?php $card=$card+1; ?>        
     @endforeach
     </div>    
         

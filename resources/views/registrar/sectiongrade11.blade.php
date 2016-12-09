@@ -2,6 +2,7 @@
     <head>
         <script src="{{asset('/js/jquery.js')}}"></script>
         <style type='text/css'>
+            
             .hide{
                 display:none;
             }

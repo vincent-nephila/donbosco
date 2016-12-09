@@ -1646,7 +1646,7 @@ class AjaxController extends Controller
             }
             $report = $report . "</tr>";
         }
-        /*
+        */
         $report = $report . "</table>";
         return $report;
     }

@@ -895,17 +895,18 @@ foreach ($collections as $collection){
         $plan = $request->plan;
         //non monthly 2
         if($plan=="Monthly 2"){
-        $soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
+        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers,ctr_levels,ctr_sections where ctr_levels.level = statuses.level and ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
+                . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
                 . " ledgers.duedate <= '$currentdate' and statuses.status='2' and statuses.plan = 'Monthly 2'"
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by ctr_levels.id ASC, ctr_sections.id ASC, statuses.strand, users.lastname, users.firstname");    
+                . " AND ledgers.acctcode IN ('Tuition Fee','Registration & Other Institutional Fees','Department Facilities','E-Learning, Worktexts, Test & Projects','Miscellaneous Fee','Miscellaneous Fees','Sales Non-VAT Books'))"
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.strand, users.lastname, users.firstname");
         }else{
-        $soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
+        $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers,ctr_levels,ctr_sections where ctr_levels.level = statuses.level and ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
+                . " from users, statuses, ledgers,ctr_sections where ctr_sections.level = statuses.level and ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
                 . " ledgers.duedate <= '$currentdate' and statuses.status='2' and ledgers.acctcode like 'Tuition %' and statuses.plan = '$plan'"
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by ctr_levels.id ASC, ctr_sections.id ASC, statuses.strand, users.lastname, users.firstname");    
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by ctr_sections.id ASC, statuses.strand, users.lastname, users.firstname");
 
         }
         
