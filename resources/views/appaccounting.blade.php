@@ -94,6 +94,7 @@
                                          </li>    
                                         @if(Auth::user()->accesslevel == env('USER_ACCOUNTING_HEAD'))
                                         <li><a href="{{url('penalties')}}"><i class="fa fa-btn"></i>Over Due Charges </a></li>
+                                        <li><a href="{{url('searchor')}}"><i class="fa fa-btn fa-sign-out"></i>Search OR</a></li>
                                         @endif
                                        
                                         

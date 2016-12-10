@@ -36,7 +36,7 @@ class AssessmentController extends Controller
        
         if(count($status) > 0){
             if($status->department=="TVET"){
-            $currentschoolyear= \App\ctrSchoolYear::where('department',$status->department)->where('period',$status->period)->first();    
+            $currentschoolyear = \App\ctrSchoolYear::where('department',$status->department)->where('period',$status->period)->first();
             }else{
             $currentschoolyear = \App\ctrSchoolYear::where('department', $status->department)->first();
             }
@@ -45,7 +45,6 @@ class AssessmentController extends Controller
             $ledgers =  DB::Select("select sum(amount) as amount, sum(plandiscount) as plandiscount,  sum(otherdiscount) as otherdiscount,receipt_details  from ledgers
                              where idno = '$id' and schoolyear = '".$currentschoolyear->schoolyear."'  and period = '". $currentschoolyear->period."' Group by receipt_details ");
               }
-        
         $programs = DB::Select("select distinct department from ctr_levels");
         $k_levels = \App\CtrLevel::where('department','Kindergarten')->get();
         $elem_levels = \App\CtrLevel::where('department','Elementary')->get();
@@ -67,11 +66,7 @@ class AssessmentController extends Controller
             $reservation = $reservation + $res->amount;
             }
         }
-        
         return view('registrar.oldstudent', compact('reservation','student','status','balance','programs','k_levels','elem_levels','shs_levels','jhs_levels','k11_tracks','k12_tracks','courses','currentschoolyear','mydiscount','ledgers'));
-    
-      
-        
     }
     
 function assess(Request $request){
@@ -93,41 +88,41 @@ function assess(Request $request){
         $paidby_gradfee=$request->paidby_gradfee;
         $contribution = $request->contribution;
         $batch=$request->batch;
+        
         if($request->action != "reassessed"){
-        $findtvet=  \App\TvetSubsidy::where('idno',$request->idno)->first();
-        if(count($findtvet)==0){
-            $sponsor=0;
-            $subsidy =0;
-            
-            if($paidby_tuitionfee=="sponsor"){
-                $sponsor=$sponsor + ($tf - ($discount/100) * $tf); 
-            } else {
-                $subsidy=$subsidy + ($tf - ($discount/100) * $tf);
+            $findtvet=  \App\TvetSubsidy::where('idno',$request->idno)->first();
+            if(count($findtvet)==0){
+                $sponsor=0;
+                $subsidy =0;
+
+                if($paidby_tuitionfee=="sponsor"){
+                    $sponsor=$sponsor + ($tf - ($discount/100) * $tf);
+                } else {
+                    $subsidy=$subsidy + ($tf - ($discount/100) * $tf);
+                }
+
+                if($paidby_misc=="sponsor"){
+                    $sponsor=$sponsor + $misc; 
+                } else {
+                    $subsidy=$subsidy + $misc;
+                }
+
+                if($paidby_gradfee=="sponsor"){
+                    $sponsor=$sponsor + $gradfee; 
+                } else {
+                    $subsidy=$subsidy + $gradfee;
+                }
+
+                $addtvet = new \App\TvetSubsidy;
+                $addtvet->idno=$request->idno;
+                $addtvet->sponsor=$sponsor;
+                $addtvet->subsidy=$subsidy-$contribution;
+                $addtvet->discount=$tf*$discount/100;
+                $addtvet->batch=$batch;
+                $addtvet->save();      
             }
-            
-            if($paidby_misc=="sponsor"){
-                $sponsor=$sponsor + $misc; 
-            } else {
-                $subsidy=$subsidy + $misc;
-            }
-            
-            if($paidby_gradfee=="sponsor"){
-                $sponsor=$sponsor + $gradfee; 
-            } else {
-                $subsidy=$subsidy + $gradfee;
-            }
-            
-            $addtvet = new \App\TvetSubsidy;
-            $addtvet->idno=$request->idno;
-            $addtvet->sponsor=$sponsor;
-            $addtvet->subsidy=$subsidy-$contribution;
-            $addtvet->discount=$tf*$discount/100;
-            $addtvet->batch=$batch;
-            $addtvet->save();      
-            }
-            }
-    
-            }
+        }
+    }
     
     if(isset($request->strand)){
         $strand = $request->strand;
@@ -184,7 +179,7 @@ function assess(Request $request){
               return $this->evaluate($request->id);
         break;
         
-        case "addnew":
+    case "addnew":
         $newstudent = new \App\User;
         $newstudent->idno = $request->idno;
         $newstudent->lastname = $request->lastname;
@@ -269,7 +264,8 @@ function assess(Request $request){
         
         //return $request->department;
         break;
-        case "update";
+        
+    case "update";
             if($request->department == "Kindergarten" || $request->department =="Elementary" || $request->department == "Junior High School" || $request->department == "Senior High School" ||$request->department == "TVET" ){
               if($this->addLedger($request->id,$request->level,$request->plan,$request->discount,$request->department,$strand,$course,$contribution,$batch)){  
                 $status = \App\Status::where('idno',$request->id)->first();
@@ -302,10 +298,6 @@ function assess(Request $request){
         break;    
     
     }
-                
-        
-    
-    
 }
       
     

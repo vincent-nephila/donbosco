@@ -42,10 +42,7 @@
                 text-align: center;                
                 font-size: 11px;
             }            
-            td{
-                //padding: 0px 2%;
-                //border:1px solid;
-            }
+
             
             .col-2{
                 width: 49%; 

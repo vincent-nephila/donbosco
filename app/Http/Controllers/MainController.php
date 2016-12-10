@@ -55,7 +55,12 @@ class MainController extends Controller
                case env('USER_TVET_COOR');
                      $students = DB::Select("select lastname,firstname,middlename,extensionname,gender,users.idno,statuses.status as stat from users join statuses on statuses.idno = users.idno where statuses.department = 'TVET'");
                         return view('vincent.tvet.index',compact('students'));
-                  break;              
+                  break;
+              
+               case env('USER_TVET_ASST');
+                     
+                        return redirect('/sectiontvet');
+                  break;                
             }
             
         } else {    
