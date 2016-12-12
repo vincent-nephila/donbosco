@@ -41,7 +41,7 @@
                          <strong style="color:red">Dropped</strong>
                         @else
                             <i>Registered</i> 
-                            <input type="hidden" name="action" value="update">
+                            <input type="hidden" name="action" value="add">
                         @endif
                         
                     @endif

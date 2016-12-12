@@ -48,7 +48,11 @@
             <tr><td></td><td><b>{{$posted->firstname}} {{$posted->lastname}}</b></td></tr>
             <tr><td></td><td>&nbsp;&nbsp;&nbsp;Cashier</td></tr>
        </table>
-             <a href="{{url('/cashier',$student->idno)}}" class="btn btn-primary">See Ledger</a>
+            @if(Auth::user()->accesslevel==env('USER_ACCOUNTING')|| Auth::user()->accesslevel==env('USER_ACCOUNTING_HEAD'))
+                <a href="{{url('/accounting',$student->idno)}}" class="btn btn-primary">See Ledger</a>
+            @else
+                <a href="{{url('/cashier',$student->idno)}}" class="btn btn-primary">See Ledger</a>
+            @endif
              <a href="{{url('/printreceipt',array($tdate->refno,$student->idno))}}" id="printreceipt" class="btn btn-primary">Print Receipt</a>
              @if($tdate->transactiondate == date('Y-m-d') && Auth::user()->idno == $posted->idno)
                 @if($tdate->isreverse == '0')

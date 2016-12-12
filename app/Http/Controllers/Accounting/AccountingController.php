@@ -959,7 +959,7 @@ function postpenalties(Request $request){
             }
         }
  
-        function addpenalties($idnumber,$plan){
+function addpenalties($idnumber,$plan){
             
             $currentdate= Carbon::now();
             if($plan != "Monthly 2"){
@@ -985,7 +985,7 @@ function postpenalties(Request $request){
         }
         
         
-        function subsidiary(){
+function subsidiary(){
             if(\Auth::user()->accesslevel==env('USER_ACCOUNTING')|| \Auth::user()->accesslevel==env('USER_ACCOUNTING_HEAD')){
             $acctcodes = DB::Select("select distinct receipt_details from credits order by receipt_details");
             $depts = DB::Select("select distinct sub_department from credits order by sub_department");    

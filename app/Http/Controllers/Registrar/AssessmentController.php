@@ -303,101 +303,114 @@ function assess(Request $request){
     
 
     function addLedger($id, $level, $plan, $discount,$department,$strand, $course,$contribution,$batch){
-                if($department=="TVET"){
-                $schoolperiod =  \App\ctrSchoolYear::where('department','TVET')->where('period',$batch)->first();    
-                }else{
-                $schoolperiod = \App\ctrSchoolYear::where("department",$department)->first();
+        if($department=="TVET"){
+            $schoolperiod =  \App\ctrSchoolYear::where('department','TVET')->where('period',$batch)->first();    
+        }
+        else{
+            $schoolperiod = \App\ctrSchoolYear::where("department",$department)->first();
+        }
+        
+        $discounts = \App\CtrDiscount::where('discountcode',$discount)->first();
+        
+        //Set Match Field
+/*        if($department == "TVET"){
+            $matchfields = ["department"=>"TVET", 'plan'=>$plan,"course"=> $course,"period"=>$batch];  
+        }else{ 
+            if($level == "Grade 9" || $level == "Grade 10" || $level == "Grade 11" || $level == "Grade 12"){
+                $matchfields=['level'=>$level, 'plan' =>$plan, 'strand'=>$strand];
+            }else {
+                $matchfields=['level'=>$level, 'plan' =>$plan];
+            }    
+        }
+ */
+        if($department != 'TVET'){ 
+            if($level == "Grade 9" || $level == "Grade 10" || $level == "Grade 11" || $level == "Grade 12"){
+                $matchfields=['level'=>$level, 'plan' =>$plan, 'strand'=>$strand];
+            }else {
+                $matchfields=['level'=>$level, 'plan' =>$plan];
+            }    
+        }
+                
+        if($department=="TVET"){
+            $newledger = new \App\Ledger;
+            $newledger->idno = $id;
+            $newledger->transactiondate = Carbon::now();
+            $newledger->department = $department;
+           // $newledger->level = $ledger->level;
+            $newledger->course = $course;
+           // $newledger->track = $ledger->track;
+           // $newledger->strand= $ledger->strand;
+            $newledger->categoryswitch = "7";
+            $newledger->acctcode = "Trainee Contribution";
+            $newledger->description = "Trainee Contribution";
+            $newledger->receipt_details = "Trainee Contribution";
+            $newledger->amount = $contribution;
+            //$newledger->plandiscount = $ledger->discount;
+            $newledger->schoolyear = $schoolperiod->schoolyear;
+            $newledger->duetype = "1";
+            $newledger->period = $batch;
+            $newledger->duedate = Carbon::now();
+            $newledger->postedby = \Auth::user()->id;
+            $newledger->save();
+        }else{
+            $ledgers = \App\CtrPaymentSchedule::where($matchfields)->get();
+            
+            foreach($ledgers as $ledger){
+                $newledger = new \App\Ledger;
+                $newledger->idno = $id;
+                $newledger->transactiondate = Carbon::now();
+                $newledger->department = $ledger->department;
+                $newledger->level = $ledger->level;
+                $newledger->course = $ledger->course;
+                $newledger->track = $ledger->track;
+                $newledger->strand= $ledger->strand;
+                $newledger->categoryswitch = $ledger->categoryswitch;
+                $newledger->acctcode = $ledger->acctcode;
+                $newledger->description = $ledger->description;
+                $newledger->receipt_details = $ledger->receipt_details;
+                $newledger->amount = $ledger->amount;
+                    if($ledger->categoryswitch == env('TUITION_FEE')){
+                        if(isset($discounts->discountcode)){    
+        //if(count($discounts)> 0){
+                            $totaldiscount = (($ledger->amount-$ledger->discount) * ($discounts->tuitionfee/100));    
+                            $newledger->otherdiscount = $totaldiscount;
+                            $newledger->discountcode = $discounts->discountcode;
+                           }
+
+                     }
+                $newledger->plandiscount = $ledger->discount;
+                $newledger->schoolyear = $schoolperiod->schoolyear;
+                $newledger->duetype = $ledger->duetype;
+                $newledger->period = $schoolperiod->period;
+                $newledger->duedate = $ledger->duedate;
+                $newledger->postedby = \Auth::user()->id;
+                $newledger->save();
+
+                if(isset($discounts->discountcode)){
+                    if($discounts->discountcode !="None" && $ledger->categoryswitch == env('TUITION_FEE')){
+                        $studentdiscount = new \App\Discount;
+                        $studentdiscount->transactiondate = Carbon::now();
+                        $studentdiscount->idno = $id;
+                        $studentdiscount->refid = $newledger->id;
+                        $studentdiscount->plan=$plan;
+                        $studentdiscount->discountcode = $discounts->discountcode;
+                        $studentdiscount->description =$discounts->description;
+                        $studentdiscount->tuitionfee = $discounts->tuitionfee;
+                        $studentdiscount->registrationfee=$discounts->registrationfee;
+                        $studentdiscount->miscellaneousfee=$discounts->miscellaneousfee;
+                        $studentdiscount->elearningfee=$discounts->elearningfee;
+                        $studentdiscount->departmentfee=$discounts->departmentfee;
+                        $studentdiscount->bookfee=$discounts->bookfee;
+                        $studentdiscount->amount=$totaldiscount;
+                        $studentdiscount->duedate = $newledger->duedate;
+                        $studentdiscount->schoolyear=$schoolperiod->schoolyear;
+                        $studentdiscount->period=$schoolperiod->period;
+                        $studentdiscount->save(); 
+                    }           
+
                 }
-                $discounts = \App\CtrDiscount::where('discountcode',$discount)->first();   
-                
-                 if($department == "TVET"){
-                   $matchfields = ["department"=>"TVET", 'plan'=>$plan,"course"=> $course,"period"=>$batch];  
-                 } else{ 
-                    if($level == "Grade 9" || $level == "Grade 10" || $level == "Grade 11" || $level == "Grade 12"){
-                    $matchfields=['level'=>$level, 'plan' =>$plan, 'strand'=>$strand];
-                        } else {
-                            $matchfields=['level'=>$level, 'plan' =>$plan];
-                 }}
-                
-                    if($department=="TVET"){
-                        $newledger = new \App\Ledger;
-                        $newledger->idno = $id;
-                        $newledger->transactiondate = Carbon::now();
-                        $newledger->department = $department;
-                       // $newledger->level = $ledger->level;
-                        $newledger->course = $course;
-                       // $newledger->track = $ledger->track;
-                       // $newledger->strand= $ledger->strand;
-                        $newledger->categoryswitch = "7";
-                        $newledger->acctcode = "Trainee Contribution";
-                        $newledger->description = "Trainee Contribution";
-                        $newledger->receipt_details = "Trainee Contribution";
-                        $newledger->amount = $contribution;
-                        //$newledger->plandiscount = $ledger->discount;
-                        $newledger->schoolyear = $schoolperiod->schoolyear;
-                        $newledger->duetype = "1";
-                        $newledger->period = $batch;
-                        $newledger->duedate = Carbon::now();
-                        $newledger->postedby = \Auth::user()->id;
-                        $newledger->save();
-                    }else{
-                    $ledgers = \App\CtrPaymentSchedule::where($matchfields)->get();
-                    foreach($ledgers as $ledger){
-                        $newledger = new \App\Ledger;
-                        $newledger->idno = $id;
-                        $newledger->transactiondate = Carbon::now();
-                        $newledger->department = $ledger->department;
-                        $newledger->level = $ledger->level;
-                        $newledger->course = $ledger->course;
-                        $newledger->track = $ledger->track;
-                        $newledger->strand= $ledger->strand;
-                        $newledger->categoryswitch = $ledger->categoryswitch;
-                        $newledger->acctcode = $ledger->acctcode;
-                        $newledger->description = $ledger->description;
-                        $newledger->receipt_details = $ledger->receipt_details;
-                        $newledger->amount = $ledger->amount;
-                            if($ledger->categoryswitch == env('TUITION_FEE')){
-                                if(isset($discounts->discountcode)){    
-                //if(count($discounts)> 0){
-                                    $totaldiscount = (($ledger->amount-$ledger->discount) * ($discounts->tuitionfee/100));    
-                                    $newledger->otherdiscount = $totaldiscount;
-                                    $newledger->discountcode = $discounts->discountcode;
-                                   }
-                
-                             }
-                        $newledger->plandiscount = $ledger->discount;
-                        $newledger->schoolyear = $schoolperiod->schoolyear;
-                        $newledger->duetype = $ledger->duetype;
-                        $newledger->period = $schoolperiod->period;
-                        $newledger->duedate = $ledger->duedate;
-                        $newledger->postedby = \Auth::user()->id;
-                        $newledger->save();
-                
-                        if(isset($discounts->discountcode)){
-                            if($discounts->discountcode !="None" && $ledger->categoryswitch == env('TUITION_FEE')){
-                                $studentdiscount = new \App\Discount;
-                                $studentdiscount->transactiondate = Carbon::now();
-                                $studentdiscount->idno = $id;
-                                $studentdiscount->refid = $newledger->id;
-                                $studentdiscount->plan=$plan;
-                                $studentdiscount->discountcode = $discounts->discountcode;
-                                $studentdiscount->description =$discounts->description;
-                                $studentdiscount->tuitionfee = $discounts->tuitionfee;
-                                $studentdiscount->registrationfee=$discounts->registrationfee;
-                                $studentdiscount->miscellaneousfee=$discounts->miscellaneousfee;
-                                $studentdiscount->elearningfee=$discounts->elearningfee;
-                                $studentdiscount->departmentfee=$discounts->departmentfee;
-                                $studentdiscount->bookfee=$discounts->bookfee;
-                                $studentdiscount->amount=$totaldiscount;
-                                $studentdiscount->duedate = $newledger->duedate;
-                                $studentdiscount->schoolyear=$schoolperiod->schoolyear;
-                                $studentdiscount->period=$schoolperiod->period;
-                                $studentdiscount->save(); 
-                            }           
-                    
-                        }
-                    }
-                    }  
+            }
+        }  
                 if($department == "Kindergarten" || $department == "Elementary" || $department == "Junior High School"){ 
                 $newsubjects = \App\CtrSubjects::where('level',$level)->get();
                 foreach($newsubjects as $newsubject){
