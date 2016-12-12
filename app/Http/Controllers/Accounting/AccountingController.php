@@ -786,11 +786,11 @@ foreach ($collections as $collection){
      session()->put('planparam', $planparam);
      
        if($strand=="none"){
-           if($section=="All"){$soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
+           if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers,ctr_sections where ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " from users, statuses, ledgers,ctr_sections where ctr_sections.section = statuses.section and ctr_sections.level = statuses.level and users.idno = statuses.idno and users.idno = ledgers.idno and "
                 . " statuses.level = '$level' and statuses.status = '2' and ledgers.duedate <= '$trandate' $planparam  "
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by ctr_sections.section, users.lastname, users.firstname, statuses.plan");
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by ctr_sections.id ASC, users.lastname, users.firstname, statuses.plan");
                
            }else{
            $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,statuses.section, statuses.level,"
@@ -813,16 +813,16 @@ foreach ($collections as $collection){
        //     return $planparam;
         }
         
-    function printallsoa($level,$strand,$section,$trandate,$amtover){
+function printallsoa($level,$strand,$section,$trandate,$amtover){
 
       $planparam = session('planparam');   
      
        if($strand=="none"){
-       if($section=="All"){$soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
+       if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers,ctr_sections where ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " from users, statuses, ledgers,ctr_sections where ctr_sections.section = statuses.section and ctr_sections.level = statuses.level and users.idno = statuses.idno and users.idno = ledgers.idno and "
                 . " statuses.level = '$level'  and ledgers.duedate <= '$trandate' $planparam  "
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by statuses.level, ctr_sections.section, users.lastname, users.firstname, statuses.plan");
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by ctr_sections.id ASC, users.lastname, users.firstname, statuses.plan");
                
            }else{
            $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan,statuses.section, statuses.level,"
@@ -846,12 +846,12 @@ foreach ($collections as $collection){
          }
         
         
-    function printsoasummary($level,$strand,$section,$trandate,$amtover){
+function printsoasummary($level,$strand,$section,$trandate,$amtover){
         $planparam = session('planparam'); 
        if($strand=="none"){
-          if($section=="All"){$soasummary = DB::Select("select distinct statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
+          if($section=="All"){$soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.plan, statuses.section, statuses.level, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers,ctr_sections where ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and "
+                . " from users, statuses, ledgers,ctr_sections where ctr_sections.section = statuses.section and ctr_sections.level = statuses.level and users.idno = statuses.idno and users.idno = ledgers.idno and "
                 . " statuses.level = '$level'  and ledgers.duedate <= '$trandate' $planparam  "
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename,statuses.section,statuses.level having amount > '$amtover' order by ctr_sections.id ASC, users.lastname, users.firstname, statuses.plan");
                
@@ -880,12 +880,12 @@ foreach ($collections as $collection){
         
         
         
-        function penalties(){
+function penalties(){
             $duemonths = DB::Select('select distinct plan from statuses');
           return view('accounting.penaltydue',compact('duemonths'));  
         }
         
-        function postviewpenalty(Request $request){
+function postviewpenalty(Request $request){
         $currentdate= Carbon::now(); 
         $forthemonth = date('M Y',strtotime($currentdate));
         $postings = \App\penaltyPostings::where('duemonth',$forthemonth)->where('plan',$request->plan)->get();
@@ -913,7 +913,7 @@ foreach ($collections as $collection){
         return view('accounting.penalties',compact('sy','levels','currentdate','postings','soasummary','plan','forthemonth'));
         }
  
-        function postpenalties(Request $request){
+function postpenalties(Request $request){
             $findpost = \App\penaltyPostings::where('duemonth',$request->duemonth)->where('plan',$request->plan)->first();
             if(count($findpost)==0){
             
