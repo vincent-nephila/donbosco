@@ -62,7 +62,7 @@
         </div>
         
   </div>
-    <div class="col-md-9" id="display" >
+    <div class="col-md-9" id="display" style="overflow-x:scroll;">
         
     </div>
 </div>

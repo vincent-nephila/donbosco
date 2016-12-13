@@ -330,7 +330,13 @@ function assess(Request $request){
                 $matchfields=['level'=>$level, 'plan' =>$plan];
             }    
         }
-                
+        DB::table('ledgers')
+            ->where('idno',$id)
+            ->where('categoryswitch','<',10)
+            ->update([
+            'categoryswitch' => DB::raw('categoryswitch + 10')
+        ]);        
+
         if($department=="TVET"){
             $newledger = new \App\Ledger;
             $newledger->idno = $id;
