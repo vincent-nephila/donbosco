@@ -291,8 +291,8 @@ class CashierController extends Controller
           }
             
           
-          //return $this->viewreceipt($refno, $request->idno);
-           return redirect(url('/viewreceipt',array($refno,$request->idno)));  
+          return $this->viewreceipt($refno, $request->idno);
+          //return redirect(url('/viewreceipt',array($refno,$request->idno)));  
           //return view("cashier.payment", compact('previous','idno','reservation','totaldue','totalother','totalprevious','totalpenalty'));
    }
 
