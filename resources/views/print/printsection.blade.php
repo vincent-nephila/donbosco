@@ -7,7 +7,7 @@
             table.list tr td{border: 1.5px solid;}
             table.footer tr td{border-width: 1px; font-size: 7pt;}
             body {
-            font-family: Calibri;}
+            font-family: dejavu sans;}
         </style>    
         
     </head>
