@@ -266,6 +266,7 @@ function assess(Request $request){
         break;
         
     case "update";
+        $this->archiveStatus($request->id);
             if($request->department == "Kindergarten" || $request->department =="Elementary" || $request->department == "Junior High School" || $request->department == "Senior High School" ||$request->department == "TVET" ){
               if($this->addLedger($request->id,$request->level,$request->plan,$request->discount,$request->department,$strand,$course,$contribution,$batch)){  
                 $status = \App\Status::where('idno',$request->id)->first();
@@ -335,7 +336,7 @@ function assess(Request $request){
             ->where('categoryswitch','<',10)
             ->update([
             'categoryswitch' => DB::raw('categoryswitch + 10')
-        ]);        
+        ]);
 
         if($department=="TVET"){
             $newledger = new \App\Ledger;
@@ -616,4 +617,34 @@ function updatemapeh(){
 }}}
 
 
+function archiveStatus($idno){
+    $student = \App\Status::where('idno',$idno)->first();
+    
+    $check = \App\StatusHistory::where('idno',$idno)->where('schoolyear',$student->schoolyear)->first();
+    
+    if(empty($check)){
+        $this->addStatusHistory($student);
+    }
+}
+
+    function addStatusHistory($student){
+        $archive = new \App\StatusHistory();
+        $archive->idno = $student->idno;
+        $archive->date_registered = $student->date_registered;
+        $archive->date_enrolled = $student->date_enrolled;
+        $archive->status = $student->status;
+        $archive->dropdate = $student->dropdate;
+        $archive->department = $student->department;
+        $archive->level = $student->level;
+        $archive->track = $student->track;
+        $archive->strand = $student->strand;
+        $archive->course = $student->course;
+        $archive->section = $student->section;
+        $archive->class_no = $student->class_no;
+        $archive->plan = $student->plan;
+        $archive->schoolyear = $student->schoolyear;
+        $archive->isnew = $student->isnew;
+        $archive->isesc = $student->isesc;
+        $archive->save();
+    }
 }
