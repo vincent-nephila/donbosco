@@ -42,12 +42,13 @@ class GradeController extends Controller
     
     function reset(){
         $no_student=0;
-/*                    $students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
+                    $students = \App\Status::whereIn('status',array(2,3))->where('strand','STEM')->get();
         foreach($students as $student){
-            $subjects = \App\CtrSubjects::where('level',$student->level)->where('subjecttype',3)->get();
+            $subjects = \App\CtrSubjects::where('level',$student->level)->where('semester',2)->where('strand','STEM')->get();
                     foreach($subjects as $subject){
                             $newgrade = new \App\Grade;
                             $newgrade->idno = $student->idno;
+                            $newgrade->semester = $subject->semester;
                             $newgrade->department = $student->department;
                             $newgrade->level = $student->level;
                             $newgrade->subjecttype = $subject->subjecttype;
@@ -61,7 +62,8 @@ class GradeController extends Controller
                     }
                     $no_student =$no_student +1;
                     echo "NO Of Student: ".$no_student;
-        }*/
+        }
+        /*
         $students = \App\Status::where('status',2)->where('department','Kindergarten')->get();
         foreach($students as $student){
             $subjects = \App\CtrCompetence::where('quarter',2)->get();
@@ -80,7 +82,7 @@ class GradeController extends Controller
                     }
                     
         }        
-        /*
+        
         $students = \App\Grade::distinct()->select('idno')->get();
         foreach($students as $student){
             $subjects = \App\CtrSubjects::where('subjecttype',2)->where('level','Grade 11')->where('strand','ABM')->get();
@@ -280,6 +282,14 @@ class GradeController extends Controller
         $levels = DB::Select("Select level from ctr_levels");
         
         return view('vincent.registrar.overallRanking',compact('levels'));
+    }
+    
+    function elemTor($idno){
+        $papersize = array(0,0,360,360);    
+        $pdf = \App::make('dompdf.wrapper');
+        //$pdf->setPaper($papersize);
+        $pdf->loadView("vincent.registrar.studenttor");
+        return $pdf->stream();
     }
 
 }

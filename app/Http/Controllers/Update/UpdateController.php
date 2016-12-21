@@ -147,4 +147,101 @@ class UpdateController extends Controller
                 return "done updating";
             }
         }
+        function prevgrade(){
+            $sy = "2013";
+            $students = DB::connection('dbti2test')->select("select distinct scode from grade where SY_EFFECTIVE = '$sy'");
+            foreach($students as $student){
+                $this->migrategrade($student->scode,$sy);
+            }
+        }
+        function migrategrade($scode,$sy){
+            
+            $hsgrades = DB::connection('dbti2test')->select("select * from grade "
+                    . "join (SELECT DISTINCT sy_effective, gr_yr,scode FROM  `grade_report`) gr on gr.scode = grade.scode and gr.sy_effective = grade.sy_effective "
+                    . "join subject on subject.SUBJ_CODE = grade.SUBJ_CODE "
+                    . "where grade.SY_EFFECTIVE = '$sy' "
+                    . "and grade.SCODE =".$scode." "
+                    . "AND grade.SUBJ_CODE NOT IN ('DAYT','DAYA','GMRC') group by grade.SCODE,grade.SUBJ_CODE,grade.QTR,grade.SY_EFFECTIVE,grade.GRADE_PASS1");
+
+            foreach($hsgrades as $grade){
+                
+                $check = $this->check($scode,$grade->SUBJ_CODE,$sy);
+                echo $check;
+                if(empty($check)){
+                    $record = new \App\Grade();
+                    $record->idno = $scode;
+                    $record->level = $this->changegrade($grade->gr_yr);
+                    $record->subjectcode = $grade->SUBJ_CODE;
+                    $record->subjectname = $grade->SUBJ_CARD;
+                    if($grade->QTR == 1){
+                        $record->first_grading = $grade->GRADE_PASS1;
+                    }else if($grade->QTR == 2){
+                        $record->second_grading = $grade->GRADE_PASS1;
+                    }else if($grade->QTR == 3){
+                        $record->third_grading = $grade->GRADE_PASS1;
+                    }else if($grade->QTR == 4){
+                        $record->fourth_grading = $grade->GRADE_PASS1;
+                    }  
+                    $record->schoolyear = $sy;
+                    $record->save();
+                }else{
+                    $record = \App\Grade::where('idno',$scode)->where('subjectcode',$grade->SUBJ_CODE)->where('schoolyear',$grade->SY_EFFECTIVE)->first();
+                    if($grade->QTR == 1){
+                        $record->first_grading = $grade->GRADE_PASS1;
+                    }else if($grade->QTR == 2){
+                        $record->second_grading = $grade->GRADE_PASS1;
+                    }else if($grade->QTR == 3){
+                        $record->third_grading = $grade->GRADE_PASS1;
+                    }else if($grade->QTR == 4){
+                        $record->fourth_grading = $grade->GRADE_PASS1;
+                    }        
+                    $record->save();
+                }
+                
+                
+                    
+            }
+            return 'me';
+        }
+        
+        function check($scode,$subj,$sy){
+            $result = \App\Grade::where('idno',$scode)->where('subjectcode',$subj)->where('schoolyear',$sy)->first();
+            
+            return $result;
+        }
+        
+        function changegrade($level){
+            if($level == 'I'){
+                $newlevel = "Grade 1";
+            }
+            else if($level == 'II'){
+                $newlevel = "Grade 2";
+            }
+            else if($level == 'III'){
+                $newlevel = "Grade 3";
+            }
+            else if($level == 'IV'){
+                $newlevel = "Grade 4";
+            }
+            else if($level == 'V'){
+                $newlevel = "Grade 5";
+            }
+            else if($level == 'VI'){
+                $newlevel = "Grade 6";
+            }
+            else if($level == 1){
+                $newlevel = "Grade 7";
+            }            
+            else if($level == 2){
+                $newlevel = "Grade 8";
+            }            
+            else if($level == 3){
+                $newlevel = "Grade 9";
+            }            
+            else if($level == 4){
+                $newlevel = "Grade 10";
+            }            
+            
+            return $newlevel;
+        }
 }

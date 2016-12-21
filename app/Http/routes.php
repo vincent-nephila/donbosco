@@ -33,7 +33,7 @@
     
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
      Route::get('printreportcard','Registrar\GradeController@printreportcard');
-
+     Route::get('/tor/{idno}','Vincent\GradeController@elemSOA');
      
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
@@ -152,6 +152,9 @@
     
     //ACADEMIC VINCENT
     Route::get('/registerAdviser','Vincent\TvetController@tvetledger');
+    
+    
+    Route::get('/studenttor/{idno}','Vincent\GradeController@elemTor');
 });
 
 //Ajax route
@@ -216,5 +219,10 @@
     Route::get('/getaccountlevel','Vincent\AjaxController@getlevel');
     Route::get('/studentchecklist','Vincent\AjaxController@studentselect');
     Route::get('/showfinale','Vincent\AjaxController@getfinal'); 
+    
+    
+    
+    Route::get('/pullrecords','Update\UpdateController@prevgrade');
+    
     
     

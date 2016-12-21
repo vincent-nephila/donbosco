@@ -13,7 +13,7 @@ class JournalController extends \App\Http\Controllers\Cashier\CashierController
 
     function addEntry(){
         $coa = \App\ChartOfAccount::pluck('account')->toArray();
-        $subsidy = \App\Subsidies::pluck('subsidy')->toArray();
+        //$subsidy = \App\Subsidies::pluck('subsidy')->toArray();
         //return $subsidy;
         return view("vincent.accounting.addentry",compact('coa','subsidy'));
     }

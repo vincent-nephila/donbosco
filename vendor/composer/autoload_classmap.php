@@ -48,6 +48,7 @@ return array(
     'CreatePasswordResetsTable' => $baseDir . '/database/migratin_backup/2014_10_12_100000_create_password_resets_table.php',
     'CreatePaymentsTable' => $baseDir . '/database/migratin_backup/2016_01_28_054855_create_payments_table.php',
     'CreatePenaltyPostingsTable' => $baseDir . '/database/migratin_backup/2016_07_19_161815_create_penalty_postings_table.php',
+    'CreateStatusHistoriesTable' => $baseDir . '/database/migrations/2016_12_21_104956_create_status_histories_table.php',
     'CreateStatusesTable' => $baseDir . '/database/migratin_backup/2016_02_05_064523_create_statuses_table.php',
     'CreateStudentInfosTable' => $baseDir . '/database/migratin_backup/2016_07_04_121924_create_student_infos_table.php',
     'CreateSubjectReposTable' => $baseDir . '/database/migratin_backup/2016_08_13_125412_create_subject_repos_table.php',
