@@ -106,7 +106,7 @@ class CashierController extends Controller
            $debitdms = DB::SELECT("select * from dedits where idno = '" . $idno . "' and "
                    . "paymenttype = '3' order by transactiondate");
            return view('cashier.studentledger',  compact('debitdms','debits','penalty','totalmain','totalprevious','previousbalances','othercollections','student','status','ledgers','reservation','dues','totalothers'));
-
+           
        }   
        
    }

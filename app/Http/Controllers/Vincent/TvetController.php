@@ -10,6 +10,7 @@ use DB;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
+use Excel;
 
 class TvetController extends Controller
 {
@@ -190,8 +191,25 @@ class TvetController extends Controller
         $ledger->save();
         
         return Redirect::back();
+
+    }
+    
+    function enrollmentreport(){
+        $batches = \App\ctrSchoolYear::where('department','TVET')->get();
         
-        
-        
+        return view('vincent.tvet.tvetEnrollmentreport',compact('batches'));
+    }
+    
+    function download($batch){
+        Excel::create('MIS 03-02 Form', function($excel) {
+
+            $excel->sheet('AMC-A', function($sheet){
+                $sheet->loadView('vincent.export.enrollmentReport');
+                
+                $sheet->mergeCells('AL1:AM2');
+                $sheet->setBorder('A1:AT4', 'double');
+                
+            });
+        })->export('xls');
     }
 }

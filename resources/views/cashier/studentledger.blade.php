@@ -45,7 +45,7 @@
                     @else
                     <td>Level</td><td>{{$status->level}}</td>
                     @endif
-                  @endif  
+                  @endif
                 </tr>
                 <tr><td>Gender</td><td>{{$student->gender}}</td><td>Section</td><td>
                     @if(isset($status->section))    
@@ -101,22 +101,24 @@
                                   <td align="right" style="color:red">{{number_format($totalpayment,2)}}</td>
                                   <td align="right"><strong>{{number_format($totalamount-$totaldiscount-$totaldebitmemo-$totalpayment,2)}}</strong></td></tr>
             </table>
-              <h5>Payment History</h5>
-              <table class="table table-striped"><tr><td>Date</td><td>Ref Number</td><td>OR Number</td><td align="right">Amount</td><td>Payment Type</td><td>Details</td><td>Status</td></tr>
+              <h5>Payment History 
+                  <span>
+              </h5>
+              <table class="table table-striped" id="ph"><tr><td>Date</td><td>Ref Number</td><td>OR Number</td><td align="right">Amount</td><td>Payment Type</td><td>Details</td><td>Status</td></tr>
                   @if(count($debits)>0)
                   @foreach($debits as $debit)
                   <tr><td>{{$debit->transactiondate}}</td><td>{{$debit->refno}}</td><td>{{$debit->receiptno}}</td><td align="right">{{number_format($debit->amount + $debit->checkamount,2)}}</td><td>
                       @if($debit->paymenttype=='1')
-                      Cash/Check
+                        Cash/Check
                       @elseif($debit->paymenttype=='3')
-                      DEBIT MEMO
+                        DEBIT MEMO
                       @endif
                       </td><td><a href="{{url('/viewreceipt',array($debit->refno,$student->idno))}}">View</a></td>
                       <td>
                        @if($debit->isreverse=="0")
-                       Ok
+                        Ok
                        @else
-                       Cancelled
+                        Cancelled
                        @endif   
                       </td>
                   

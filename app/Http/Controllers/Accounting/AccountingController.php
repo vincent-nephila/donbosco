@@ -745,9 +745,10 @@ foreach ($collections as $collection){
                . "duedate order by duedate");
        
        $others=DB::Select("select sum(amount) - sum(plandiscount) - sum(otherdiscount) - "
-               . "sum(payment) - sum(debitmemo) as balance, receipt_details, transactiondate  from ledgers  where "
+               . "sum(payment) - sum(debitmemo) as balance ,sum(amount) as amount , sum(plandiscount) + sum(otherdiscount) as discount,"
+               . "sum(payment) as payment, sum(debitmemo) as debitmemo, receipt_details, categoryswitch from ledgers  where "
                . " idno = '$idno' and categoryswitch > '6'  group by "
-               . "receipt_details, transactiondate having balance > '0' order by categoryswitch");
+               . "receipt_details, transactiondate having balance > '0' order by LEFT(receipt_details, 4) ASC,id");
        $schedulebal = 0;
        if(count($schedules)>0){
            foreach($schedules as $sched){
@@ -899,14 +900,14 @@ function postviewpenalty(Request $request){
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
                 . " ledgers.duedate <= '$currentdate' and statuses.status='2' and statuses.plan = 'Monthly 2'"
-                . " AND ledgers.acctcode IN ('Tuition Fee','Registration & Other Institutional Fees','Department Facilities','E-Learning, Worktexts, Test & Projects','Miscellaneous Fee','Miscellaneous Fees','Sales Non-VAT Books'))"
+                . " AND ledgers.acctcode IN ('Tuition Fee','Registration & Other Institutional Fees','Department Facilities','E-Learning, Worktexts, Test & Projects','Miscellaneous Fee','Miscellaneous Fees','Sales Non-VAT Books')"
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.strand, users.lastname, users.firstname");
         }else{
         $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
-                . " from users, statuses, ledgers,ctr_sections where ctr_sections.level = statuses.level and ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
+                . " from users, statuses, ledgers,ctr_sections,ctr_levels where ctr_levels.level = statuses.level and ctr_sections.level = statuses.level and ctr_sections.section = statuses.section and users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
                 . " ledgers.duedate <= '$currentdate' and statuses.status='2' and ledgers.acctcode like 'Tuition %' and statuses.plan = '$plan'"
-                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by ctr_sections.id ASC, statuses.strand, users.lastname, users.firstname");
+                . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by ctr_levels.id ASC, ctr_sections.id ASC, statuses.strand, users.lastname, users.firstname");
 
         }
         
@@ -932,15 +933,15 @@ function postpenalties(Request $request){
                 $newpenalty->transactiondate= Carbon::now();
                 $newpenalty->categoryswitch = '7';
                 $newpenalty->acctcode="Other Revenue";
-                $newpenalty->description="Penalty";
-                $newpenalty->receipt_details="Penalty(" . date('M Y') .")";
+                $newpenalty->description="Penalty(" . date('M Y') .")";
+                $newpenalty->receipt_details="Miscellaneous Others";
                 $newpenalty->amount=$this->addpenalties($value,$plan);
                 $newpenalty->schoolyear=$status->schoolyear;
                 $newpenalty->period=$status->period;
                 $newpenalty->duedate=Carbon::now();
                 $newpenalty->duetype='0';
                 $newpenalty->postedby=\Auth::user()->idno;
-                $newpenalty->save();              
+                $newpenalty->save();
             }
             $addpost = new \App\penaltyPostings;
             $addpost->dateposted=Carbon::now();

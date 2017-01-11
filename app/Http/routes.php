@@ -33,7 +33,7 @@
     
      Route::get('/seegrade/{idno}','Registrar\GradeController@seegrade');
      Route::get('printreportcard','Registrar\GradeController@printreportcard');
-     Route::get('/tor/{idno}','Vincent\GradeController@elemSOA');
+     
      
 //cashier module
     Route::get('cashier/{idno}','Cashier\CashierController@view');
@@ -152,9 +152,12 @@
     
     //ACADEMIC VINCENT
     Route::get('/registerAdviser','Vincent\TvetController@tvetledger');
+    Route::get('/enrollmentreport','Vincent\TvetController@enrollmentreport');
+    Route::get('/download/{batch}','Vincent\TvetController@download');
     
     
-    Route::get('/studenttor/{idno}','Vincent\GradeController@elemTor');
+    
+    Route::get('/tor/{idno}','Vincent\GradeController@elemTor');
 });
 
 //Ajax route
@@ -223,6 +226,15 @@
     
     
     Route::get('/pullrecords','Update\UpdateController@prevgrade');
+    Route::get('/getstrands','Update\NewAJAXController@getstrands');
     
+// Registrar Group
+Route::group(['middleware' => ['web','registrar']], function () {
+   Route::get('/sheetA/{record}',function($record){
+       $levels = \App\CtrLevel::get();
+       return view('vincent.registrar.sheetAv2',compact('levels','record'));
+   });
+   
+});
     
-    
+   

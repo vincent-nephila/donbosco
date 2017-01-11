@@ -1,5 +1,21 @@
 @extends('appcashier')
 @section('content')
+<style media="print">
+    .no-print{
+        display: none;
+    }
+    .text-muted{
+        display: none;
+    }
+    
+    input[type="checkbox"]{
+        display: none;
+    }
+    
+    table{
+        font-size:10px;
+    }
+</style>
 <div class="container">
     <h5> Statement of Account - <b>({{$plan}})</b> for the month of <b> {{$forthemonth}}</b></h5>
     <form method="post" action="{{url('/postpenalties')}}" onsubmit="return confirm('ARE YOU SURE TO POST PENALTIES FOR THIS MONTH?')">
@@ -34,13 +50,13 @@
        
  </table>       
     
-        <div class="col-md-6">
+        <div class="col-md-6 no-print">
             <input type="hidden" name="trandate" value="{{date('Y-m-d')}}">
             <input type="hidden" name="plan" value="{{$plan}}">
             <input type="hidden" name="duemonth" value="{{$forthemonth}}">
         
         <input type="submit" name="submit" value="Post Penalties!" class="btn btn-warning form form-control"></div>    
-            <div class="col-md-6">
+            <div class="col-md-6 no-print">
             <h5>Date of Posting</h5>
             <table class="table table-responsive"><tr><td>Date</td><td>Posted By </td></tr>
                 @if(count($postings)>0)

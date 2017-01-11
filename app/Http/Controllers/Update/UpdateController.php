@@ -148,14 +148,20 @@ class UpdateController extends Controller
             }
         }
         function prevgrade(){
-            $sy = "2013";
-            $students = DB::connection('dbti2test')->select("select distinct scode from grade where SY_EFFECTIVE = '$sy'");
+            $sy = "2012";
+            $students = DB::connection('dbti2test')->select("select distinct scode from grade where SY_EFFECTIVE = '$sy' LIMIT 800,800");
             foreach($students as $student){
                 $this->migrategrade($student->scode,$sy);
             }
+            //$this->migrategrade("021067",$sy);
         }
         function migrategrade($scode,$sy){
-            
+                
+                do{
+                    if(strlen($scode) < 6){
+                        $scode = "0".$scode;
+                    }
+                }while(strlen($scode) < 6);
             $hsgrades = DB::connection('dbti2test')->select("select * from grade "
                     . "join (SELECT DISTINCT sy_effective, gr_yr,scode FROM  `grade_report`) gr on gr.scode = grade.scode and gr.sy_effective = grade.sy_effective "
                     . "join subject on subject.SUBJ_CODE = grade.SUBJ_CODE "
@@ -172,7 +178,7 @@ class UpdateController extends Controller
                     $record->idno = $scode;
                     $record->level = $this->changegrade($grade->gr_yr);
                     $record->subjectcode = $grade->SUBJ_CODE;
-                    $record->subjectname = $grade->SUBJ_CARD;
+                    $record->subjecttype = $this->settype($grade->SUBJ_CODE);
                     if($grade->QTR == 1){
                         $record->first_grading = $grade->GRADE_PASS1;
                     }else if($grade->QTR == 2){
@@ -202,6 +208,25 @@ class UpdateController extends Controller
                     
             }
             return 'me';
+        }
+        
+        function settype($subjcode){
+            $acad = array("ALGEB","CAT","ENGL","FIL","H&PE","MATH","MUS","RHGP","SC","SS","TRIGO","VE","ART","CL","COM1","HEK","PE","WORK","COM2","STAT","SIB","WRIT");
+            $tech  = array('AT/MT','CT','ET/ELX','IDT','SHOP','TECH','CADD','DRAF');
+            $att = array("DAYP","DAYT","DAYA");
+            
+            if(in_array($subjcode,$acad)){
+                return 0;
+            }
+            if(in_array($subjcode,$tech)){
+                return 1;
+            }
+            if($subjcode == "GMRC"){
+                return 3;
+            }
+            if(in_array($subjcode,$att)){
+                return 2;
+            }            
         }
         
         function check($scode,$subj,$sy){
