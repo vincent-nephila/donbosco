@@ -70,7 +70,7 @@ th {
                . "receipt_details, categoryswitch order by categoryswitch");
        $schedules=DB::Select("select sum(amount) as amount , sum(plandiscount) + sum(otherdiscount) as discount, "
                . "sum(payment) as payment, sum(debitmemo) as debitmemo, duedate  from ledgers  where "
-               . " idno = '$idno' and categoryswitch <= '6' and duedate <= '$trandate' group by "
+               . " idno = '$idno' and categoryswitch <= '6' group by "
                . "duedate order by duedate");
        
        $others=DB::Select("select sum(amount) - sum(plandiscount) - sum(otherdiscount) - "
@@ -104,10 +104,10 @@ th {
 
 <table>
     <tr>
-        <td width="70%" valign="top">
+        <td width="70%" valign="top" style="padding-right:0px;">
             <table style="font-size:10pt">
-                <tr><td width="30%">Student No :</td><td>{{$users->idno}}</td></tr>  
-                <tr><td>Name :</td><td>{{$users->lastname}}, {{$users->firstname}} {{$users->middlename}}</td></tr>
+                <tr><td width="30%">Student No :</td><td><b>{{$users->idno}}</b></td></tr>  
+                <tr><td>Name :</td><td><b>{{$users->lastname}}, {{$users->firstname}} {{$users->middlename}}</b></td></tr>
                 @if(count($statuses)>0)
                     <tr><td>Level/Section :</td><td> {{$statuses->level}} - {{$statuses->section}}</td></tr>
                     @if($statuses->level == "Grade 9" || $statuses->level == "Grade 10" || $statuses->level == "Grade 11" || $statuses->level == "Grade 12" )
@@ -229,18 +229,19 @@ th {
            <td align="right">{{number_format($othertotdiscount,2)}}</td><td align="right">{{number_format($othertotpayment,2)}}</td>
            <td align="right">{{number_format($othertotdm,2)}}</td><td align="right">{{number_format($othertotamount-$othertotdiscount-$othertotpayment-$othertotdm,2)}}</td></tr>
        @endif
+       <tr><td colspan="5"><br></td></tr>
        <tr style="font-weight:bold"><td>Total</td><td align="right">{{number_format($totamount,2)}}</td>
            <td align="right">{{number_format($totdiscount,2)}}</td><td align="right">{{number_format($totpayment,2)}}</td>
            <td align="right">{{number_format($totdm,2)}}</td><td align="right">{{number_format($totamount-$totdiscount-$totpayment-$totdm,2)}}</td></tr>
        
   </table>     
         </td>
-        <td valign="top">
+        <td valign="top" style="padding-left: 0px;padding-right: 0px;">
             <table style="font-size:10pt;border:thin" border="1" cellpadding="1" cellspacing='0'>
                 <tr><td style="border: 1px solid black;">Total Amount</td><td style="border: 1px solid black;" align="right">{{number_format($totamount + $otherbalance,2)}}</tr>
                 <tr><td style="border: 1px solid black;">Less : Discount</td><td style="border: 1px solid black;" align="right">({{number_format($totdiscount,2)}})</tr>
-                <tr><td style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit Memo</td><td style="border: 1px solid black;" align="right">({{number_format($totdm,2)}})</tr>
-                <tr><td style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Payment</td><td style="border: 1px solid black;" align="right">({{number_format($totpayment,2)}})</tr>
+                <tr><td style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;Debit Memo</td><td style="border: 1px solid black;" align="right">({{number_format($totdm,2)}})</tr>
+                <tr><td style="border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;Payment</td><td style="border: 1px solid black;" align="right">({{number_format($totpayment,2)}})</tr>
                 <tr><td style="border: 1px solid black;">Total Balance</td><td align="right" style="border: 1px solid black;">{{number_format($totamount-$totdiscount-$totdm-$totpayment,2)}}</tr>
                 <tr style="font-size:11pt;font-weight:bold;border: 1px solid black;"><td>Due Date</td><td style="border: 1px solid black;" align="right">{{date('M d, Y',strtotime($trandate))}}</tr>
                 <tr style="font-size:11pt;font-weight:bold;border: 1px solid black;"><td>Total Due</td><td style="border: 1px solid black;" align="right">{{number_format($totaldue,2)}}</tr>
@@ -251,7 +252,7 @@ th {
                 <span style="font-size:8pt;font-style: italic">Installment Schedule</span>
                 <table style="font-size: 8pt;"><tr><td>For the month of</td><td align="center">Due Amount</td>
                     @foreach($schedules as $schedule)
-                        @if($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment > 0)
+                        
                             <tr><td>
                                 @if(date('M',strtotime($schedule->duedate))=="Apr")
                                     Upon Enrollment
@@ -261,7 +262,7 @@ th {
                             </td>
                             <td align="right">{{number_format($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment,2)}}</td>
                             </tr>
-                        @endif
+                        
                     @endforeach
                 </table>
             @endif

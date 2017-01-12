@@ -9,10 +9,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-
-
-
-
 class AccountingController extends Controller
 {
 
@@ -741,7 +737,7 @@ foreach ($collections as $collection){
                . "receipt_details, categoryswitch order by categoryswitch");
        $schedules=DB::Select("select sum(amount) as amount , sum(plandiscount) + sum(otherdiscount) as discount, "
                . "sum(payment) as payment, sum(debitmemo) as debitmemo, duedate  from ledgers  where "
-               . " idno = '$idno' and categoryswitch <= '6' and duedate <= '$trandate' group by "
+               . " idno = '$idno' and categoryswitch <= '6' group by "
                . "duedate order by duedate");
        
        $others=DB::Select("select sum(amount) - sum(plandiscount) - sum(otherdiscount) - "
@@ -900,7 +896,7 @@ function postviewpenalty(Request $request){
                 . " sum(ledgers.amount) - sum(ledgers.payment) - sum(ledgers.debitmemo) - sum(ledgers.plandiscount) - sum(ledgers.otherdiscount) as amount "
                 . " from users, statuses, ledgers where users.idno = statuses.idno and users.idno = ledgers.idno and statuses.department != 'TVET' and "
                 . " ledgers.duedate <= '$currentdate' and statuses.status='2' and statuses.plan = 'Monthly 2'"
-                . " AND ledgers.acctcode IN ('Tuition Fee','Registration & Other Institutional Fees','Department Facilities','E-Learning, Worktexts, Test & Projects','Miscellaneous Fee','Miscellaneous Fees','Sales Non-VAT Books')"
+                . " AND ledgers.acctcode IN ('Tuition Fee','Registration & Other Institutional Fees','Department Facilities')"
                 . " group by statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand  order by statuses.strand, users.lastname, users.firstname");
         }else{
         $soasummary = DB::Select("select statuses.idno, users.lastname, users.firstname, users.middlename, statuses.level, statuses.section, statuses.strand, "
