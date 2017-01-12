@@ -42,9 +42,9 @@ class GradeController extends Controller
     
     function reset(){
         $no_student=0;
-                    $students = \App\Status::whereIn('status',array(2,3))->where('strand','STEM')->get();
+                    $students = \App\Status::whereIn('status',array(2,3))->where('strand','ABM')->get();
         foreach($students as $student){
-            $subjects = \App\CtrSubjects::where('level',$student->level)->where('semester',2)->where('strand','STEM')->get();
+            $subjects = \App\CtrSubjects::where('level',$student->level)->where('semester',2)->where('strand','ABM')->get();
                     foreach($subjects as $subject){
                             $newgrade = new \App\Grade;
                             $newgrade->idno = $student->idno;

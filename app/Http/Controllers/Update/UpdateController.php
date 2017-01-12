@@ -65,7 +65,8 @@ class UpdateController extends Controller
         public function updatehsgrade(){
             $sy = \App\ctrSchoolYear::first();
             $quarters = \App\CtrQuarter::first();
-            $grades = DB::connection('dbti2prod')->Select("select * from grade where SY_EFFECTIVE = $sy->schoolyear and QTR = $quarters->qtrperiod");
+            //$grades = DB::connection('dbti2prod')->Select("select * from grade where SY_EFFECTIVE = $sy->schoolyear and QTR = $quarters->qtrperiod");
+            $grades = DB::Select("select * from grade where SY_EFFECTIVE = $sy->schoolyear and QTR = $quarters->qtrperiod");
             foreach($grades as $grade){
              $this->updatehs($grade->SCODE, $grade->SUBJ_CODE, $grade->GRADE_PASS1, $grade->QTR);
             }
@@ -86,15 +87,17 @@ class UpdateController extends Controller
                 $qtrname="fourth_grading";
                 
         }
-        $check = \App\Status::where('idno',$idno)->where('department','Junior High School')->first();
-        if(count($check) != 0 && $subjectcode =='MAPEH'){
+        //$check = \App\Status::where('idno',$idno)->where('department','Junior High School')->first();
+        $check = \App\Status::where('idno',$idno)->first();
+        //if(count($check) != 0 && $subjectcode =='MAPEH'){
+        if(count($check) != 0 ){
         $newgrade = \App\Grade::where('idno',$idno)->where('subjectcode',$subjectcode)->first();
         
         if(count($newgrade)>0){
         $newgrade->$qtrname=$grade;
         $newgrade->update();
         }
-        $loadgrade = new \App\SubjectRepos;
+        $loadgrade = new \App\SubjectRepo;
         $loadgrade->idno=$idno;
         $loadgrade->subjectcode=$subjectcode;
         $loadgrade->grade=$grade;
