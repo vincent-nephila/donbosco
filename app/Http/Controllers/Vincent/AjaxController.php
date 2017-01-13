@@ -1579,20 +1579,33 @@ class AjaxController extends Controller
                     $report = $report . "<td>".$this->blankgrade($grade->second_grading)."</td>";                    
                 }                
             }
-              
-            $first = $this->calcSeniorGrade(1,$student->idno,$sy->schoolyear);
-            $second = $this->calcSeniorGrade(2,$student->idno,$sy->schoolyear);
-            $total = ($first+$second)/2;
+            if($sem ==1){
+                $first = $this->calcSeniorGrade(1,$student->idno,$sy->schoolyear);
+                $second = $this->calcSeniorGrade(2,$student->idno,$sy->schoolyear);
+                $total = ($first+$second)/2;                
+            }elseif($sem ==2){
+                $first = $this->calcSeniorGrade(3,$student->idno,$sy->schoolyear);
+                $second = $this->calcSeniorGrade(4,$student->idno,$sy->schoolyear);
+                $total = ($first+$second)/2;                                
+            }
+
             
             $report = $report . "<td>".round($first,0)."</td>";
             $report = $report . "<td>".round($second,0)."</td>";
             $report = $report . "<td>".round($total,0)."</td>";
             
-            $report = $report . "<td>".$this->blankgrade($student->acad_1)."</td>";
-            $report = $report . "<td>".$this->blankgrade($student->acad_2)."</td>";
-            $report = $report . "<td>".$this->blankgrade($student->acad_final)."</td>";
-            /*
-            $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->where('strand',$strand)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+            if($sem ==1){
+                $report = $report . "<td>".$this->blankgrade($student->acad_1)."</td>";
+                $report = $report . "<td>".$this->blankgrade($student->acad_2)."</td>";
+                $report = $report . "<td>".$this->blankgrade($student->acad_final)."</td>";
+            }elseif($sem==2){
+                $report = $report . "<td>".$this->blankgrade($student->acad_3)."</td>";
+                $report = $report . "<td>".$this->blankgrade($student->acad_4)."</td>";
+                $report = $report . "<td>".$this->blankgrade($student->acad_final)."</td>";
+            }
+
+            
+            //$subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->where('strand',$strand)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
             
             //CONDUCT            
             $conduct1 = 0;
@@ -1666,7 +1679,7 @@ class AjaxController extends Controller
                 $qtr++;
             }
             $report = $report . "<td>".$totaldaya."</td>";
-            */
+            
             $report = $report . "</tr>";
         }
         
