@@ -260,7 +260,7 @@ th {
                                     {{date('M  Y',strtotime($schedule->duedate))}}
                                 @endif
                             </td>
-                            <td align="right">{{number_format($schedule->amount-$schedule->discount-$schedule->debitmemo-$schedule->payment,2)}}</td>
+                            <td align="right">{{number_format($schedule->amount-($schedule->discount+$schedule->payment+$schedule->debitmemo),2)}}</td>
                             </tr>
                         
                     @endforeach

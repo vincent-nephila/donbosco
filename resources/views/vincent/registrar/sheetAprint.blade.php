@@ -82,13 +82,9 @@
                             <td style='text-align: center;width:120px;'>LAST NAME</td>
                             <td style='text-align: center;width:300px;'>FIRST NAME</td>
                             <td style='text-align: center;width:100px;'>QTR1</td>
-                            <td style='text-align: center;width:100px;'>Remarks</td>
                             <td style='text-align: center;width:100px;'>QTR2</td>
-                            <td style='text-align: center;width:100px;'>Remarks</td>
                             <td style='text-align: center;width:100px;'>QTR3</td>
-                            <td style='text-align: center;width:100px;'>Remarks</td>
                             <td style='text-align: center;width:100px;'>QTR4</td>
-                            <td style='text-align: center;width:100px;'>Remarks</td>
                             <td style='text-align: center;width:80px;'>RUNNING AVE</td>
                         </tr>
 
@@ -111,19 +107,19 @@
                             <td style="text-align: center">@if(!round($grade->first_grading,2) == null)
                                 {{round($grade->first_grading,2)}}
                             @endif</td>
-                            <td style='text-align: center'></td>
+
                             <td style="text-align: center">@if(!round($grade->second_grading,2) == NULL)
                                 {{round($grade->second_grading,2)}}
                             @endif</td>
-                            <td style='text-align: center'></td>
+
                             <td style="text-align: center">@if(!round($grade->third_grading,2) == NULL)
                                 {{round($grade->third_grading,2)}}
                             @endif</td>
-                            <td style='text-align: center'></td>
+
                             <td style="text-align: center">@if(!round($grade->fourth_grading,2) == NULL)
                                 {{round($grade->fourth_grading,2)}}
                             @endif</td>
-                            <td style='text-align: center'></td>
+
                             <?php 
                             $count = 0;
                             $grades = 0;

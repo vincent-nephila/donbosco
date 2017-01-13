@@ -82,13 +82,9 @@
                             <td style='text-align: center;width:120px;'>LAST NAME</td>
                             <td style='text-align: center;width:300px;'>FIRST NAME</td>
                             <td style='text-align: center;width:100px;'>QTR1</td>
-                            <td style='text-align: center;width:100px;'>Remarks</td>
                             <td style='text-align: center;width:100px;'>QTR2</td>
-                            <td style='text-align: center;width:100px;'>Remarks</td>
                             <td style='text-align: center;width:100px;'>QTR3</td>
-                            <td style='text-align: center;width:100px;'>Remarks</td>
                             <td style='text-align: center;width:100px;'>QTR4</td>
-                            <td style='text-align: center;width:100px;'>Remarks</td>
                             <td style='text-align: center;width:80px;'>RUNNING AVE</td>
                         </tr>
                         @foreach($students as $student)
@@ -109,32 +105,23 @@
                                 @endif
                             </td>
                             <td style="text-align: center">
-                                
-                            </td>
-                            <td style="text-align: center">
                                 @if(!round($student->second,2) == 0)
                                     {{round($student->second,2)}}
                                 @endif
                             </td>
-                            <td style="text-align: center">
-                                
-                            </td>
+
                             <td style="text-align: center">
                                 @if(!round($student->third,2) == 0)
                                     {{round($student->third,2)}}
                                 @endif
                             </td>
-                            <td style="text-align: center">
-                                
-                            </td>
+
                             <td style="text-align: center">
                                 @if(!round($student->fourth,2) == 0)
                                     {{round($student->fourth,2)}}
                                 @endif
                             </td>
-                            <td style="text-align: center">
-                                
-                            </td>
+
                             <td style="text-align: center">
                             <?php 
                             $count = 0;

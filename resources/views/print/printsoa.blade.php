@@ -230,7 +230,7 @@ th {
               @else
               {{date('M  Y',strtotime($schedule->duedate))}}
               @endif
-          </td><td align="right">{{number_format($schedule->amount,2)}}</td></tr>
+          </td><td align="right">{{number_format($schedule->amount-($schedule->discount+$schedule->payment+$schedule->debitmemo),2)}}</td></tr>
       
       @endforeach
  </table>

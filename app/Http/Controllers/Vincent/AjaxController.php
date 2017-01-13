@@ -59,10 +59,10 @@ class AjaxController extends Controller
         }
         
         if(Input::get('department') == 'Senior High School' && ($quarters == 1 ||$quarters == 2)){
-            $subjects = \App\CtrSubjects::where('level',Input::get('level'))->where('strand',$strand)->orderBy('subjecttype','ASC')->where('semester',1)->orderBy('sortto','ASC')->get();
+            $subjects = \App\CtrSubjects::where('level',Input::get('level'))->where('strand',$strand)->orderBy('subjecttype','ASC')->whereIn('semester',array(1,0))->orderBy('sortto','ASC')->get();
         }
         elseif(Input::get('department') == 'Senior High School' && ($quarters == 3 ||$quarters == 4)){
-            $subjects = \App\CtrSubjects::where('level',Input::get('level'))->where('strand',$strand)->orderBy('subjecttype','ASC')->where('semester',1)->orderBy('sortto','ASC')->get();
+            $subjects = \App\CtrSubjects::where('level',Input::get('level'))->where('strand',$strand)->orderBy('subjecttype','ASC')->whereIn('semester',array(2,0))->orderBy('sortto','ASC')->get();
         }else{
             $subjects = \App\CtrSubjects::where('level',Input::get('level'))->where('strand',$strand)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
         }
@@ -417,16 +417,16 @@ class AjaxController extends Controller
     public function calcSeniorGrade($quarter,$idno,$sy){
             switch ($quarter){
                     case 1;
-                        $averages = DB::Select("SELECT weighted,ROUND( SUM( first_grading ) / count( idno ) , 0 ) AS average FROM `grades` WHERE subjecttype IN(5,6) AND idno = '$idno' AND schoolyear = '$sy' GROUP BY idno");
+                        $averages = DB::Select("SELECT weighted,ROUND( SUM( first_grading ) / count( idno ) , 0 ) AS average FROM `grades` WHERE subjecttype IN(5,6) and semester=1 AND idno = '$idno' AND schoolyear = '$sy' GROUP BY idno");
                     break;
                     case 2;
-                        $averages = DB::Select("SELECT weighted,ROUND( SUM( second_grading ) / count( idno ) , 0 ) AS average FROM `grades` WHERE subjecttype IN(5,6) AND idno = '$idno' AND schoolyear = '$sy' GROUP BY idno");
+                        $averages = DB::Select("SELECT weighted,ROUND( SUM( second_grading ) / count( idno ) , 0 ) AS average FROM `grades` WHERE subjecttype IN(5,6) and semester=1 AND idno = '$idno' AND schoolyear = '$sy' GROUP BY idno");
                     break;                
                     case 3;
-                        $averages = DB::Select("SELECT weighted,ROUND( SUM( third_grading ) / count( idno ) , 0 ) AS average FROM `grades` WHERE subjecttype IN(5,6) AND idno = '$idno' AND schoolyear = '$sy' GROUP BY idno");
+                        $averages = DB::Select("SELECT weighted,ROUND( SUM( third_grading ) / count( idno ) , 0 ) AS average FROM `grades` WHERE subjecttype IN(5,6) and semester=2 AND idno = '$idno' AND schoolyear = '$sy' GROUP BY idno");
                     break;
                     case 4;
-                        $averages = DB::Select("SELECT weighted,ROUND( SUM( fourth_grading ) / count( idno ) , 0 ) AS average FROM `grades` WHERE subjecttype IN(5,6) AND idno = '$idno' AND schoolyear = '$sy' GROUP BY idno");
+                        $averages = DB::Select("SELECT weighted,ROUND( SUM( fourth_grading ) / count( idno ) , 0 ) AS average FROM `grades` WHERE subjecttype IN(5,6) and semester=2 AND idno = '$idno' AND schoolyear = '$sy' GROUP BY idno");
                     break;
                 }     
                 if($averages[0]->weighted == 0){
@@ -1535,7 +1535,7 @@ class AjaxController extends Controller
     
     function SHSFinalReport($students,$sem,$level,$sy,$strand){
         $report="";
-        $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->where('semester',$sem)->where('strand',$strand)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+        $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->whereIn('semester',array($sem,0))->where('semester',$sem)->where('strand',$strand)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
         
         $report = $report . "<table width='4000px;' style='text-align:center;' border='1'>";
         $report = $report . "<tr><td>CN</td><td>Student Name</td>";
@@ -1569,12 +1569,12 @@ class AjaxController extends Controller
             $report = $report . "</td>";
             foreach($subjects as $subject){
                 if($subject->subjecttype == 5){
-                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->where('semester',$sem)->orderBy('sortto','ASC')->first();
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->orderBy('sortto','ASC')->first();
                     $report = $report . "<td>".$this->blankgrade($grade->first_grading)."</td>";
                     $report = $report . "<td>".$this->blankgrade($grade->second_grading)."</td>";                    
                 }
                 if($subject->subjecttype == 6){
-                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->where('semester',$sem)->orderBy('sortto','ASC')->first();
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->orderBy('sortto','ASC')->first();
                     $report = $report . "<td>".$this->blankgrade($grade->first_grading)."</td>";
                     $report = $report . "<td>".$this->blankgrade($grade->second_grading)."</td>";                    
                 }                
