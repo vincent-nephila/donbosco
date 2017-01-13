@@ -152,7 +152,7 @@
                                     {{round($grades,0)}}
                                     
                                 @else
-                                    {{$grades}}
+                                    {{round($grades,2)}}
                                     
                                 @endif
                             @endif                                
