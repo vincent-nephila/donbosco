@@ -744,7 +744,7 @@ foreach ($collections as $collection){
                . "sum(payment) - sum(debitmemo) as balance ,sum(amount) as amount , sum(plandiscount) + sum(otherdiscount) as discount,"
                . "sum(payment) as payment, sum(debitmemo) as debitmemo, receipt_details,description, categoryswitch from ledgers  where "
                . " idno = '$idno' and categoryswitch > '6'  group by "
-               . "receipt_details, transactiondate having balance > '0' order by LEFT(receipt_details, 4) ASC,id");
+               . "receipt_details, transactiondate order by LEFT(receipt_details, 4) ASC,id");
        $schedulebal = 0;
        if(count($schedules)>0){
            foreach($schedules as $sched){
