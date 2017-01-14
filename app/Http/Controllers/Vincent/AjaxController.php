@@ -125,7 +125,7 @@ class AjaxController extends Controller
   
             switch (Input::get('quarter')){
                     case 1;
-                        $grades = \App\Grade::select('subjecttype','first_grading as grade') ->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->where('semester',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+                        $grades = \App\Grade::select('subjecttype','first_grading as grade') ->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->whereIn('semester',array(1,0))->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
                         $ranking = \App\Ranking::select('acad_1 as acad','tech_1 as tech')->where('idno',$student->idno)->where('schoolyear',$sy)->first();
                             $month1 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUN')->orderBy('id','DESC')->first();
                             $month2 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUL')->orderBy('id','DESC')->first();
@@ -141,7 +141,7 @@ class AjaxController extends Controller
                             }
                     break;
                     case 2;
-                        $grades = \App\Grade::select('subjecttype','second_grading as grade')->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->where('semester',1)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+                        $grades = \App\Grade::select('subjecttype','second_grading as grade')->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->whereIn('semester',array(1,0))->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
                         $ranking = \App\Ranking::select('acad_2 as acad','tech_2 as tech')->where('idno',$student->idno)->where('schoolyear',$sy)->first();
                             $month1 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"Sept")->orderBy('id','DESC')->first();
                             $month2 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
@@ -158,7 +158,7 @@ class AjaxController extends Controller
                             }
                     break;                
                     case 3;
-                        $grades = \App\Grade::select('subjecttype','third_grading as grade') ->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->where('semester',2)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+                        $grades = \App\Grade::select('subjecttype','third_grading as grade') ->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->whereIn('semester',array(2,0))->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
                         $ranking = \App\Ranking::select('acad_3 as acad','tech_3 as tech')->where('idno',$student->idno)->where('schoolyear',$sy)->first();
                             $month1 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
                             $month2 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"NOV")->orderBy('id','DESC')->first();
@@ -175,7 +175,7 @@ class AjaxController extends Controller
                             }
                     break;
                     case 4;
-                        $grades = \App\Grade::select('subjecttype','fourth_grading as grade')->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->where('semester',2)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+                        $grades = \App\Grade::select('subjecttype','fourth_grading as grade')->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->whereIn('semester',array(2,0))->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
                         $ranking = \App\Ranking::select('acad_4 as acad','tech_4 as tech')->where('idno',$student->idno)->where('schoolyear',$sy)->first();
                             $month1 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"JAN")->orderBy('id','DESC')->first();
                             $month2 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"FEB")->orderBy('id','DESC')->first();

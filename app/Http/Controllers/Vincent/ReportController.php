@@ -48,7 +48,12 @@ class ReportController extends Controller
         $subject = str_replace(":","/",$subject);
         }
         if($subject == "All"){
-            $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(0,1))->get();
+            if($level == 'Kindergarten'){
+                $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(0,1))->where('isdisplaycard',1)->get();
+            }else{
+                $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(0,1))->get();
+            }
+            
             
         }else{
             $subjects = \App\CtrSubjects::where('subjectcode',$subject)->where('level',$level)->whereIn('subjecttype',array(0,1))->get();
