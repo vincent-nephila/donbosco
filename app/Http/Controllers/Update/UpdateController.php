@@ -90,21 +90,24 @@ class UpdateController extends Controller
         //$check = \App\Status::where('idno',$idno)->where('department','Junior High School')->first();
         $check = \App\Status::where('idno',$idno)->first();
         //if(count($check) != 0 && $subjectcode =='MAPEH'){
-        if(count($check) != 0 ){
-        $newgrade = \App\Grade::where('idno',$idno)->where('subjectcode',$subjectcode)->first();
-        
-        if(count($newgrade)>0){
-        $newgrade->$qtrname=$grade;
-        $newgrade->update();
-        }
-        $loadgrade = new \App\SubjectRepo;
-        $loadgrade->idno=$idno;
-        $loadgrade->subjectcode=$subjectcode;
-        $loadgrade->grade=$grade;
-        $loadgrade->qtrperiod=$qtrperiod;
-        $loadgrade->schoolyear='2016';
-        $loadgrade->save();
-        }
+        $withrecord = \App\SubjectRepo::where('qtrperiod',$qtrperiod)->where('idno',$idno)->where('subjectcode',$subjectcode)->exists();
+        if(!$withrecord){
+            if(count($check) != 0 ){
+            $newgrade = \App\Grade::where('idno',$idno)->where('subjectcode',$subjectcode)->first();
+
+            if(count($newgrade)>0){
+            $newgrade->$qtrname=$grade;
+            $newgrade->update();
+            }
+            $loadgrade = new \App\SubjectRepo;
+            $loadgrade->idno=$idno;
+            $loadgrade->subjectcode=$subjectcode;
+            $loadgrade->grade=$grade;
+            $loadgrade->qtrperiod=$qtrperiod;
+            $loadgrade->schoolyear='2016';
+            $loadgrade->save();
+            }
+            }
         }
         function checkno(){
             $idnos=DB::Select("select * from grade2");
