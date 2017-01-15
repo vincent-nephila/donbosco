@@ -122,7 +122,7 @@
     Route::post('test', 'Vincent\AttendanceController@importMonthlyAttendance');
     Route::get('test', 'Vincent\AttendanceController@index');
     Route::get('/printsheetA/{level}/{section}/{subject}', 'Vincent\ReportController@printSheetAElem');
-    Route::get('/printsheetA/{level}/{strand}/{section}/{subject}', 'Vincent\ReportController@printSheetASHS');
+    Route::get('/printsheetA/{level}/{strand}/{section}/{subject}/{sem}', 'Vincent\ReportController@printSheetASHS');
     
     Route::get('conduct', 'Vincent\ReportController@conduct');
     Route::get('sheetaconduct/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetAConduct');

@@ -65,7 +65,7 @@ class ReportController extends Controller
         return view('vincent.registrar.sheetAprint',compact('students','subjects','today','print','schoolyear','level','section','quarter'));
     }
     
-    function printSheetASHS($level,$strand,$section,$subject){
+    function printSheetASHS($level,$strand,$section,$subject,$sem){
         if(Auth::User()->accesslevel != env('USER_REGISTRAR')){
             return redirect('/');
         }        
@@ -78,12 +78,12 @@ class ReportController extends Controller
         $quarter = ''.$quarters->qtrperiod;
         
         if($subject == "All"){
-                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname),subjectcode'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->get();
+                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname),subjectcode'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->where('semester',$sem)->get();
                 if($level != "Grade 11"){
                     $subjects = \App\CtrSubjects::where('level',$level)->whereIn('subjecttype',array(0,1))->get();
                 }
         }else{
-                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname),subjectcode'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->where('subjectcode',$subject)->get();
+                $subjects = \App\Grade::select(DB::raw('DISTINCT(subjectname),subjectcode'))->where('strand',$strand)->whereIn('subjecttype',array(5,6))->where('subjectcode',$subject)->where('semester',$sem)->get();
                 if($level != "Grade 11"){
                     $subjects = \App\CtrSubjects::where('subjectcode',$subject)->where('level',$level)->whereIn('subjecttype',array(0,1))->get();
                 }
@@ -91,7 +91,7 @@ class ReportController extends Controller
         
         
 
-        return view('vincent.registrar.sheetAprintSHS',compact('subjects','today','print','schoolyear','level','section','quarter'));
+        return view('vincent.registrar.sheetAprintSHS',compact('subjects','today','print','schoolyear','level','section','quarter','sem'));
         //return $subjects;
     }        
     

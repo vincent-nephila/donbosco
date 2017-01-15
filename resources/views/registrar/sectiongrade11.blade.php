@@ -171,10 +171,15 @@
                         <td colspan="2" style="text-align: center">QUARTER</td>
                         <td width="15%" rowspan="2" style="text-align: center">FINAL GRADE</td>
                     </tr>
-                    <tr>
-                        <td width="15%" style="text-align:center"><b>FIRST</b></td>
-                        <td width="15%" style="text-align:center"><b>SECOND</b></td>
-                    </tr>
+                    
+                        <tr>@if($sem ==1)
+                                <td width="15%" style="text-align:center"><b>FIRST</b></td>
+                                <td width="15%" style="text-align:center"><b>SECOND</b></td>
+                            @else
+                                <td width="15%" style="text-align:center"><b>THIRD</b></td>
+                                <td width="15%" style="text-align:center"><b>FOURTH</b></td>                            
+                            @endif
+                        </tr>
                     <tr>
                         <td style="text-align:center"><b>Core Subjects</b></td>
                         <td colspan="3"></td>
@@ -188,17 +193,30 @@
                         <td style="text-align: left;padding-left: 10px">
                             {{$core->subjectname}}
                         </td>
-                        <td>
-                            @if(round($core->first_grading,2) != 0)
-                            {{round($core->first_grading,2)}}
+                        <td>@if($sem ==1)
+                                @if(round($core->first_grading,2) != 0)
+                                {{round($core->first_grading,2)}}
+                                @endif
+                                {{--*/$first = $first + round($core->first_grading,2)/*--}}
+                            @else
+                                @if(round($core->third_grading,2) != 0)
+                                {{round($core->third_grading,2)}}
+                                @endif
+                                {{--*/$first = $first + round($core->third_grading,2)/*--}}
                             @endif
-                            {{--*/$first = $first + round($core->first_grading,2)/*--}}
                         </td>
                         <td>
-                            @if(round($core->second_grading,2) != 0)
-                            {{round($core->second_grading,2)}}
+                            @if($sem ==1)
+                                @if(round($core->second_grading,2) != 0)
+                                {{round($core->second_grading,2)}}
+                                @endif
+                                {{--*/$second = $second + round($core->second_grading,2)/*--}}
+                            @else
+                                @if(round($core->second_grading,2) != 0)
+                                {{round($core->second_grading,2)}}
+                                @endif
+                                {{--*/$second = $second + round($core->fourth_grading,2)/*--}}
                             @endif
-                            {{--*/$second = $second + round($core->second_grading,2)/*--}}
                         </td >
                         <td>
                             @if(round($core->second_grading,2) != 0)
@@ -222,16 +240,29 @@
                             {{$spec->subjectname}}
                         </td>
                         <td>
-                            @if(round($spec->first_grading,2) != 0)
-                            {{round($spec->first_grading,2)}}
+                            @if($sem ==1)
+                                @if(round($spec->first_grading,2) != 0)
+                                {{round($spec->first_grading,2)}}
+                                @endif
+                                {{--*/$first = $first + round($spec->first_grading,2)/*--}}
+                            @else
+                                @if(round($spec->first_grading,2) != 0)
+                                {{round($spec->first_grading,2)}}
+                                @endif
+                                {{--*/$first = $first + round($spec->first_grading,2)/*--}}
                             @endif
-                            {{--*/$first = $first + round($spec->first_grading,2)/*--}}
                         </td>
-                        <td>
-                            @if(round($spec->second_grading,2) != 0)
-                            {{round($spec->second_grading,2)}}
+                        <td>@if($sem ==1)
+                                @if(round($spec->second_grading,2) != 0)
+                                {{round($spec->second_grading,2)}}
+                                @endif
+                                {{--*/$second = $second + round($spec->second_grading,2)/*--}}
+                            @else
+                                @if(round($spec->second_grading,2) != 0)
+                                {{round($spec->second_grading,2)}}
+                                @endif
+                                {{--*/$second = $second + round($spec->second_grading,2)/*--}}
                             @endif
-                            {{--*/$second = $second + round($spec->second_grading,2)/*--}}
                         </td >
                         <td>
                             @if(round($spec->second_grading,2) != 0)
@@ -362,8 +393,13 @@
                     <tr>
                         <td width="30%" style="padding-top: 15px;padding-bottom: 15px;border:1px solid"><b>CONDUCT CRITERIA</b></td>
                         <td width="10%" style="border:1px solid"><b>Points</b></td>
+                        @if($sem ==1)
                         <td width="10%" style="border:1px solid"><b>1</b></td>
                         <td width="10%" style="border:1px solid"><b>2</b></td>
+                        @else
+                        <td width="10%" style="border:1px solid"><b>3</b></td>
+                        <td width="10%" style="border:1px solid"><b>4</b></td>
+                        @endif
                         <td width="20%" rowspan="{{count($info['con'])}}"></td>
                     </tr>
                         {{--*/$first=0/*--}}
@@ -375,18 +411,33 @@
                     <tr>
                         <td style="text-align: left;padding-left: 10px;border: 1px solid">{{$conducts->subjectname}}</td>
                         <td style="border:1px solid">{{$conducts->points}}</td>
-                        <td style="border:1px solid">
-                            @if(!round($conducts->first_grading,2)==0)
-                            {{round($conducts->first_grading,2)}}
-                            @endif
-                            {{--*/$first = $first + round($conducts->first_grading,2)/*--}}
-                        </td>
-                        <td style="border:1px solid">
-                            @if(!round($conducts->second_grading,2)==0)
-                            {{round($conducts->second_grading,2)}}
-                            @endif
-                            {{--*/$second = $second + round($conducts->second_grading,2)/*--}}
-                        </td>
+                        @if($sem ==1)
+                            <td style="border:1px solid">
+                                @if(!round($conducts->first_grading,2)==0)
+                                {{round($conducts->first_grading,2)}}
+                                @endif
+                                {{--*/$first = $first + round($conducts->first_grading,2)/*--}}
+                            </td>
+                            <td style="border:1px solid">
+                                @if(!round($conducts->second_grading,2)==0)
+                                {{round($conducts->second_grading,2)}}
+                                @endif
+                                {{--*/$second = $second + round($conducts->second_grading,2)/*--}}
+                            </td>
+                        @else
+                            <td style="border:1px solid">
+                                @if(!round($conducts->third_grading,2)==0)
+                                {{round($conducts->third_grading,2)}}
+                                @endif
+                                {{--*/$first = $first + round($conducts->third_grading,2)/*--}}
+                            </td>
+                            <td style="border:1px solid">
+                                @if(!round($conducts->fourth_grading,2)==0)
+                                {{round($conducts->fourth_grading,2)}}
+                                @endif
+                                {{--*/$second = $second + round($conducts->fourth_grading,2)/*--}}
+                            </td>
+                        @endif
 
                         @if($length == $counter)
                         <td style="border:1px solid"><b>FINAL GRADE</b></td>

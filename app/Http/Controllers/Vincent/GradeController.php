@@ -161,10 +161,10 @@ class GradeController extends Controller
                     $match4 = ["idno"=>$student->idno,"subjecttype"=>1,"schoolyear"=>$schoolyear->schoolyear];
                     $technical = \App\Grade::where($match4)->orderBy("sortto","ASC")->get();
                     
-                    $match5 = ["idno"=>$student->idno,"subjecttype"=>5,"schoolyear"=>$schoolyear->schoolyear];
+                    $match5 = ["idno"=>$student->idno,"subjecttype"=>5,"schoolyear"=>$schoolyear->schoolyear,"semester"=>$sem];
                     $core = \App\Grade::where($match5)->orderBy("sortto","ASC")->get();
                     
-                    $match6 = ["idno"=>$student->idno,"subjecttype"=>6,"schoolyear"=>$schoolyear->schoolyear];
+                    $match6 = ["idno"=>$student->idno,"subjecttype"=>6,"schoolyear"=>$schoolyear->schoolyear,"semester"=>$sem];
                     $special = \App\Grade::where($match6)->orderBy("sortto","ASC")->get();
                     
                     $age_year = date_diff(date_create($student->birthDate), date_create('today'))->y;

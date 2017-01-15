@@ -85,11 +85,13 @@
                             <td style='text-align: center;width:60px;'>CLASS NO</td>
                             <td style='text-align: center;width:100px;'>LAST NAME</td>
                             <td style='text-align: center'>FIRST NAME</td>
-                            <td style='text-align: center'>M.I.</td>
+                            @if($sem ==1)
                             <td style='text-align: center'>QTR1</td>
                             <td style='text-align: center'>QTR2</td>
+                            @else
                             <td style='text-align: center'>QTR3</td>
                             <td style='text-align: center'>QTR4</td>
+                            @endif
                             <td style='text-align: center;width:80px;'>RUNNING AVE</td>
                         </tr>
                         
@@ -98,7 +100,9 @@
                         <tr>
                             <td style="text-align: center">{{$student->class_no}}</td>
                             <td>{{$student->lastname}}</td>
-                            <td>{{$student->firstname}}
+                            <td>{{$student->firstname}} @if(!$student->middlename == '')
+                                {{substr($student->middlename, 1,1)."."}}
+                                @endif
                             @if($student->status == 3)
                             <span style="float: right;color: red;font-weight: bold">
                             DROPPED
@@ -106,28 +110,28 @@
                             @endif
                             </td>
                             
-                            <td style="text-align: center">@if(!$student->middlename == '')
-                                {{substr($student->middlename, 1,1)."."}}
-                                @endif
-                            </td>
+
                                     
-                        
+                            @if($sem ==1)
                             <td style="text-align: center">@if(!round($student->first_grading,2) == null)
                                 {{round($student->first_grading,2)}}
                             @endif</td>
                             <td style="text-align: center">@if(!round($student->second_grading,2) == NULL)
                                 {{round($student->second_grading,2)}}
                             @endif</td>
+                            @else
                             <td style="text-align: center">@if(!round($student->third_grading,2) == NULL)
                                 {{round($student->third_grading,2)}}
                             @endif</td>
                             <td style="text-align: center">@if(!round($student->fourth_grading,2) == NULL)
                                 {{round($student->fourth_grading,2)}}
                             @endif</td>
+                            @endif
                             <?php 
                             $count = 0;
                             $grades = 0;
                             
+                            if($sem==1){
                                 if(!round($student->first_grading,2) == null){
                                     $grades = $grades+round($student->first_grading,2);
                                     $count++;
@@ -136,6 +140,7 @@
                                     $grades = $grades+round($student->second_grading,2);
                                     $count++;
                                 }
+                            }else{
                                 if(!round($student->third_grading,2) == null){
                                     $grades = $grades+round($student->third_grading,2);
                                     $count++;
@@ -144,6 +149,7 @@
                                     $grades = $grades+round($student->fourth_grading,2);
                                     $count++;
                                 }
+                            }
                                 if(!$count == 0){
                                 $grades = $grades/$count;
                                 }
