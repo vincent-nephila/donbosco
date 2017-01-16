@@ -81,7 +81,9 @@ th {
        $schedulebal = 0;
        if(count($schedules)>0){
            foreach($schedules as $sched){
-               $schedulebal = $schedulebal + $sched->amount - $sched->discount -$sched->debitmemo - $sched->payment;
+               if($sched->duedate <= $trandate){
+                    $schedulebal = $schedulebal + $sched->amount - $sched->discount -$sched->debitmemo - $sched->payment;
+               }
            }
        }
        $otherbalance = 0;
