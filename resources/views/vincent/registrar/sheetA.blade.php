@@ -104,7 +104,11 @@ function showbtn(){
 
 function getstrandall(strand){
     //getstudentlist(strand);
-    $("#displaysemester").css("display","");
+    var level = document.getElementById('level').value
+    if(level == "Grade 11" || level == "Grade 12"){
+        $("#displaysemester").css("display","block");
+    }
+    
     getsection(strand);
     
     strn = strand;

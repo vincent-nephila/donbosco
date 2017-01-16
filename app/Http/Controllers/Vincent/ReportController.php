@@ -88,10 +88,11 @@ class ReportController extends Controller
                     $subjects = \App\CtrSubjects::where('subjectcode',$subject)->where('level',$level)->whereIn('subjecttype',array(0,1))->get();
                 }
         }
-        
-        
-
-        return view('vincent.registrar.sheetAprintSHS',compact('subjects','today','print','schoolyear','level','section','quarter','sem'));
+        if($level == "Grade 11" || $level == "Grade 12"){
+            return view('vincent.registrar.sheetAprintSHS',compact('subjects','today','print','schoolyear','level','section','quarter','sem'));
+        }else{
+            return view('vincent.registrar.sheetAprintHS',compact('subjects','today','print','schoolyear','level','section','quarter'));
+        }
         //return $subjects;
     }        
     
