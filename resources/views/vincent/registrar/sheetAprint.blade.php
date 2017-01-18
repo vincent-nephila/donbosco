@@ -34,7 +34,7 @@
                         <tr>
                             <td colspan = "2" style="font-size:10pt;padding-left: 0px;">Chino Roces Ave., Makati City </td>
                             <td style="text-align: right">
-                                <b>Schoolyear: </b>{{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}
+                                <b>School Year: </b>{{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}
                             </td>                            
                         </tr>
                         <tr>
@@ -89,7 +89,10 @@
                         </tr>
 
                         @foreach($students as $student)
-                        <?php $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear','2016')->first(); ?>
+                        <?php 
+                        $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear','2016')->first();
+                        $gradeexist = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear','2016')->first();
+                        ?>
                         <tr>
                             <td style="text-align: center">{{$student->class_no}}</td>
                             <td>{{$student->lastname}}</td>
@@ -103,14 +106,18 @@
                             </span>
                             @endif
                             </td>   
-                        
-                            <td style="text-align: center">@if(!round($grade->first_grading,2) == null)
+                        @if($gradeexist)
+                            <td style="text-align: center">
+                            @if(!round($grade->first_grading,2) == null)
                                 {{round($grade->first_grading,2)}}
-                            @endif</td>
+                            @endif
+                            </td>
 
-                            <td style="text-align: center">@if(!round($grade->second_grading,2) == NULL)
+                            <td style="text-align: center">
+                            @if(!round($grade->second_grading,2) == NULL)
                                 {{round($grade->second_grading,2)}}
-                            @endif</td>
+                            @endif
+                            </td>
 
                             <td style="text-align: center">@if(!round($grade->third_grading,2) == NULL)
                                 {{round($grade->third_grading,2)}}
@@ -154,7 +161,7 @@
                                     
                                 @endif
                             @endif</td>
-                            
+                            @endif
                         </tr>
                         @endforeach
                     </table>

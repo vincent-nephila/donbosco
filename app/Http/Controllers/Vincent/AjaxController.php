@@ -932,7 +932,7 @@ class AjaxController extends Controller
                 $averages = DB::Select("SELECT sum(second_grading) as grade FROM `grades` where subjectcode IN ('DAYP','DAYA') group by idno ORDER BY grade  DESC");
             break;                
            case 3;
-                $averages = DB::Select("SELECT sum(third_grading) as grade FROM `grades` where subjectcode IN ('DAYP','DAYA') group by idno ORDER BY grade  DESC");
+                $averages = DB::Select("SELECT Nov +Dece as grade FROM `ctr_attendances` where id =1");
             break;
             case 4;
                 $averages = DB::Select("SELECT sum(fourth_grading) as grade FROM `grades` where subjectcode IN ('DAYP','DAYA') group by idno ORDER BY grade  DESC");

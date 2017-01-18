@@ -25,7 +25,7 @@
                         <tr>
                             <td style="font-size:10pt;padding-left: 0px;">Chino Roces Ave., Makati City </td>
                             <td style="text-align:center;font-weight: bold;">
-                                <b id="sy">SCHOOL YEAR{{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</b>
+                                <b id="sy">SCHOOL YEAR {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</b>
                             </td>    
                             <td style="text-align: right;font-size:12pt;">ADVISER:<span id="adviser"> </span></td>
                         </tr>

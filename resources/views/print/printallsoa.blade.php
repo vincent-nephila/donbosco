@@ -120,7 +120,7 @@ th {
                 @endif
             </table>   
             <span style="font-size: 9pt;font-weight: bold"><u>ACCOUNT DETAILS</u></span>     
-            <table style="font-size: 9pt;"><tr><td width='200px'>Account Description</td><td>Amount</td><td>Less: Discount</td><td>Payment</td><td>DM</td><td>Balance</td></tr>
+            <table style="font-size: 8pt;"><tr><td width='200px'>Account Description</td><td>Amount</td><td>Less: Discount</td><td>Payment</td><td>DM</td><td>Balance</td></tr>
        <?php
        $totamount = 0; $totdiscount=0; $totdm=0; $totpayment=0;
        $header = 0;
@@ -184,7 +184,7 @@ th {
        @endforeach
        
        @if($prevtotamount > 0)
-            <tr><td>Previous Balance</td><td align="right">{{number_format($prevtotamount,2)}}</td>
+            <tr><td style="font-size: 8pt;">Previous Balance</td><td align="right">{{number_format($prevtotamount,2)}}</td>
                 <td align="right">{{number_format($prevtotdiscount,2)}}</td><td align="right">{{number_format($prevtotpayment,2)}}</td>
                 <td align="right">{{number_format($prevtotdm,2)}}</td><td align="right">{{number_format($prevtotamount-$prevtotdiscount-$prevtotpayment-$prevtotdm,2)}}</td></tr>
        @endif
@@ -202,7 +202,7 @@ th {
             $othertotdm = $othertotdm + $balance->debitmemo;
             $othertotpayment = $othertotpayment+$balance->payment;
             ?>
-            <tr><td>{{$balance->receipt_details}}</td><td align="right">{{number_format($balance->amount,2)}}</td>
+            <tr><td style="font-size: 8pt;">{{$balance->receipt_details}}</td><td align="right">{{number_format($balance->amount,2)}}</td>
                 <td align="right">{{number_format($balance->discount,2)}}</td><td align="right">{{number_format($balance->payment,2)}}</td>
                 <td align="right">{{number_format($balance->debitmemo,2)}}</td><td align="right">{{number_format($balance->amount-$balance->discount-$balance->payment-$balance->debitmemo,2)}}</td></tr>
             @endif
