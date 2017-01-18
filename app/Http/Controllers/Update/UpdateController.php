@@ -180,11 +180,13 @@ class UpdateController extends Controller
                 $check = $this->check($scode,$grade->SUBJ_CODE,$sy);
                 echo $check;
                 if(empty($check)){
+                    $subject = DB::connection('dbti2test')->select("Select subj_card,class from subject_updated where subj_code = '$grade->SUBJ_CODE'");
                     $record = new \App\Grade();
                     $record->idno = $scode;
                     $record->level = $this->changegrade($grade->gr_yr);
                     $record->subjectcode = $grade->SUBJ_CODE;
-                    $record->subjecttype = $this->settype($grade->SUBJ_CODE);
+                    $record->subjectname = $subject->SUBJ_NAME;
+                    $record->subjecttype = $this->settype($subject->class);
                     if($grade->QTR == 1){
                         $record->first_grading = $grade->GRADE_PASS1;
                     }else if($grade->QTR == 2){
@@ -217,17 +219,14 @@ class UpdateController extends Controller
         }
         
         function settype($subjcode){
-            $acad = array("ALGEB","CAT","ENGL","FIL","H&PE","MATH","MUS","RHGP","SC","SS","TRIGO","VE","ART","CL","COM1","HEK","PE","WORK","COM2","STAT","SIB","WRIT");
-            $tech  = array('AT/MT','CT','ET/ELX','IDT','SHOP','TECH','CADD','DRAF');
-            $att = array("DAYP","DAYT","DAYA");
             
-            if(in_array($subjcode,$acad)){
+            if($subjcode == 'A'){
                 return 0;
             }
-            if(in_array($subjcode,$tech)){
+            if($subjcode == 'T'){
                 return 1;
             }
-            if($subjcode == "GMRC"){
+            if($subjcode == 'C'){
                 return 3;
             }
             if(in_array($subjcode,$att)){

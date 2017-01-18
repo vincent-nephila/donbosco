@@ -340,7 +340,7 @@
                             @else
                                 {{round($tech->third_grading,2)}}
                             @endif
-                                {{--*/$third = $third + round($tech->fourth_grading,2)/*--}}
+                                {{--*/$third = $third + round($tech->third_grading,2)/*--}}
                             </td>
                             <td class="print-size">
                             @if(round($tech->fourth_grading,2) == 0)

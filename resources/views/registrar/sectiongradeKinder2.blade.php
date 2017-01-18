@@ -95,7 +95,7 @@
                             {{--*/$third = $third + round($academics->third_grading,2)/*--}}
                         </td>
                         <td>
-                            @if(round($academics->third_grading,2) != 0)
+                            @if(round($academics->fourth_grading,2) != 0)
                                 {{round($academics->fourth_grading,2)}}
                             @endif
                             {{--*/$fourth = $fourth + round($academics->fourth_grading,2)/*--}}
@@ -647,7 +647,9 @@
                             <div class="parent" style="border: 1px solid; padding: 20px 10px 50px;border-radius: 40px;">
                                 <div style="text-align:center;font-size: 12pt;"><b>KINDERGARTEN</b></div>
                                 <br>
-                            <div><div style="display:inline-block;width:55px;vertical-align: top"><b>Name: </b></div><div style="display:inline-block;width:230px">{{strtoupper($info['info']->lastname)}}, {{ucwords($info['info']->firstname)}} {{ucwords($info['info']->middlename)}} {{ucwords($info['info']->extensionname)}}</div></div>
+                            <div><div style="display:inline-block;width:55px;vertical-align: top"><b>Name: </b></div><div style="display:inline-block;width:235px">{{strtoupper($info['info']->lastname)}}, {{ucwords($info['info']->firstname)}} {{ucwords($info['info']->middlename)}} {{ucwords($info['info']->extensionname)}}</div></div>
+                            <div><div style="display:inline-block;width:55px;vertical-align: top"><b>ID No: </b></div><div style="display:inline-block;width:235px">{{$info['info']->idno}}</div></div>
+                            <div><div style="display:inline-block;width:55px;"><b>LRN: </b></div>{{strtoupper($info['info']->lrn)}}</div>
                             <div><div style="display:inline-block;width:55px;"><b>Age: </b></div>{{strtoupper($info['info']->age)}}</div>
                             <div><div style="display:inline-block;width:55px;"><b>Section: </b></div>{{strtoupper($section)}}</div>
                             <div><div style="display:inline-block;width:55px;"><b>Adviser: </b></div>{{strtoupper($teacher->adviser)}}</div>
