@@ -101,7 +101,7 @@
                             <td style="text-align: center">{{$student->class_no}}</td>
                             <td>{{$student->lastname}}</td>
                             <td>{{$student->firstname}} @if(!$student->middlename == '')
-                                {{substr($student->middlename, 1,1)."."}}
+                                {{substr($student->middlename, 0,1)."."}}
                                 @endif
                             @if($student->status == 3)
                             <span style="float: right;color: red;font-weight: bold">

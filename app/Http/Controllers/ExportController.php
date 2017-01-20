@@ -60,7 +60,7 @@ class ExportController extends Controller
                                             'grade'=> $value->grade,
                                             'qtrperiod'=> $qtrperiod,'schoolyear'=> $sy];
                                         
-                                 $this->upgradegrade($value->idno, $value->subjectcode, $qtrperiod,$value->grade,$sy);     
+                                 $this->upgradegrade($value->idno, $value->subjectcode, $qtrperiod,$value->grade,$sy);
 				
                                  
                                 }
@@ -306,7 +306,9 @@ class ExportController extends Controller
         if(count($ug)>0){
         $ug->$qtrname = $grade;
         $ug->update();    
-        }}
+        }
+        
+        }
         
         public function updateattendance($idno,$daya,$dayp,$dayt,$qtrperiod,$sy){
         if(strlen($idno)==5){

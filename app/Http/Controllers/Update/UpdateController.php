@@ -154,7 +154,7 @@ class UpdateController extends Controller
             }
         }
         function prevgrade(){
-            $sy = "2012";
+            $sy = "2014";
             $students = DB::connection('dbti2test')->select("select distinct scode from grade where SY_EFFECTIVE = '$sy' LIMIT 800,800");
             foreach($students as $student){
                 $this->migrategrade($student->scode,$sy);
@@ -180,12 +180,14 @@ class UpdateController extends Controller
                 $check = $this->check($scode,$grade->SUBJ_CODE,$sy);
                 echo $check;
                 if(empty($check)){
-                    $subject = DB::connection('dbti2test')->select("Select subj_card,class from subject_updated where subj_code = '$grade->SUBJ_CODE'");
+                    $subjects = DB::connection('dbti2test')->select("Select subj_card,class from subject_updated where subj_code = '$grade->SUBJ_CODE'");
                     $record = new \App\Grade();
                     $record->idno = $scode;
                     $record->level = $this->changegrade($grade->gr_yr);
                     $record->subjectcode = $grade->SUBJ_CODE;
-                    $record->subjectname = $subject->SUBJ_NAME;
+                    foreach($subjects as $subject){
+                    $record->subjectname = $subject->subj_card;
+                    }
                     $record->subjecttype = $this->settype($subject->class);
                     if($grade->QTR == 1){
                         $record->first_grading = $grade->GRADE_PASS1;
@@ -219,19 +221,18 @@ class UpdateController extends Controller
         }
         
         function settype($subjcode){
-            
+            $code = 4;
             if($subjcode == 'A'){
-                return 0;
+                $code = 0;
             }
             if($subjcode == 'T'){
-                return 1;
+                $code = 1;
             }
             if($subjcode == 'C'){
-                return 3;
+                $code = 3;
             }
-            if(in_array($subjcode,$att)){
-                return 2;
-            }            
+            
+            return $code;
         }
         
         function check($scode,$subj,$sy){

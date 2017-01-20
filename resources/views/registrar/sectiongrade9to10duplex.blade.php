@@ -326,13 +326,13 @@
                                 {{--*/$second = $second + round($tech->second_grading,2)*$weight/*--}}
                             </td>
                             <td class="print-size">
-                                @if(round($third/$count,0) != 0)
+                                @if(round($tech->third_grading/$count,0) != 0)
                                 {{round($tech->third_grading,0)}}
                                 @endif
                                 {{--*/$third = $third + round($tech->third_grading,2)*$weight/*--}}
                             </td>
                             <td class="print-size">
-                                @if(!round($fourth/$count,0) == 0)
+                                @if(!round($tech->fourth_grading/$count,0) == 0)
                                 {{round($tech->fourth_grading,0)}}
                                 @endif
                                 {{--*/$fourth = $fourth + round($tech->fourth_grading,2)*$weight/*--}}
