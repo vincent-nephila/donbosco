@@ -34,9 +34,13 @@
             $tuition = 0;
             $creditreservation = 0;
             $other=0;
+            $rows = 1;
             ?>
             @foreach($allcollections as $allcollection)
             <?php
+            $rows++;
+            
+            if
             if($allcollection[12]=="0"){
             $cashtotal = $cashtotal + $allcollection[2];
             $debitreservation = $debitreservation + $allcollection[3];

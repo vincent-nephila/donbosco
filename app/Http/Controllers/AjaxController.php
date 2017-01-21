@@ -853,8 +853,15 @@ class AjaxController extends Controller
             $data = $data . "<table class=\"table table-stripped\"><tr><td><span class=\"subjecttitle\">Academic Subject</span></td><td>1</td><td>2</td><td>3</td><td>4</td><td>Final</td><td>Remarks</td></tr>";
             foreach($academics as $grade){
             $data = $data . "<tr><td width=\"50%\">".$grade->subjectname."</td><td>".round($grade->first_grading)."</td><td>" . round($grade->second_grading) . ""
-                    . "</td><td>" . round($grade->third_grading) . "</td><td>" . round($grade->fourth_grading) . "</td><td>" . round($grade->finalgrade) 
-                    . "</td><td>". $grade->remarks . "</td><td></tr>";    
+                    . "</td><td>" . round($grade->third_grading) . "</td><td>" . round($grade->fourth_grading) . "</td><td>";
+                    if(round($grade->fourth_grading) != 0){
+                       $data = $data . round(($grade->fourth_grading+$grade->third_grading+$grade->second_grading+$grade->first_grading)/4,0);
+                        
+                    }else{
+                        $data = $data . "0";
+                        
+                    }
+            $data = $data . "</td><td>". $grade->remarks . "</td><td></tr>";    
             }
             $data = $data . "</table>";
            }
