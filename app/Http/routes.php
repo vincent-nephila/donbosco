@@ -17,7 +17,7 @@
     Route::get('printsection/{level}/{section}/{strand}', 'Registrar\SectionController@printsection1');
     Route::get('printsection/{level}/{section}', 'Registrar\SectionController@printsection');
     Route::get('printinfo','Registrar\StudentlistController@printinfo');
-     Route::get('studentinfokto12/{idno}','Registrar\Studentinfokto12Controller@studentinfokto12edit');
+    Route::get('studentinfokto12/{idno}','Registrar\Studentinfokto12Controller@studentinfokto12edit');
     Route::post('studentinfokto12/{idno}','Registrar\Studentinfokto12Controller@updateInfo');
     Route::get('studentinfokto12/{idno}/delete','Registrar\Studentinfokto12Controller@deleteStudent');
     Route::get('studentinfokto12/{idno}/print','Registrar\Studentinfokto12Controller@printInfo');    
