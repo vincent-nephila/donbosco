@@ -921,4 +921,118 @@ class AjaxController extends Controller
             return $data;
         }
         
+            function getaccountcode(){
+                $accountname = Input::get('accountname');
+                $accountcode = \App\ChartOfAccount::where('accountname',$accountname)->first();
+                return $accountcode->acctcode;
+            }
+            
+            function getsubsidiary(){
+                
+                $data="";
+                $acctcode = Input::get('acctcode');
+                $subsidiaries = \App\CtrOtherPayment::where('acctcode',$acctcode)->get();
+                if(count($subsidiaries)==0){
+                    $data = "<option>None</option>";
+                }else{
+                    foreach($subsidiaries as $subsidiary){
+                    $data = $data . "<option value=\"".$subsidiary->particular."\">".$subsidiary->particular."</option>";
+                    }
+                }
+                return $data;
+            }
+            
+            function postpartialentry(){
+                if(Request::ajax()){
+                    $fiscalyear = \App\CtrFiscalyear::first()->fiscalyear;
+                    $refno = Input::get("refno");
+                    $acctcode = Input::get("acctcode");
+                    $accountname = Input::get("accountname");
+                    $subsidiary = Input::get("subsidiary");
+                    $department = Input::get("department");
+                    $entrytype = Input::get("entrytype");
+                    $amount = Input::get("amount");
+                    //$trandate = \Carbon\Carbon::now();
+                    
+                    $newpartial = new \App\Accounting;
+                    $newpartial->refno = $refno;
+                    $newpartial->accountcode = $acctcode;
+                    $newpartial->accountname = $accountname;
+                    $newpartial->subsidiary = $subsidiary;
+                    $newpartial->sub_department = $department;
+                    if($entrytype=="cr"){
+                        $newpartial->credit = $amount;
+                        $newpartial->cr_db_indic="1";
+                    }else{
+                        $newpartial->debit = $amount;
+                        $newpartial->cr_db_indic="0";
+                    }
+                    $newpartial->transactiondate = \Carbon\Carbon::now();
+                    $newpartial->fiscalyear = $fiscalyear;
+                    $newpartial->posted_by =Input::get('idno');
+                    $newpartial->type = '3';
+                    $newpartial->save();  
+                    return $this->getpartialentry($refno);
+                }
+            }
+            function removeacctgpost(){
+                $id = Input::get('id');
+                $refno = Input::get('refno');
+                $remove = \App\Accounting::find($id);
+                $remove->forceDelete();
+                return $this->getpartialentry($refno);
+            }
+            
+            function getpartialentry($refno){
+                    $data="";
+                    $totaldebit=0.00;
+                    $totalcredit=0.00;
+                    $displays = \App\Accounting::where('refno',$refno)->get();
+                    if(count($displays)>0){
+                    foreach($displays as $display){
+                        $data = $data . "<tr><td>" . $display->accountcode . "</td>"
+                                . "<td>" . $display->accountname . "</td>"
+                                . "<td>" . $display->subsidiary . "</td>"
+                                . "<td>" . $display->sub_department . "</td>"
+                                . "<td align=\"right\">" . $display->debit . "</td>"
+                                . "<td align=\"right\">" . $display->credit. "</td>"
+                                . "<td> <button class=\"btn btn-default form-control\" onclick=\"removeacctgpost(" . $display->id . ")\">Remove</button></td> </tr>";
+                    $totalcredit = $totalcredit + $display->credit;
+                    $totaldebit = $totaldebit + $display->debit;    
+                    }
+                    if($totalcredit == $totaldebit){
+                    $data = $data. "<td colspan=\"4\">Total<input type=\"hidden\" id=\"balance\" value=\"yes\"></td><td align=\"right\" style=\"font-weight:bold\">".number_format($totaldebit,2)."</td><td align=\"right\" style=\"font-weight:bold\">". number_format($totalcredit,2)."<input type=\"hidden\" value=\"$totalcredit\" name=\"totalcredit\" id=\"totalcredit\"></td><td><button id=\"removeall\"class=\"btn btn-danger form-control removeall\" onclick=\"removeall()\">Remove All</button></td></tr>";
+                    }else{
+                    $data = $data. "<td colspan=\"4\">Total<input type=\"hidden\" id=\"balance\" value=\"no\"></td><td align=\"right\" style=\"font-weight:bold;color:red\">".number_format($totaldebit,2)."</td><td align=\"right\" style=\"font-weight:bold;color:red\">". number_format($totalcredit,2)."</td><td><button id=\"removeall\"class=\"btn btn-danger form-control removeall\" onclick=\"removeall()\">Remove All</button></td></tr>";    
+                    }}
+                    return $data;    
+            }
+            
+            function postacctgremarks(){
+                if(Request::ajax()){
+                    $particular = Input::get('particular');
+                    $refno = Input::get('refno');
+                    $idno = Input::get('idno');
+                    $amount = Input::get('totalcredit');
+                    $isfinal = DB::Select("update accountings set isfinal = '1' where refno = '$refno'");
+                    $newparticular = new \App\AccountingRemark;
+                    $newparticular->trandate = \Carbon\Carbon::now();
+                    $newparticular->refno = $refno;
+                    $newparticular->remarks = $particular;
+                    $newparticular->amount = $amount;
+                    $newparticular->posted_by = $idno;
+                    $newparticular->save(); 
+                    return "done";
+                }
+            }
+            function removeacctgall(){
+                if(Request::ajax()){
+                    $refno = Input::get('refno');
+                    $removeall = \App\Accounting::where('refno',$refno)->get();
+                    foreach($removeall as $ra){
+                        $ra->forceDelete();
+                    }
+                    return "true";
+                }
+            }
             }

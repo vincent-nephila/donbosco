@@ -1,5 +1,15 @@
 @extends('appaccounting')
 @section('content')
+<?php
+$coa = \App\ChartOfAccount::pluck('accountname')->toArray();
+$initialentry = \App\Accounting::where("posted_by",\Auth::user()->idno)->where('isfinal','0')->first();
+if(count($initialentry)>0){
+$uniqid = $initialentry->refno;    
+}else{
+$uniqid = uniqid();
+}
+$departments = DB::Select("Select * from ctr_acct_dept");
+?>
 <style>
     .form-control{
         border-radius: 0px;
@@ -10,179 +20,237 @@
   <link href="{{ asset('/css/jquery-ui.css') }}" rel="stylesheet">
   <script src="{{asset('/js/jquery-ui.js')}}"></script>
   <script>
-        $( function() {
+   $( function() {
     var coa = [<?php echo '"'.implode('","', $coa).'"' ?>];
     $( ".coa" ).autocomplete({
       source: coa
     });
-    
-    var subsidy = [<?php echo '"'.implode('","', $subsidy).'"' ?>];
-    $( ".sub" ).autocomplete({
-      source: subsidy
-    });    
-  } );
-  
+    });
   </script>
 <div class="container-fluid">
-    <div style="margin-left:auto;margin-right: auto;width:80%">
-        <form id="form" onsubmit="return sub();" method="POST" action="{{url('/addentry')}}" >
-            {!! csrf_field() !!} 
-            <div class="col-md-6" style="border-right: 1px solid">
-                    <table width="100%">
-                        <thead style="text-align: center;">
-                        <tr>
-                            <td colspan="3"><b>Debit</b></td>
-                        </tr>
-                        <tr style="visibility: hidden">
-                            <td>General Account</td>
-                            <td>Subsidies</td>
-                            <td>Amount</td>
-                        </tr>
-                    </thead>
-                    <tbody class="controls">
-                        <tr>
-                            <td colspan="3" style="vertical-align: top;"><input type="text" class="form-control coa" id="debitcoa" name="debitcoa" style="width: 50%;"></td>
-                        </tr>
-                        <tr class="entry">
-                            <td>
-                                    <div><button id="b1" class="btn btn-success btn-add" type="button">+</button></div>                          
-                            </td>
-                            <td>
-                                <input type="text" class="form-control sub" name="debit[subsidy][]">
-                            </td>
-                            <td >
-                                <input type="text" class="form-control debitamount" name="debit[amount][]" style="width:80%;float:right;" onkeyup="addDebit()" placeholder="Amount">
-                            </td>
-                        </tr>
-                    </tbody>  
-                    <tbody>
-                        <tr>
-                            <td>Total Amount</td><td></td><td><input type="text" class="form-control" name="debittotal" id="debittotal" style="width:80%;float:right;text-align: right" disabled="true"></td>
-                        </tr>
-                    </tbody>                
-                </table>            
+    <div class=" col-md-12 form form-group" >
+       <label class="label label-danger" style="font-size:15pt; background-color: pink;"> Ref No : {{$uniqid}}</label>
+    </div>    
+    <div style="padding-top: 10px; padding-bottom: auto;background: #ccc;height: 100px" class="col-md-12 panel panel-default">
+        <div class="col-md-1">
+            <label for = "acctcode">Account Code</label>
+            <input type="text" name="acctcode" id="acctcode" class="form-control" readonly="readonly" style="background-color: #ddd;color: red">
+        </div>
+            <div class="col-md-3">
+                <label for="accountname">Account Name</label>
+                <input type="hidden" value="{{$uniqid}}" name="refno" id="refno">    
+                <input class="form-control coa" id="accountname" name="accountname">
             </div>
-            <div class="col-md-6">
-
-                <table width="100%">
-                        <thead style="text-align: center;">
-                        <tr>
-                            <td colspan="3"><b>Credit</b></td>
-                        </tr>
-                        <tr style="visibility: hidden">
-                            <td>General Account</td>
-                            <td>Subsidies</td>
-                            <td>Amount</td>
-                        </tr>
-                    </thead>
-                    <tbody class="controls">
-                        <tr>
-                            <td colspan="3" style="vertical-align: top;"><input type="text" class="form-control coa" name="creditcoa" style="width: 50%;"></td>
-                        </tr>
-                        <tr class="entry">
-                            <td>
-                                    <div><button class="btn btn-success btn-add" type="button">+</button></div>                          
-                            </td>
-                            <td>
-                                <input type="text" class="form-control sub" name="credit[subsidy][]">
-                            </td>
-                            <td >
-                                <input type="text" class="form-control creditamount" name="credit[amount][]" style="width:80%;float:right;text-align: right;" onkeyup="addCredit()" placeholder="Amount">
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td>Total Amount</td><td></td><td><input type="text" class="form-control" name="credittotal" id="credittotal" style="width:80%;float:right;text-align: right;" disabled="true"></td>
-                        </tr>
-                    </tbody>
-                </table>            
+            <div class="amountdetails" id="amountdetails">
+            <div class="col-md-2">
+                <label for ="subsidiary">Subsidiary</label>
+                <select class="form-control" name="subsidiary" id="subsidiary">
+                    <option value="" selected="selected" hidden="hidden">select Subsidiary if any</option>
+                       
+                </select>    
+            </div>   
+            <div class="col-md-2">
+                <label for ="department">Department</label>
+                <select class="form-control" name="department" id="department">
+                  <option>None</option>
+                  @foreach($departments as $department)
+                  <option value="{{$department->sub_department}}">{{$department->sub_department}}</option>
+                  @endforeach
+                </select>    
+            </div> 
+            <div class="col-md-2">
+                <label for ="entrytype">Debit/Credit</label>
+                <select class="form-control" name="entrytype" id ="entrytype">
+                    <option value="dr">Debit</option>
+                    <option value="cr">Credit</option>
+                </select>    
+            </div> 
+            <div class="col-md-2">
+                <label for ="amount">Amount</label>
+                <input type="text" class="form-control" name="amount" id="amount" style="text-align: right"> 
             </div>
-            <div class="col-md-12">
-                <input type="submit" class="btn btn-success">
-            </div>
-        </form>
+        </div>
     </div>
-
+    <div class="col-md-12">
+        <table class="table table-bordered"><thead><tr><th>Acct Code</th><th>Account Name</th><th>Subsidiary</th><th>Department</th><th>Debit</th><th>Credit</th><th>Remove</th></tr>
+            </thead><tbody id="partialentry">
+                   
+            </tbody>
+        </table>    
+    </div>    
+    <div class="col-md-12 forsubmit" id="forsubmit">
+        <div class="col-md-8">
+            <input placeholder="Paricular" type="text" name="particular" id="particular" class="form-control">
+        </div> 
+        <div class="col-md-4">
+            <button class="form-control btn btn-primary processbtn" id="processbtn">Process Entry</button>
+        </div>
+           
+    </div>    
+    <div class="col-md-12">
+     <form id="form" onsubmit="return sub();" method="POST" action="{{url('/addentry')}}" >
+            {!! csrf_field() !!} 
+   
+     </form>
+     </div>  
 </div>  
 
 <script type="text/javascript">
-
-    $(document).on('click', '.btn-add', function(e)
-    {
-        e.preventDefault();
-        
-        var controlForm = $(this).closest('.controls'),
-            currentEntry = $(this).parents('.entry:first'),
-            newEntry = $(currentEntry.clone()).appendTo(controlForm);
-
-        newEntry.find('input').val('');
-        controlForm.find('.entry:not(:last) .btn-add')
-            .removeClass('btn-add').addClass('btn-remove')
-            .removeClass('btn-success').addClass('btn-danger')
-            .html('<span class="glyphicon glyphicon-minus"></span>');
-        var subsidy = [<?php echo '"'.implode('","', $subsidy).'"' ?>];
-    $( ".sub" ).autocomplete({
-      source: subsidy
-    });    
-    }).on('click', '.btn-remove', function(e)
-    {
-		$(this).parents('.entry:first').remove();
-
-		e.preventDefault();
-		return false;
-	});
-        
-    function addDebit(){
-        var debit = 0;
-        $('.debitamount').each(function() {
-            if(($(this).val()).length == 0){
-               debit = debit + 0
-            }else{
-            debit = debit + parseInt($(this).val());
+$(document).ready(function(){ 
+   $("#forsubmit").fadeOut();
+   $("#amountdetails").fadeOut();
+    partialtable();
+   $("#accountname").keypress(function(e){
+       if(e.keyCode==13){
+           if($("#accountname").val()==""){
+               alert("Please Fill-up Account Name");
+           } else{              
+                var arrays={};
+                arrays['accountname']=$("#accountname").val();
+                $.ajax({
+                type:"GET",
+                url:"/getaccountcode",
+                data:arrays,
+                    success:function(data){
+                    $("#acctcode").val(data)
+                    popsubsidiary(data)
+                    $("#amountdetails").fadeIn();
+                    }    
+                })
             }
-        })
-        $('#debittotal').val(debit)
-    }
-    
-    function addCredit(){
-        var credit = 0;
-        $('.creditamount').each(function() {
-            if(($(this).val()).length == 0){
-               credit = credit + 0
+       }    
+    }); 
+    $("#amount").keypress(function(e){
+       if(e.keyCode==13){
+           if($("#amount").val()==""){
+               alert("Please Enter Amount!!")
            }else{
-           credit = credit + parseFloat($(this).val());}
-        })
-        $('#credittotal').val(credit)
-    }    
+              
+               var arrays={}
+               arrays['acctcode']=$("#acctcode").val();
+               arrays['accountname']=$("#accountname").val();
+               arrays['subsidiary']=$("#subsidiary").val();
+               arrays['department']=$("#department").val();
+               arrays['entrytype']=$("#entrytype").val();
+               arrays['amount']=$("#amount").val();
+               arrays['refno']=$("#refno").val();
+               arrays['idno']= "{{Auth::user()->idno}}";
+                alert("hello")
+               $.ajax({
+                  type:"GET",
+                  url:"/postpartialentry",
+                  data:arrays,
+                    success:function(data){
+                        $("#partialentry").html(data);
+                        $("#acctcode").val("");
+                        $("#accountname").val("");
+                        $("#subsidiary").html("<option>Select Subsidiary If Any</option>");
+                        $("#amount").val("");
+                        $("#accountname").focus();
+                        if($("#balance").val() == "yes"){
+                         $("#forsubmit").fadeIn();   
+                        }else{
+                         $("#forsubmit").fadeOut();
+                        }
+                        $("#amountdetails").fadeOut();
+                    }
+               });
+               
+           }
+       } 
+    });
+    $("#processbtn").click(function(){
+        if($("#particular").val()==""){
+            alert("Please Fill-up Particular!!!");
+            $("#particular").focus();
+            }else{
+                
+              var arrays = {};
+              arrays['refno'] = $("#refno").val();
+              arrays['particular'] = $("#particular").val();
+              arrays['idno']="{{Auth::user()->idno}}";
+              arrays['totalcredit']=$("#totalcredit").val();
+              $.ajax({
+                  type:"GET",
+                  url:"/postacctgremarks",
+                  data:arrays,
+                  success:function(data){
+                     document.location = "{{url('addentry')}}" 
+                  }
+              });
+               
+            }
+    })
     
-    function sub(){
-        if($('#debittotal').val() != $('#credittotal').val()){
-            return false;
-        }else{
-            return true;
-        }
-    }
+    }); 
+
+ function partialtable(){
+   $.ajax({
+        type:"GET",
+        url:"/getpartialentry/" + $("#refno").val(),
+            success:function(data){
+               $("#partialentry").html(data);
+                       
+                        if($("#balance").val() == "yes"){
+                         $("#forsubmit").fadeIn();   
+                        } else{
+                         $("#forsubmit").fadeOut();
+                        }
+                        
+                    }
+            
+     });
+   
+  
+ }   
+ function popsubsidiary(acctcode){
+     
+    var arrays={};
+    arrays['acctcode']=acctcode;
+    $.ajax({
+        type:"GET",
+        url:"/getsubsidiary",
+        data:arrays,
+            success:function(data){
+                $("#subsidiary").html(data);              
+            }
+    });
+ }
+ 
+ function removeacctgpost(id){     
+         var arrays={};
+         arrays['id']=id;
+         arrays['refno']=$("#refno").val();
+     $.ajax({
+         type:"GET",
+         url:"/removeacctgpost",
+         data:arrays,
+         success:function(data){
+             $("#partialentry").html(data);
+             if($("#balance").val() == "yes"){
+                $("#forsubmit").fadeIn();   
+             }else{
+                 $("#forsubmit").fadeOut();
+                   }
+         }
+     });
+ 
     
-var start=0;
-var clicked = 0;
-$(document).on('keypress',function(e) {
-    if(e.keyCode == 13) {
-        elapsed = new Date().getTime();
-        if(elapsed-start<=1000){
-           document.getElementById("form").submit();
-           clicked = 1
-        }
-        else{
-            event.preventDefault();
-        }
-        start=elapsed;
-        if (clicked > 0){
-            start = 0;
-            clicked = 0;
-        }
-        return false;
     }
-});    
+ 
+  function removeall(){
+      var array={};
+      array['refno'] = $("#refno").val();
+      $.ajax({
+          type:"GET",
+          url:"/removeacctgall",
+          data:array,
+          success:function(data){
+              if(data=="true")
+              document.location = "{{url('addentry')}}"
+          }
+      });
+  }
+ 
 </script>
 @stop
