@@ -627,7 +627,8 @@ function overallcollection($transactiondate){
 } 
 
 function cashreceipts($transactiondate){
-    
+    $rangedate = date("Y-m",strtotime($transactiondate));
+    $wilddate = $rangedate."-%";
     $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
                 . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno, dedits.postedby from users, dedits where users.idno = dedits.idno and"
                 . " dedits.transactiondate = '" 
@@ -644,8 +645,13 @@ function cashreceipts($transactiondate){
                 . " dedits.transactiondate = '" 
                 . $transactiondate . "' and credits.refno=dedits.refno and credits.categoryswitch >= '9'  and credits.acctcode != 'Reservation' and dedits.paymenttype = '1' and dedits.isreverse = '0' group by  dedits.transactiondate, "
                 . " credits.acctcode order by credits.acctcode" );
-      
      
+     
+     $forward = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
+                . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno, dedits.postedby from users, dedits where users.idno = dedits.idno and"
+                . " dedits.transactiondate LIKE '" 
+                . $wilddate. "' and dedits.transactiondate != '$transactiondate'" );
+     $forwardbal = $forward[0]->amount+$forward[0]->checkamount;
     $allcollections = array();
     $int=0;
 foreach ($collections as $collection){
@@ -667,8 +673,10 @@ foreach ($collections as $collection){
         );
     $int=$int+1;
 }
+    
     //return $othersummaries;
-    return view('accounting.cashreceiptdetails',compact('allcollections','transactiondate','otheraccounts','othersummaries'));
+    return view('accounting.cashreceiptdetails',compact('allcollections','transactiondate','otheraccounts','othersummaries','forwardbal'));
+    //return $forwardbal;
 }
 
     function getDiscount($refno){
