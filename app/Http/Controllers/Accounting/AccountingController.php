@@ -650,7 +650,7 @@ function cashreceipts($transactiondate){
      $forward = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
                 . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno, dedits.postedby from users, dedits where users.idno = dedits.idno and"
                 . " dedits.transactiondate LIKE '" 
-                . $wilddate. "' and dedits.transactiondate != '$transactiondate'" );
+                . $wilddate. "' and dedits.transactiondate < '$transactiondate'" );
      $forwardbal = $forward[0]->amount+$forward[0]->checkamount;
     $allcollections = array();
     $int=0;
