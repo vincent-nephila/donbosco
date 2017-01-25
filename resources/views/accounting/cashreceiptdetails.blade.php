@@ -64,7 +64,7 @@
         width:80px;
     }
     .stat{
-        width:50px;
+        width:80px;
         
     }
 </style>
@@ -182,7 +182,7 @@
             <td class="tuition" align="right">{{number_format($allcollection[9],2)}}</td>
             <td class="reserv" align="right">{{number_format($allcollection[10],2)}}</td>
             <td class="others" align="right">{{number_format($allcollection[11],2)}}</td>
-            <td class="stat">@if($allcollection[12]=="0")
+            <td class="stat" align="right">@if($allcollection[12]=="0")
                 Ok  
                 @else
                 Cancelled
@@ -192,9 +192,9 @@
                 
             @if($rows == 18 | $allcollection[0] == $lastreceipt | $firstpagerows == 10)
             <tr 
-                @if($rows != 18 |$firstpagerows != 10)
+                @if($rows == 18 |$firstpagerows == 10)
                 class="breakpage"
-                @endif><td colspan="2" width="230px">Total</td>
+                @endif><td colspan="2" width="210px">Total</td>
             <td align="right" class="dcc">{{number_format($tempcashtotal,2)}}</td>
             <td align="right" class="ddiscount">{{number_format($tempdiscount,2)}}</td>
             <td align="right" class="dreserve">{{number_format($tempdebitreservation,2)}}</td>
@@ -232,7 +232,7 @@
             
              @endforeach   
              <tr style="border-bottom: none;border-top: none;"><td colspan="14"><br></td></tr>
-                <tr style="border-bottom: none;border-top: none;"><td colspan="2" width="230px">Total</td>
+                <tr style="border-bottom: none;border-top: none;"><td colspan="2" width="210px">Total</td>
             
             <td align="right" class="dcc">{{number_format($cashtotal,2)}}</td>
             <td align="right" class="ddiscount">{{number_format($discount,2)}}</td>

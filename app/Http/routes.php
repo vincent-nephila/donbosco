@@ -136,6 +136,7 @@
     Route::get('/finalreport','Vincent\ReportController@finalreport');
     Route::get('/prevgrade','Vincent\MigrationController@grademigration');
     
+    Route::get('TOR/{idno}','Vincent\TORController@index');
     //Cashier VINCENT
     Route::get('/addbatchaccount','Vincent\CashierController@batchposting');
     Route::post('/addtobatchaccount','Vincent\CashierController@savebatchposting');
@@ -155,9 +156,6 @@
     Route::get('/enrollmentreport','Vincent\TvetController@enrollmentreport');
     Route::get('/download/{batch}','Vincent\TvetController@download');
     
-    
-    
-    Route::get('/tor/{idno}','Vincent\GradeController@elemTor');
 });
 
 //Ajax route
