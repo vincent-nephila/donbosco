@@ -73,7 +73,7 @@
                     <tr>
                         <td colspan="2" style="padding-left: 0px;">
                     <div style="text-align: center;font-size:11pt;"><b>STUDENT PROGRESS REPORT CARD</b></div>
-                    <div style="text-align: center;font-size:11pt;"><b>SENIOR SCHOOL DEPARTMENT</b></div>
+                    <div style="text-align: center;font-size:11pt;"><b>SENIOR HIGH SCHOOL</b></div>
                     <div style="text-align: center;font-size:11pt;"><b>
                             @if($sem ==1)
                             FIRST SEMESTER
