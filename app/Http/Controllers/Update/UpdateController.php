@@ -154,7 +154,7 @@ class UpdateController extends Controller
             }
         }
         function prevgrade(){
-            $sy = "2012";
+            $sy = "2013";
             $students = DB::connection('dbti2test')->select("select distinct scode from grade_report where SY_EFFECTIVE = '$sy'");
             foreach($students as $student){
                 $this->migrategrade($student->scode,$sy);
@@ -312,7 +312,7 @@ class UpdateController extends Controller
                     $this->savegrade($scode,$sy,$grade->QTR,$grade->GR_YR,$grade->SECTION,$grade->SHOP,"SHOP");
                     $this->savegrade($scode,$sy,$grade->QTR,$grade->GR_YR,$grade->SECTION,$grade->SS,"TECH");
                     $this->savegrade($scode,$sy,$grade->QTR,$grade->GR_YR,$grade->SECTION,$grade->MATH,"MATH");
-                    $this->savegrade($scode,$sy,$grade->QTR,$grade->GR_YR,$grade->SECTION,$grade->H&PE,"H&PE");
+                    $this->savegrade($scode,$sy,$grade->QTR,$grade->GR_YR,$grade->SECTION,$grade->HPE,"H&PE");
                     $this->savegrade($scode,$sy,$grade->QTR,$grade->GR_YR,$grade->SECTION,$grade->GMRC,"GMRC");
                     $this->savegrade($scode,$sy,$grade->QTR,$grade->GR_YR,$grade->SECTION,$grade->FIL,"ENGL");
                     $this->savegrade($scode,$sy,$grade->QTR,$grade->GR_YR,$grade->SECTION,$grade->ENGL,"ENGL");

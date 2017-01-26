@@ -583,10 +583,10 @@ function assess(Request $request){
           */
 }
 function updateelective(){
-    $updates = DB::Select("select * from adjustelective");
+    $updates = DB::Select("select * from adjustelective2");
     foreach($updates as $update){
-        $elective = \App\Grade::where('idno',$update->idno)->where('subjectcode','ELE1')->first();
-        $elective->subjectname = "Elective 1 (" .$update->subjectname .")";
+        $elective = \App\Grade::where('idno',$update->idno)->where('subjectcode','ELE2')->first();
+        $elective->subjectname = "Elective 2 (" .$update->subjectname .")";
         $elective->update();
     }
 }

@@ -22,7 +22,10 @@
         }
         .block{
             display:inline-block;
-            width:50%;
+            width:48%;
+        }
+        .block:nth-child(even){
+            margin-left: 26 px;
         }
     </style>
 </head>
@@ -103,17 +106,41 @@
         </table>
         @endif
     @endforeach
-    <?php $sys = App\Grade::distinct()->select('schoolyear','level','school')->where('idno',$info->idno)->get(); ?>
+    <?php $sys = App\Grade::distinct()->select('schoolyear','level','school')->where('idno',$info->idno)->orderBy('schoolyear','ASC')->get(); ?>
     
     @foreach($sys as $sy)
-    <?php $grades = App\Grade::where('idno',$info->idno)->where('schoolyear',$sy->schoolyear)->get(); ?>
+    <?php $grades = App\Grade::where('idno',$info->idno)->where('schoolyear',$sy->schoolyear)->where('isdisplaycard',1)->whereIn('subjecttype',array(0,1,5,6))->orderBy('sortto','ASC')->get(); ?>
     <div class="block">
-        {{$sy->level}} - Section : {{$sy->section}}
+        {{$sy->level}} - Section : {{$sy->section}}<br>
         School: @if($sy->school == "")DON BOSCO TECHNICAL INSTITUTE @else {{$sy->school}} @endif
-        <table width="100%">
-            
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SY: {{$sy->schoolyear}} - {{$sy->schoolyear+1}}
+        <table width="100%" border="1" cellspacing="0" style="text-align: center">
+            <tr>
+                <td rowspan="2" width="40%">LEARNING AREA</td>
+                <td colspan="4" width="40%">Periodic Rating</td>
+                <td rowspan="2">Final Rating</td>
+                <td rowspan="2">Action Taken</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+            </tr>
+            @foreach($grades as $grade)
+            <tr>
+                <td  style="text-align: left;">{{$grade->subjectname}}</td>
+                <td>{{round($grade->first_grading,0)}}</td>
+                <td>{{round($grade->second_grading,0)}}</td>
+                <td>{{round($grade->third_grading,0)}}</td>
+                <td>{{round($grade->fourth_grading,0)}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            @endforeach
         </table>
-    @endforeach
     </div>
+    @endforeach
+    
 </body>
 </html>

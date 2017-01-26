@@ -158,7 +158,7 @@ class AjaxController extends Controller
                             }
                     break;                
                     case 3;
-                        $grades = \App\Grade::select('subjecttype','third_grading as grade') ->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->whereIn('semester',array(2,0))->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+                        $grades = \App\Grade::select('subjecttype','third_grading as grade')->where('idno',$student->idno)->where('schoolyear',$sy)->where('isdisplaycard',1)->whereIn('semester',array(2,0))->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
                         $ranking = \App\Ranking::select('acad_3 as acad','tech_3 as tech')->where('idno',$student->idno)->where('schoolyear',$sy)->first();
                             $month1 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
                             $month2 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"NOV")->orderBy('id','DESC')->first();
@@ -225,10 +225,6 @@ class AjaxController extends Controller
                     $data = $data."<td style='text-align:center;'>".$ranking->acad."</td>";
                     //$data = $data."<td style='text-align:center;'> </td>";
                 }
-
-                
-                
-
 
                 
                 foreach($grades as $grade){
@@ -1576,6 +1572,7 @@ class AjaxController extends Controller
             }
             $report = $report . "</td>";
             foreach($subjects as $subject){
+            if($sem ==1){
                 if($subject->subjecttype == 5){
                     $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->orderBy('sortto','ASC')->first();
                     $report = $report . "<td>".$this->blankgrade($grade->first_grading)."</td>";
@@ -1585,7 +1582,19 @@ class AjaxController extends Controller
                     $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->orderBy('sortto','ASC')->first();
                     $report = $report . "<td>".$this->blankgrade($grade->first_grading)."</td>";
                     $report = $report . "<td>".$this->blankgrade($grade->second_grading)."</td>";                    
-                }                
+                }
+            }else{
+                if($subject->subjecttype == 5){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->orderBy('sortto','ASC')->first();
+                    $report = $report . "<td>".$this->blankgrade($grade->third_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->fourth_grading)."</td>";                    
+                }
+                if($subject->subjecttype == 6){
+                    $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy->schoolyear)->orderBy('sortto','ASC')->first();
+                    $report = $report . "<td>".$this->blankgrade($grade->third_grading)."</td>";
+                    $report = $report . "<td>".$this->blankgrade($grade->fourth_grading)."</td>";                    
+                } 
+            }
             }
             if($sem ==1){
                 $first = $this->calcSeniorGrade(1,$student->idno,$sy->schoolyear);
