@@ -1560,7 +1560,7 @@ class AjaxController extends Controller
     
     function SHSFinalReport($students,$sem,$level,$sy,$strand){
         $report="";
-        $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->whereIn('semester',array($sem,0))->where('semester',$sem)->where('strand',$strand)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
+        $subjects = \App\CtrSubjects::where('level',$level)->where('isdisplaycard',1)->whereIn('semester',array($sem,0))->where('strand',$strand)->orderBy('subjecttype','ASC')->orderBy('sortto','ASC')->get();
         
         $report = $report . "<table width='4000px;' style='text-align:center;' border='1'>";
         $report = $report . "<tr><td>CN</td><td>Student Name</td>";
