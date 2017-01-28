@@ -19,7 +19,7 @@
          
                 ?>
                 @foreach($remarks as $remark)
-                    <tr><td>{{$remark->refno}}</td><td>{{$remark->trandate}}</td><td>{{$remark->remarks}}</td><td align="right">{{number_format($remark->amount,2)}}</td><td><a href="{{url('/accountingview/',$remark->refno)}}">View</a></td><td>{{$remark->posted_by}}</td></tr>
+                    <tr><td>{{$remark->refno}}</td><td>{{$remark->trandate}}</td><td>{{$remark->remarks}}</td><td align="right">{{number_format($remark->amount,2)}}</td><td><a href="{{url('/accountingview',$remark->refno)}}">View</a></td><td>{{$remark->posted_by}}</td></tr>
                 @endforeach
             </div>  
             </tbody>

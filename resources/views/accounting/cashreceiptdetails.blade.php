@@ -1,6 +1,7 @@
 @extends('appaccounting')
 @section('content')
-<style type="text/css">
+
+<style media="print">    
     body{
         font-size: 10pt;
     }
@@ -67,8 +68,8 @@
         width:80px;
         
     }
-</style>
-<style media="print">
+
+
     #header{
         display: block;
     }
@@ -85,7 +86,7 @@
         <dl class="dl-horizontal">
             <div>Forwrded Balance:&nbsp;&nbsp;&nbsp;
                 <b>
-                    {{number_format($forwardbal,2)}}
+                    
                 </b>
                 </div>
             </dl></h5>
@@ -107,8 +108,23 @@
             <td class="others">Others</td>
             <td class="stat">Status</td>
             </tr>
+            <tr><td class="receipt" colspan="2">Forwarded Balance</td>
+           
+            <td class="dcc">{{number_format($totalcash,2)}}</td>
+            <td class="ddiscount">{{number_format($totaldiscount,2)}}</td>
+            <td class="dreserve">{{number_format($drreservation,2)}}</td>
+            <td class="elearn">{{number_format($elearningcr,2)}}</td>
+            <td class="misc">{{number_format($misccr,2)}}</td>
+            <td class="book">{{number_format($bookcr,2)}}</td>
+            <td class="dept">{{number_format($departmentcr,2)}}</td>
+            <td class="reg">{{number_format($registrationcr,2)}}</td>
+            <td class="tuition">{{number_format($tuitioncr,2)}}</td>
+            <td class="reserv">{{number_format($crreservation,2)}}</td>
+            <td class="others">{{number_format($crothers,2)}}</td>
+            <td class="stat"></td>
+            </tr>
         </thead>
-            @if(count($allcollections)>0)
+           @if(count($allcollections)>0)
             <?php 
             $cashtotal=0;
             $discount=0;

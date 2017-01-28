@@ -135,7 +135,7 @@ $(document).ready(function(){
                arrays['amount']=$("#amount").val();
                arrays['refno']=$("#refno").val();
                arrays['idno']= "{{Auth::user()->idno}}";
-                alert("hello")
+                //alert("hello")
                $.ajax({
                   type:"GET",
                   url:"/postpartialentry",

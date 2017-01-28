@@ -95,6 +95,13 @@
                                         @if(Auth::user()->accesslevel == env('USER_ACCOUNTING_HEAD'))
                                         <li><a href="{{url('penalties')}}"><i class="fa fa-btn"></i>Over Due Charges </a></li>
                                         <li><a href="{{url('searchor')}}"><i class="fa fa-btn fa-sign-out"></i>Search OR</a></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role=""button>Accounting
+                                                <span class="caret"></span></a>
+                                            <ul class = "dropdown-menu" role="memu">
+                                                <li><a href="{{url('addentry')}}"><i class="fa fa-btn"></i>Journal Entry</a></li>
+                                            </ul>    
+                                        </li>    
                                         @endif
                                        
                                         

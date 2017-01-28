@@ -149,8 +149,10 @@
     Route::get('/studentsledger/{batch}/{cours}/{section}/edit','Vincent\TvetController@edittvetcontribution');
     Route::post('/studentsledger/{batch}/{cours}/{section}/edit','Vincent\TvetController@savetvetChanges');
     Route::get('/addentry','Vincent\JournalController@addEntry');
-    Route::post('/addentry','Vincent\JournalController@saveEntry');
-    
+    //Route::post('/addentry','Vincent\JournalController@saveEntry');
+    Route::get('/listofentry','Vincent\JournalController@listofentry');
+    Route::get('/accountingview/{refno}','Vincent\JournalController@accountingview');
+    Route::get('/editjournalentry/{refno}','Vincent\JournalController@editjournalentry');
     //ACADEMIC VINCENT
     Route::get('/registerAdviser','Vincent\TvetController@tvetledger');
     Route::get('/enrollmentreport','Vincent\TvetController@enrollmentreport');
@@ -187,6 +189,12 @@
     Route::get('/getsectionstrand/{level}/{strand}','AjaxController@getsectionstrand');
     Route::get('/displaygrade','AjaxController@displaygrade');
     Route::get('/gettvetplan/{batch}/{course}','AjaxController@gettvetplan');
+    Route::get('/getaccountcode','AjaxController@getaccountcode');
+    Route::get('/postpartialentry','AjaxController@postpartialentry');
+    Route::get('/removeacctgpost','AjaxController@removeacctgpost');
+    Route::get('/removeacctgall','AjaxController@removeacctgall');
+    Route::get('/getpartialentry/{refno}','AjaxController@getpartialentry');
+    Route::get('/postacctgremarks','AjaxController@postacctgremarks');
     
     // Route::get('/getsoasummary/{level}/{strand}/{section}/{trandate}','AjaxController@getsoasummary');
    
