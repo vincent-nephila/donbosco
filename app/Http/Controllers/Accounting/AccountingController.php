@@ -628,6 +628,7 @@ function overallcollection($transactiondate){
 
 function cashreceipts($transactiondate){
     $rangedate = date("Y-m",strtotime($transactiondate));
+    $asOf = date("l, F d, Y",strtotime($transactiondate));
     $wilddate = $rangedate."-%";
     $collections = DB::Select("select sum(dedits.amount) as amount, sum(dedits.checkamount) as checkamount, users.idno, users.lastname, users.firstname,"
                 . " dedits.transactiondate, dedits.isreverse, dedits.receiptno, dedits.refno, dedits.postedby from users, dedits where users.idno = dedits.idno and"
@@ -711,7 +712,7 @@ function cashreceipts($transactiondate){
 foreach ($collections as $collection){
     $allcollections[$int] = array(
         $collection->receiptno,
-        $collection->firstname . " " . $collection->lastname,
+        $collection->lastname." ,".$collection->firstname,
         $collection->amount+$collection->checkamount, 
         $this->getReservationDebit($collection->refno),
         $this->getcreditamount($collection->refno,1),
@@ -729,7 +730,7 @@ foreach ($collections as $collection){
 }
     
     //return $othersummaries;
-    return view('accounting.cashreceiptdetails',compact('elearningcr','misccr','bookcr','departmentcr','registrationcr','tuitioncr','crreservation','crothers','totalcash','totaldiscount','drreservation','allcollections','transactiondate','otheraccounts','othersummaries','forwardbal'));
+    return view('accounting.cashreceiptdetails',compact('elearningcr','misccr','bookcr','departmentcr','registrationcr','tuitioncr','crreservation','crothers','totalcash','totaldiscount','drreservation','allcollections','transactiondate','otheraccounts','othersummaries','forwardbal','asOf'));
     //return $forwardbal;
 }
 

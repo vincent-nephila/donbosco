@@ -1,99 +1,86 @@
 @extends('appaccounting')
 @section('content')
 
-<style media="print">    
+<style>
+    #receipt tr td{
+        border-bottom: 1px solid;
+        border-top: 1px solid;
+    }    
+    #dates{
+        margin-bottom: 0;
+    font-weight: 300;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #333333;
+    background-color: #ffffff;
+    border-color: #cccccc;
+    }
+
+    #receipt tr{
+        border-bottom: 1px solid;
+        border-top: 1px solid;
+    }
+    #receipt tr td{
+        padding-left: 5px;
+        padding-right: 5px;
+        border-bottom: 1px solid;
+        border-top: 1px solid;
+    }
     body{
         font-size: 10pt;
     }
+    
     #header{
         display: none;
+    }
+</style>
+<style media="print">
+    
+    .btn,.text-muted{
+        display: none;
+    }
+    #header{
+        display: block;
     }
     thead{
         display: table-header-group;
     }
     .breakpage{
         page-break-after: always;
-        page-break-inside:avoid;
+        
     }
     .breakable{
         page-break-inside:auto;
     }
     #receipt tr{
-        display:block; 
         border-bottom: 1px solid;
         border-top: 1px solid;
     }
-    
-    .receipt{
-        width:60px;
-    }
-    .name{
-        width:120px;
-    }
-    .dcc{
-        width:100px;
-    }
-    .ddiscount{
-        width:80px;
-    }
-    .dreserve{
-        width:80px;
-    }
-    .elearn{
-        width:80px;
-    }
-    .misc{
-        width:80px;
-    }    
-    .book{
-        width:80px;
-    }
-    .dept{
-        width:100px;
-    }
-    .reg{
-        width:90px;
-    }
-    .tuition{
-        width:80px;
-    }
-    .reserv{
-        width:80px;
-        
-    }
-    .others{
-        width:80px;
-    }
-    .stat{
-        width:80px;
-        
-    }
-
-
-    #header{
-        display: block;
-    }
-    .btn,.text-muted{
-        display: none;
-    }
 </style>
 <div class="container-fluid">
-    <div class="col-md-12" id="header"><h3>Don Bosco Technical School</h3></div>
+    <div class="col-md-12" id="header" style="text-align: center"><h4>Don Bosco Technical School</h4></div>
     <span id="page1">
     <div class="col-md-12">
-    <h4>Cash Receipt</h4>
-    <h5>
-        <dl class="dl-horizontal">
-            <div>Forwrded Balance:&nbsp;&nbsp;&nbsp;
-                <b>
-                    
-                </b>
-                </div>
-            </dl></h5>
-    <p>As of {{$transactiondate}}</p>
+    <h4 style="text-align: center">Cash Receipt</h4>
+    <p style="text-align: center">For <span id="dates" >{{$asOf}}</span></p>
     <table width="100%" id="receipt" style="border:none;">
         <thead>
-        <tr><td class="receipt">Receipt Number</td>
+        <tr ><td class="receipt">O R No.</td>
             <td class="name">Name</td>
             <td class="dcc">Debit <br> Cash/Check</td>
             <td class="ddiscount">Debit <br>Discount</td>
@@ -108,8 +95,8 @@
             <td class="others">Others</td>
             <td class="stat">Status</td>
             </tr>
-            <tr>
-                <td width="210px" colspan="2">Forwarded Balance</td>
+            <tr style="text-align: right">
+                <td width="260px" colspan="2" style="text-align: left">Balance brought forward</td>
            
             <td class="dcc">{{number_format($totalcash,2)}}</td>
             <td class="ddiscount">{{number_format($totaldiscount,2)}}</td>
@@ -207,9 +194,9 @@
                 </td>
                 </tr>
                 
-            @if($rows == 18 | $allcollection[0] == $lastreceipt | $firstpagerows == 10)
+            @if($rows == 15 | $allcollection[0] == $lastreceipt | $firstpagerows == 10)
             <tr 
-                @if($rows == 18 |$firstpagerows == 10)
+                @if($rows == 15 |$firstpagerows == 10)
                 class="breakpage"
                 @endif><td colspan="2" width="210px">Total</td>
             <td align="right" class="dcc">{{number_format($tempcashtotal,2)}}</td>
@@ -227,7 +214,6 @@
                 </td>
             <td></td>
                 </tr>
-                
                <?php
             $tempcashtotal=0;
             $tempdiscount=0;
