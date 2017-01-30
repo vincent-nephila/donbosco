@@ -581,6 +581,57 @@ function otherpayment($idno){
             
         }
         
+         if($request->amount5 > 0){
+            $creditreservation = new \App\Credit;
+            $creditreservation->idno = $request->idno;
+            $creditreservation->transactiondate = Carbon::now();
+            $creditreservation->refno = $refno;
+            $creditreservation->receiptno = $or;
+            $creditreservation->categoryswitch = '9';
+            $creditreservation->acctcode=$request->groupaccount5;
+            $creditreservation->description=$request->particular5;
+            $creditreservation->receipt_details = $request->particular5;
+            $creditreservation->amount = $request->amount5;
+            $creditreservation->postedby = \Auth::user()->idno;
+            $creditreservation->sub_department = $request->acct_department5;
+            $creditreservation->save(); 
+            
+        }
+        
+         if($request->amount6 > 0){
+            $creditreservation = new \App\Credit;
+            $creditreservation->idno = $request->idno;
+            $creditreservation->transactiondate = Carbon::now();
+            $creditreservation->refno = $refno;
+            $creditreservation->receiptno = $or;
+            $creditreservation->categoryswitch = '9';
+            $creditreservation->acctcode=$request->groupaccount6;
+            $creditreservation->description=$request->particular6;
+            $creditreservation->receipt_details = $request->particular6;
+            $creditreservation->amount = $request->amount6;
+            $creditreservation->postedby = \Auth::user()->idno;
+            $creditreservation->sub_department = $request->acct_department6;
+            $creditreservation->save(); 
+            
+        }
+        
+         if($request->amount7 > 0){
+            $creditreservation = new \App\Credit;
+            $creditreservation->idno = $request->idno;
+            $creditreservation->transactiondate = Carbon::now();
+            $creditreservation->refno = $refno;
+            $creditreservation->receiptno = $or;
+            $creditreservation->categoryswitch = '9';
+            $creditreservation->acctcode=$request->groupaccount7;
+            $creditreservation->description=$request->particular7;
+            $creditreservation->receipt_details = $request->particular7;
+            $creditreservation->amount = $request->amount7;
+            $creditreservation->postedby = \Auth::user()->idno;
+            $creditreservation->sub_department = $request->acct_department7;
+            $creditreservation->save(); 
+            
+        }
+        
         //debit
         $iscbc = 0;
          if($request->iscbc =="cbc"){

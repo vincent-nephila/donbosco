@@ -28,7 +28,7 @@
         width:60px;
     }
     .name{
-        width:150px;
+        width:120px;
     }
     .dcc{
         width:100px;
@@ -265,10 +265,23 @@
                 </td>
             </tr>
             @endif
+            <tr style="border-bottom: none;border-top: none;"><td colspan="14"><br></td></tr>
+            <tr style="border-bottom: none;border-top: none;"><td colspan="14"><br></td></tr>
+            <tr style="border-bottom: none;border-top: none;"><td colspan="2" width="210px">Current Balance</td>
+                <td class="dcc">{{number_format($totalcash+$cashtotal,2)}}</td>
+                <td class="ddiscount">{{number_format($totaldiscount+$discount,2)}}</td>
+                <td class="dreserve">{{number_format($drreservation+$debitreservation,2)}}</td>
+                <td class="elearn">{{number_format($elearningcr+$elearning,2)}}</td>
+                <td class="misc">{{number_format($misccr+$misc,2)}}</td>
+                <td class="book">{{number_format($bookcr+$books,2)}}</td>
+                <td class="dept">{{number_format($departmentcr+$departmentfacilities,2)}}</td>
+                <td class="reg">{{number_format($registrationcr+$registration,2)}}</td>
+                <td class="tuition">{{number_format($tuitioncr+$tuition,2)}}</td>
+                <td class="reserv">{{number_format($crreservation+$creditreservation,2)}}</td>
+                <td class="others">{{number_format($crothers+$other,2)}}</td>
+                <td class="stat"></td>
+            </tr>
             </table>
-            <br>
-            <br>
-            <div>Current Balance:&nbsp;&nbsp;<b>{{number_format($cashtotal+$forwardbal,2)}}</div>
             <br>
             <br>
             <br>
