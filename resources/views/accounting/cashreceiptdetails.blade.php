@@ -108,7 +108,8 @@
             <td class="others">Others</td>
             <td class="stat">Status</td>
             </tr>
-            <tr><td class="receipt" colspan="2">Forwarded Balance</td>
+            <tr>
+                <td width="210px" colspan="2">Forwarded Balance</td>
            
             <td class="dcc">{{number_format($totalcash,2)}}</td>
             <td class="ddiscount">{{number_format($totaldiscount,2)}}</td>
@@ -267,7 +268,7 @@
             @endif
             <tr style="border-bottom: none;border-top: none;"><td colspan="14"><br></td></tr>
             <tr style="border-bottom: none;border-top: none;"><td colspan="14"><br></td></tr>
-            <tr style="border-bottom: none;border-top: none;"><td colspan="2" width="210px">Current Balance</td>
+            <tr style="border-bottom: none;border-top: none;text-align: right;"><td colspan="2" width="210px" style="text-align: left">Current Balance</td>
                 <td class="dcc">{{number_format($totalcash+$cashtotal,2)}}</td>
                 <td class="ddiscount">{{number_format($totaldiscount+$discount,2)}}</td>
                 <td class="dreserve">{{number_format($drreservation+$debitreservation,2)}}</td>
