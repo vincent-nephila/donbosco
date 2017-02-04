@@ -19,7 +19,7 @@ class CashierController extends Controller
    function view($idno){
        if(\Auth::user()->accesslevel==env('USER_CASHIER') || \Auth::user()->accesslevel == env('USER_CASHIER_HEAD')){
        $student = \App\User::where('idno',$idno)->first();
-       $status = \App\Status::where('idno',$idno)->first();  
+       $status = \App\Status::where('idno',$idno)->orderBy('schoolyear','DESC')->first();  
        $reservation = 0;
        $totalprevious = 0;
        $ledgers = null;

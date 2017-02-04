@@ -24,35 +24,39 @@ class AssessmentController extends Controller
     }
     
     public function evaluate($id){
-        $balance = "";
+        //Initialize
         $reservation = 0;
         $currentschoolyear = "";
         $mydiscount="";
         $ledgers="";
-        
+        $balance=0;
+        //get list of department from ctr_level
+        $programs = DB::Select("select distinct department from ctr_levels");
+        //get course iof TVET
+        $courses = DB::Select("select distinct coursecode from ctr_tvet_subjects");
         
         $student = \App\User::where('idno',$id)->first();
-        $status = \App\Status::where('idno',$id)->first();
+        $status = \App\Status::where('idno',$id)->orderBy('schoolyear','DESC')->orderBy('period','DESC')->first();
        
         if(count($status) > 0){
-            if($status->department=="TVET"){
-            $currentschoolyear = \App\ctrSchoolYear::where('department',$status->department)->where('period',$status->period)->first();
-            }else{
-            $currentschoolyear = \App\ctrSchoolYear::where('department', $status->department)->first();
-            }
+            $currentschoolyear = \App\CtrRegistrationSchoolyear::where('department',$status->department)->where('period',$status->period)->first();
+            if($currentschoolyear->schoolyear == $status->schoolyear && $currentschoolyear->period == $status->period){
             $matchfields=["idno"=>$id, "schoolyear" =>$currentschoolyear->schoolyear, "period" => $currentschoolyear->period ];
             $mydiscount=  \App\Discount::where($matchfields)->first();
             $ledgers =  DB::Select("select sum(amount) as amount, sum(plandiscount) as plandiscount,  sum(otherdiscount) as otherdiscount,receipt_details  from ledgers
                              where idno = '$id' and schoolyear = '".$currentschoolyear->schoolyear."'  and period = '". $currentschoolyear->period."' Group by receipt_details ");
-              }
-        $programs = DB::Select("select distinct department from ctr_levels");
-        $k_levels = \App\CtrLevel::where('department','Kindergarten')->get();
-        $elem_levels = \App\CtrLevel::where('department','Elementary')->get();
-        $jhs_levels = \App\CtrLevel::where('department','Junior High School')->get();
-        $shs_levels = \App\CtrLevel::where('department','Senior High School')->get();
-        $k11_tracks = \App\CtrTrack::where('level', 'Grade 11')->get();
-        $k12_tracks = \App\CtrTrack::where('level', 'Grade 12')->get();
-        $courses = DB::Select("select distinct coursecode from ctr_tvet_subjects");
+            }
+        
+        }
+        
+        
+        //$k_levels = \App\CtrLevel::where('department','Kindergarten')->get();
+        //$elem_levels = \App\CtrLevel::where('department','Elementary')->get();
+        //$jhs_levels = \App\CtrLevel::where('department','Junior High School')->get();
+        //$shs_levels = \App\CtrLevel::where('department','Senior High School')->get();
+        //$k11_tracks = \App\CtrTrack::where('level', 'Grade 11')->get();
+        //$k12_tracks = \App\CtrTrack::where('level', 'Grade 12')->get();
+        
         $balances = DB::Select("select sum(amount) as amount, sum(plandiscount) as plandiscount, sum(otherdiscount) as otherdiscount, sum(debitmemo) as debitmemo, sum(payment) as payment from ledgers where idno = ?",array($id));
         if(count($balances) > 0 ){
             foreach($balances as $ledger){    
@@ -66,18 +70,26 @@ class AssessmentController extends Controller
             $reservation = $reservation + $res->amount;
             }
         }
-        return view('registrar.oldstudent', compact('reservation','student','status','balance','programs','k_levels','elem_levels','shs_levels','jhs_levels','k11_tracks','k12_tracks','courses','currentschoolyear','mydiscount','ledgers'));
+        //return view('registrar.oldstudent', compact('reservation','student','status','balance','programs','k_levels','elem_levels','shs_levels','jhs_levels','k11_tracks','k12_tracks','courses','currentschoolyear','mydiscount','ledgers'));
+        return view('registrar.oldstudent', compact('reservation','student','status','balance','programs','courses','currentschoolyear','mydiscount','ledgers'));
     }
     
 function assess(Request $request){
     $contribution="0";
     $batch="0";
+    
+    //$books="";
+    
+    
+    
+    //get current schoolyear from RegistrationSchoolyear
     if($request->department=="TVET"){
-    $schoolperiod = \App\ctrSchoolYear::where('period', $request->batch)->first();    
+    $schoolperiod = \App\CtrRegistrationSchoolyear::where('period', $request->batch)->first();    
     }else{
-    $schoolperiod = \App\ctrSchoolYear::where("department",$request->department)->first();
+    $schoolperiod = \App\CtrRegistrationSchoolyear::where("department",$request->department)->first();
     }
     
+    //process TVET assessment
     if($request->department == "TVET"){
         $tf = $request->tuitionfee;
         $misc = $request->misc;
@@ -89,6 +101,7 @@ function assess(Request $request){
         $contribution = $request->contribution;
         $batch=$request->batch;
         
+        //not reasses
         if($request->action != "reassessed"){
             $findtvet=  \App\TvetSubsidy::where('idno',$request->idno)->first();
             if(count($findtvet)==0){
@@ -123,40 +136,71 @@ function assess(Request $request){
             }
         }
     }
-    
-    if(isset($request->strand)){
-        $strand = $request->strand;
-    } else{
-        $strand="";
-    }   
-    
-    if(isset($request->course)){
-        $course = $request->course;
-    }else{
+        //determine if there is strand(Grade 9 - 12)
+        if(isset($request->strand)){
+            $strand = $request->strand;
+            } else{
+            $strand="";
+        }   
+        
+        //determine is there is courses(TVET)
+        if(isset($request->course)){
+            $course = $request->course;
+            }else{
         $course="";
+        }
+        //determine if there is level (Kinder - 12)
+        if(isset($request->level)){
+            $level = $request->level;
+        }else{
+            $level="";
+        }
+    
+        if(isset($request->books)){
+        $books = $request->books;
+                   foreach($books as $book){
+                       $paidbook = \App\CtrBook::where('id',$book)->first();
+                       $newbook = new \App\Ledger;
+                       $newbook->idno = $request->idno;
+                       $newbook->transactiondate = Carbon::now();
+                       $newbook->department = $request->department;
+                       
+                       $newbook->level = $level;
+                       $newbook->course = $course;
+                        //$newledger->track = $track;
+                       $newbook->strand= $strand;
+                       $newbook->categoryswitch = $paidbook->categoryswitch;
+                       $newbook->acctcode = $paidbook->acctname;
+                       $newbook->description = $paidbook->subsidiary;
+                       $newbook->receipt_details = $paidbook->receipt_details;
+                       $newbook->amount = $paidbook->amount;
+                       $newbook->schoolyear = $schoolperiod->schoolyear;
+                       $newbook->duetype = 0;
+                       $newbook->period = $schoolperiod->period;
+                       $newbook->duedate = $paidbook->duedate;
+                       $newbook->postedby = \Auth::user()->id;
+                       $newbook->save();
+                   } 
+                
     }
+        
+        $action = $request->action;
     
-     if(isset($request->level)){
-        $level = $request->level;
-    }else{
-        $level="";
-    }
+        switch($action){
     
-    $action = $request->action;
-    
-    switch($action){
-    
-    case "add":
+        case "add":
         
               if($this->addLedger($request->id,$level,$request->plan,$request->discount,$request->department,$strand,$course,$contribution,$batch)){  
                 $status = new \App\Status;
                 $status->idno=$request->id;
                 $status->date_registered=Carbon::now();
+                
                 if($request->department == "TVET" && $contribution == "0"){
                 $status->status = "2";    
                 }else{
                 $status->status = "1";
                 }
+                
                 $status->department = $request->department;
                     if($request->level == 'Grade 9' || $request->level == 'Grade 10' || $request->level == 'Grade 11' || $request->level == 'Grade 12'){
                         $status->strand = $request->strand;
@@ -227,6 +271,7 @@ function assess(Request $request){
         if(count($deletesubsidy)>0){
             $deletesubsidy->delete();
         }
+        
         $matchfields=["idno"=>$request->id, "schoolyear"=>$schoolperiod->schoolyear, "period" => $schoolperiod->period];
         $deletestudents = \App\Ledger::where($matchfields)->get();
         foreach($deletestudents as $deletestudent){
@@ -242,14 +287,14 @@ function assess(Request $request){
         foreach ($deletediscounts as $deletediscount){
             $deletediscount->delete();
         }
-        $changestatus =  \App\Status::where('idno',$request->id)->first();
-        $changestatus->status = "0";
-        $changestatus->strand = "";
-        $changestatus->course="";
-        $changestatus->track="";
-        $changestatus->level="";
+        $changestatus =  \App\Status::where('idno',$request->id)->orderBy('schoolyear','DESC')->orderBy('period','DESC')->first();
+        //$changestatus->status = "0";
+        //$changestatus->strand = "";
+        //$changestatus->course="";
+        //$changestatus->track="";
+        //$changestatus->level="";
         //$changestatus->period="";
-        $changestatus->update();
+        $changestatus->delete();
         
         $ress=  \App\AdvancePayment::where('idno',$request->id)->where('status','0')->get();
         if(count($ress)>0){
@@ -305,10 +350,10 @@ function assess(Request $request){
 
     function addLedger($id, $level, $plan, $discount,$department,$strand, $course,$contribution,$batch){
         if($department=="TVET"){
-            $schoolperiod =  \App\ctrSchoolYear::where('department','TVET')->where('period',$batch)->first();    
+            $schoolperiod = \App\CtrRegistrationSchoolyear::where('department','TVET')->where('period',$batch)->first();    
         }
         else{
-            $schoolperiod = \App\ctrSchoolYear::where("department",$department)->first();
+            $schoolperiod = \App\CtrRegistrationSchoolyear::where("department",$department)->first();
         }
         
         $discounts = \App\CtrDiscount::where('discountcode',$discount)->first();
@@ -331,13 +376,14 @@ function assess(Request $request){
                 $matchfields=['level'=>$level, 'plan' =>$plan];
             }    
         }
+        
         DB::table('ledgers')
             ->where('idno',$id)
-            ->where('categoryswitch','<',10)
+            ->where('categoryswitch','<=',6)
             ->update([
             'categoryswitch' => DB::raw('categoryswitch + 10')
         ]);
-
+        
         if($department=="TVET"){
             $newledger = new \App\Ledger;
             $newledger->idno = $id;
@@ -392,7 +438,7 @@ function assess(Request $request){
                 $newledger->duedate = $ledger->duedate;
                 $newledger->postedby = \Auth::user()->id;
                 $newledger->save();
-
+                
                 if(isset($discounts->discountcode)){
                     if($discounts->discountcode !="None" && $ledger->categoryswitch == env('TUITION_FEE')){
                         $studentdiscount = new \App\Discount;
@@ -416,6 +462,7 @@ function assess(Request $request){
                     }           
 
                 }
+                
             }
         }  
                 if($department == "Kindergarten" || $department == "Elementary" || $department == "Junior High School"){ 
@@ -483,7 +530,7 @@ function assess(Request $request){
     }
 
     function printregistration($idno){
-        $status = \App\Status::where('idno',$idno)->first();
+        $status = \App\Status::where('idno',$idno)->orderBy('schoolyear','DESC')->first();
         $user = \App\User::where('idno',$idno)->first();
         if($status->department=="TVET"){
          $matchfiels=['idno'=>$idno, 'schoolyear'=>$status->schoolyear, 'period'=>$status->period];

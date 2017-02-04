@@ -83,7 +83,7 @@ class AjaxController extends Controller
                     return $value;
                 }
                 elseif($vardepartment == "TVET"){
-                    $currentbatch = \App\ctrSchoolYear::where('department','TVET')->get();
+                    $currentbatch = \App\CtrRegistrationSchoolyear::where('department','TVET')->get();
                     //$batch=$currentbarch->period;
                     $value = "<div class=\"col-md-12\"><label>Select Batch</label>";
                     $value = $value . "<select name=\"batch\" id=\"batch\" class=\"form form-control\" onchange =\"gettvetplan(this.value)\">";
@@ -326,58 +326,69 @@ class AjaxController extends Controller
                 $plan = Input::get("plan");
                 $id =Input::get('id');
                 
-                $currentpreiod = \App\ctrSchoolYear::where("department", $department)->first();
+                $currentpreiod = \App\CtrRegistrationSchoolyear::where("department", $department)->first();
                 $advances = DB::Select("select * from advance_payments where idno='$id' and status = '0'");
+                    
                     foreach($advances as $adv){
                         $advance = $advance + $adv->amount;
                     }
              
                 
-                if($department == "TVET"){
-                     $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level   from ctr_payment_schedules
-                             where  course = '$course' and plan = '$plan' Group by receipt_details, plan, level ");
-
-                }
-                elseif($department == "Senior High School"){
-                    $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level   from ctr_payment_schedules
-                             where strand = '$strand' and level = '$level' and plan = '$plan' Group by receipt_details, plan, level ");
-                }
-                else{
+                        if($department == "TVET"){
+                                $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level   from ctr_payment_schedules
+                                where  course = '$course' and plan = '$plan' Group by receipt_details, plan, level ");
+                        }
+                        elseif($department == "Senior High School"){
+                                $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level   from ctr_payment_schedules
+                                where strand = '$strand' and level = '$level' and plan = '$plan' Group by receipt_details, plan, level ");
+                        }
+                        else{
                     //$matchfields= ['level' => $level,'plan' => $plan];
-                   
-                    
-                    if($level=='Grade 9' || $level=='Grade 10'){
-                      $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level   from ctr_payment_schedules
-                             where strand = '$strand' and level = '$level' and plan = '$plan' Group by receipt_details, plan, level ");
+             
+                            if($level=='Grade 9' || $level=='Grade 10'){
+                                $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level   from ctr_payment_schedules
+                                where strand = '$strand' and level = '$level' and plan = '$plan' Group by receipt_details, plan, level ");
                     //$   
-                    }else{
-                    $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level  from ctr_payment_schedules
-                             where level = '$level' and plan = '$plan' Group by receipt_details, plan, level");
+                            }else{
+                                $schedules = DB::Select("select sum(amount) as amount, sum(discount) as discount, receipt_details, plan, level  from ctr_payment_schedules
+                                where level = '$level' and plan = '$plan' Group by receipt_details, plan, level");
                     //$schedules = \App\CtrPaymentSchedule::where($matchfields)->get();
-                    }  }
-                     $total=0;
+                            }  
+                            
+                        }
+                        
+                    $total=0;
                     $discount = 0;
                     $otherdiscount = 0;
                     
-                    $request = "<table class = \"table table-bordered\"><tr><td>Description</td><td>Amount</td><tr>";
-                    foreach($schedules as $schedule){
-                    if(stristr($schedule->receipt_details, "Tuition")){
-                    $otherdiscount = $otherdiscount + (($schedule->amount-$schedule->discount) * $otherdiscountrate);     
-                    } 
-                    $discount = $discount + $schedule->discount;
-                    $total = $total + $schedule->amount; 
+                    $request = "<h5>Fee Details</h5><table class = \"table table-bordered\"><tr><td>Description</td><td>Amount</td><tr>";
                     
-                    $request = $request ."<tr><td>". $schedule->receipt_details."</td><td align=\"right\">" . number_format($schedule->amount,2)."</td></tr>";    
+                    foreach($schedules as $schedule){
+                            if(stristr($schedule->receipt_details, "Tuition")){
+                            $otherdiscount = $otherdiscount + (($schedule->amount-$schedule->discount) * $otherdiscountrate);     
+                            } 
+                        $discount = $discount + $schedule->discount;
+                        $total = $total + $schedule->amount;
+                        //$request = $request ."<tr><td>". $schedule->receipt_details."</td><td align=\"right\">" . number_format($schedule->amount,2)."</td></tr>";    
                     }
-                    $request = $request . "<tr><td> Sub Total</td><td align=\"right\"><strong style=\"color:black\">". number_format($total,2)."</strong></td></tr>";
+                    
+                    $request = $request . "<tr><td> Fees</td><td align=\"right\"><strong style=\"color:black\">". number_format($total,2)."</strong></td></tr>";
                     $request = $request . "<tr><td> Less: Plan Discount</td><td align=\"right\"><strong style=\"color:red\">(". number_format($discount,2).")</strong></td></tr>";
                     $request = $request . "<tr><td>Other Discount: $otherdiscountname</td><td align=\"right\"><strong style=\"color:red\">(". number_format($otherdiscount,2).")</strong></td></tr>";
                     $request = $request . "<tr><td>Advance Payment</td><td align=\"right\"><strong style=\"color:red\">(". number_format($advance,2).")</strong></td></tr>";
-                    $request = $request . "<tr><td> Total</td><td align=\"right\"><strong style=\"color:black\">". number_format($total-$discount-$otherdiscount-$advance,2)."</strong></td></tr>";
-                    $request = $request . "</table><div class=\"col-md-12\"><input id=\"submit_button\" type=\"submit\" value=\"Process Assessment\" class=\"form-control btn btn-warning\">";
+                    $request = $request . "<tr><td> Sub Total</td><td align=\"right\"><strong style=\"color:black\">". number_format($total-$discount-$otherdiscount-$advance,2)."</strong></td></tr>";
+                    $request = $request . "</table>";
                   
-                
-                
+                    $books = \App\CtrBook::where('level',$level)->get();
+                    if(count($books)>0){
+                        $request = $request . "<h5>Books</h5><table class=\"table table-bordered\"><tr><td><div id=\"check_uncheck\"><p  style=\"cursor:pointer\"id=\"select_all\" onclick=\"select_all()\">Select All</></div></td><td>Amount</td>";
+                            foreach($books as $book){
+                            $request = $request . "<tr><td><input type=\"checkbox\" class=\"books\" name=\"books[]\" value=\"".$book->id."\"> ".$book->subsidiary."</td>";
+                            $request = $request . "<td align=\"right\">".number_format($book->amount,2)."</td></tr>";        
+                            }
+                        $request = $request . "</table>";
+                    }
+                    $request = $request."<div class=\"col-md-12\"><input id=\"submit_button\" type=\"submit\" value=\"Process Assessment\" class=\"form-control btn btn-warning\">";
                  return $request;
                   
                 }

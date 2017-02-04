@@ -23,15 +23,23 @@
     
         <div class="col-md-12">
             <table border ="1"  class="table table-bordered">
-                <thead><tr><th>Status</th><th>Current Balance</th></tr>
+                <thead><tr><th align="center">Status</th><th>
+                    @if($currentschoolyear->schoolyear == $status->schoolyear && $currentschoolyear->period == $status->period)        
+                    Current Level
+                    @else
+                    Previous Level
+                    @endif
+                 </th><th align="center">Current Balance</th></tr>
                 </thead>
                 
-                <tbody><tr><td>
+                <tbody><tr>
                     @if(is_null($status))
+                        <td>
                         <i>No status</i>
                         <input type="hidden" name="action" value="add">
+                        </td><td>&nbsp;</td>
                     @else
-          
+                        <td align="center">
                         @if($status->status == '1' && $currentschoolyear->schoolyear == $status->schoolyear && $currentschoolyear->period == $status->period)
                             <b> Assessed </b>
                             <input type="hidden" name="action" value="reassessed">
@@ -40,12 +48,16 @@
                         @elseif($status->status == '3' && $currentschoolyear->schoolyear == $status->schoolyear && $currentschoolyear->period == $status->period)
                          <strong style="color:red">Dropped</strong>
                         @else
-                            <i>Registered</i> 
-                            <input type="hidden" name="action" value="update">
+                            <i>Registered</i>
+                  
+                            <input type="hidden" name="action" value="add">
                         @endif
-                        
+                        </td>
+                        <td align="center">
+                            {{$status->level}}
+                        </td>    
                     @endif
-                        </td><td><strong style="color:red">{{ number_format($balance-$reservation,2)}}</strong></td></tr>
+                        <td align="center"><strong style="color:red; font-size:14pt">{{ number_format($balance-$reservation,2)}}</strong></td></tr>
                 </tbody>
             </table>
         </div>  
@@ -59,10 +71,11 @@
                         <h5>This student is already <b>ENROLLED</b>. Please see accounting for payment details</h5>
                     </div>
                 @elseif($status->status == '3')
-                 <div class="panel-body">
+                    <div class="panel-body">
                         <h5>This student is already <b>DROPPED</b>. Please see accounting to verify remaining account.</h5>
                     </div>
                 @elseif($status->status == '1')
+                    
                     <div class="col-md-6">
                         <div class="col-md-12">Program</div>
                         <div class="col-md-12">
@@ -74,14 +87,11 @@
                     <div class="col-md-6">
                         <div id="levelcontainer"> 
                     
-                    @if($status->department != "TVET")   
-                    
+                   @if($status->department != "TVET")   
                             <div class="col-md-12">Level</div>
                             <div class="col-md-12">
                                 <span class="form-control">{{$status->level}}</span>
-                            </div>     
-                   
-                      
+                            </div>      
                     @endif
                         </div>
                       
@@ -269,6 +279,7 @@
         <div id="screendisplay">
             @if(isset($status->status))
             @if($status->status == '1' && $currentschoolyear->schoolyear == $status->schoolyear && $currentschoolyear->period == $status->period)
+               <h5>Fee Details</h5>
                 <table class ="table table-bordered"><tr><td>Description</td><td>Amount</td><tr>
                 <?php $totalamount = 0; $totalplandiscount=0; $totalotherdiscount=0; ?>
                 @foreach($ledgers as $ledger)
@@ -276,9 +287,9 @@
                       $totalplandiscount = $totalplandiscount + $ledger->plandiscount;
                       $totalotherdiscount = $totalotherdiscount + $ledger->otherdiscount;
                 ?>
-                <tr><td>{{$ledger->receipt_details}}</td><td align="right">{{$ledger->amount}}</td></tr>
+                <!--<tr><td>{{$ledger->receipt_details}}</td><td align="right">{{$ledger->amount}}</td></tr>-->
                 @endforeach
-                <tr><td>Sub Total</td><td align="right"><?php echo number_format($totalamount,2); ?></td><tr>
+                <tr><td>Fees</td><td align="right"><?php echo number_format($totalamount,2); ?></td><tr>
                 <tr><td>Less: Plan Discount</td><td align="right"><span style="color:red">(<?php echo number_format($totalplandiscount,2); ?>)</span></td><tr>    
                 <tr><td> Other Discount</td><td align="right"><span style="color:red">(<?php echo number_format($totalotherdiscount,2); ?>)</span></td><tr> 
                 <tr><td>Reservation</td><td align="right"><span style="color:red">(<?php echo number_format($reservation,2); ?>)</span></td><tr>
