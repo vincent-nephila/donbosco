@@ -103,7 +103,7 @@
                     </tr>
                     <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">Chino Roces Ave., Makati City </td></tr>
                     <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">PAASCU Accredited</td></tr>
-                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">School Year {{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</td></tr>
+                    <tr><td style="font-size:9pt;text-align: center;padding-left: 0px;">School Year {{$schoolyear}} - {{intval($schoolyear)+1}}</td></tr>
                     <tr><td style="font-size:9pt;padding-left: 0px;">&nbsp; </td></tr>
                     <tr><td><span style="font-size:5px"></td></tr>
                     <tr>
@@ -450,7 +450,7 @@
                         </tr>
                         <tr style="font-size:11px;">
                             <td style="text-align: left">Days of School</td>
-                            <?php $tsd  = \App\CtrAttendance::Select(DB::raw('*,Jun+Jul+Aug+Sept+Oct+Nov+Dece+Jan+Feb+Mar as total'))->where('schoolyear',$schoolyear->schoolyear)->where('level',$level)->first();?>
+                            <?php $tsd  = \App\CtrAttendance::Select(DB::raw('*,Jun+Jul+Aug+Sept+Oct+Nov+Dece+Jan+Feb+Mar as total'))->where('schoolyear',$schoolyear)->where('level',$level)->first();?>
                             <td>@if($tsd->Jun != 0){{round($tsd->Jun,1)}}@endif</td>
                             <td>@if($tsd->Jul != 0){{round($tsd->Jul,1)}}@endif</td>
                             <td>@if($tsd->Aug != 0){{round($tsd->Aug,1)}}@endif</td>

@@ -34,7 +34,7 @@
                         <tr>
                             <td colspan = "2" style="font-size:10pt;padding-left: 0px;">Chino Roces Ave., Makati City </td>
                             <td style="text-align: right">
-                                <b>School Year: </b>{{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}
+                                <b>School Year: </b>{{$sy}} - {{intval($sy)+1}}
                             </td>                            
                         </tr>
                         <tr>
@@ -82,26 +82,25 @@
                             <td style='text-align: center;width:100px;'>LAST NAME</td>
                             <td style='text-align: center'>FIRST NAME</td>
                             <td style='text-align: center'>M.I.</td>
-                            @foreach($subjects as $subject)
-                                <td>{{$subject->subjectname}}</td>
-                            @endforeach
+                            <td>Days Present</td>
+                            <td>Days Absent</td>
+                            <td>Days Tardy</td>
+
                         </tr>
                         @foreach($students as $student)
                         <?php
                         if($quarter == 1){
-                            //$grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 1 and month IN('JUN','JUL','AUG') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
-                            $month1 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUN')->orderBy('id','DESC')->first();
-                            $month2 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','JUL')->orderBy('id','DESC')->first();
-                            $month3 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month','AUG')->orderBy('id','DESC')->first();
+                            $month1 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month','JUN')->orderBy('id','DESC')->first();
+                            $month2 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month','JUL')->orderBy('id','DESC')->first();
+                            $month3 = \App\AttendanceRepo::where('qtrperiod',1)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month','AUG')->orderBy('id','DESC')->first();
                             
                             $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
                             $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
                             $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
                         }elseif($quarter == 2){
-                            //$grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 2 and month IN('AUG','SEPT','OCT') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
-                            $month1 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"Sept")->orderBy('id','DESC')->first();
-                            $month2 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
-                            $month3 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"AUG")->orderBy('id','DESC')->first();
+                            $month1 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"Sept")->orderBy('id','DESC')->first();
+                            $month2 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"OCT")->orderBy('id','DESC')->first();
+                            $month3 = \App\AttendanceRepo::where('qtrperiod',2)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"AUG")->orderBy('id','DESC')->first();
                             if(!empty($month1) && !empty($month2) && !empty($month3)){
                             $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
                             $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
@@ -112,23 +111,37 @@
                             $daya = 0;
                             }
                         }elseif($quarter ==3){
-                            $grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 3 and month IN('OCT','NOV','DECE') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
-                            $month1 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"OCT")->orderBy('id','DESC')->first();
-                            $month2 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"NOV")->orderBy('id','DESC')->first();
-                            $month3 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"DECE")->orderBy('id','DESC')->first();
-                            
-                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
-                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
-                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;                            
-                        }elseif($quarter == 4){
-                            $grades = DB::Select("SELECT sum(dayp) as dayp,sum(dayt) as dayt,sum(daya) as daya FROM `attendance_repos` WHERE `idno` LIKE '$student->idno' and qtrperiod = 4 and month IN('JAN','FEB','MAR') and schoolyear ='$schoolyear->schoolyear'  order by id DESC");
-                            $month1 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"JAN")->orderBy('id','DESC')->first();
-                            $month2 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"FEB")->orderBy('id','DESC')->first();
-                            $month3 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$schoolyear->schoolyear)->where('month',"MAR")->orderBy('id','DESC')->first();
-                            
+                            $month1 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"OCT")->orderBy('id','DESC')->first();
+                            $month2 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"NOV")->orderBy('id','DESC')->first();
+                            $month3 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"DECE")->orderBy('id','DESC')->first();
+                            if($level == "Grade 11" || $level == "Grade 12"){
+                            $month1 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"NOV")->orderBy('id','DESC')->first();
+                            $month2 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"DECE")->orderBy('id','DESC')->first();
+                            $month3 = \App\AttendanceRepo::where('qtrperiod',3)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"JAN")->orderBy('id','DESC')->first();
+                            }
+                            if(!empty($month1) && !empty($month2) && !empty($month3)){
                             $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
                             $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
                             $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                            }else{
+                            $dayt = 0;
+                            $dayp = 0;
+                            $daya = 0;
+                            }
+                        }elseif($quarter == 4){
+                            $month1 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"JAN")->orderBy('id','DESC')->first();
+                            $month2 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"FEB")->orderBy('id','DESC')->first();
+                            $month3 = \App\AttendanceRepo::where('qtrperiod',4)->where('idno',$student->idno)->where('schoolyear',$sy)->where('month',"MAR")->orderBy('id','DESC')->first();
+                            
+                            if(!empty($month1) && !empty($month2) && !empty($month3)){
+                            $dayt = $month1->DAYT + $month2->DAYT + $month3->DAYT;
+                            $dayp = $month1->DAYP + $month2->DAYP + $month3->DAYP;
+                            $daya = $month1->DAYA + $month2->DAYA + $month3->DAYA;
+                            }else{
+                            $dayt = 0;
+                            $dayp = 0;
+                            $daya = 0;
+                            }
                         }
                         ?>
                         <tr>

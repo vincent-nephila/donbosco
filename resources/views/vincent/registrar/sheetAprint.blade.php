@@ -34,7 +34,7 @@
                         <tr>
                             <td colspan = "2" style="font-size:10pt;padding-left: 0px;">Chino Roces Ave., Makati City </td>
                             <td style="text-align: right">
-                                <b>School Year: </b>{{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}
+                                <b>School Year: </b>{{$sy}} - {{intval($sy)+1}}
                             </td>                            
                         </tr>
                         <tr>
@@ -59,7 +59,7 @@
                             </td>
                             
                             <td colspan="2" style="text-align: right;font-size: 12px;">
-                                <?php $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectcode)->first(); ?>
+                                <?php $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectcode)->where('schoolyear',$sy)->first(); ?>
                                 <b>Teacher:</b>
                                 @if(isset($adviser->adviser))
                                 {{$adviser->adviser}}
@@ -89,9 +89,10 @@
                         </tr>
 
                         @foreach($students as $student)
-                        <?php $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear','2016')->first();
-	$gradeexist = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear','2016')->first();
- ?>
+                        <?php 
+                        $grade = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy)->first();
+                        $gradeexist = \App\Grade::where('idno',$student->idno)->where('subjectcode',$subject->subjectcode)->where('schoolyear',$sy)->first();
+                        ?>
                         <tr>
                             <td style="text-align: center">{{$student->class_no}}</td>
                             <td>{{$student->lastname}}</td>

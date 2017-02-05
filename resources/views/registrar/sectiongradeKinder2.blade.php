@@ -185,7 +185,7 @@
                     </tr>
                     <tr style="font-size:11px;">
                         <td style="text-align: left">Days of School</td>
-                        <?php $tsd  = \App\CtrAttendance::Select(DB::raw('*,Jun+Jul+Aug+Sept+Oct+Nov+Dece+Jan+Feb+Mar as total'))->where('schoolyear',$schoolyear->schoolyear)->where('level',$level)->first();?>
+                        <?php $tsd  = \App\CtrAttendance::Select(DB::raw('*,Jun+Jul+Aug+Sept+Oct+Nov+Dece+Jan+Feb+Mar as total'))->where('schoolyear',$schoolyear)->where('level',$level)->first();?>
                         <td>@if($tsd->Jun != 0){{round($tsd->Jun,1)}}@endif</td>
                         <td>@if($tsd->Jul != 0){{round($tsd->Jul,1)}}@endif</td>
                         <td>@if($tsd->Aug != 0){{round($tsd->Aug,1)}}@endif</td>
@@ -291,7 +291,10 @@
                     
                     <table class="padded" border = '1' cellspacing="0" cellpadding = "0" width="100%" style="text-align: center;font-size: 12px;">
                         <tr><td colspan="3"><b>CONDUCT DESCRIPTORS</b></td></tr>
-                            <tr style="font-weight:bold;@if ($quarter == 4)height: 48px;@endif">
+                            <tr style="font-weight:bold;
+                                @if($quarter == 4)
+                                    height: 48px;
+                                @endif">
                                 <td width="36%" class="descriptors">
                                     DESCRIPTORS
                                 </td>
@@ -628,7 +631,7 @@
                                 
                                 <br>
                                 <span style="font-size: 10pt;font-weight: bold;text-align: center">GRADE SCHOOL DEPARTMENT</span><br>
-                                <span style="font-size: 10pt;font-weight: bold;text-align: center">{{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}</span>
+                                <span style="font-size: 10pt;font-weight: bold;text-align: center">{{$schoolyear}} - {{intval($schoolyear)+1}}</span>
                                 </div><br>
                                 <div style="font-size: 10pt;font-weight: bold">DEVELOPMENTAL CHECKLIST</div>
                                 <div style="font-size: 10pt;font-weight: bold">

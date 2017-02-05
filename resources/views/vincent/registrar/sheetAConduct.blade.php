@@ -34,7 +34,7 @@
                         <tr>
                             <td colspan = "2" style="font-size:10pt;padding-left: 0px;">Chino Roces Ave., Makati City </td>
                             <td style="text-align: right">
-                                <b>School Year: </b>{{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}
+                                <b>School Year: </b>{{$sy}} - {{intval($sy)+1}}
                             </td>                            
                         </tr>
                         <tr>
@@ -81,15 +81,15 @@
                             <td style='text-align: center;width:60px;'>CLASS NO</td>
                             <td style='text-align: center;width:120px;'>LAST NAME</td>
                             <td style='text-align: center;width:300px;'>FIRST NAME</td>
-                            @if(($level == "Grade 11" || $level == "Grade 12") && ($quarter ==1 || $quarter ==2))
+                            @if(($level == "Grade 11" || $level == "Grade 12") && $quarter ==1 )
                             <td style='text-align: center;width:100px;'>QTR1</td>
                             <td style='text-align: center;width:100px;'>QTR2</td>
                             @endif
-                            @if(($level == "Grade 11" || $level == "Grade 12") && ($quarter ==3 || $quarter ==4))
+                            @if(($level == "Grade 11" || $level == "Grade 12") && $quarter ==2)
                             <td style='text-align: center;width:100px;'>QTR3</td>
                             <td style='text-align: center;width:100px;'>QTR4</td>
                             @endif
-                            @if($level != "Grade 11")
+                            @if(($level != "Grade 11") && ($level != "Grade 12"))
                             <td style='text-align: center;width:100px;'>QTR1</td>
                             <td style='text-align: center;width:100px;'>QTR2</td>
                             <td style='text-align: center;width:100px;'>QTR3</td>
@@ -109,7 +109,7 @@
                             </span>
                             @endif                            
                             </td>
-                            @if((($level == "Grade 11" || $level == "Grade 12") && ($quarter ==1 || $quarter ==2)))
+                            @if(($level == "Grade 11" || $level == "Grade 12") && $quarter ==1)
                             <td style="text-align: center">
                                 @if(!round($student->first,2) == 0)
                                     {{round($student->first,2)}}
@@ -122,7 +122,7 @@
                             </td>d
                             @endif
                             
-                            @if((($level == "Grade 11" || $level == "Grade 12") && ($quarter ==3 || $quarter ==4)))
+                            @if(($level == "Grade 11" || $level == "Grade 12") && $quarter == 2)
                             <td style="text-align: center">
                                 @if(!round($student->third,2) == 0)
                                     {{round($student->third,2)}}
@@ -134,7 +134,8 @@
                                 @endif
                             </td>  
                             @endif
-                            @if($level != "Grade 11" || $level != "Grade 12")
+                            
+                            @if($level != "Grade 11" && $level != "Grade 12")
                             <td style="text-align: center">
                                 @if(!round($student->first,2) == 0)
                                     {{round($student->first,2)}}
@@ -160,7 +161,7 @@
                             <?php 
                             $count = 0;
                             $grades = 0;
-                            if((($level == "Grade 11" || $level == "Grade 12") && ($quarter ==1 || $quarter ==2))){
+                            if(($level == "Grade 11" || $level == "Grade 12") && $quarter ==1){
                                 if(!round($student->first,2) == 0){
                                     $grades = $grades+round($student->first,2);
                                     $count++;
@@ -170,7 +171,7 @@
                                     $count++;
                                 }
                             }
-                            if((($level == "Grade 11" || $level == "Grade 12") && ($quarter ==3 || $quarter ==4))){
+                            if(($level == "Grade 11" || $level == "Grade 12") && $quarter ==2){
                                 if(!round($student->third,2) == null){
                                     $grades = $grades+round($student->third,2);
                                     $count++;
@@ -183,7 +184,7 @@
                                 $grades = $grades/$count;
                                 }
                             }
-                            if($level != "Grade 11" || $level != "Grade 12"){
+                            if($level != "Grade 11" && $level != "Grade 12"){
                                 if(!round($student->first,2) == 0){
                                     $grades = $grades+round($student->first,2);
                                     $count++;

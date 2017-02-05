@@ -34,7 +34,7 @@
                         <tr>
                             <td colspan = "2" style="font-size:10pt;padding-left: 0px;">Chino Roces Ave., Makati City </td>
                             <td style="text-align: right">
-                                <b>School Year: </b>{{$schoolyear->schoolyear}} - {{intval($schoolyear->schoolyear)+1}}
+                                <b>School Year: </b>{{$sy}} - {{intval($sy)+1}}
                             </td>                            
                         </tr>
                         <tr>
@@ -59,9 +59,9 @@
                             </td>
                             
                             <td colspan="2" style="text-align: right;font-size: 12px;">
-                                <?php $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectcode)->first();
+                                <?php $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectcode)->where('schoolyear',$sy)->first();
                                 if(empty($adviser)){
-                                  $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectname)->first();  
+                                  $adviser = DB::table('ctr_subject_teachers')->where('level',$level)->where('section',$section)->where('subjcode',$subject->subjectname)->where('schoolyear',$sy)->first();  
                                 }
                                 ?>
                                 <b>Teacher:</b>
@@ -95,7 +95,7 @@
                             <td style='text-align: center;width:80px;'>RUNNING AVE</td>
                         </tr>
                         
-                        <?php $students = DB::Select("Select statuses.status,class_no, lastname, firstname, middlename, first_grading,second_grading,third_grading,fourth_grading from grades join statuses on statuses.idno = grades.idno and statuses.schoolyear = grades.schoolyear join users on users.idno = statuses.idno where grades.schoolyear  =".$schoolyear->schoolyear." and subjectname =  '".$subject->subjectname."' and statuses.level ='".$level."' and statuses.section ='".$section."' order by class_no")?>
+                        <?php $students = DB::Select("Select statuses.status,class_no, lastname, firstname, middlename, first_grading,second_grading,third_grading,fourth_grading from grades join statuses on statuses.idno = grades.idno and statuses.schoolyear = grades.schoolyear join users on users.idno = statuses.idno where grades.schoolyear  =".$sy." and subjectname =  '".$subject->subjectname."' and statuses.level ='".$level."' and statuses.section ='".$section."' order by class_no")?>
                         @foreach($students as $student)
                         <tr>
                             <td style="text-align: center">{{$student->class_no}}</td>

@@ -90,7 +90,7 @@ function displaycards(){
         document.location = "/reportcards/" + level + "/" + strand + "/" + section +"/"+sem;  
     }else if(level == "Kindergarten"){
         
-        document.location = "/reportcard/" + level + "/" + section +"/"+quarter;
+        document.location = "/reportcards/" + level +"/" + section +"/"+quarter;
     }else{
         
             document.location = "/reportcards/" + level + "/" + section;

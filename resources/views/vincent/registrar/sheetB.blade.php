@@ -43,10 +43,27 @@
 					<span style="margin-top: 4px;display: block;width: 22px;height: 2px;border-radius: 1px;background-color: gray;" class="icon-bar"></span>
 					<span style="margin-top: 4px;display: block;width: 22px;height: 2px;border-radius: 1px;background-color: gray;" class="icon-bar"></span>        
         </strong></button>
-        <span class="col-md-offset-1" id="quarters">
-            <a class="btn btn-default quarter btn-primary" id="1st" onclick="changequarter(1,'FIRST')">1st Quarter</a><a class="btn btn-default quarter" id="2nd" onclick="changequarter(2,'SECOND')">2nd Quarter</a><a class="btn btn-default quarter" id="3rd" onclick="changequarter(3,'THIRD')">3rd Quarter</a><a class="btn btn-default quarter" id="4th" onclick="changequarter(4,'FINAL')">4th Quarter</a>
+        <span style="margin-left: 20px">
+            for SY:
+            <?php 
+            $sys= App\Status::distinct()->select('schoolyear')->get();
+            $current = App\CtrRegistrationSchoolyear::first();
+            ?>
+            <select id="schoolyear" name="schoolyear" class="form-control" style="display: inline-block;width: 8%;">
+                @foreach($sys as $sy)
+                <option value="{{$sy->schoolyear}}"
+                        @if($sy->schoolyear == $current->schoolyear)
+                        selected="selected"
+                        @endif
+                        >{{$sy->schoolyear}}</option>
+                @endforeach
+            </select>
+            <label><input type="checkbox" id="setYear">&nbsp;&nbsp;&nbsp;Use year</label>
         </span>
-        </div>
+        <span class="col-md-offset-1" id="quarters">
+            <a class="btn btn-default quarter btn-primary" id="1st" onclick="changequarter(1,'FIRST')">1st Quarter</a><a class="btn btn-default quarter" id="2nd" onclick="changequarter(2,'SECOND')">2nd Quarter</a><a class="btn btn-default quarter" id="3rd" onclick="changequarter(3,'THIRD')">3rd Quarter</a><a class="btn btn-default quarter" id="4th" onclick="changequarter(4,'FOURTH')">4th Quarter</a>
+        </span>
+    </div>
     <div class="col-md-3 collapse in" id='menu'>
         <?php $menu = 0;?>
         @foreach($levels as $level)
@@ -95,73 +112,76 @@
     </div>
 </div>
 <script>
-var quarter = 1;
-var dispQtr ="FIRST";
-var dept;
-var lvl;
-var sec;
-var strands;
-dos();
-$('#qtr').html(dispQtr); 
-
-$("#quarters").on("click", "a.quarter", function(){
+    var quarter = 1;
+    var dispQtr ="FIRST";
+    var dept;
+    var lvl;
+    var sec;
+    var strands;
+    var sy;
+    dos();
+    $('#qtr').html(dispQtr); 
+    
+    $("#quarters").on("click", "a.quarter", function(){
         $(this).siblings().removeClass('btn-primary');
         $(this).addClass('btn-primary');
         $(this).blur();
     });
 
-function changequarter(setQuarter,q){
-    quarter = setQuarter;
-    dispQtr = q;
-    $('#qtr').html(dispQtr);
-    dos();    
-    seeGrade();
-}
-
-function expand(){
-    var displays = document.getElementById('menu');
-    
-    if(!hasClass(displays,'in')){
-        $( "#display" ).removeClass('col-md-12');
-        $( "#display" ).addClass('col-md-9');
-    }else{
-        $("#display").removeClass('col-md-9');
-        $("#display").addClass('col-md-12');
+    function changequarter(setQuarter,q){
+        quarter = setQuarter;
+        dispQtr = q;
+        $('#qtr').html(dispQtr);
+        dos();    
+        seeGrade();
     }
+
+    function expand(){
+        var displays = document.getElementById('menu');
+
+        if(!hasClass(displays,'in')){
+            $( "#display" ).removeClass('col-md-12');
+            $( "#display" ).addClass('col-md-9');
+        }else{
+            $("#display").removeClass('col-md-9');
+            $("#display").addClass('col-md-12');
+        }
     }
-        
     
-function hasClass(element, cls) {
-    return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
-}
+    function hasClass(element, cls) {
+        return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+    }
 
-function setvar(section,level,department,strand){
-    dept = department;
-    strands = strand;
-    lvl = level;
-    sec = section;
-    var yearsec = level+" / "+section;
-    $('#year').html(yearsec); 
-    adviser();
-    seeGrade();
-    
-}
+    function setvar(section,level,department,strand){
+        dept = department;
+        strands = strand;
+        lvl = level;
+        sec = section;
+        var yearsec = level+" / "+section;
+        $('#year').html(yearsec); 
+        adviser();
+        seeGrade();
 
-function seeGrade(){
-    
+    }
+
+    function seeGrade(){
+    dos()
     var arrays ={} ;
     arrays['section'] = sec;
     arrays['level']= lvl;
     arrays['quarter']= quarter;
     arrays['strand']= strands;
     arrays['department']= dept;
-    $('#display').html("");
+    arrays['sy']= sy;
+    $('#display').css('text-align','center').css('padding-top','200px');
+    $('#display').html("<i class='fa fa-spinner fa-spin fa-3x fa-fw fa-5x'></i><span style='position:relative;left:-5em;top:30px;' class='sr-only'>Loading...</span>"); 
+    
     $.ajax({
             type: "GET", 
             url: "/showgrades",
             data : arrays,
             success:function(data){
-                
+                $('#display').css('text-align','initial').css('padding-top','0px');
                 $('#display').html(data); 
                 
                 }
@@ -169,23 +189,23 @@ function seeGrade(){
 
 }
 
-function seeGradeTvet(course){
+    function seeGradeTvet(course){
     var arrays ={} ;
     arrays['course'] = course;
     
     
-        $.ajax({
-            type: "GET", 
-            url: "/showgradestvet",
-            data : arrays,
-            success:function(data){
-                $('#display').html(data); 
-                
-                }
-            }); 
-}
+    $.ajax({
+        type: "GET", 
+        url: "/showgradestvet",
+        data : arrays,
+        success:function(data){
+            $('#display').html(data); 
 
-function setAcadRank(section,level){
+            }
+        }); 
+    }
+
+    function setAcadRank(section,level){
     
     var arrays ={} ;
     arrays['level'] = level;
@@ -203,8 +223,27 @@ function setAcadRank(section,level){
                 }
             }); 
 }
+    
+    function setTechRank(){
+    //alert("ok");
+    var arrays ={} ;
+    arrays['level'] = lvl;
+    arrays['quarter'] = quarter;
+    arrays['section'] = sec;
+    arrays['strand']= strands;
+    
+        $.ajax({
+            type: "GET", 
+            url: "/settechrank",
+            data : arrays,
+            success:function(data){
+                seeGrade();
+               
+                }
+            });
+    }
 
-function adviser(){
+    function adviser(){
     
     var arrays ={} ;
     arrays['level'] = lvl;
@@ -222,10 +261,27 @@ function adviser(){
             }); 
 }
 
-function dos(){
-    
+    function setYear(){
+        if(document.getElementById("setYear").checked == true){
+            sy = $("#schoolyear").val();
+        }else{
+            $.ajax({
+                async: false,
+                type: "GET", 
+                url: "/getyear/" + $('#level').val(), 
+                success:function(data){
+                    sy = data;
+                }
+            });
+        }
+    }
+
+    function dos(){
+    setYear()
     var arrays ={} ;
     arrays['quarter'] = quarter;
+    arrays['level'] = lvl;
+    arrays['sy'] = sy;
     //$('#dos').html("ddd");
     
 
@@ -238,26 +294,6 @@ function dos(){
                 }
             }); 
 
-}
-
-function setTechRank(){
-    //alert("ok");
-    var arrays ={} ;
-    arrays['level'] = lvl;
-    arrays['quarter'] = quarter;
-    arrays['section'] = sec;
-    arrays['strand']= strands;
-    
-        $.ajax({
-            type: "GET", 
-            url: "/settechrank",
-            data : arrays,
-            success:function(data){
-                seeGrade();
-               
-                }
-            }); 
-            
 }
 </script>
 @endsection

@@ -1,6 +1,29 @@
 @extends('app')
 @section('content')
 <div class="container">
+    <div class="col-md-12">
+        <h3>Sheet A Generator</h3>
+        <div class="col-md-1 col-sm-2 col-xs-2" style="padding-left: 0px;">for SY:</div>
+        <?php 
+        $sys= App\Status::distinct()->select('schoolyear')->get();
+        $current = App\CtrRegistrationSchoolyear::first();
+        ?>
+        <div class="col-md-1 col-sm-4 col-xs-4" style="padding-left: 0px;">
+            <select id="schoolyear" name="schoolyear" class="form-control">
+                @foreach($sys as $sy)
+                <option value="{{$sy->schoolyear}}"
+                        @if($sy->schoolyear == $current->schoolyear)
+                        selected="selected"
+                        @endif
+                        >{{$sy->schoolyear}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-3" style="padding-left: 0px;"><label><input type="checkbox" id="setYear">&nbsp;&nbsp;&nbsp;Use year</label></div>
+    </div>
+</div>
+<div class="container">
+    <hr>
     <div class="col-md-6">
         <div class="form-group">
             <label for="level">Select Grade Level</label>
@@ -35,6 +58,22 @@
     </div>    
 </div>    
 <script>
+    var sy;
+function setYear(){
+    if(document.getElementById("setYear").checked == true){
+        sy = $("#schoolyear").val();
+    }else{
+        $.ajax({
+            async: false,
+            type: "GET", 
+            url: "/getyear/" + $('#level').val(), 
+            success:function(data){
+                sy = data;
+            }
+        });
+    }
+}
+
 function getSection(){
  $.ajax({
             type: "GET", 
@@ -53,7 +92,8 @@ function goto(){
     var level = document.getElementById('level').value
     var section = document.getElementById('section').value
     var quarter = document.getElementById('qtr').value
-    window.open("/sheetaAttendance/" + level + "/" + section +"/"+ quarter, '_blank');
+    setYear();
+    window.open("/sheetaAttendance/" + sy + "/" + level + "/" + section +"/"+ quarter, '_blank');
     
 }
 </script>

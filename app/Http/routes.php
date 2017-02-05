@@ -111,22 +111,20 @@
     Route::get('updateacctcode','Update\UpdateController@updateacctcode');
     
     //Registrar VINCENT
-    Route::get('/reportcards/{level}/{section}','Vincent\GradeController@viewSectionGrade');    
-    Route::get('/reportcard/{level}/{section}/{quarter}','Vincent\GradeController@viewSectionKinder');    
-    Route::get('/reportcards/{level}/{shop}/{section}','Vincent\GradeController@viewSectionGrade9to10');    
-    Route::get('/reportcards/{level}/{shop}/{section}/{sem}','Vincent\GradeController@viewSectionGrade11to12');
+    Route::get('/reportcards/{level}/{shop}/{section}/{qtrsem?}','Vincent\ReportCardController@reportcardHS');
+    Route::get('/reportcards/{level}/{section}/{qtrsem?}','Vincent\ReportCardController@reportcardElem');
     Route::get('/resetgrades','Vincent\GradeController@reset');  
     Route::get('/studentgrade/{idno}','Vincent\GradeController@studentGrade'); 
     Route::get('sheetA','Vincent\ReportController@sheetA'); 
     Route::get('overallrank', 'Vincent\GradeController@overallRank');
     Route::post('test', 'Vincent\AttendanceController@importMonthlyAttendance');
     Route::get('test', 'Vincent\AttendanceController@index');
-    Route::get('/printsheetA/{level}/{section}/{subject}', 'Vincent\ReportController@printSheetAElem');
-    Route::get('/printsheetA/{level}/{strand}/{section}/{subject}/{sem}', 'Vincent\ReportController@printSheetASHS');
+    Route::get('/printsheetA/{sy}/{level}/{section}/{subject}', 'Vincent\ReportController@printSheetAElem');
+    Route::get('/printsheetA/{sy}/{level}/{strand}/{section}/{subject}/{sem}', 'Vincent\ReportController@printSheetASHS');
     
     Route::get('conduct', 'Vincent\ReportController@conduct');
-    Route::get('sheetaconduct/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetAConduct');
-    Route::get('sheetaAttendance/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetaAttendance');
+    Route::get('sheetaconduct/{sy}/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetAConduct');
+    Route::get('sheetaAttendance/{sy}/{level}/{section}/{quarter}', 'Vincent\ReportController@printSheetaAttendance');
     Route::get('attendance', 'Vincent\ReportController@attendance');
     Route::get('/sheetb', 'Vincent\ReportController@sheetB');
     
@@ -201,7 +199,7 @@
     //Ajax Route Sheryl
    
     //AJAX Vincent
-    Route::get('/showgrades', 'Vincent\AjaxController@showgrades');
+    Route::get('/showgrades', 'Vincent\AjaxController@displaysheetB');
     Route::get('/showgradestvet', 'Vincent\AjaxController@showgradestvet');
     Route::get('/setacadrank', 'Vincent\AjaxController@setRankingAcad');
     Route::get('/settechrank', 'Vincent\AjaxController@setRankingTech');
@@ -228,6 +226,8 @@
     Route::get('/getaccountlevel','Vincent\AjaxController@getlevel');
     Route::get('/studentchecklist','Vincent\AjaxController@studentselect');
     Route::get('/showfinale','Vincent\AjaxController@getfinal'); 
+    Route::get('/getyear/{level}','Vincent\AjaxController@getyear'); 
+    
     
     
     
